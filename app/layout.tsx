@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: "%s | Obsidian Volleyball Academy",
   },
   description:
-    "Premium junior volleyball academy in Baulkham Hills, Sydney Hills District. Holiday camps and term programs for all skill levels. Volleyball NSW affiliated.",
+    "Premium junior volleyball academy in Baulkham Hills, Sydney Hills District. Holiday camps and term programs for all skill levels.",
   keywords: [
     "volleyball academy Sydney",
     "junior volleyball Sydney",
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
     siteName: "Obsidian Volleyball Academy",
     title: "Obsidian Volleyball Academy | Junior Volleyball Sydney",
     description:
-      "Premium junior volleyball academy in Baulkham Hills. Holiday camps, term programs for all skill levels. Volleyball NSW affiliated.",
+      "Premium junior volleyball academy in Baulkham Hills. Holiday camps, term programs for all skill levels.",
   },
   robots: {
     index: true,
@@ -91,11 +91,6 @@ export default function RootLayout({
                 "Hills District",
                 "Sydney",
               ],
-              memberOf: {
-                "@type": "SportsOrganization",
-                name: "Volleyball NSW",
-                url: "https://volleyballnsw.org.au",
-              },
             }),
           }}
         />

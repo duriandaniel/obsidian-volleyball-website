@@ -1,13 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 const INSTAGRAM_HANDLE = "obsidianvolleyball";
 const INSTAGRAM_URL = `https://instagram.com/${INSTAGRAM_HANDLE}`;
 
-// Use real training photos as Instagram preview tiles
-const previewImages = [
+interface InstaPost {
+  id: string;
+  mediaType: string;
+  mediaUrl: string;
+  permalink: string;
+  caption: string;
+}
+
+// Fallback images when Instagram API is not configured
+const fallbackImages = [
   { src: "/images/gallery-spike.jpg", alt: "Spike at the net" },
   { src: "/images/jersey-detail.jpg", alt: "OVA jersey detail" },
   { src: "/images/gallery-attack.jpg", alt: "Attack drill" },
@@ -19,6 +28,23 @@ const previewImages = [
 ];
 
 export default function InstagramFeed() {
+  const [posts, setPosts] = useState<InstaPost[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/instagram")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.posts && data.posts.length > 0) {
+          setPosts(data.posts);
+        }
+        setLoaded(true);
+      })
+      .catch(() => setLoaded(true));
+  }, []);
+
+  const hasLivePosts = posts.length > 0;
+
   return (
     <section className="py-24 lg:py-32 bg-[#111]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -50,34 +76,69 @@ export default function InstagramFeed() {
           </a>
         </motion.div>
 
-        {/* Grid of images linking to Instagram */}
-        <a
-          href={INSTAGRAM_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="grid grid-cols-4 md:grid-cols-8 gap-1 md:gap-2 group"
-        >
-          {previewImages.map((img, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-30px" }}
-              transition={{ duration: 0.3, delay: i * 0.04 }}
-              className="aspect-square relative overflow-hidden"
-            >
-              <Image
-                src={img.src}
-                alt={img.alt}
-                fill
-                className="object-cover group-hover:brightness-75 transition-all duration-500"
-                sizes="(max-width: 768px) 25vw, 12.5vw"
-                quality={70}
-              />
-              <div className="absolute inset-0 bg-[#7B2FBE]/0 group-hover:bg-[#7B2FBE]/10 transition-all duration-500" />
-            </motion.div>
-          ))}
-        </a>
+        {/* Live Instagram posts */}
+        {hasLivePosts ? (
+          <div className="grid grid-cols-4 md:grid-cols-8 gap-1 md:gap-2">
+            {posts.map((post, i) => (
+              <motion.a
+                key={post.id}
+                href={post.permalink}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{ duration: 0.3, delay: i * 0.04 }}
+                className="aspect-square relative overflow-hidden group"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={post.mediaUrl}
+                  alt={post.caption || "Instagram post"}
+                  className="w-full h-full object-cover group-hover:brightness-75 transition-all duration-500"
+                  loading="lazy"
+                />
+                {post.mediaType === "VIDEO" && (
+                  <div className="absolute top-2 right-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="white" opacity={0.8}>
+                      <polygon points="5,3 19,12 5,21" />
+                    </svg>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-[#7B2FBE]/0 group-hover:bg-[#7B2FBE]/10 transition-all duration-500" />
+              </motion.a>
+            ))}
+          </div>
+        ) : (
+          /* Fallback to static images */
+          <a
+            href={INSTAGRAM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="grid grid-cols-4 md:grid-cols-8 gap-1 md:gap-2 group"
+          >
+            {fallbackImages.map((img, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: loaded ? 1 : 0, scale: 1 }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{ duration: 0.3, delay: i * 0.04 }}
+                className="aspect-square relative overflow-hidden"
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  className="object-cover group-hover:brightness-75 transition-all duration-500"
+                  sizes="(max-width: 768px) 25vw, 12.5vw"
+                  quality={70}
+                />
+                <div className="absolute inset-0 bg-[#7B2FBE]/0 group-hover:bg-[#7B2FBE]/10 transition-all duration-500" />
+              </motion.div>
+            ))}
+          </a>
+        )}
       </div>
     </section>
   );

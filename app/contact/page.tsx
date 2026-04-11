@@ -110,7 +110,7 @@ export default function ContactPage() {
                   </p>
                 </div>
                 <a
-                  href="https://maps.google.com/?q=Baulkham+Hills+High+School"
+                  href="https://maps.google.com/?q=Obsidian+Volleyball+Academy"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"
@@ -125,14 +125,14 @@ export default function ContactPage() {
             <SectionReveal delay={0.15}>
               <div className="aspect-[16/10] lg:aspect-auto lg:h-full min-h-[400px] overflow-hidden bg-[#111]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3315.3!2d150.9927!3d-33.7627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b129838f39a743f%3A0x3017d681632a850!2sBaulkham%20Hills%20High%20School!5e0!3m2!1sen!2sau!4v1"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3315.3!2d150.9927!3d-33.7627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12983e5a5c7e0d%3A0x2b0e5a29b0c1f1e0!2sObsidian%20Volleyball%20Academy!5e0!3m2!1sen!2sau!4v1"
                   width="100%"
                   height="100%"
                   style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2)" }}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Baulkham Hills High School location"
+                  title="Obsidian Volleyball Academy location"
                 />
               </div>
             </SectionReveal>
@@ -140,26 +140,6 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 lg:py-32 bg-[#111] text-center">
-        <div className="max-w-2xl mx-auto px-4">
-          <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">READY TO TRAIN?</p>
-            <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">BOOK A SESSION</h2>
-            <a
-              href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block bg-[#7B2FBE] text-white font-heading text-2xl px-12 py-4 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
-            >
-              BOOK NOW
-            </a>
-            <p className="text-gray-700 text-xs mt-6 tracking-wider">
-              ALL SKILL LEVELS &middot; VOLLEYBALL NSW AFFILIATED
-            </p>
-          </SectionReveal>
-        </div>
-      </section>
     </div>
   );
 }

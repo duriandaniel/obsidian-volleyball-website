@@ -13,7 +13,7 @@ export default function Hero() {
           alt="Obsidian Volleyball Academy training session"
           fill
           priority
-          className="object-cover opacity-30"
+          className="object-cover opacity-50"
           sizes="100vw"
           quality={85}
         />
@@ -78,7 +78,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              Volleyball NSW affiliated coaching in Baulkham Hills.
+              Professional volleyball coaching in Baulkham Hills.
               Holiday camps & term programs — beginner to competitive.
             </motion.p>
 
@@ -112,9 +112,9 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.6 }}
           >
             {[
-              { label: "Volleyball NSW", sub: "Affiliated" },
               { label: "Ages 8–18", sub: "All Levels" },
               { label: "Hills District", sub: "Baulkham Hills" },
+              { label: "All Levels", sub: "Beginner to Advanced" },
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-[#9B4FDE] rounded-full flex-shrink-0" />

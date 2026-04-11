@@ -5,13 +5,13 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "About Obsidian Volleyball Academy | Hills District Sydney",
   description:
-    "Learn about Obsidian Volleyball Academy — a premium junior volleyball academy in Baulkham Hills, Hills District Sydney. Founded 2025. Volleyball NSW affiliated.",
+    "Learn about Obsidian Volleyball Academy — a premium junior volleyball academy in Baulkham Hills, Hills District Sydney. Founded 2025.",
 };
 
 const timeline = [
   { year: "2025", event: "Obsidian Volleyball Academy founded in Baulkham Hills" },
   { year: "2025", event: "First holiday camp — sold out in 2 weeks" },
-  { year: "2025", event: "Volleyball NSW affiliation secured" },
+  { year: "2025", event: "Coaching team assembled and accredited" },
   { year: "2026", event: "Term programs launched for all skill levels" },
   { year: "2026", event: "Expanded coaching team and multi-court operations" },
 ];
@@ -64,9 +64,9 @@ export default function AboutPage() {
                     for inconsistent local coaching. Neither was good enough.
                   </p>
                   <p>
-                    OVA was built to solve that problem. By partnering with Volleyball NSW and
-                    securing a permanent venue at Baulkham Hills High School, Dan created
-                    an academy that brings state-level coaching standards to the Hills District.
+                    OVA was built to solve that problem. By securing a permanent venue at
+                    Baulkham Hills High School, Dan created an academy that brings
+                    professional coaching standards to the Hills District.
                   </p>
                   <p>
                     Today, OVA runs holiday camps and term programs for juniors aged 8 to 18,

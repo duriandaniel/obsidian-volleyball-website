@@ -17,7 +17,7 @@ export default function Footer() {
             </div>
             <p className="text-gray-500 text-sm leading-relaxed max-w-sm mb-6">
               Premium junior volleyball academy in the Hills District of Sydney.
-              Volleyball NSW affiliated. Established 2025.
+              Established 2025.
             </p>
             <div className="flex items-center gap-4">
               <a
@@ -97,14 +97,7 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Obsidian Volleyball Academy
           </p>
           <div className="flex items-center gap-4 text-gray-700 text-xs">
-            <a
-              href="https://volleyballnsw.org.au"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-[#9B4FDE] transition-colors"
-            >
-              Volleyball NSW Affiliated
-            </a>
+            <span>Hills District, Sydney</span>
           </div>
         </div>
       </div>

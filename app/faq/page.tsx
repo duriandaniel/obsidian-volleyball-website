@@ -64,7 +64,7 @@ const faqCategories = [
       },
       {
         q: "Is there a pathway to competitive volleyball?",
-        a: "Yes. OVA is aligned with Volleyball NSW pathways. Our Elite Program prepares advanced juniors for club and representative volleyball. Talk to our coaches about your child's development goals.",
+        a: "Yes. Our Elite Program prepares advanced juniors for club and representative volleyball. Talk to our coaches about your child's development goals.",
       },
     ],
   },
@@ -94,7 +94,7 @@ const faqCategories = [
     faqs: [
       {
         q: "Are your coaches qualified?",
-        a: "All OVA coaches hold current Volleyball NSW accreditation, Working With Children Checks (WWCC), and First Aid certifications. They bring competitive playing experience alongside their coaching credentials.",
+        a: "All OVA coaches are accredited, hold current Working With Children Checks (WWCC), and First Aid certifications. They bring competitive playing experience alongside their coaching credentials.",
       },
       {
         q: "What is the coach-to-player ratio?",

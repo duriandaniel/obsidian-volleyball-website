@@ -6,11 +6,11 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Volleyball Coaches | Baulkham Hills, Hills District Sydney",
   description:
-    "Meet the OVA coaching team. Volleyball NSW accredited coaches based in Baulkham Hills, Hills District. Expert junior volleyball coaching.",
+    "Meet the OVA coaching team. Accredited coaches based in Baulkham Hills, Hills District. Expert junior volleyball coaching.",
   keywords: [
     "volleyball coaching Baulkham Hills",
     "volleyball coach Hills District",
-    "volleyball NSW accredited coach Sydney",
+    "accredited volleyball coach Sydney",
   ],
 };
 
@@ -20,7 +20,7 @@ const coaches = [
     role: "Head Coach & Co-Founder",
     bio: "Melinda founded OVA in 2025 after years of competitive volleyball and a frustration that Hills District juniors had to travel for quality coaching. Her approach combines technical rigour with a supportive, athlete-centred environment. Specialises in beginner and intermediate development.",
     qualifications: [
-      "Volleyball NSW Accredited Coach",
+      "Accredited Volleyball Coach",
       "First Aid Certified (HLTAID011)",
       "Working With Children Check (NSW)",
       "Junior Development Specialist",
@@ -31,7 +31,7 @@ const coaches = [
     role: "Lead Coach",
     bio: "Jessica's competitive playing background and natural ability to connect with young athletes makes her invaluable. Sharp eye for technique and a knack for breaking complex skills into learnable steps. Leads intermediate and advanced sessions.",
     qualifications: [
-      "Volleyball NSW Accredited Coach",
+      "Accredited Volleyball Coach",
       "First Aid Certified (HLTAID011)",
       "Working With Children Check (NSW)",
       "Competition Coaching Experience",
@@ -54,7 +54,7 @@ const values = [
   },
   {
     title: "PATHWAY FOCUSED",
-    desc: "Aligned with Volleyball NSW pathways so advanced players can transition to club and representative volleyball.",
+    desc: "Aligned with competitive pathways so advanced players can transition to club and representative volleyball.",
   },
 ];
 
@@ -72,7 +72,7 @@ export default function CoachesPage() {
               <span className="text-[#9B4FDE]">COACHES</span>
             </h1>
             <p className="text-gray-400 text-xl max-w-2xl leading-relaxed">
-              Volleyball NSW accredited professionals who combine competitive
+              Accredited professionals who combine competitive
               experience with a genuine passion for junior development.
             </p>
           </SectionReveal>
@@ -111,37 +111,6 @@ export default function CoachesPage() {
               </SectionReveal>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Volleyball NSW */}
-      <section className="py-16 lg:py-20 bg-[#111]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-8 justify-between">
-              <div className="max-w-xl">
-                <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.4em] mb-3">ACCREDITATION</p>
-                <h2 className="font-heading text-3xl text-white tracking-wide mb-3">
-                  VOLLEYBALL NSW AFFILIATED
-                </h2>
-                <p className="text-gray-500 text-sm leading-relaxed">
-                  All coaches hold current Volleyball NSW accreditation. Coaching
-                  standards, drills, and player pathways align with the peak body for volleyball in NSW.
-                </p>
-              </div>
-              <a
-                href="https://volleyballnsw.org.au"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-[#9B4FDE] font-heading text-base tracking-wide hover:text-white transition-colors duration-300 flex-shrink-0"
-              >
-                VISIT VOLLEYBALL NSW
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M7 17L17 7M17 7H7M17 7v10" />
-                </svg>
-              </a>
-            </div>
-          </SectionReveal>
         </div>
       </section>
 

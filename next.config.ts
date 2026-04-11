@@ -8,6 +8,14 @@ const nextConfig: NextConfig = {
         hostname: "res.cloudinary.com",
         pathname: `/dibp8icbq/**`,
       },
+      {
+        protocol: "https",
+        hostname: "*.cdninstagram.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.fbcdn.net",
+      },
     ],
   },
 };

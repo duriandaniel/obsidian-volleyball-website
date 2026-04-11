@@ -11,7 +11,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Obsidian Volleyball Academy | Junior Volleyball Sydney Hills District",
   description:
-    "Premium junior volleyball academy in Baulkham Hills, Sydney Hills District. Holiday camps and term programs. Volleyball NSW affiliated.",
+    "Premium junior volleyball academy in Baulkham Hills, Sydney Hills District. Holiday camps and term programs for ages 8–18.",
   keywords: [
     "volleyball academy Sydney",
     "junior volleyball Sydney",
@@ -55,7 +55,7 @@ const programs = [
     description:
       "For serious juniors with competition goals. High-intensity sessions focused on performance volleyball — state-level training principles.",
     features: [
-      "Aligned with Volleyball NSW pathways",
+      "Aligned with competitive pathways",
       "Video analysis and tactical debriefs",
       "Physical conditioning components",
       "Pathway to representative volleyball",
@@ -78,32 +78,6 @@ const faqs = [
   },
 ];
 
-const whyOVA = [
-  {
-    title: "QUALIFIED COACHES",
-    desc: "Volleyball NSW accredited coaches with competitive playing experience.",
-    stat: "VNSW",
-    statLabel: "Accredited",
-  },
-  {
-    title: "SKILL-BASED GROUPING",
-    desc: "Grouped by ability, not age. Everyone trains at the right level.",
-    stat: "3",
-    statLabel: "Skill Levels",
-  },
-  {
-    title: "HILLS DISTRICT",
-    desc: "Central to Castle Hill, Kellyville, Cherrybrook, Bella Vista.",
-    stat: "BHills",
-    statLabel: "Location",
-  },
-  {
-    title: "CLEAR PATHWAYS",
-    desc: "Aligned with Volleyball NSW for club and representative pathways.",
-    stat: "NSW",
-    statLabel: "Pathways",
-  },
-];
 
 // Structured data for FAQ and Events
 const faqSchema = {
@@ -214,12 +188,12 @@ export default function Home() {
                     <p className="text-gray-600 text-xs mt-1 tracking-wider">EST.</p>
                   </div>
                   <div>
-                    <p className="font-heading text-5xl text-[#9B4FDE]">NSW</p>
-                    <p className="text-gray-600 text-xs mt-1 tracking-wider">AFFILIATED</p>
-                  </div>
-                  <div>
                     <p className="font-heading text-5xl text-[#9B4FDE]">3</p>
                     <p className="text-gray-600 text-xs mt-1 tracking-wider">LEVELS</p>
+                  </div>
+                  <div>
+                    <p className="font-heading text-5xl text-[#9B4FDE]">8–18</p>
+                    <p className="text-gray-600 text-xs mt-1 tracking-wider">AGES</p>
                   </div>
                 </div>
               </div>
@@ -240,96 +214,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why OVA */}
-      <section id="why-ova" className="py-24 lg:py-32 bg-[#0A0A0A]">
-        <div className="section-divider absolute left-0 right-0" style={{ marginTop: '-96px' }} />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="mb-16">
-              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">THE DIFFERENCE</p>
-              <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">WHY OVA</h2>
-            </div>
-          </SectionReveal>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-white/[0.04]">
-            {whyOVA.map((item) => (
-              <SectionReveal key={item.title}>
-                <div className="bg-[#0A0A0A] p-8 lg:p-10 group hover:bg-[#111] transition-colors duration-500">
-                  <div className="flex items-start justify-between mb-6">
-                    <h3 className="font-heading text-2xl text-white tracking-wide group-hover:text-[#9B4FDE] transition-colors duration-300">
-                      {item.title}
-                    </h3>
-                    <div className="text-right flex-shrink-0 ml-4">
-                      <p className="font-heading text-3xl text-[#9B4FDE]">{item.stat}</p>
-                      <p className="text-gray-700 text-[10px] tracking-wider">{item.statLabel}</p>
-                    </div>
-                  </div>
-                  <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
-                </div>
-              </SectionReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Upcoming Dates - Editorial style */}
-      <section id="dates" className="py-24 lg:py-32 bg-[#111]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16">
-              <div>
-                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">DON&apos;T MISS OUT</p>
-                <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">UPCOMING</h2>
-              </div>
-              <Link
-                href="/holiday-camp"
-                className="mt-4 lg:mt-0 text-gray-500 hover:text-[#9B4FDE] text-sm flex items-center gap-2 transition-colors"
-              >
-                All camp info
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </div>
-          </SectionReveal>
-
-          <div className="space-y-2">
-            {[
-              { period: "JULY HOLIDAYS", name: "Mid-Year Volleyball Camp", status: "BOOKING NOW", active: true },
-              { period: "TERM 3", name: "Term Program — All Levels", status: "ENQUIRE", active: true },
-              { period: "OCTOBER HOLIDAYS", name: "Spring Volleyball Camp", status: "COMING SOON", active: false },
-            ].map((event, i) => (
-              <SectionReveal key={i} delay={i * 0.05}>
-                <div className="group flex flex-col sm:flex-row sm:items-center justify-between py-6 border-b border-white/[0.06] hover:border-[#9B4FDE]/20 transition-all duration-500">
-                  <div className="flex items-baseline gap-4 sm:gap-8">
-                    <span className="text-[#9B4FDE] font-heading text-xs tracking-[0.3em] w-32 flex-shrink-0">
-                      {event.period}
-                    </span>
-                    <h3 className="font-heading text-2xl sm:text-3xl text-white group-hover:text-[#9B4FDE] transition-colors duration-300">
-                      {event.name}
-                    </h3>
-                  </div>
-                  <div className="mt-3 sm:mt-0 ml-32 sm:ml-0">
-                    {event.active ? (
-                      <a
-                        href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-[#9B4FDE] font-heading text-sm tracking-[0.2em] hover:text-white transition-colors"
-                      >
-                        {event.status}
-                      </a>
-                    ) : (
-                      <span className="text-gray-600 font-heading text-sm tracking-[0.2em]">
-                        {event.status}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </SectionReveal>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Gallery */}
       <Gallery />
@@ -363,7 +247,7 @@ export default function Home() {
               role="Head Coach & Co-Founder"
               bio="Years of competitive volleyball experience and a deep commitment to junior development. Building player confidence alongside technical skill."
               qualifications={[
-                "Volleyball NSW Accredited",
+                "Accredited Coach",
                 "First Aid Certified",
                 "WWCC Verified",
               ]}
@@ -374,7 +258,7 @@ export default function Home() {
               role="Lead Coach"
               bio="Energetic style and technical expertise. Specialises in skill development for intermediate and advanced juniors pushing toward competition."
               qualifications={[
-                "Volleyball NSW Accredited",
+                "Accredited Coach",
                 "First Aid Certified",
                 "WWCC Verified",
               ]}
@@ -411,7 +295,7 @@ export default function Home() {
                   </p>
                 </div>
                 <a
-                  href="https://maps.google.com/?q=Baulkham+Hills+High+School"
+                  href="https://maps.google.com/?q=Obsidian+Volleyball+Academy"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"
@@ -427,14 +311,14 @@ export default function Home() {
             <SectionReveal delay={0.15}>
               <div className="aspect-[16/10] lg:aspect-auto lg:h-full min-h-[300px] overflow-hidden bg-[#111]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3315.3!2d150.9927!3d-33.7627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b129838f39a743f%3A0x3017d681632a850!2sBaulkham%20Hills%20High%20School!5e0!3m2!1sen!2sau!4v1"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3315.3!2d150.9927!3d-33.7627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12983e5a5c7e0d%3A0x2b0e5a29b0c1f1e0!2sObsidian%20Volleyball%20Academy!5e0!3m2!1sen!2sau!4v1"
                   width="100%"
                   height="100%"
                   style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2)" }}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title="Baulkham Hills High School location"
+                  title="Obsidian Volleyball Academy location"
                 />
               </div>
             </SectionReveal>
@@ -476,49 +360,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-32 lg:py-40 bg-[#0A0A0A] relative overflow-hidden">
-        <div className="section-divider absolute top-0 left-0 right-0" />
-        {/* Background glow */}
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[60vh]"
-          style={{
-            background: "radial-gradient(ellipse at center, rgba(123,47,190,0.04) 0%, transparent 60%)",
-          }}
-        />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">READY TO START?</p>
-            <h2 className="font-heading text-6xl sm:text-7xl lg:text-9xl text-white tracking-wide mb-8 leading-[0.9]">
-              JOIN OVA
-              <br />
-              <span className="text-[#9B4FDE]">TODAY</span>
-            </h2>
-            <p className="text-gray-500 text-lg mb-12 max-w-lg mx-auto leading-relaxed">
-              Holiday camps and term programs. Limited spots — book early.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-[#7B2FBE] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
-              >
-                BOOK NOW
-              </a>
-              <Link
-                href="/contact"
-                className="border border-white/20 text-white font-heading text-3xl px-14 py-5 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide"
-              >
-                CONTACT
-              </Link>
-            </div>
-            <p className="text-gray-700 text-xs mt-8 tracking-wider">
-              VOLLEYBALL NSW AFFILIATED &middot; BAULKHAM HILLS &middot; HILLS DISTRICT
-            </p>
-          </SectionReveal>
-        </div>
-      </section>
     </>
   );
 }
