@@ -1,37 +1,28 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CldImage } from "next-cloudinary";
-
-const HERO_IMAGE = "ova/hero"; // Upload hero image to Cloudinary with this public ID
+import Image from "next/image";
 
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0A0A]">
-      {/* Background image from Cloudinary (or gradient fallback) */}
+      {/* Background image */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-[#0A0A0A]" />
-
-        {/* Cloudinary hero image — hidden until uploaded */}
-        <div className="absolute inset-0">
-          <CldImage
-            src={HERO_IMAGE}
-            alt="Obsidian Volleyball Academy training session"
-            fill
-            priority
-            className="object-cover opacity-40"
-            sizes="100vw"
-            format="auto"
-            quality="auto"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-          />
-        </div>
+        <Image
+          src="/images/hero.jpg"
+          alt="Obsidian Volleyball Academy training session"
+          fill
+          priority
+          className="object-cover opacity-30"
+          sizes="100vw"
+          quality={85}
+        />
 
         {/* Radial glow */}
         <motion.div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vh]"
           style={{
-            background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(0,255,136,0.06) 0%, rgba(0,255,136,0.02) 30%, transparent 60%)",
+            background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(123,47,190,0.08) 0%, rgba(123,47,190,0.03) 30%, transparent 60%)",
           }}
           animate={{
             scale: [1, 1.05, 1],
@@ -44,15 +35,8 @@ export default function Hero() {
         <div
           className="absolute top-0 right-0 w-[1px] h-full origin-top-right"
           style={{
-            background: "linear-gradient(180deg, transparent 10%, rgba(0,255,136,0.15) 40%, rgba(0,255,136,0.15) 60%, transparent 90%)",
+            background: "linear-gradient(180deg, transparent 10%, rgba(123,47,190,0.2) 40%, rgba(123,47,190,0.2) 60%, transparent 90%)",
             transform: "rotate(-20deg) translateX(30vw)",
-          }}
-        />
-        <div
-          className="absolute top-0 right-0 w-[1px] h-full origin-top-right"
-          style={{
-            background: "linear-gradient(180deg, transparent 20%, rgba(0,255,136,0.08) 50%, transparent 80%)",
-            transform: "rotate(-20deg) translateX(35vw)",
           }}
         />
 
@@ -70,7 +54,7 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
             >
-              <p className="text-[#00FF88] font-heading text-base sm:text-lg tracking-[0.4em] mb-6">
+              <p className="text-[#9B4FDE] font-heading text-base sm:text-lg tracking-[0.4em] mb-6">
                 HILLS DISTRICT &middot; SYDNEY
               </p>
             </motion.div>
@@ -85,7 +69,7 @@ export default function Hero() {
               <br />
               JUNIOR
               <br />
-              <span className="text-[#00FF88]">VOLLEY</span>BALL
+              <span className="text-[#9B4FDE]">VOLLEY</span>BALL
             </motion.h1>
 
             <motion.p
@@ -108,13 +92,13 @@ export default function Hero() {
                 href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#00FF88] text-black font-heading text-2xl px-10 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-green"
+                className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 hover:bg-[#9B4FDE] transition-all duration-300 tracking-wide text-center glow-purple"
               >
                 BOOK NOW
               </a>
               <a
                 href="/holiday-camp"
-                className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#00FF88] hover:text-[#00FF88] transition-all duration-300 tracking-wide text-center"
+                className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
               >
                 VIEW CAMPS
               </a>
@@ -133,7 +117,7 @@ export default function Hero() {
               { label: "All Levels", sub: "Welcome" },
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-[#00FF88] rounded-full flex-shrink-0" />
+                <div className="w-2 h-2 bg-[#9B4FDE] rounded-full flex-shrink-0" />
                 <div>
                   <p className="text-white text-sm font-medium leading-tight">{item.label}</p>
                   <p className="text-gray-500 text-xs">{item.sub}</p>
@@ -153,7 +137,7 @@ export default function Hero() {
       >
         <span className="text-gray-600 text-[10px] tracking-[0.3em] font-heading">SCROLL</span>
         <motion.div
-          className="w-px h-8 bg-gradient-to-b from-[#00FF88]/50 to-transparent"
+          className="w-px h-8 bg-gradient-to-b from-[#9B4FDE]/50 to-transparent"
           animate={{ scaleY: [1, 0.5, 1], opacity: [0.5, 0.2, 0.5] }}
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
         />

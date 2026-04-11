@@ -23,11 +23,11 @@ export default function AboutPage() {
       <section className="py-24 lg:py-32 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-6">OUR STORY</p>
+            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">OUR STORY</p>
             <h1 className="font-heading text-6xl sm:text-8xl lg:text-9xl text-white tracking-wide mb-8 leading-[0.9]">
               BUILT FOR
               <br />
-              <span className="text-[#00FF88]">THE HILLS</span>
+              <span className="text-[#9B4FDE]">THE HILLS</span>
             </h1>
             <p className="text-gray-400 text-xl max-w-2xl leading-relaxed">
               Obsidian Volleyball Academy exists because Hills District juniors
@@ -51,7 +51,7 @@ export default function AboutPage() {
             </SectionReveal>
             <SectionReveal delay={0.1}>
               <div className="flex flex-col justify-center">
-                <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">THE ORIGIN</p>
+                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">THE ORIGIN</p>
                 <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide mb-8">WHY OVA EXISTS</h2>
                 <div className="space-y-5 text-gray-400 leading-relaxed">
                   <p>
@@ -84,11 +84,11 @@ export default function AboutPage() {
       <section className="py-24 lg:py-32 bg-[#0A0A0A]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <SectionReveal>
-            <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-6">OUR MISSION</p>
+            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">OUR MISSION</p>
             <blockquote className="font-heading text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide leading-tight mb-8">
               &ldquo;MAKE ELITE VOLLEYBALL
               <br />
-              <span className="text-[#00FF88]">ACCESSIBLE</span> TO EVERY
+              <span className="text-[#9B4FDE]">ACCESSIBLE</span> TO EVERY
               <br />
               JUNIOR IN THE
               <br />
@@ -103,7 +103,7 @@ export default function AboutPage() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-16">
-              <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">THE JOURNEY</p>
+              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">THE JOURNEY</p>
               <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">TIMELINE</h2>
             </div>
           </SectionReveal>
@@ -111,7 +111,7 @@ export default function AboutPage() {
             {timeline.map((item, i) => (
               <SectionReveal key={i} delay={i * 0.05}>
                 <div className="flex gap-8 py-6 border-b border-white/[0.06] group">
-                  <span className="font-heading text-2xl text-[#00FF88] w-16 flex-shrink-0">{item.year}</span>
+                  <span className="font-heading text-2xl text-[#9B4FDE] w-16 flex-shrink-0">{item.year}</span>
                   <p className="text-gray-400 text-sm leading-relaxed pt-1 group-hover:text-white transition-colors duration-300">
                     {item.event}
                   </p>
@@ -127,7 +127,7 @@ export default function AboutPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-16">
-              <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">WHAT DRIVES US</p>
+              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">WHAT DRIVES US</p>
               <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">VALUES</h2>
             </div>
           </SectionReveal>
@@ -148,7 +148,7 @@ export default function AboutPage() {
             ].map((value) => (
               <SectionReveal key={value.title}>
                 <div className="bg-[#0A0A0A] p-8 lg:p-12">
-                  <h3 className="font-heading text-2xl text-[#00FF88] tracking-wide mb-4">{value.title}</h3>
+                  <h3 className="font-heading text-2xl text-[#9B4FDE] tracking-wide mb-4">{value.title}</h3>
                   <p className="text-gray-500 text-sm leading-relaxed">{value.desc}</p>
                 </div>
               </SectionReveal>
@@ -161,24 +161,24 @@ export default function AboutPage() {
       <section className="py-24 lg:py-32 bg-[#111] text-center">
         <div className="max-w-2xl mx-auto px-4">
           <SectionReveal>
-            <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-4">JOIN THE ACADEMY</p>
+            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">JOIN THE ACADEMY</p>
             <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
               BECOME PART
               <br />
-              OF <span className="text-[#00FF88]">OVA</span>
+              OF <span className="text-[#9B4FDE]">OVA</span>
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#00FF88] text-black font-heading text-2xl px-10 py-4 hover:bg-white transition-all duration-300 tracking-wide glow-green"
+                className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
               >
                 BOOK NOW
               </a>
               <Link
                 href="/coaches"
-                className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#00FF88] hover:text-[#00FF88] transition-all duration-300 tracking-wide"
+                className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide"
               >
                 MEET COACHES
               </Link>

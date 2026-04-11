@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -8,9 +9,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <span className="font-heading text-2xl text-white tracking-[0.08em] block mb-4">
-              OBSIDIAN<span className="text-[#00FF88]"> VOLLEYBALL</span>
-            </span>
+            <div className="flex items-center gap-2 mb-4">
+              <Image src="/images/logo.png" alt="OVA" width={36} height={36} className="w-9 h-9" />
+              <span className="font-heading text-2xl text-white tracking-[0.08em]">
+                OBSIDIAN<span className="text-[#9B4FDE]"> VOLLEYBALL</span>
+              </span>
+            </div>
             <p className="text-gray-500 text-sm leading-relaxed max-w-sm mb-6">
               Premium junior volleyball academy in the Hills District of Sydney.
               Volleyball NSW affiliated. Established 2025.
@@ -20,7 +24,7 @@ export default function Footer() {
                 href="https://instagram.com/obsidianvolleyball"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-[#00FF88] transition-colors duration-300"
+                className="text-gray-600 hover:text-[#9B4FDE] transition-colors duration-300"
                 aria-label="Instagram"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -31,7 +35,7 @@ export default function Footer() {
               </a>
               <a
                 href="mailto:obsidianvolleyball@gmail.com"
-                className="text-gray-600 hover:text-[#00FF88] transition-colors duration-300"
+                className="text-gray-600 hover:text-[#9B4FDE] transition-colors duration-300"
                 aria-label="Email"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -78,7 +82,7 @@ export default function Footer() {
               href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block text-[#00FF88] text-sm font-medium hover:text-white transition-colors duration-300"
+              className="inline-block text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors duration-300"
             >
               Book a session &rarr;
             </a>
@@ -99,7 +103,7 @@ export default function Footer() {
               href="https://volleyballnsw.org.au"
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:text-[#00FF88] transition-colors"
+              className="hover:text-[#9B4FDE] transition-colors"
             >
               Volleyball NSW Affiliated
             </a>

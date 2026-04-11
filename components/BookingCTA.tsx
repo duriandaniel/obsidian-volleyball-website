@@ -28,7 +28,7 @@ export default function BookingCTA() {
             href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 bg-[#00FF88] text-black font-heading text-lg px-6 py-3 hover:bg-white transition-all duration-300 tracking-wide glow-green"
+            className="flex items-center gap-2 bg-[#7B2FBE] text-white font-heading text-lg px-6 py-3 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
           >
             <span>BOOK NOW</span>
             <svg

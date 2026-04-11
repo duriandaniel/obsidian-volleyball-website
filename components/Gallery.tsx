@@ -1,16 +1,15 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CldImage } from "next-cloudinary";
+import Image from "next/image";
 
-// Upload gallery images to Cloudinary with these public IDs
 const galleryItems = [
-  { id: "ova/gallery/training", label: "Training session", span: "col-span-2 row-span-2" },
-  { id: "ova/gallery/group", label: "Camp group photo", span: "col-span-1 row-span-1" },
-  { id: "ova/gallery/action", label: "Action shot", span: "col-span-1 row-span-1" },
-  { id: "ova/gallery/coaching", label: "Coaching drill", span: "col-span-1 row-span-2" },
-  { id: "ova/gallery/camp", label: "Holiday camp", span: "col-span-1 row-span-1" },
-  { id: "ova/gallery/team", label: "Team celebration", span: "col-span-1 row-span-1" },
+  { src: "/images/gallery-spike.jpg", label: "Spike at the net", span: "col-span-2 row-span-2" },
+  { src: "/images/gallery-setting.jpg", label: "Setting drill", span: "col-span-1 row-span-1" },
+  { src: "/images/gallery-serve.jpg", label: "Serve practice", span: "col-span-1 row-span-1" },
+  { src: "/images/gallery-coaching.jpg", label: "Coaching session", span: "col-span-1 row-span-2" },
+  { src: "/images/gallery-attack.jpg", label: "Attack at net", span: "col-span-1 row-span-1" },
+  { src: "/images/gallery-game.jpg", label: "Game play", span: "col-span-1 row-span-1" },
 ];
 
 export default function Gallery() {
@@ -25,14 +24,14 @@ export default function Gallery() {
           className="flex items-end justify-between mb-12"
         >
           <div>
-            <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">IN ACTION</p>
+            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">IN ACTION</p>
             <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">GALLERY</h2>
           </div>
           <a
             href="https://instagram.com/obsidianvolleyball"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:flex items-center gap-2 text-gray-500 hover:text-[#00FF88] text-sm transition-colors duration-300"
+            className="hidden sm:flex items-center gap-2 text-gray-500 hover:text-[#9B4FDE] text-sm transition-colors duration-300"
           >
             <span>Follow @obsidianvolleyball</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -52,24 +51,17 @@ export default function Gallery() {
               transition={{ duration: 0.4, delay: i * 0.06 }}
               className={`${item.span} relative overflow-hidden cursor-pointer group`}
             >
-              {/* Try to load Cloudinary image, fall back to placeholder */}
-              <CldImage
-                src={item.id}
+              <Image
+                src={item.src}
                 alt={item.label}
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
                 sizes="(max-width: 768px) 50vw, 25vw"
-                format="auto"
-                quality="auto"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                quality={80}
               />
-              {/* Placeholder (visible when no image) */}
-              <div className="absolute inset-0 photo-placeholder flex items-center justify-center -z-0">
-                <span className="text-gray-700 text-xs tracking-wider uppercase">{item.label}</span>
-              </div>
               {/* Hover effects */}
-              <div className="absolute inset-0 bg-[#00FF88]/0 group-hover:bg-[#00FF88]/[0.04] transition-all duration-500 z-10" />
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#00FF88] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left z-10" />
+              <div className="absolute inset-0 bg-[#7B2FBE]/0 group-hover:bg-[#7B2FBE]/10 transition-all duration-500 z-10" />
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#9B4FDE] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left z-10" />
             </motion.div>
           ))}
         </div>

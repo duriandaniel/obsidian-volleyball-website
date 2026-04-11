@@ -106,11 +106,11 @@ export default function HolidayCampPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-16 items-end">
             <SectionReveal>
               <div>
-                <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-6">SCHOOL HOLIDAY PROGRAMS</p>
+                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">SCHOOL HOLIDAY PROGRAMS</p>
                 <h1 className="font-heading text-6xl sm:text-8xl lg:text-9xl text-white tracking-wide mb-8 leading-[0.9]">
                   HOLIDAY
                   <br />
-                  <span className="text-[#00FF88]">CAMPS</span>
+                  <span className="text-[#9B4FDE]">CAMPS</span>
                 </h1>
                 <p className="text-gray-400 text-lg max-w-xl mb-10 leading-relaxed">
                   Intensive skill-building volleyball camps during school holidays in Baulkham Hills.
@@ -121,13 +121,13 @@ export default function HolidayCampPage() {
                     href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-[#00FF88] text-black font-heading text-xl px-8 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-green"
+                    className="bg-[#7B2FBE] text-white font-heading text-xl px-8 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-purple"
                   >
                     BOOK A CAMP
                   </a>
                   <Link
                     href="/contact"
-                    className="border border-white/20 text-white font-heading text-xl px-8 py-4 hover:border-[#00FF88] hover:text-[#00FF88] transition-all duration-300 tracking-wide text-center"
+                    className="border border-white/20 text-white font-heading text-xl px-8 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
                   >
                     ASK A QUESTION
                   </Link>
@@ -147,7 +147,7 @@ export default function HolidayCampPage() {
       </section>
 
       {/* Active Kids Banner */}
-      <section className="bg-[#00FF88] py-4">
+      <section className="bg-[#9B4FDE] py-4">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center gap-3">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2.5">
             <path d="M20 6L9 17l-5-5" />
@@ -163,7 +163,7 @@ export default function HolidayCampPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-16">
-              <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">CAMP INFO</p>
+              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">CAMP INFO</p>
               <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">WHAT TO EXPECT</h2>
             </div>
           </SectionReveal>
@@ -171,7 +171,7 @@ export default function HolidayCampPage() {
             {campDetails.map((detail, i) => (
               <SectionReveal key={detail.label} delay={i * 0.05}>
                 <div className="bg-[#111] p-8 group hover:bg-[#161616] transition-colors duration-500">
-                  <p className="text-[#00FF88] font-heading text-xs tracking-[0.3em] mb-3">{detail.label}</p>
+                  <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.3em] mb-3">{detail.label}</p>
                   <p className="text-gray-300 text-sm leading-relaxed">{detail.value}</p>
                 </div>
               </SectionReveal>
@@ -185,17 +185,17 @@ export default function HolidayCampPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-16">
-              <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">UPCOMING</p>
+              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">UPCOMING</p>
               <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">CAMP DATES</h2>
             </div>
           </SectionReveal>
           <div className="space-y-2">
             {upcomingCamps.map((camp, i) => (
               <SectionReveal key={i} delay={i * 0.05}>
-                <div className="group flex flex-col sm:flex-row sm:items-center justify-between py-8 border-b border-white/[0.06] hover:border-[#00FF88]/20 transition-all duration-500">
+                <div className="group flex flex-col sm:flex-row sm:items-center justify-between py-8 border-b border-white/[0.06] hover:border-[#9B4FDE]/20 transition-all duration-500">
                   <div className="flex-1">
-                    <p className="text-[#00FF88] font-heading text-xs tracking-[0.3em] mb-2">{camp.term}</p>
-                    <h3 className="font-heading text-3xl text-white group-hover:text-[#00FF88] transition-colors duration-300 mb-1">
+                    <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.3em] mb-2">{camp.term}</p>
+                    <h3 className="font-heading text-3xl text-white group-hover:text-[#9B4FDE] transition-colors duration-300 mb-1">
                       {camp.name}
                     </h3>
                     <div className="flex items-center gap-4 text-gray-600 text-sm">
@@ -210,7 +210,7 @@ export default function HolidayCampPage() {
                         href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="bg-[#00FF88] text-black font-heading text-base px-6 py-2.5 hover:bg-white transition-all duration-300 tracking-wide inline-block"
+                        className="bg-[#7B2FBE] text-white font-heading text-base px-6 py-2.5 hover:bg-white transition-all duration-300 tracking-wide inline-block"
                       >
                         BOOK NOW
                       </a>
@@ -231,12 +231,12 @@ export default function HolidayCampPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
             <SectionReveal>
               <div>
-                <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">PREPARE</p>
+                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">PREPARE</p>
                 <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide mb-10">WHAT TO BRING</h2>
                 <ul className="space-y-4">
                   {whatToBring.map((item, i) => (
                     <li key={i} className="flex items-start gap-4 text-gray-400">
-                      <span className="text-[#00FF88] font-heading text-lg flex-shrink-0 w-6">{i + 1}</span>
+                      <span className="text-[#9B4FDE] font-heading text-lg flex-shrink-0 w-6">{i + 1}</span>
                       <span className="text-sm leading-relaxed pt-0.5">{item}</span>
                     </li>
                   ))}
@@ -245,7 +245,7 @@ export default function HolidayCampPage() {
             </SectionReveal>
             <SectionReveal delay={0.15}>
               <div>
-                <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">LOCATION</p>
+                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">LOCATION</p>
                 <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide mb-8">VENUE</h2>
                 <div className="mb-6">
                   <address className="not-italic space-y-2">
@@ -273,15 +273,15 @@ export default function HolidayCampPage() {
         <div className="section-divider absolute top-0 left-0 right-0" />
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[40vh]"
-          style={{ background: "radial-gradient(ellipse at center, rgba(0,255,136,0.03) 0%, transparent 60%)" }}
+          style={{ background: "radial-gradient(ellipse at center, rgba(123,47,190,0.03) 0%, transparent 60%)" }}
         />
         <div className="relative max-w-2xl mx-auto px-4">
           <SectionReveal>
-            <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-4">SPOTS ARE LIMITED</p>
+            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">SPOTS ARE LIMITED</p>
             <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
               BOOK YOUR
               <br />
-              <span className="text-[#00FF88]">PLACE</span>
+              <span className="text-[#9B4FDE]">PLACE</span>
             </h2>
             <p className="text-gray-500 mb-10 leading-relaxed">
               Holiday camps fill fast. Book early to guarantee a spot. Active Kids Vouchers accepted.
@@ -290,7 +290,7 @@ export default function HolidayCampPage() {
               href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block bg-[#00FF88] text-black font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-green"
+              className="inline-block bg-[#7B2FBE] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
             >
               BOOK NOW
             </a>

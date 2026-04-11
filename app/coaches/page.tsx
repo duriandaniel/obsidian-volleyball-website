@@ -65,11 +65,11 @@ export default function CoachesPage() {
       <section className="py-24 lg:py-32 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-6">WORLD-CLASS INSTRUCTION</p>
+            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">WORLD-CLASS INSTRUCTION</p>
             <h1 className="font-heading text-6xl sm:text-8xl lg:text-9xl text-white tracking-wide mb-8 leading-[0.9]">
               MEET THE
               <br />
-              <span className="text-[#00FF88]">COACHES</span>
+              <span className="text-[#9B4FDE]">COACHES</span>
             </h1>
             <p className="text-gray-400 text-xl max-w-2xl leading-relaxed">
               Volleyball NSW accredited professionals who combine competitive
@@ -95,7 +95,7 @@ export default function CoachesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-16">
-              <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">HOW WE COACH</p>
+              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">HOW WE COACH</p>
               <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">PHILOSOPHY</h2>
             </div>
           </SectionReveal>
@@ -103,7 +103,7 @@ export default function CoachesPage() {
             {values.map((v, i) => (
               <SectionReveal key={v.title} delay={i * 0.05}>
                 <div className="bg-[#0A0A0A] p-8 lg:p-10 group hover:bg-[#111] transition-colors duration-500">
-                  <h3 className="font-heading text-2xl text-[#00FF88] tracking-wide mb-4 group-hover:text-white transition-colors duration-300">
+                  <h3 className="font-heading text-2xl text-[#9B4FDE] tracking-wide mb-4 group-hover:text-white transition-colors duration-300">
                     {v.title}
                   </h3>
                   <p className="text-gray-500 text-sm leading-relaxed">{v.desc}</p>
@@ -120,7 +120,7 @@ export default function CoachesPage() {
           <SectionReveal>
             <div className="flex flex-col md:flex-row items-start md:items-center gap-8 justify-between">
               <div className="max-w-xl">
-                <p className="text-[#00FF88] font-heading text-xs tracking-[0.4em] mb-3">ACCREDITATION</p>
+                <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.4em] mb-3">ACCREDITATION</p>
                 <h2 className="font-heading text-3xl text-white tracking-wide mb-3">
                   VOLLEYBALL NSW AFFILIATED
                 </h2>
@@ -133,7 +133,7 @@ export default function CoachesPage() {
                 href="https://volleyballnsw.org.au"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-[#00FF88] font-heading text-base tracking-wide hover:text-white transition-colors duration-300 flex-shrink-0"
+                className="inline-flex items-center gap-2 text-[#9B4FDE] font-heading text-base tracking-wide hover:text-white transition-colors duration-300 flex-shrink-0"
               >
                 VISIT VOLLEYBALL NSW
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -150,24 +150,24 @@ export default function CoachesPage() {
         <div className="section-divider absolute left-0 right-0" />
         <div className="max-w-2xl mx-auto px-4">
           <SectionReveal>
-            <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-4">TRAIN WITH THE BEST</p>
+            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">TRAIN WITH THE BEST</p>
             <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
               BOOK A
               <br />
-              <span className="text-[#00FF88]">SESSION</span>
+              <span className="text-[#9B4FDE]">SESSION</span>
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#00FF88] text-black font-heading text-2xl px-10 py-4 hover:bg-white transition-all duration-300 tracking-wide glow-green"
+                className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
               >
                 BOOK NOW
               </a>
               <Link
                 href="/contact"
-                className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#00FF88] hover:text-[#00FF88] transition-all duration-300 tracking-wide"
+                className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide"
               >
                 CONTACT US
               </Link>

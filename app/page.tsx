@@ -4,6 +4,7 @@ import ProgramCard from "@/components/ProgramCard";
 import CoachCard from "@/components/CoachCard";
 import Gallery from "@/components/Gallery";
 import SectionReveal from "@/components/SectionReveal";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -172,12 +173,12 @@ export default function Home() {
           <SectionReveal>
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16">
               <div>
-                <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">TRAIN WITH PURPOSE</p>
+                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">TRAIN WITH PURPOSE</p>
                 <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">PROGRAMS</h2>
               </div>
               <Link
                 href="/holiday-camp"
-                className="mt-4 lg:mt-0 text-gray-500 hover:text-[#00FF88] text-sm flex items-center gap-2 transition-colors duration-300"
+                className="mt-4 lg:mt-0 text-gray-500 hover:text-[#9B4FDE] text-sm flex items-center gap-2 transition-colors duration-300"
               >
                 See holiday camp dates
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -200,11 +201,11 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-16 lg:gap-24 items-center">
             <SectionReveal>
               <div>
-                <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">OUR STORY</p>
+                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">OUR STORY</p>
                 <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
                   ABOUT
                   <br />
-                  <span className="text-[#00FF88]">OVA</span>
+                  <span className="text-[#9B4FDE]">OVA</span>
                 </h2>
                 <div className="space-y-5 text-gray-400 leading-relaxed">
                   <p>
@@ -219,27 +220,30 @@ export default function Home() {
                 </div>
                 <div className="flex gap-10 mt-10">
                   <div>
-                    <p className="font-heading text-5xl text-[#00FF88]">2025</p>
+                    <p className="font-heading text-5xl text-[#9B4FDE]">2025</p>
                     <p className="text-gray-600 text-xs mt-1 tracking-wider">EST.</p>
                   </div>
                   <div>
-                    <p className="font-heading text-5xl text-[#00FF88]">NSW</p>
+                    <p className="font-heading text-5xl text-[#9B4FDE]">NSW</p>
                     <p className="text-gray-600 text-xs mt-1 tracking-wider">AFFILIATED</p>
                   </div>
                   <div>
-                    <p className="font-heading text-5xl text-[#00FF88]">3</p>
+                    <p className="font-heading text-5xl text-[#9B4FDE]">3</p>
                     <p className="text-gray-600 text-xs mt-1 tracking-wider">LEVELS</p>
                   </div>
                 </div>
               </div>
             </SectionReveal>
-            {/* Photo placeholder */}
             <SectionReveal delay={0.2}>
-              <div className="photo-placeholder aspect-[3/4] relative">
-                <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
-                  <span className="text-gray-700 text-xs tracking-wider">TEAM PHOTO</span>
-                  <span className="text-gray-800 text-[10px]">COMING SOON</span>
-                </div>
+              <div className="aspect-[3/4] relative overflow-hidden">
+                <Image
+                  src="/images/about.jpg"
+                  alt="Obsidian Volleyball Academy players at Baulkham Hills High School"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  quality={85}
+                />
               </div>
             </SectionReveal>
           </div>
@@ -252,7 +256,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-16">
-              <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">THE DIFFERENCE</p>
+              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">THE DIFFERENCE</p>
               <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">WHY OVA</h2>
             </div>
           </SectionReveal>
@@ -261,11 +265,11 @@ export default function Home() {
               <SectionReveal key={item.title}>
                 <div className="bg-[#0A0A0A] p-8 lg:p-10 group hover:bg-[#111] transition-colors duration-500">
                   <div className="flex items-start justify-between mb-6">
-                    <h3 className="font-heading text-2xl text-white tracking-wide group-hover:text-[#00FF88] transition-colors duration-300">
+                    <h3 className="font-heading text-2xl text-white tracking-wide group-hover:text-[#9B4FDE] transition-colors duration-300">
                       {item.title}
                     </h3>
                     <div className="text-right flex-shrink-0 ml-4">
-                      <p className="font-heading text-3xl text-[#00FF88]">{item.stat}</p>
+                      <p className="font-heading text-3xl text-[#9B4FDE]">{item.stat}</p>
                       <p className="text-gray-700 text-[10px] tracking-wider">{item.statLabel}</p>
                     </div>
                   </div>
@@ -283,12 +287,12 @@ export default function Home() {
           <SectionReveal>
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16">
               <div>
-                <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">DON&apos;T MISS OUT</p>
+                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">DON&apos;T MISS OUT</p>
                 <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">UPCOMING</h2>
               </div>
               <Link
                 href="/holiday-camp"
-                className="mt-4 lg:mt-0 text-gray-500 hover:text-[#00FF88] text-sm flex items-center gap-2 transition-colors"
+                className="mt-4 lg:mt-0 text-gray-500 hover:text-[#9B4FDE] text-sm flex items-center gap-2 transition-colors"
               >
                 All camp info
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -305,12 +309,12 @@ export default function Home() {
               { period: "OCTOBER HOLIDAYS", name: "Spring Volleyball Camp", status: "COMING SOON", active: false },
             ].map((event, i) => (
               <SectionReveal key={i} delay={i * 0.05}>
-                <div className="group flex flex-col sm:flex-row sm:items-center justify-between py-6 border-b border-white/[0.06] hover:border-[#00FF88]/20 transition-all duration-500">
+                <div className="group flex flex-col sm:flex-row sm:items-center justify-between py-6 border-b border-white/[0.06] hover:border-[#9B4FDE]/20 transition-all duration-500">
                   <div className="flex items-baseline gap-4 sm:gap-8">
-                    <span className="text-[#00FF88] font-heading text-xs tracking-[0.3em] w-32 flex-shrink-0">
+                    <span className="text-[#9B4FDE] font-heading text-xs tracking-[0.3em] w-32 flex-shrink-0">
                       {event.period}
                     </span>
-                    <h3 className="font-heading text-2xl sm:text-3xl text-white group-hover:text-[#00FF88] transition-colors duration-300">
+                    <h3 className="font-heading text-2xl sm:text-3xl text-white group-hover:text-[#9B4FDE] transition-colors duration-300">
                       {event.name}
                     </h3>
                   </div>
@@ -320,7 +324,7 @@ export default function Home() {
                         href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#00FF88] font-heading text-sm tracking-[0.2em] hover:text-white transition-colors"
+                        className="text-[#9B4FDE] font-heading text-sm tracking-[0.2em] hover:text-white transition-colors"
                       >
                         {event.status}
                       </a>
@@ -346,12 +350,12 @@ export default function Home() {
           <SectionReveal>
             <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16">
               <div>
-                <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">YOUR TEAM</p>
+                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">YOUR TEAM</p>
                 <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">COACHES</h2>
               </div>
               <Link
                 href="/coaches"
-                className="mt-4 lg:mt-0 text-gray-500 hover:text-[#00FF88] text-sm flex items-center gap-2 transition-colors"
+                className="mt-4 lg:mt-0 text-gray-500 hover:text-[#9B4FDE] text-sm flex items-center gap-2 transition-colors"
               >
                 Meet the full team
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -393,7 +397,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-16">
-              <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">FIND US</p>
+              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">FIND US</p>
               <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">LOCATION</h2>
             </div>
           </SectionReveal>
@@ -401,7 +405,7 @@ export default function Home() {
             <SectionReveal>
               <div>
                 <div className="mb-8">
-                  <h3 className="font-heading text-2xl text-[#00FF88] mb-4 tracking-wide">VENUE</h3>
+                  <h3 className="font-heading text-2xl text-[#9B4FDE] mb-4 tracking-wide">VENUE</h3>
                   <address className="not-italic space-y-2 text-gray-300 text-sm">
                     <p className="text-white text-lg">Baulkham Hills High School</p>
                     <p>Windsor Road, Baulkham Hills</p>
@@ -420,7 +424,7 @@ export default function Home() {
                   href="https://maps.google.com/?q=Baulkham+Hills+High+School"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[#00FF88] text-sm font-medium hover:text-white transition-colors"
+                  className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"
                 >
                   Get directions
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -453,7 +457,7 @@ export default function Home() {
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-16">
-              <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">COMMON QUESTIONS</p>
+              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">COMMON QUESTIONS</p>
               <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">FAQ</h2>
             </div>
           </SectionReveal>
@@ -462,10 +466,10 @@ export default function Home() {
               <SectionReveal key={i} delay={i * 0.05}>
                 <details className="group border-b border-white/[0.06]">
                   <summary className="flex justify-between items-center py-6 cursor-pointer list-none select-none">
-                    <span className="font-heading text-xl text-white tracking-wide pr-4 group-hover:text-[#00FF88] transition-colors">
+                    <span className="font-heading text-xl text-white tracking-wide pr-4 group-hover:text-[#9B4FDE] transition-colors">
                       {faq.q}
                     </span>
-                    <span className="text-gray-600 flex-shrink-0 text-sm font-heading tracking-widest group-open:text-[#00FF88] transition-colors">
+                    <span className="text-gray-600 flex-shrink-0 text-sm font-heading tracking-widest group-open:text-[#9B4FDE] transition-colors">
                       +
                     </span>
                   </summary>
@@ -475,7 +479,7 @@ export default function Home() {
             ))}
           </div>
           <div className="mt-8">
-            <Link href="/faq" className="text-gray-600 hover:text-[#00FF88] text-sm transition-colors">
+            <Link href="/faq" className="text-gray-600 hover:text-[#9B4FDE] text-sm transition-colors">
               See all questions &rarr;
             </Link>
           </div>
@@ -489,16 +493,16 @@ export default function Home() {
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[60vh]"
           style={{
-            background: "radial-gradient(ellipse at center, rgba(0,255,136,0.04) 0%, transparent 60%)",
+            background: "radial-gradient(ellipse at center, rgba(123,47,190,0.04) 0%, transparent 60%)",
           }}
         />
         <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <SectionReveal>
-            <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-6">READY TO START?</p>
+            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">READY TO START?</p>
             <h2 className="font-heading text-6xl sm:text-7xl lg:text-9xl text-white tracking-wide mb-8 leading-[0.9]">
               JOIN OVA
               <br />
-              <span className="text-[#00FF88]">TODAY</span>
+              <span className="text-[#9B4FDE]">TODAY</span>
             </h2>
             <p className="text-gray-500 text-lg mb-12 max-w-lg mx-auto leading-relaxed">
               Holiday camps and term programs available. Active Kids Vouchers welcome.
@@ -509,13 +513,13 @@ export default function Home() {
                 href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="bg-[#00FF88] text-black font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-green"
+                className="bg-[#7B2FBE] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
               >
                 BOOK NOW
               </a>
               <Link
                 href="/contact"
-                className="border border-white/20 text-white font-heading text-3xl px-14 py-5 hover:border-[#00FF88] hover:text-[#00FF88] transition-all duration-300 tracking-wide"
+                className="border border-white/20 text-white font-heading text-3xl px-14 py-5 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide"
               >
                 CONTACT
               </Link>

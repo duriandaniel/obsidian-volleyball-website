@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
@@ -40,9 +41,16 @@ export default function Nav() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group relative z-50">
-            <span className="font-heading text-2xl lg:text-[1.7rem] text-white tracking-[0.08em]">
-              OBSIDIAN<span className="text-[#00FF88]"> VOLLEYBALL</span>
+          <Link href="/" className="flex items-center gap-2 group relative z-50">
+            <Image
+              src="/images/logo.png"
+              alt="Obsidian Volleyball Academy"
+              width={40}
+              height={40}
+              className="w-9 h-9 lg:w-10 lg:h-10"
+            />
+            <span className="font-heading text-xl lg:text-2xl text-white tracking-[0.08em]">
+              OBSIDIAN<span className="text-[#9B4FDE]"> VOLLEYBALL</span>
             </span>
           </Link>
 
@@ -65,7 +73,7 @@ export default function Nav() {
               href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-[#00FF88] text-black font-heading text-lg px-6 py-2.5 hover:bg-white transition-colors duration-300 tracking-wide"
+              className="bg-[#7B2FBE] text-white font-heading text-lg px-6 py-2.5 hover:bg-white transition-colors duration-300 tracking-wide"
             >
               BOOK NOW
             </a>
@@ -118,7 +126,7 @@ export default function Nav() {
                 >
                   <Link
                     href={link.href}
-                    className="font-heading text-4xl text-white hover:text-[#00FF88] tracking-wider transition-colors py-2 block"
+                    className="font-heading text-4xl text-white hover:text-[#9B4FDE] tracking-wider transition-colors py-2 block"
                     onClick={() => setMobileOpen(false)}
                   >
                     {link.label}
@@ -135,7 +143,7 @@ export default function Nav() {
                   href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#00FF88] text-black font-heading text-2xl px-10 py-4 tracking-wide glow-green block"
+                  className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 tracking-wide glow-purple block"
                 >
                   BOOK NOW
                 </a>

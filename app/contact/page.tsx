@@ -35,11 +35,11 @@ export default function ContactPage() {
       <section className="py-24 lg:py-32 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-6">GET IN TOUCH</p>
+            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">GET IN TOUCH</p>
             <h1 className="font-heading text-6xl sm:text-8xl lg:text-9xl text-white tracking-wide mb-8 leading-[0.9]">
               CONTACT
               <br />
-              <span className="text-[#00FF88]">US</span>
+              <span className="text-[#9B4FDE]">US</span>
             </h1>
             <p className="text-gray-400 text-xl max-w-xl leading-relaxed">
               Questions about programs, pricing, or Active Kids Vouchers?
@@ -59,11 +59,11 @@ export default function ContactPage() {
                   href={method.href}
                   target={method.href.startsWith("mailto") ? undefined : "_blank"}
                   rel={method.href.startsWith("mailto") ? undefined : "noopener noreferrer"}
-                  className="group flex flex-col sm:flex-row sm:items-center justify-between py-8 border-b border-white/[0.06] hover:border-[#00FF88]/20 transition-all duration-500"
+                  className="group flex flex-col sm:flex-row sm:items-center justify-between py-8 border-b border-white/[0.06] hover:border-[#9B4FDE]/20 transition-all duration-500"
                 >
                   <div>
-                    <p className="text-[#00FF88] font-heading text-xs tracking-[0.3em] mb-2">{method.label}</p>
-                    <p className="font-heading text-3xl sm:text-4xl text-white group-hover:text-[#00FF88] transition-colors duration-300 mb-2">
+                    <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.3em] mb-2">{method.label}</p>
+                    <p className="font-heading text-3xl sm:text-4xl text-white group-hover:text-[#9B4FDE] transition-colors duration-300 mb-2">
                       {method.value}
                     </p>
                     <p className="text-gray-600 text-sm">{method.description}</p>
@@ -76,7 +76,7 @@ export default function ContactPage() {
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="1.5"
-                      className="text-gray-700 group-hover:text-[#00FF88] transition-colors duration-300"
+                      className="text-gray-700 group-hover:text-[#9B4FDE] transition-colors duration-300"
                     >
                       <path d="M7 17L17 7M17 7H7M17 7v10" />
                     </svg>
@@ -94,7 +94,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-12">
             <SectionReveal>
               <div>
-                <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-3">TRAINING VENUE</p>
+                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">TRAINING VENUE</p>
                 <h2 className="font-heading text-4xl lg:text-5xl text-white tracking-wide mb-8">LOCATION</h2>
                 <address className="not-italic space-y-3 mb-8">
                   <p className="text-white text-lg">Baulkham Hills High School</p>
@@ -113,7 +113,7 @@ export default function ContactPage() {
                   href="https://maps.google.com/?q=Baulkham+Hills+High+School"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[#00FF88] text-sm font-medium hover:text-white transition-colors"
+                  className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"
                 >
                   Get directions
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -144,13 +144,13 @@ export default function ContactPage() {
       <section className="py-24 lg:py-32 bg-[#111] text-center">
         <div className="max-w-2xl mx-auto px-4">
           <SectionReveal>
-            <p className="text-[#00FF88] font-heading text-sm tracking-[0.4em] mb-4">READY TO TRAIN?</p>
+            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">READY TO TRAIN?</p>
             <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">BOOK A SESSION</h2>
             <a
               href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-block bg-[#00FF88] text-black font-heading text-2xl px-12 py-4 hover:bg-white transition-all duration-300 tracking-wide glow-green"
+              className="inline-block bg-[#7B2FBE] text-white font-heading text-2xl px-12 py-4 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
             >
               BOOK NOW
             </a>
