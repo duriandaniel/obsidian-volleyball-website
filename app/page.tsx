@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Hero from "@/components/Hero";
-import ProgramCard from "@/components/ProgramCard";
 import CoachCard from "@/components/CoachCard";
 import Gallery from "@/components/Gallery";
 import InstagramFeed from "@/components/InstagramFeed";
@@ -21,47 +20,6 @@ export const metadata: Metadata = {
   ],
 };
 
-const programs = [
-  {
-    title: "BEGINNER BLAST",
-    level: "BEGINNER",
-    ageRange: "8–12",
-    description:
-      "Never played before? Perfect. We build foundational skills in a supportive, fun environment — serving, passing, and court awareness from day one.",
-    features: [
-      "Learn the rules and court positions",
-      "Master the basics: serve, pass, set",
-      "Small group coaching ratio",
-      "Build confidence through structured play",
-    ],
-  },
-  {
-    title: "SKILL BUILDER",
-    level: "INTERMEDIATE",
-    ageRange: "10–16",
-    description:
-      "Already playing? Time to level up. Technique refinement, game reading, and team coordination for juniors ready to compete.",
-    features: [
-      "Advanced serving and attacking",
-      "Defence and blocking fundamentals",
-      "Tactical game play and positioning",
-      "Prep for club and school competition",
-    ],
-  },
-  {
-    title: "ELITE PROGRAM",
-    level: "ADVANCED",
-    ageRange: "13–18",
-    description:
-      "For serious juniors with competition goals. High-intensity sessions focused on performance volleyball — state-level training principles.",
-    features: [
-      "Aligned with competitive pathways",
-      "Video analysis and tactical debriefs",
-      "Physical conditioning components",
-      "Pathway to representative volleyball",
-    ],
-  },
-];
 
 const faqs = [
   {
@@ -137,34 +95,6 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }} />
       <Hero />
 
-      {/* Programs */}
-      <section id="programs" className="py-24 lg:py-32 bg-[#0A0A0A] relative">
-        <div className="section-divider absolute top-0 left-0 right-0" />
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16">
-              <div>
-                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">TRAIN WITH PURPOSE</p>
-                <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">PROGRAMS</h2>
-              </div>
-              <Link
-                href="/holiday-camp"
-                className="mt-4 lg:mt-0 text-gray-500 hover:text-[#9B4FDE] text-sm flex items-center gap-2 transition-colors duration-300"
-              >
-                See holiday camp dates
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </Link>
-            </div>
-          </SectionReveal>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {programs.map((p) => (
-              <ProgramCard key={p.title} {...p} />
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* About — Asymmetric layout */}
       <section id="about" className="py-24 lg:py-32 bg-[#111]">
