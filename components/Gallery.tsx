@@ -1,14 +1,16 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { CldImage } from "next-cloudinary";
 
+// Upload gallery images to Cloudinary with these public IDs
 const galleryItems = [
-  { label: "Training session", span: "col-span-2 row-span-2", aspect: "aspect-square" },
-  { label: "Camp group photo", span: "col-span-1 row-span-1", aspect: "aspect-[4/3]" },
-  { label: "Action shot", span: "col-span-1 row-span-1", aspect: "aspect-[4/3]" },
-  { label: "Coaching drill", span: "col-span-1 row-span-2", aspect: "aspect-[3/5]" },
-  { label: "Holiday camp", span: "col-span-1 row-span-1", aspect: "aspect-[4/3]" },
-  { label: "Team celebration", span: "col-span-1 row-span-1", aspect: "aspect-[4/3]" },
+  { id: "ova/gallery/training", label: "Training session", span: "col-span-2 row-span-2" },
+  { id: "ova/gallery/group", label: "Camp group photo", span: "col-span-1 row-span-1" },
+  { id: "ova/gallery/action", label: "Action shot", span: "col-span-1 row-span-1" },
+  { id: "ova/gallery/coaching", label: "Coaching drill", span: "col-span-1 row-span-2" },
+  { id: "ova/gallery/camp", label: "Holiday camp", span: "col-span-1 row-span-1" },
+  { id: "ova/gallery/team", label: "Team celebration", span: "col-span-1 row-span-1" },
 ];
 
 export default function Gallery() {
@@ -48,14 +50,26 @@ export default function Gallery() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-30px" }}
               transition={{ duration: 0.4, delay: i * 0.06 }}
-              className={`${item.span} photo-placeholder group relative overflow-hidden cursor-pointer`}
+              className={`${item.span} relative overflow-hidden cursor-pointer group`}
             >
-              <div className="absolute inset-0 flex items-center justify-center">
+              {/* Try to load Cloudinary image, fall back to placeholder */}
+              <CldImage
+                src={item.id}
+                alt={item.label}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
+                sizes="(max-width: 768px) 50vw, 25vw"
+                format="auto"
+                quality="auto"
+                onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+              />
+              {/* Placeholder (visible when no image) */}
+              <div className="absolute inset-0 photo-placeholder flex items-center justify-center -z-0">
                 <span className="text-gray-700 text-xs tracking-wider uppercase">{item.label}</span>
               </div>
-              {/* Hover effect */}
-              <div className="absolute inset-0 bg-[#00FF88]/0 group-hover:bg-[#00FF88]/[0.04] transition-all duration-500" />
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#00FF88] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+              {/* Hover effects */}
+              <div className="absolute inset-0 bg-[#00FF88]/0 group-hover:bg-[#00FF88]/[0.04] transition-all duration-500 z-10" />
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#00FF88] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left z-10" />
             </motion.div>
           ))}
         </div>

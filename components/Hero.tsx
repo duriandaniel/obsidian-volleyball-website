@@ -1,16 +1,33 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { CldImage } from "next-cloudinary";
+
+const HERO_IMAGE = "ova/hero"; // Upload hero image to Cloudinary with this public ID
 
 export default function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0A0A]">
-      {/* Animated gradient background */}
+      {/* Background image from Cloudinary (or gradient fallback) */}
       <div className="absolute inset-0">
-        {/* Base dark */}
         <div className="absolute inset-0 bg-[#0A0A0A]" />
 
-        {/* Dramatic radial glow */}
+        {/* Cloudinary hero image — hidden until uploaded */}
+        <div className="absolute inset-0">
+          <CldImage
+            src={HERO_IMAGE}
+            alt="Obsidian Volleyball Academy training session"
+            fill
+            priority
+            className="object-cover opacity-40"
+            sizes="100vw"
+            format="auto"
+            quality="auto"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+          />
+        </div>
+
+        {/* Radial glow */}
         <motion.div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vh]"
           style={{
@@ -23,7 +40,7 @@ export default function Hero() {
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
         />
 
-        {/* Diagonal accent line */}
+        {/* Diagonal accent lines */}
         <div
           className="absolute top-0 right-0 w-[1px] h-full origin-top-right"
           style={{
@@ -39,14 +56,14 @@ export default function Hero() {
           }}
         />
 
-        {/* Bottom gradient fade */}
+        {/* Gradient overlays for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/80 to-transparent" />
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0A0A0A] to-transparent" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 items-end">
-          {/* Left: Main headline */}
           <div>
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -104,7 +121,6 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Right: Trust signals - vertical on desktop */}
           <motion.div
             className="flex flex-row lg:flex-col gap-6 lg:gap-8 lg:pb-4"
             initial={{ opacity: 0 }}
