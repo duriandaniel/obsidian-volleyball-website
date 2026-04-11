@@ -4,6 +4,7 @@ import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import BookingCTA from "@/components/BookingCTA";
+import { GoogleTagManagerScript, GoogleTagManagerNoScript } from "@/components/GoogleTagManager";
 
 const bebasNeue = Bebas_Neue({
   weight: "400",
@@ -56,6 +57,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${bebasNeue.variable} ${dmSans.variable}`}>
       <head>
+        <GoogleTagManagerScript />
+        <script dangerouslySetInnerHTML={{ __html: "window.dataLayer=window.dataLayer||[];" }} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -96,6 +99,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-obsidian text-white">
+        <GoogleTagManagerNoScript />
         <Nav />
         <main className="flex-1">{children}</main>
         <Footer />

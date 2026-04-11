@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import TrackedBookingLink from "./TrackedBookingLink";
 
 interface ProgramCardProps {
   title: string;
@@ -53,17 +54,15 @@ export default function ProgramCard({
           ))}
         </ul>
 
-        <a
-          href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-          target="_blank"
-          rel="noopener noreferrer"
+        <TrackedBookingLink
+          location="hero"
           className="inline-flex items-center gap-2 text-[#9B4FDE] font-heading text-lg tracking-wide group/btn hover:gap-3 transition-all duration-300"
         >
           <span>BOOK THIS PROGRAM</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
-        </a>
+        </TrackedBookingLink>
       </div>
     </motion.div>
   );

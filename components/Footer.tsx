@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import TrackedBookingLink from "./TrackedBookingLink";
 
 export default function Footer() {
   return (
@@ -78,14 +79,12 @@ export default function Footer() {
               <p>Baulkham Hills, NSW 2153</p>
               <p>Hills District, Sydney</p>
             </address>
-            <a
-              href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-              target="_blank"
-              rel="noopener noreferrer"
+            <TrackedBookingLink
+              location="footer"
               className="inline-block text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors duration-300"
             >
               Book a session &rarr;
-            </a>
+            </TrackedBookingLink>
           </div>
         </div>
       </div>

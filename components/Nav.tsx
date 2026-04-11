@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import TrackedBookingLink from "./TrackedBookingLink";
 
 const navLinks = [
   { href: "/", label: "Home" },
@@ -69,14 +70,12 @@ export default function Nav() {
 
           {/* Book Now CTA - Desktop */}
           <div className="hidden lg:block">
-            <a
-              href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-              target="_blank"
-              rel="noopener noreferrer"
+            <TrackedBookingLink
+              location="nav"
               className="bg-[#7B2FBE] text-white font-heading text-lg px-6 py-2.5 hover:bg-white transition-colors duration-300 tracking-wide"
             >
               BOOK NOW
-            </a>
+            </TrackedBookingLink>
           </div>
 
           {/* Mobile menu button */}
@@ -139,14 +138,12 @@ export default function Nav() {
                 transition={{ delay: 0.4 }}
                 className="mt-8"
               >
-                <a
-                  href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <TrackedBookingLink
+                  location="nav_mobile"
                   className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 tracking-wide glow-purple block"
                 >
                   BOOK NOW
-                </a>
+                </TrackedBookingLink>
               </motion.div>
             </nav>
           </motion.div>

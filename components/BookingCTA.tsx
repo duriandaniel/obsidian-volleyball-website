@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import TrackedBookingLink from "./TrackedBookingLink";
 
 export default function BookingCTA() {
   const [visible, setVisible] = useState(false);
@@ -24,10 +25,8 @@ export default function BookingCTA() {
           transition={{ duration: 0.3 }}
           className="fixed bottom-6 right-4 sm:right-6 z-40"
         >
-          <a
-            href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-            target="_blank"
-            rel="noopener noreferrer"
+          <TrackedBookingLink
+            location="floating_cta"
             className="flex items-center gap-2 bg-[#7B2FBE] text-white font-heading text-lg px-6 py-3 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
           >
             <span>BOOK NOW</span>
@@ -41,7 +40,7 @@ export default function BookingCTA() {
             >
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
-          </a>
+          </TrackedBookingLink>
         </motion.div>
       )}
     </AnimatePresence>

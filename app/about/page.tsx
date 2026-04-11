@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import SectionReveal from "@/components/SectionReveal";
+import TrackedBookingLink from "@/components/TrackedBookingLink";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -168,14 +169,12 @@ export default function AboutPage() {
               OF <span className="text-[#9B4FDE]">OVA</span>
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-                target="_blank"
-                rel="noopener noreferrer"
+              <TrackedBookingLink
+                location="about_cta"
                 className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
               >
                 BOOK NOW
-              </a>
+              </TrackedBookingLink>
               <Link
                 href="/coaches"
                 className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide"

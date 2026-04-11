@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import TrackedBookingLink from "./TrackedBookingLink";
 
 export default function Hero() {
   return (
@@ -88,14 +89,12 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <a
-                href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-                target="_blank"
-                rel="noopener noreferrer"
+              <TrackedBookingLink
+                location="hero"
                 className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 hover:bg-[#9B4FDE] transition-all duration-300 tracking-wide text-center glow-purple"
               >
                 BOOK NOW
-              </a>
+              </TrackedBookingLink>
               <a
                 href="/holiday-camp"
                 className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"

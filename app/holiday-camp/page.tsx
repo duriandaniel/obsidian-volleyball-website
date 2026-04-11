@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import SectionReveal from "@/components/SectionReveal";
+import TrackedBookingLink from "@/components/TrackedBookingLink";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -76,14 +77,12 @@ export default function HolidayCampPage() {
                   Beginner to advanced — we have the right program for your child.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <a
-                    href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <TrackedBookingLink
+                    location="camp_hero"
                     className="bg-[#7B2FBE] text-white font-heading text-xl px-8 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-purple"
                   >
                     BOOK A CAMP
-                  </a>
+                  </TrackedBookingLink>
                   <Link
                     href="/contact"
                     className="border border-white/20 text-white font-heading text-xl px-8 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
@@ -186,14 +185,13 @@ export default function HolidayCampPage() {
                     <span className="text-[#9B4FDE]">+</span> No commitment required
                   </li>
                 </ul>
-                <a
-                  href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <TrackedBookingLink
+                  tier="single_day"
+                  location="pricing_single"
                   className="block border border-white/20 text-white font-heading text-lg px-6 py-3 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
                 >
                   BOOK A DAY
-                </a>
+                </TrackedBookingLink>
               </div>
             </SectionReveal>
 
@@ -220,14 +218,13 @@ export default function HolidayCampPage() {
                     <span className="text-[#9B4FDE]">+</span> Save $50 vs single days
                   </li>
                 </ul>
-                <a
-                  href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <TrackedBookingLink
+                  tier="5_day_pack"
+                  location="pricing_package"
                   className="block bg-[#7B2FBE] text-white font-heading text-lg px-6 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-purple"
                 >
                   BOOK 5-DAY PACK
-                </a>
+                </TrackedBookingLink>
               </div>
             </SectionReveal>
 
@@ -248,14 +245,13 @@ export default function HolidayCampPage() {
                     <span className="text-[#9B4FDE]">+</span> Great for younger players
                   </li>
                 </ul>
-                <a
-                  href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <TrackedBookingLink
+                  tier="half_day"
+                  location="pricing_half"
                   className="block border border-white/20 text-white font-heading text-lg px-6 py-3 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
                 >
                   BOOK HALF DAY
-                </a>
+                </TrackedBookingLink>
               </div>
             </SectionReveal>
           </div>
@@ -365,14 +361,12 @@ export default function HolidayCampPage() {
             <p className="text-gray-500 mb-10 leading-relaxed">
               Holiday camps fill fast. Book early to guarantee a spot.
             </p>
-            <a
-              href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
-              target="_blank"
-              rel="noopener noreferrer"
+            <TrackedBookingLink
+              location="camp_cta"
               className="inline-block bg-[#7B2FBE] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
             >
               BOOK NOW
-            </a>
+            </TrackedBookingLink>
             <p className="text-gray-700 text-xs mt-6 tracking-wider">
               BAULKHAM HILLS &middot; ALL SKILL LEVELS &middot; AGES 8–18
             </p>
