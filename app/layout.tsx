@@ -5,6 +5,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import BookingCTA from "@/components/BookingCTA";
 import { GoogleTagManagerScript, GoogleTagManagerNoScript } from "@/components/GoogleTagManager";
+import CookieConsent from "@/components/CookieConsent";
 
 const bebasNeue = Bebas_Neue({
   weight: "400",
@@ -41,6 +42,21 @@ export const metadata: Metadata = {
     title: "Obsidian Volleyball Academy | Junior Volleyball Sydney",
     description:
       "Premium junior volleyball academy in Baulkham Hills. Holiday camps, term programs for all skill levels.",
+    images: [
+      {
+        url: "/images/hero.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Obsidian Volleyball Academy — Junior Volleyball in the Hills District",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Obsidian Volleyball Academy | Junior Volleyball Sydney",
+    description:
+      "Premium junior volleyball academy in Baulkham Hills. Holiday camps, term programs for all skill levels.",
+    images: ["/images/hero.jpg"],
   },
   robots: {
     index: true,
@@ -85,12 +101,21 @@ export default function RootLayout({
                 longitude: 150.9927,
               },
               sport: "Volleyball",
+              priceRange: "$35–$200",
+              sameAs: [
+                "https://instagram.com/obsidianvolleyball",
+              ],
               areaServed: [
                 "Baulkham Hills",
                 "Castle Hill",
                 "Kellyville",
                 "Cherrybrook",
                 "Bella Vista",
+                "Winston Hills",
+                "Northmead",
+                "Carlingford",
+                "West Pennant Hills",
+                "Dural",
                 "Hills District",
                 "Sydney",
               ],
@@ -104,6 +129,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
         <BookingCTA />
+        <CookieConsent />
       </body>
     </html>
   );

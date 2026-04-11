@@ -96,6 +96,9 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Obsidian Volleyball Academy
           </p>
           <div className="flex items-center gap-4 text-gray-700 text-xs">
+            <Link href="/privacy" className="hover:text-[#9B4FDE] transition-colors">
+              Privacy Policy
+            </Link>
             <span>Hills District, Sydney</span>
           </div>
         </div>
