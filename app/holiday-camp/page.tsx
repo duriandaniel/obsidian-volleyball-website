@@ -57,9 +57,49 @@ const upcomingCamps = [
   },
 ];
 
+const campSchema = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  name: "Volleyball Holiday Camp — Obsidian Volleyball Academy",
+  description:
+    "Intensive junior volleyball camps during school holidays in Baulkham Hills, Sydney Hills District. Beginner to advanced skill levels, ages 8–18. Active Kids Voucher accepted.",
+  provider: {
+    "@type": "SportsOrganization",
+    name: "Obsidian Volleyball Academy",
+    url: "https://obsidianvolleyball.com",
+  },
+  coursePrerequisites: "No experience required for beginner level",
+  educationalLevel: "Beginner, Intermediate, Advanced",
+  audience: {
+    "@type": "PeopleAudience",
+    suggestedMinAge: 8,
+    suggestedMaxAge: 18,
+  },
+  locationCreated: {
+    "@type": "Place",
+    name: "Baulkham Hills High School",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Baulkham Hills",
+      addressRegion: "NSW",
+      postalCode: "2153",
+      addressCountry: "AU",
+    },
+  },
+  offers: {
+    "@type": "Offer",
+    price: "200",
+    priceCurrency: "AUD",
+    availability: "https://schema.org/InStock",
+    url: "https://obsidianvolleyball.as.me",
+    description: "5-day camp package includes free OVA shirt. Active Kids Voucher accepted.",
+  },
+};
+
 export default function HolidayCampPage() {
   return (
     <div className="pt-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(campSchema) }} />
       {/* Hero */}
       <section className="py-24 lg:py-32 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

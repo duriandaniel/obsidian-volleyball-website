@@ -107,9 +107,62 @@ const whyOVA = [
   },
 ];
 
+// Structured data for FAQ and Events
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.q,
+    acceptedAnswer: { "@type": "Answer", text: faq.a },
+  })),
+};
+
+const eventSchema = {
+  "@context": "https://schema.org",
+  "@type": "Event",
+  name: "Mid-Year Volleyball Camp — Obsidian Volleyball Academy",
+  description:
+    "Intensive junior volleyball camp for all skill levels (beginner to advanced) during July school holidays in Baulkham Hills, Sydney.",
+  eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+  eventStatus: "https://schema.org/EventScheduled",
+  location: {
+    "@type": "Place",
+    name: "Baulkham Hills High School",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Windsor Road",
+      addressLocality: "Baulkham Hills",
+      addressRegion: "NSW",
+      postalCode: "2153",
+      addressCountry: "AU",
+    },
+  },
+  organizer: {
+    "@type": "SportsOrganization",
+    name: "Obsidian Volleyball Academy",
+    url: "https://obsidianvolleyball.com",
+  },
+  offers: {
+    "@type": "Offer",
+    price: "200",
+    priceCurrency: "AUD",
+    availability: "https://schema.org/InStock",
+    url: "https://obsidianvolleyball.as.me",
+    description: "5-day camp package includes free OVA shirt",
+  },
+  audience: {
+    "@type": "PeopleAudience",
+    suggestedMinAge: 8,
+    suggestedMaxAge: 18,
+  },
+};
+
 export default function Home() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }} />
       <Hero />
 
       {/* Programs */}
