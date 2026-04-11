@@ -171,29 +171,72 @@ export default function Home() {
               </Link>
             </div>
           </SectionReveal>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16 max-w-3xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
             <CoachCard
               name="Melinda"
               role="Head Coach & Co-Founder"
-              bio="Years of competitive volleyball experience and a deep commitment to junior development. Building player confidence alongside technical skill."
-              qualifications={[
-                "Accredited Coach",
-                "First Aid Certified",
-                "WWCC Verified",
-              ]}
+              bio="Years of competitive volleyball experience and a deep commitment to junior development."
+              qualifications={["NSWCHS Opens Champion", "NSW & SW Blues Award", "WWCC Verified"]}
+              image="/images/coach-melinda-card.jpg"
               index={0}
             />
             <CoachCard
               name="Jessica"
               role="Lead Coach"
-              bio="Energetic style and technical expertise. Specialises in skill development for intermediate and advanced juniors pushing toward competition."
-              qualifications={[
-                "Accredited Coach",
-                "First Aid Certified",
-                "WWCC Verified",
-              ]}
+              bio="Energetic style and technical expertise. Specialises in skill development for intermediate and advanced juniors."
+              qualifications={["2x Women Div 1 SVL Champion", "2x AYVC Medalist", "WWCC Verified"]}
+              image="/images/coach-jessica-card.jpg"
               index={1}
             />
+            <CoachCard
+              name="Tom"
+              role="Coach"
+              bio="State-level competitive experience and a deep understanding of the game at every level."
+              qualifications={["u23 QLD State Team", "Premier Division PVL", "WWCC Verified"]}
+              image="/images/coach-tom-card.jpg"
+              index={2}
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* Jerseys */}
+      <section id="jerseys" className="py-24 lg:py-32 bg-[#0A0A0A]">
+        <div className="section-divider absolute left-0 right-0" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-16 items-center">
+            <SectionReveal>
+              <div>
+                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">GEAR UP</p>
+                <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
+                  OVA
+                  <br />
+                  <span className="text-[#9B4FDE]">JERSEYS</span>
+                </h2>
+                <p className="text-gray-400 leading-relaxed mb-6">
+                  Grab an official OVA training jersey at camp. Try on different sizes on-site and take one home.
+                </p>
+                <div className="flex items-baseline gap-3 mb-8">
+                  <p className="font-heading text-5xl text-[#9B4FDE]">$36</p>
+                  <p className="text-gray-600 text-sm">per jersey</p>
+                </div>
+                <p className="text-gray-600 text-sm">
+                  Available for purchase on-site at any holiday camp. Multiple sizes available — try before you buy.
+                </p>
+              </div>
+            </SectionReveal>
+            <SectionReveal delay={0.2}>
+              <div className="aspect-[4/3] relative overflow-hidden">
+                <Image
+                  src="/images/jersey-detail.jpg"
+                  alt="Obsidian Volleyball Academy jersey"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                  quality={85}
+                />
+              </div>
+            </SectionReveal>
           </div>
         </div>
       </section>
@@ -225,7 +268,7 @@ export default function Home() {
                   </p>
                 </div>
                 <a
-                  href="https://maps.google.com/?q=Obsidian+Volleyball+Academy"
+                  href="https://maps.app.goo.gl/uZ1dpxWT93XRDwAk6"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"

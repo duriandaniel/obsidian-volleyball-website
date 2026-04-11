@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { CldImage } from "next-cloudinary";
+import Image from "next/image";
 
 interface CoachCardProps {
   name: string;
@@ -9,7 +9,7 @@ interface CoachCardProps {
   bio: string;
   qualifications: string[];
   index?: number;
-  image?: string; // Cloudinary public ID, e.g. "ova/coaches/melinda"
+  image?: string;
 }
 
 export default function CoachCard({
@@ -31,14 +31,13 @@ export default function CoachCard({
       {/* Photo area */}
       <div className="aspect-[3/4] relative mb-6 overflow-hidden bg-[#111]">
         {image ? (
-          <CldImage
+          <Image
             src={image}
             alt={`Coach ${name}`}
             fill
             className="object-cover group-hover:scale-[1.02] transition-transform duration-700"
             sizes="(max-width: 768px) 100vw, 50vw"
-            format="auto"
-            quality="auto"
+            quality={85}
           />
         ) : (
           <div className="photo-placeholder absolute inset-0 flex flex-col items-center justify-center gap-3">

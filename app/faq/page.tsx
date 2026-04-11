@@ -94,7 +94,7 @@ const faqCategories = [
     faqs: [
       {
         q: "Are your coaches qualified?",
-        a: "All OVA coaches are accredited, hold current Working With Children Checks (WWCC), and First Aid certifications. They bring competitive playing experience alongside their coaching credentials.",
+        a: "All OVA coaches are accredited and hold current Working With Children Checks (WWCC). They bring competitive playing experience alongside their coaching credentials.",
       },
       {
         q: "What is the coach-to-player ratio?",

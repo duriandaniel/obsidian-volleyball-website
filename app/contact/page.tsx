@@ -110,7 +110,7 @@ export default function ContactPage() {
                   </p>
                 </div>
                 <a
-                  href="https://maps.google.com/?q=Obsidian+Volleyball+Academy"
+                  href="https://maps.app.goo.gl/uZ1dpxWT93XRDwAk6"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"
