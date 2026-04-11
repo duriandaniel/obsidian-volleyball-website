@@ -5,13 +5,12 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Volleyball Holiday Camps | Baulkham Hills, Sydney Hills District",
   description:
-    "Volleyball holiday camps in Baulkham Hills for juniors aged 8–18. School holiday programs in the Hills District, Sydney. Active Kids Voucher accepted. Book now.",
+    "Volleyball holiday camps in Baulkham Hills for juniors aged 8–18. School holiday programs in the Hills District, Sydney. Book now.",
   keywords: [
     "volleyball holiday camp Baulkham Hills",
     "school holiday volleyball Sydney",
     "volleyball camp Castle Hill",
     "junior volleyball holiday program Hills District",
-    "Active Kids Voucher volleyball",
   ],
 };
 
@@ -20,7 +19,6 @@ const campDetails = [
   { label: "WHERE", value: "Baulkham Hills High School, Hills District" },
   { label: "WHO", value: "Juniors aged 8–18, all skill levels" },
   { label: "DURATION", value: "Full-day (9AM–1PM) and half-day sessions" },
-  { label: "VOUCHERS", value: "NSW Active Kids Vouchers accepted (up to $100)" },
   { label: "GROUPS", value: "Small groups — maximum coach-to-player ratio" },
 ];
 
@@ -29,7 +27,6 @@ const whatToBring = [
   "Water bottle (large — sessions are active)",
   "Lunch and snacks for full-day camps",
   "Hat and sunscreen for any outdoor warm-up",
-  "Active Kids Voucher code if using one",
   "A positive attitude and readiness to work hard",
 ];
 
@@ -62,7 +59,7 @@ const campSchema = {
   "@type": "Course",
   name: "Volleyball Holiday Camp — Obsidian Volleyball Academy",
   description:
-    "Intensive junior volleyball camps during school holidays in Baulkham Hills, Sydney Hills District. Beginner to advanced skill levels, ages 8–18. Active Kids Voucher accepted.",
+    "Intensive junior volleyball camps during school holidays in Baulkham Hills, Sydney Hills District. Beginner to advanced skill levels, ages 8–18.",
   provider: {
     "@type": "SportsOrganization",
     name: "Obsidian Volleyball Academy",
@@ -92,7 +89,7 @@ const campSchema = {
     priceCurrency: "AUD",
     availability: "https://schema.org/InStock",
     url: "https://obsidianvolleyball.as.me",
-    description: "5-day camp package includes free OVA shirt. Active Kids Voucher accepted.",
+    description: "5-day camp package includes free OVA shirt.",
   },
 };
 
@@ -143,18 +140,6 @@ export default function HolidayCampPage() {
               </div>
             </SectionReveal>
           </div>
-        </div>
-      </section>
-
-      {/* Active Kids Banner */}
-      <section className="bg-[#9B4FDE] py-4">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center gap-3">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2.5">
-            <path d="M20 6L9 17l-5-5" />
-          </svg>
-          <p className="text-black font-heading text-lg sm:text-xl tracking-wide text-center">
-            NSW ACTIVE KIDS VOUCHERS ACCEPTED — UP TO $100 OFF PER CHILD
-          </p>
         </div>
       </section>
 
@@ -284,7 +269,7 @@ export default function HolidayCampPage() {
               <span className="text-[#9B4FDE]">PLACE</span>
             </h2>
             <p className="text-gray-500 mb-10 leading-relaxed">
-              Holiday camps fill fast. Book early to guarantee a spot. Active Kids Vouchers accepted.
+              Holiday camps fill fast. Book early to guarantee a spot.
             </p>
             <a
               href={process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me"}
@@ -295,7 +280,7 @@ export default function HolidayCampPage() {
               BOOK NOW
             </a>
             <p className="text-gray-700 text-xs mt-6 tracking-wider">
-              BAULKHAM HILLS &middot; ACTIVE KIDS ACCEPTED &middot; ALL SKILL LEVELS
+              BAULKHAM HILLS &middot; ALL SKILL LEVELS
             </p>
           </SectionReveal>
         </div>

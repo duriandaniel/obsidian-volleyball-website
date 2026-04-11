@@ -42,7 +42,7 @@ export default function ContactPage() {
               <span className="text-[#9B4FDE]">US</span>
             </h1>
             <p className="text-gray-400 text-xl max-w-xl leading-relaxed">
-              Questions about programs, pricing, or Active Kids Vouchers?
+              Questions about programs or pricing?
               We&apos;re here to help.
             </p>
           </SectionReveal>
@@ -155,7 +155,7 @@ export default function ContactPage() {
               BOOK NOW
             </a>
             <p className="text-gray-700 text-xs mt-6 tracking-wider">
-              ACTIVE KIDS VOUCHERS ACCEPTED &middot; ALL SKILL LEVELS
+              ALL SKILL LEVELS &middot; VOLLEYBALL NSW AFFILIATED
             </p>
           </SectionReveal>
         </div>

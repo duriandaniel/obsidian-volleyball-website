@@ -113,8 +113,8 @@ export default function Hero() {
           >
             {[
               { label: "Volleyball NSW", sub: "Affiliated" },
-              { label: "Active Kids", sub: "Voucher Accepted" },
-              { label: "All Levels", sub: "Welcome" },
+              { label: "Ages 8–18", sub: "All Levels" },
+              { label: "Hills District", sub: "Baulkham Hills" },
             ].map((item, i) => (
               <div key={i} className="flex items-center gap-3">
                 <div className="w-2 h-2 bg-[#9B4FDE] rounded-full flex-shrink-0" />

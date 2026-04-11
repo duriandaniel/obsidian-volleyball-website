@@ -5,7 +5,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "FAQ | Obsidian Volleyball Academy Baulkham Hills",
   description:
-    "Frequently asked questions about Obsidian Volleyball Academy. Programs, pricing, Active Kids Vouchers, age groups, and more.",
+    "Frequently asked questions about Obsidian Volleyball Academy. Programs, pricing, age groups, and more.",
 };
 
 const faqCategories = [
@@ -35,15 +35,11 @@ const faqCategories = [
     ],
   },
   {
-    category: "ACTIVE KIDS & PAYMENTS",
+    category: "PAYMENTS",
     faqs: [
       {
-        q: "Do you accept Active Kids Vouchers?",
-        a: "Yes! We accept NSW Government Active Kids Vouchers, worth up to $100 per child per year. Enter your voucher code at checkout or bring it along when you attend.",
-      },
-      {
         q: "What payment methods do you accept?",
-        a: "We accept credit/debit cards through our secure Stripe payment system, plus Active Kids Vouchers. Payment is processed at the time of booking.",
+        a: "We accept credit/debit cards through our secure Stripe payment system. Payment is processed at the time of booking.",
       },
       {
         q: "What is your refund policy?",
@@ -85,7 +81,7 @@ const faqCategories = [
       },
       {
         q: "What should my child bring?",
-        a: "Sports shoes (clean, non-marking soles), a large water bottle, lunch and snacks for full-day camps, and sunscreen for any outdoor warm-ups. Bring their Active Kids Voucher code if using one.",
+        a: "Sports shoes (clean, non-marking soles), a large water bottle, lunch and snacks for full-day camps, and sunscreen for any outdoor warm-ups.",
       },
       {
         q: "What time do sessions start and end?",

@@ -1,6 +1,6 @@
 # Obsidian Volleyball Academy — Complete Information
 
-> Premium junior volleyball academy in Baulkham Hills, Sydney Hills District, Australia. Holiday camps and term programs for juniors aged 8–18. Volleyball NSW affiliated. Active Kids Voucher accepted.
+> Premium junior volleyball academy in Baulkham Hills, Sydney Hills District, Australia. Holiday camps and term programs for juniors aged 8–18. Volleyball NSW affiliated.
 
 ## Business Details
 
@@ -90,10 +90,9 @@ Hills District, Sydney
 ### Nearby Suburbs Served
 Baulkham Hills, Castle Hill, Kellyville, Cherrybrook, Bella Vista, Winston Hills, Northmead, North Rocks, Carlingford, West Pennant Hills, Dural, Norwest, Rouse Hill, The Ponds, Stanhope Gardens
 
-## Payment & Vouchers
+## Payment & Booking
 
 - Payment: Credit/debit cards via Stripe
-- Active Kids Voucher: Accepted — NSW Government voucher worth up to $100 per child per year
 - Booking: Online via Acuity Scheduling at obsidianvolleyball.as.me
 
 ## What to Bring
@@ -101,12 +100,9 @@ Baulkham Hills, Castle Hill, Kellyville, Cherrybrook, Bella Vista, Winston Hills
 2. Large water bottle
 3. Lunch and snacks for full-day camps
 4. Hat and sunscreen for outdoor warm-ups
-5. Active Kids Voucher code if applicable
+5. A positive attitude and readiness to work hard
 
 ## Comprehensive FAQ
-
-Q: Do you accept Active Kids Vouchers?
-A: Yes. NSW Government Active Kids Vouchers accepted, worth up to $100 per child per year. Enter voucher code at checkout or bring along to the session.
 
 Q: What age groups do you cater for?
 A: Juniors aged 8 to 18. Players grouped by skill level, not just age.

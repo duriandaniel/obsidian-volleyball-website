@@ -97,8 +97,6 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Obsidian Volleyball Academy
           </p>
           <div className="flex items-center gap-4 text-gray-700 text-xs">
-            <span>Active Kids Voucher Accepted</span>
-            <span>&middot;</span>
             <a
               href="https://volleyballnsw.org.au"
               target="_blank"

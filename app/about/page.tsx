@@ -139,7 +139,7 @@ export default function AboutPage() {
               },
               {
                 title: "ACCESSIBILITY",
-                desc: "Elite coaching shouldn't require a long commute. OVA brings quality training to the Hills District — and accepts Active Kids Vouchers.",
+                desc: "Elite coaching shouldn't require a long commute. OVA brings quality training to the Hills District.",
               },
               {
                 title: "DEVELOPMENT",

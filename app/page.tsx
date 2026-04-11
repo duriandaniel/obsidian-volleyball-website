@@ -3,6 +3,7 @@ import Hero from "@/components/Hero";
 import ProgramCard from "@/components/ProgramCard";
 import CoachCard from "@/components/CoachCard";
 import Gallery from "@/components/Gallery";
+import InstagramFeed from "@/components/InstagramFeed";
 import SectionReveal from "@/components/SectionReveal";
 import Image from "next/image";
 import Link from "next/link";
@@ -10,7 +11,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Obsidian Volleyball Academy | Junior Volleyball Sydney Hills District",
   description:
-    "Premium junior volleyball academy in Baulkham Hills, Sydney Hills District. Holiday camps and term programs. Volleyball NSW affiliated. Active Kids Voucher accepted.",
+    "Premium junior volleyball academy in Baulkham Hills, Sydney Hills District. Holiday camps and term programs. Volleyball NSW affiliated.",
   keywords: [
     "volleyball academy Sydney",
     "junior volleyball Sydney",
@@ -64,45 +65,41 @@ const programs = [
 
 const faqs = [
   {
-    q: "Do you accept Active Kids Vouchers?",
-    a: "Yes! We accept NSW Government Active Kids Vouchers (up to $100 per child per year). Bring your voucher when booking or enter the code at checkout.",
-  },
-  {
     q: "Where are the camps held?",
-    a: "All sessions are at Baulkham Hills High School — indoor courts with excellent facilities, right in the Hills District.",
+    a: "Baulkham Hills High School — indoor courts, Hills District.",
   },
   {
     q: "What age groups do you cater for?",
-    a: "Programs for juniors aged 8 to 18. Players are grouped by skill level, not just age, so everyone trains at the right intensity.",
+    a: "Juniors aged 8–18, grouped by skill level not age.",
   },
   {
     q: "My child has never played — is that OK?",
-    a: "Absolutely. Our beginner programs are designed for zero experience. Coaches make it fun and non-intimidating from session one.",
+    a: "Yes. Our beginner programs are built for zero experience.",
   },
 ];
 
 const whyOVA = [
   {
     title: "QUALIFIED COACHES",
-    desc: "All coaches hold Volleyball NSW accreditation with competitive playing experience and a passion for junior development.",
+    desc: "Volleyball NSW accredited coaches with competitive playing experience.",
     stat: "VNSW",
     statLabel: "Accredited",
   },
   {
     title: "SKILL-BASED GROUPING",
-    desc: "Players grouped by ability, not age. Beginners aren't held back. Advanced players aren't bored. Everyone trains at the right level.",
+    desc: "Grouped by ability, not age. Everyone trains at the right level.",
     stat: "3",
     statLabel: "Skill Levels",
   },
   {
     title: "HILLS DISTRICT",
-    desc: "Central to Castle Hill, Kellyville, Cherrybrook, Bella Vista. No more travelling across Sydney for quality coaching.",
+    desc: "Central to Castle Hill, Kellyville, Cherrybrook, Bella Vista.",
     stat: "BHills",
     statLabel: "Location",
   },
   {
     title: "CLEAR PATHWAYS",
-    desc: "Aligned with Volleyball NSW so advanced players can transition to club and representative volleyball with confidence.",
+    desc: "Aligned with Volleyball NSW for club and representative pathways.",
     stat: "NSW",
     statLabel: "Pathways",
   },
@@ -207,17 +204,10 @@ export default function Home() {
                   <br />
                   <span className="text-[#9B4FDE]">OVA</span>
                 </h2>
-                <div className="space-y-5 text-gray-400 leading-relaxed">
-                  <p>
-                    Obsidian Volleyball Academy was founded in 2025 with a single mission: bring
-                    elite-standard volleyball coaching to junior players in the Hills District.
-                  </p>
-                  <p>
-                    Too many talented young players had to travel far for quality coaching.
-                    OVA changed that — high-performance training right here at Baulkham Hills
-                    High School.
-                  </p>
-                </div>
+                <p className="text-gray-400 leading-relaxed">
+                  Founded in 2025 to bring elite volleyball coaching to the Hills District.
+                  High-performance training at Baulkham Hills High School — no more travelling across Sydney.
+                </p>
                 <div className="flex gap-10 mt-10">
                   <div>
                     <p className="font-heading text-5xl text-[#9B4FDE]">2025</p>
@@ -344,6 +334,9 @@ export default function Home() {
       {/* Gallery */}
       <Gallery />
 
+      {/* Instagram */}
+      <InstagramFeed />
+
       {/* Coaches */}
       <section id="coaches" className="py-24 lg:py-32 bg-[#111]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -413,11 +406,8 @@ export default function Home() {
                   </address>
                 </div>
                 <div className="border-t border-white/[0.06] pt-6 mb-8">
-                  <h4 className="font-heading text-lg text-white mb-3 tracking-wide">GETTING HERE</h4>
-                  <p className="text-gray-500 text-sm leading-relaxed">
-                    Free parking on-site. Indoor courts — weather never a problem.
-                    Convenient to Castle Hill, Kellyville, Cherrybrook, Bella Vista, Winston Hills,
-                    Northmead and surrounding suburbs.
+                  <p className="text-gray-500 text-sm">
+                    Free parking. Indoor courts. Central to Castle Hill, Kellyville, Cherrybrook, Bella Vista.
                   </p>
                 </div>
                 <a
@@ -505,8 +495,7 @@ export default function Home() {
               <span className="text-[#9B4FDE]">TODAY</span>
             </h2>
             <p className="text-gray-500 text-lg mb-12 max-w-lg mx-auto leading-relaxed">
-              Holiday camps and term programs available. Active Kids Vouchers welcome.
-              Limited spots — book early.
+              Holiday camps and term programs. Limited spots — book early.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
@@ -525,7 +514,7 @@ export default function Home() {
               </Link>
             </div>
             <p className="text-gray-700 text-xs mt-8 tracking-wider">
-              ACTIVE KIDS VOUCHERS ACCEPTED &middot; VOLLEYBALL NSW AFFILIATED &middot; BAULKHAM HILLS
+              VOLLEYBALL NSW AFFILIATED &middot; BAULKHAM HILLS &middot; HILLS DISTRICT
             </p>
           </SectionReveal>
         </div>
