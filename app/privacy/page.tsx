@@ -41,9 +41,9 @@ export default function PrivacyPage() {
               <h2 className="font-heading text-xl text-white tracking-wide mb-3">COOKIES & TRACKING</h2>
               <p className="mb-3">We use the following technologies:</p>
               <ul className="list-disc list-inside space-y-1 text-gray-500">
-                <li><strong className="text-gray-300">Google Analytics 4</strong> — measures website traffic and usage patterns</li>
-                <li><strong className="text-gray-300">Google Tag Manager</strong> — manages our analytics and advertising tags</li>
-                <li><strong className="text-gray-300">Meta Pixel</strong> — measures the effectiveness of our Facebook and Instagram advertising</li>
+                <li><strong className="text-gray-300">Google Analytics 4</strong>: measures website traffic and usage patterns</li>
+                <li><strong className="text-gray-300">Google Tag Manager</strong>: manages our analytics and advertising tags</li>
+                <li><strong className="text-gray-300">Meta Pixel</strong>: measures the effectiveness of our Facebook and Instagram advertising</li>
               </ul>
               <p className="mt-3">
                 You can manage your cookie preferences using the consent banner shown when you first visit the site.

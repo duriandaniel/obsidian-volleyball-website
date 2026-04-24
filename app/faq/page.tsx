@@ -22,7 +22,7 @@ const faqCategories = [
       },
       {
         q: "Can I book a single day or do I need to book the full camp?",
-        a: "Both options are available. We offer full camp packages (best value — includes a free shirt) as well as individual day bookings and half-day sessions. Check the booking page for current options.",
+        a: "Both options are available. We offer full camp packages (best value, includes a free shirt) as well as individual day bookings and half-day sessions. Check the booking page for current options.",
       },
       {
         q: "How much does it cost?",
@@ -30,7 +30,7 @@ const faqCategories = [
       },
       {
         q: "Do you run programs during school terms?",
-        a: "Yes — we run weekly term programs during the school year in addition to our holiday camps. Check the booking page for current term program schedules.",
+        a: "Yes. We run weekly term programs during the school year in addition to our holiday camps. Check the booking page for current term program schedules.",
       },
     ],
   },
@@ -55,12 +55,12 @@ const faqCategories = [
         a: "We run programs for juniors aged 8 to 18. Players are grouped by skill level rather than age alone, so everyone trains at the right intensity.",
       },
       {
-        q: "My child has never played volleyball — is that OK?",
+        q: "My child has never played volleyball. Is that OK?",
         a: "Absolutely. Our Beginner Blast program is specifically designed for kids with zero experience. Coaches are trained to make it fun and non-intimidating from session one.",
       },
       {
         q: "How do you group players?",
-        a: "By skill level, not just age. We assess players at the start and place them in the appropriate group — beginners aren't overwhelmed, and advanced players are appropriately challenged.",
+        a: "By skill level, not just age. We assess players at the start and place them in the appropriate group, so beginners aren't overwhelmed and advanced players are appropriately challenged.",
       },
       {
         q: "Is there a pathway to competitive volleyball?",
@@ -73,7 +73,7 @@ const faqCategories = [
     faqs: [
       {
         q: "Where are the camps held?",
-        a: "All sessions are at Baulkham Hills High School in the Hills District of Sydney. The venue has multiple indoor courts — sessions run rain or shine.",
+        a: "All sessions are at Baulkham Hills High School in the Hills District of Sydney. The venue has multiple indoor courts, so sessions run rain or shine.",
       },
       {
         q: "Is there parking available?",
@@ -180,7 +180,7 @@ export default function FAQPage() {
               TO <span className="text-[#9B4FDE]">HELP</span>
             </h2>
             <p className="text-gray-500 text-lg mb-10 leading-relaxed">
-              Email us or send a DM on Instagram — we respond quickly.
+              Email us or send a DM on Instagram. We respond quickly.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a

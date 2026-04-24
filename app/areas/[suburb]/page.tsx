@@ -32,13 +32,13 @@ const suburbs = [
     slug: "winston-hills",
     name: "Winston Hills",
     drive: "5 minutes",
-    description: "Right next door — Winston Hills families can be at our venue in minutes via Windsor Road.",
+    description: "Right next door. Winston Hills families can be at our venue in minutes via Windsor Road.",
   },
   {
     slug: "northmead",
     name: "Northmead",
     drive: "7 minutes",
-    description: "Head north via Windsor Road from Northmead — quick access to quality volleyball coaching.",
+    description: "Head north via Windsor Road from Northmead for quick access to quality volleyball coaching.",
   },
   {
     slug: "carlingford",
@@ -56,7 +56,7 @@ const suburbs = [
     slug: "dural",
     name: "Dural",
     drive: "12 minutes",
-    description: "Head south via Old Northern Road from Dural — easy access to the Hills District venue.",
+    description: "Head south via Old Northern Road from Dural for easy access to the Hills District venue.",
   },
 ];
 
@@ -152,7 +152,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
               },
               {
                 title: "ALL SKILL LEVELS",
-                desc: "Grouped by ability, not age. Complete beginners are welcome — no experience needed to start.",
+                desc: "Grouped by ability, not age. Complete beginners are welcome. No experience needed to start.",
               },
               {
                 title: "QUALIFIED COACHES",
@@ -160,7 +160,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
               },
               {
                 title: "INDOOR VENUE",
-                desc: "Baulkham Hills High School gym — indoor courts, free parking, weather never a problem.",
+                desc: "Baulkham Hills High School gym. Indoor courts, free parking, weather never a problem.",
               },
               {
                 title: "AFFORDABLE",
@@ -224,7 +224,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title={`Obsidian Volleyball Academy — near ${data.name}`}
+                  title={`Obsidian Volleyball Academy near ${data.name}`}
                 />
               </div>
             </SectionReveal>

@@ -24,14 +24,14 @@ export const metadata: Metadata = {
 const faqs = [
   {
     q: "Where are the camps held?",
-    a: "Baulkham Hills High School — indoor courts, Hills District.",
+    a: "Baulkham Hills High School. Indoor courts in the Hills District.",
   },
   {
     q: "What age groups do you cater for?",
     a: "Juniors aged 8–18, grouped by skill level not age.",
   },
   {
-    q: "My child has never played — is that OK?",
+    q: "My child has never played. Is that OK?",
     a: "Yes. Our beginner programs are built for zero experience.",
   },
 ];
@@ -51,7 +51,7 @@ const faqSchema = {
 const eventSchema = {
   "@context": "https://schema.org",
   "@type": "Event",
-  name: "Mid-Year Volleyball Camp — Obsidian Volleyball Academy",
+  name: "Mid-Year Volleyball Camp | Obsidian Volleyball Academy",
   description:
     "Intensive junior volleyball camp for all skill levels (beginner to advanced) during July school holidays in Baulkham Hills, Sydney.",
   eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
@@ -96,7 +96,7 @@ export default function Home() {
       <Hero />
 
 
-      {/* About — Asymmetric layout */}
+      {/* About section */}
       <section id="about" className="py-24 lg:py-32 bg-[#111]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-16 lg:gap-24 items-center">
@@ -110,7 +110,7 @@ export default function Home() {
                 </h2>
                 <p className="text-gray-400 leading-relaxed">
                   Founded in 2025 to bring elite volleyball coaching to the Hills District.
-                  High-performance training at Baulkham Hills High School — no more travelling across Sydney.
+                  High-performance training at Baulkham Hills High School, so families don't have to travel across Sydney.
                 </p>
                 <div className="flex gap-10 mt-10">
                   <div>
@@ -221,7 +221,7 @@ export default function Home() {
                   <p className="text-gray-600 text-sm">per jersey</p>
                 </div>
                 <p className="text-gray-600 text-sm">
-                  Available for purchase on-site at any holiday camp. Multiple sizes available — try before you buy.
+                  Available for purchase on-site at any holiday camp. Multiple sizes available, so you can try before you buy.
                 </p>
               </div>
             </SectionReveal>
