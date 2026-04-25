@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Hero from "@/components/Hero";
 import CoachCard from "@/components/CoachCard";
 import Gallery from "@/components/Gallery";
+import InstagramReel from "@/components/InstagramReel";
 import SectionReveal from "@/components/SectionReveal";
 import Image from "next/image";
 import Link from "next/link";
@@ -129,6 +130,23 @@ export default function Home() {
         </div>
       </section>
 
+
+      {/* Featured reel */}
+      <section className="py-24 lg:py-32 bg-[#0A0A0A]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <div className="mb-12">
+              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">SEE US IN ACTION</p>
+              <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">ON COURT</h2>
+            </div>
+          </SectionReveal>
+          <SectionReveal delay={0.1}>
+            <div className="flex justify-center">
+              <InstagramReel permalink="https://www.instagram.com/p/DXi_Kgmjaxm/" />
+            </div>
+          </SectionReveal>
+        </div>
+      </section>
 
       {/* Gallery */}
       <Gallery />
