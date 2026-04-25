@@ -132,19 +132,45 @@ export default function Home() {
 
 
       {/* Featured reel */}
-      <section className="py-24 lg:py-32 bg-[#0A0A0A]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="mb-12">
-              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">SEE US IN ACTION</p>
-              <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">ON COURT</h2>
-            </div>
-          </SectionReveal>
-          <SectionReveal delay={0.1}>
-            <div className="flex justify-center">
+      <section className="py-24 lg:py-32 bg-[#0A0A0A] relative overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, rgba(123,47,190,0.06) 0%, transparent 60%)",
+          }}
+        />
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 lg:gap-20 items-center">
+            <SectionReveal>
+              <div>
+                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">SEE US IN ACTION</p>
+                <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-6">
+                  ON
+                  <br />
+                  <span className="text-[#9B4FDE]">COURT</span>
+                </h2>
+                <p className="text-gray-400 max-w-md leading-relaxed mb-8">
+                  Mic&apos;d-up coaching, live drills, and full-tempo game play. Follow along for new clips every week.
+                </p>
+                <a
+                  href="https://instagram.com/obsidianvolleyball"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium tracking-wide hover:text-white transition-colors"
+                >
+                  Follow on Instagram
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M7 17L17 7M17 7H7M17 7v10" />
+                  </svg>
+                </a>
+              </div>
+            </SectionReveal>
+            <SectionReveal delay={0.1}>
               <InstagramReel permalink="https://www.instagram.com/p/DXi_Kgmjaxm/" />
-            </div>
-          </SectionReveal>
+            </SectionReveal>
+          </div>
         </div>
       </section>
 
