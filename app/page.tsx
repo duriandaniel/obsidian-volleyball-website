@@ -164,7 +164,7 @@ export default function Home() {
             />
             <CoachCard
               name="Jessica"
-              role="Lead Coach"
+              role="Coach"
               bio="Energetic style and technical expertise. Specialises in skill development for intermediate and advanced juniors."
               qualifications={["2x Women Div 1 SVL Champion", "2x AYVC Medalist"]}
               image="/images/coach-jessica-card.jpg"
