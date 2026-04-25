@@ -19,7 +19,7 @@ export const metadata: Metadata = {
 const campSchema = {
   "@context": "https://schema.org",
   "@type": "Course",
-  name: "Volleyball Holiday Camp — Obsidian Volleyball Academy",
+  name: "Volleyball Holiday Camp | Obsidian Volleyball Academy",
   description:
     "Intensive junior volleyball camps during school holidays in Baulkham Hills, Sydney Hills District. Beginner to advanced skill levels, ages 8–18.",
   provider: {
@@ -74,7 +74,7 @@ export default function HolidayCampPage() {
                 </h1>
                 <p className="text-gray-400 text-lg max-w-xl mb-10 leading-relaxed">
                   Intensive skill-building volleyball camps during school holidays in Baulkham Hills.
-                  Beginner to advanced — we have the right program for your child.
+                  Beginner to advanced. We have the right program for your child.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <TrackedBookingLink
@@ -269,11 +269,11 @@ export default function HolidayCampPage() {
           </SectionReveal>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04]">
             {[
-              { label: "WHEN", value: "School holiday periods — April, July, October, January" },
+              { label: "WHEN", value: "School holiday periods: April, July, October, January" },
               { label: "WHERE", value: "Baulkham Hills High School, Hills District" },
               { label: "WHO", value: "Juniors aged 8–18, all skill levels" },
               { label: "TIME", value: "Full-day: 9AM–1PM. Half-day sessions also available" },
-              { label: "GROUPS", value: "Small groups — maximum coach-to-player ratio" },
+              { label: "GROUPS", value: "Small groups with high coach-to-player ratio" },
               { label: "INCLUDED", value: "Free OVA shirt with 5-day package booking" },
             ].map((detail, i) => (
               <SectionReveal key={detail.label} delay={i * 0.05}>
@@ -298,7 +298,7 @@ export default function HolidayCampPage() {
                 <ul className="space-y-4">
                   {[
                     "Sports shoes (clean, non-marking soles)",
-                    "Water bottle (large — sessions are active)",
+                    "Water bottle (large, sessions are active)",
                     "Lunch and snacks for full-day camps",
                     "Hat and sunscreen for any outdoor warm-up",
                     "A positive attitude and readiness to work hard",
@@ -322,12 +322,12 @@ export default function HolidayCampPage() {
                     <p className="text-gray-500 text-sm">NSW 2153, Hills District</p>
                   </address>
                   <p className="text-gray-600 text-sm mt-4 leading-relaxed">
-                    Free parking on-site. Indoor courts — weather never a problem.
+                    Free parking on-site. Indoor courts, so weather is never a problem.
                     Central to Castle Hill, Kellyville, Cherrybrook, and Bella Vista.
                   </p>
                 </div>
                 <a
-                  href="https://maps.app.goo.gl/uZ1dpxWT93XRDwAk6"
+                  href="https://www.google.com/maps/place/Obsidian+Volleyball+Academy"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"

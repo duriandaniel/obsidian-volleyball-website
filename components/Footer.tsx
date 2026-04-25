@@ -54,6 +54,7 @@ export default function Footer() {
               {[
                 { href: "/", label: "Home" },
                 { href: "/holiday-camp", label: "Holiday Camps" },
+                { href: "/term-programs", label: "Term Programs" },
                 { href: "/coaches", label: "Coaches" },
                 { href: "/about", label: "About" },
                 { href: "/faq", label: "FAQ" },

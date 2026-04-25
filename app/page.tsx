@@ -24,14 +24,14 @@ export const metadata: Metadata = {
 const faqs = [
   {
     q: "Where are the camps held?",
-    a: "Baulkham Hills High School — indoor courts, Hills District.",
+    a: "Baulkham Hills High School. Indoor courts in the Hills District.",
   },
   {
     q: "What age groups do you cater for?",
     a: "Juniors aged 8–18, grouped by skill level not age.",
   },
   {
-    q: "My child has never played — is that OK?",
+    q: "My child has never played. Is that OK?",
     a: "Yes. Our beginner programs are built for zero experience.",
   },
 ];
@@ -51,7 +51,7 @@ const faqSchema = {
 const eventSchema = {
   "@context": "https://schema.org",
   "@type": "Event",
-  name: "Mid-Year Volleyball Camp — Obsidian Volleyball Academy",
+  name: "Mid-Year Volleyball Camp | Obsidian Volleyball Academy",
   description:
     "Intensive junior volleyball camp for all skill levels (beginner to advanced) during July school holidays in Baulkham Hills, Sydney.",
   eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
@@ -96,7 +96,7 @@ export default function Home() {
       <Hero />
 
 
-      {/* About — Asymmetric layout */}
+      {/* About section */}
       <section id="about" className="py-24 lg:py-32 bg-[#111]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-16 lg:gap-24 items-center">
@@ -110,7 +110,7 @@ export default function Home() {
                 </h2>
                 <p className="text-gray-400 leading-relaxed">
                   Founded in 2025 to bring elite volleyball coaching to the Hills District.
-                  High-performance training at Baulkham Hills High School — no more travelling across Sydney.
+                  High-performance training at Baulkham Hills High School, so families don't have to travel across Sydney.
                 </p>
                 <div className="flex gap-10 mt-10">
                   <div>
@@ -189,11 +189,11 @@ export default function Home() {
               index={1}
             />
             <CoachCard
-              name="Tom"
+              name="Kaveesh"
               role="Coach"
-              bio="State-level competitive experience and a deep understanding of the game at every level."
-              qualifications={["u23 QLD State Team", "Premier Division PVL", "WWCC Verified"]}
-              image="/images/coach-tom-card.jpg"
+              bio="Years of representative volleyball with a passion for coaching juniors. Energy and technical knowledge make sessions fun and effective."
+              qualifications={["16s NSWCHS State Team", "2022 18s SVL Champions", "WWCC Verified"]}
+              image="/images/coach-kaveesh-card.jpg"
               index={2}
             />
           </div>
@@ -221,7 +221,7 @@ export default function Home() {
                   <p className="text-gray-600 text-sm">per jersey</p>
                 </div>
                 <p className="text-gray-600 text-sm">
-                  Available for purchase on-site at any holiday camp. Multiple sizes available — try before you buy.
+                  Available for purchase on-site at any holiday camp. Multiple sizes available, so you can try before you buy.
                 </p>
               </div>
             </SectionReveal>
@@ -268,7 +268,7 @@ export default function Home() {
                   </p>
                 </div>
                 <a
-                  href="https://maps.app.goo.gl/uZ1dpxWT93XRDwAk6"
+                  href="https://www.google.com/maps/place/Obsidian+Volleyball+Academy"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"
@@ -284,7 +284,7 @@ export default function Home() {
             <SectionReveal delay={0.15}>
               <div className="aspect-[16/10] lg:aspect-auto lg:h-full min-h-[300px] overflow-hidden bg-[#111]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3315.3!2d150.9927!3d-33.7627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12983e5a5c7e0d%3A0x2b0e5a29b0c1f1e0!2sObsidian%20Volleyball%20Academy!5e0!3m2!1sen!2sau!4v1"
+                  src="https://www.google.com/maps?q=Obsidian+Volleyball+Academy&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2)" }}

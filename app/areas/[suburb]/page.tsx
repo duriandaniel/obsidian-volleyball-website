@@ -32,13 +32,13 @@ const suburbs = [
     slug: "winston-hills",
     name: "Winston Hills",
     drive: "5 minutes",
-    description: "Right next door — Winston Hills families can be at our venue in minutes via Windsor Road.",
+    description: "Right next door. Winston Hills families can be at our venue in minutes via Windsor Road.",
   },
   {
     slug: "northmead",
     name: "Northmead",
     drive: "7 minutes",
-    description: "Head north via Windsor Road from Northmead — quick access to quality volleyball coaching.",
+    description: "Head north via Windsor Road from Northmead for quick access to quality volleyball coaching.",
   },
   {
     slug: "carlingford",
@@ -56,7 +56,7 @@ const suburbs = [
     slug: "dural",
     name: "Dural",
     drive: "12 minutes",
-    description: "Head south via Old Northern Road from Dural — easy access to the Hills District venue.",
+    description: "Head south via Old Northern Road from Dural for easy access to the Hills District venue.",
   },
 ];
 
@@ -152,7 +152,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
               },
               {
                 title: "ALL SKILL LEVELS",
-                desc: "Grouped by ability, not age. Complete beginners are welcome — no experience needed to start.",
+                desc: "Grouped by ability, not age. Complete beginners are welcome. No experience needed to start.",
               },
               {
                 title: "QUALIFIED COACHES",
@@ -160,7 +160,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
               },
               {
                 title: "INDOOR VENUE",
-                desc: "Baulkham Hills High School gym — indoor courts, free parking, weather never a problem.",
+                desc: "Baulkham Hills High School gym. Indoor courts, free parking, weather never a problem.",
               },
               {
                 title: "AFFORDABLE",
@@ -202,7 +202,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
                   Kellyville, and the wider Hills District.
                 </p>
                 <a
-                  href="https://maps.app.goo.gl/uZ1dpxWT93XRDwAk6"
+                  href="https://www.google.com/maps/place/Obsidian+Volleyball+Academy"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"
@@ -217,14 +217,14 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
             <SectionReveal delay={0.15}>
               <div className="aspect-[16/10] lg:aspect-auto lg:h-full min-h-[300px] overflow-hidden bg-[#111]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3315.3!2d150.9927!3d-33.7627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12983e5a5c7e0d%3A0x2b0e5a29b0c1f1e0!2sObsidian%20Volleyball%20Academy!5e0!3m2!1sen!2sau!4v1"
+                  src="https://www.google.com/maps?q=Obsidian+Volleyball+Academy&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2)" }}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title={`Obsidian Volleyball Academy — near ${data.name}`}
+                  title={`Obsidian Volleyball Academy near ${data.name}`}
                 />
               </div>
             </SectionReveal>

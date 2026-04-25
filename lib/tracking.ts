@@ -18,6 +18,7 @@ export type BookingLocation =
   | "camp_cta"
   | "coaches_cta"
   | "about_cta"
+  | "term_programs_hero"
   | "book_page";
 
 export function trackBookingClick(tier: BookingTier, location: BookingLocation) {

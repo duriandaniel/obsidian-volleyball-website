@@ -47,7 +47,7 @@ export const metadata: Metadata = {
         url: "/images/hero.jpg",
         width: 1200,
         height: 630,
-        alt: "Obsidian Volleyball Academy — Junior Volleyball in the Hills District",
+        alt: "Obsidian Volleyball Academy: Junior Volleyball in the Hills District",
       },
     ],
   },

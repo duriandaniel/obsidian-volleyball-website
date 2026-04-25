@@ -6,12 +6,12 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "About Obsidian Volleyball Academy | Hills District Sydney",
   description:
-    "Learn about Obsidian Volleyball Academy — a premium junior volleyball academy in Baulkham Hills, Hills District Sydney. Founded 2025.",
+    "Learn about Obsidian Volleyball Academy, a premium junior volleyball academy in Baulkham Hills, Hills District Sydney. Founded 2025.",
 };
 
 const timeline = [
   { year: "2025", event: "Obsidian Volleyball Academy founded in Baulkham Hills" },
-  { year: "2025", event: "First holiday camp — sold out in 2 weeks" },
+  { year: "2025", event: "First holiday camp ran and sold out in 2 weeks" },
   { year: "2025", event: "Coaching team assembled and accredited" },
   { year: "2026", event: "Term programs launched for all skill levels" },
   { year: "2026", event: "Expanded coaching team and multi-court operations" },
@@ -32,7 +32,7 @@ export default function AboutPage() {
             </h1>
             <p className="text-gray-400 text-xl max-w-2xl leading-relaxed">
               Obsidian Volleyball Academy exists because Hills District juniors
-              deserved better access to quality volleyball coaching — without
+              deserved better access to quality volleyball coaching, without
               travelling across Sydney.
             </p>
           </SectionReveal>
@@ -144,7 +144,7 @@ export default function AboutPage() {
               },
               {
                 title: "DEVELOPMENT",
-                desc: "We develop players, not just skills. Confidence, resilience, teamwork — these matter as much as technique.",
+                desc: "We develop players, not just skills. Confidence, resilience, teamwork: these matter as much as technique.",
               },
             ].map((value) => (
               <SectionReveal key={value.title}>

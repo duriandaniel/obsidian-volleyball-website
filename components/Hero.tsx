@@ -48,81 +48,57 @@ export default function Hero() {
 
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 items-end">
-          <div>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: "easeOut" }}
-            >
-              <p className="text-[#9B4FDE] font-heading text-base sm:text-lg tracking-[0.4em] mb-6">
-                HILLS DISTRICT &middot; SYDNEY
-              </p>
-            </motion.div>
+        <div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          >
+            <p className="text-[#9B4FDE] font-heading text-base sm:text-lg tracking-[0.4em] mb-6">
+              HILLS DISTRICT &middot; SYDNEY
+            </p>
+          </motion.div>
 
-            <motion.h1
-              className="font-heading text-[clamp(3.5rem,12vw,10rem)] leading-[0.9] text-white tracking-wide mb-8"
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
-            >
-              ELITE
-              <br />
-              JUNIOR
-              <br />
-              <span className="text-[#9B4FDE]">VOLLEY</span>BALL
-            </motion.h1>
+          <motion.h1
+            className="font-heading text-[clamp(3.5rem,12vw,10rem)] leading-[0.9] text-white tracking-wide mb-8"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
+          >
+            ELITE
+            <br />
+            JUNIOR
+            <br />
+            <span className="text-[#9B4FDE]">VOLLEY</span>BALL
+          </motion.h1>
 
-            <motion.p
-              className="text-gray-400 text-lg sm:text-xl max-w-lg mb-10 leading-relaxed"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              Professional volleyball coaching in Baulkham Hills.
-              Holiday camps & term programs — beginner to competitive.
-            </motion.p>
-
-            <motion.div
-              className="flex flex-col sm:flex-row gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <TrackedBookingLink
-                location="hero"
-                className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 hover:bg-[#9B4FDE] transition-all duration-300 tracking-wide text-center glow-purple"
-              >
-                BOOK NOW
-              </TrackedBookingLink>
-              <a
-                href="/holiday-camp"
-                className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
-              >
-                VIEW CAMPS
-              </a>
-            </motion.div>
-          </div>
+          <motion.p
+            className="text-gray-400 text-lg sm:text-xl max-w-lg mb-10 leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            Professional volleyball coaching in Baulkham Hills. Holiday camps and term programs for beginner to competitive players.
+          </motion.p>
 
           <motion.div
-            className="flex flex-row lg:flex-col gap-6 lg:gap-8 lg:pb-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
+            className="flex flex-col sm:flex-row gap-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
           >
-            {[
-              { label: "Ages 8–18", sub: "All Levels" },
-              { label: "Hills District", sub: "Baulkham Hills" },
-              { label: "All Levels", sub: "Beginner to Advanced" },
-            ].map((item, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <div className="w-2 h-2 bg-[#9B4FDE] rounded-full flex-shrink-0" />
-                <div>
-                  <p className="text-white text-sm font-medium leading-tight">{item.label}</p>
-                  <p className="text-gray-500 text-xs">{item.sub}</p>
-                </div>
-              </div>
-            ))}
+            <TrackedBookingLink
+              location="hero"
+              className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 hover:bg-[#9B4FDE] transition-all duration-300 tracking-wide text-center glow-purple"
+            >
+              BOOK NOW
+            </TrackedBookingLink>
+            <a
+              href="/holiday-camp"
+              className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
+            >
+              VIEW CAMPS
+            </a>
           </motion.div>
         </div>
       </div>

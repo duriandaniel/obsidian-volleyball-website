@@ -40,7 +40,7 @@ export default function ThankYouPage() {
           <ul className="space-y-4">
             {[
               "Sports shoes (clean, non-marking soles)",
-              "Water bottle (large — sessions are active)",
+              "Water bottle (large, sessions are active)",
               "Lunch and snacks for full-day camps",
               "Hat and sunscreen for any outdoor warm-up",
               "A positive attitude and readiness to work hard",
@@ -63,10 +63,10 @@ export default function ThankYouPage() {
             <p className="text-gray-500 text-sm">Windsor Road, Baulkham Hills, NSW 2153</p>
           </address>
           <p className="text-gray-600 text-sm mb-6">
-            Free parking on-site. Indoor courts — weather never a problem.
+            Free parking on-site. Indoor courts, so weather is never a problem.
           </p>
           <a
-            href="https://maps.app.goo.gl/uZ1dpxWT93XRDwAk6"
+            href="https://www.google.com/maps/place/Obsidian+Volleyball+Academy"
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"
@@ -84,7 +84,7 @@ export default function ThankYouPage() {
         <div className="max-w-2xl mx-auto px-4">
           <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">SPREAD THE WORD</p>
           <h2 className="font-heading text-3xl text-white tracking-wide mb-6">KNOW SOMEONE WHO&apos;D LOVE OVA?</h2>
-          <p className="text-gray-500 text-sm mb-8">Share with a friend — the more the merrier on court.</p>
+          <p className="text-gray-500 text-sm mb-8">Share with a friend. The more the merrier on court.</p>
           <div className="flex gap-4 justify-center">
             <a
               href="https://instagram.com/obsidianvolleyball"

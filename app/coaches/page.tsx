@@ -43,19 +43,6 @@ const coaches = [
     image: "/images/coach-jessica-card.jpg",
   },
   {
-    name: "Tom",
-    role: "Coach",
-    bio: "Tom brings state-level competitive experience and a deep understanding of the game. His technical coaching and game awareness help players develop at every level.",
-    qualifications: [
-      "u23 QLD State Team",
-      "Premier Division of PVL",
-      "Queensland State Champs Div 1 Winner",
-      "2 Year Unisport Nationals Beach Volleyball Winner",
-      "Working With Children Check (NSW)",
-    ],
-    image: "/images/coach-tom-card.jpg",
-  },
-  {
     name: "Kaveesh",
     role: "Coach",
     bio: "Kaveesh combines years of representative volleyball with a passion for coaching juniors. His energy and technical knowledge make sessions both fun and effective.",
@@ -67,19 +54,6 @@ const coaches = [
       "Working With Children Check (NSW)",
     ],
     image: "/images/coach-kaveesh-card.jpg",
-  },
-  {
-    name: "Roy",
-    role: "Coach",
-    bio: "Roy's all-star credentials and competitive drive translate into high-energy coaching sessions. He specialises in developing attacking and defensive skills.",
-    qualifications: [
-      "JSVL u17 All Star",
-      "UNSW Unigames Nationals",
-      "High School State Champion",
-      "Australian Volleyball Schools Cup Silver",
-      "SVL Div 2 Outside",
-    ],
-    image: "/images/coach-roy-card.jpg",
   },
   {
     name: "Ethan",
