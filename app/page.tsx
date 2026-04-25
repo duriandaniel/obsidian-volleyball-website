@@ -189,11 +189,11 @@ export default function Home() {
               index={1}
             />
             <CoachCard
-              name="Tom"
+              name="Kaveesh"
               role="Coach"
-              bio="State-level competitive experience and a deep understanding of the game at every level."
-              qualifications={["u23 QLD State Team", "Premier Division PVL", "WWCC Verified"]}
-              image="/images/coach-tom-card.jpg"
+              bio="Years of representative volleyball with a passion for coaching juniors. Energy and technical knowledge make sessions fun and effective."
+              qualifications={["16s NSWCHS State Team", "2022 18s SVL Champions", "WWCC Verified"]}
+              image="/images/coach-kaveesh-card.jpg"
               index={2}
             />
           </div>
@@ -268,7 +268,7 @@ export default function Home() {
                   </p>
                 </div>
                 <a
-                  href="https://maps.app.goo.gl/uZ1dpxWT93XRDwAk6"
+                  href="https://www.google.com/maps/place/Obsidian+Volleyball+Academy"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"
@@ -284,7 +284,7 @@ export default function Home() {
             <SectionReveal delay={0.15}>
               <div className="aspect-[16/10] lg:aspect-auto lg:h-full min-h-[300px] overflow-hidden bg-[#111]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3315.3!2d150.9927!3d-33.7627!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6b12983e5a5c7e0d%3A0x2b0e5a29b0c1f1e0!2sObsidian%20Volleyball%20Academy!5e0!3m2!1sen!2sau!4v1"
+                  src="https://www.google.com/maps?q=Obsidian+Volleyball+Academy&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2)" }}
