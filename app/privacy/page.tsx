@@ -21,7 +21,7 @@ export default function PrivacyPage() {
             <div>
               <h2 className="font-heading text-xl text-white tracking-wide mb-3">OVERVIEW</h2>
               <p>
-                Obsidian Volleyball Academy (&ldquo;OVA&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) is committed to protecting your privacy.
+                Obsidian Volleyball Academy (&ldquo;we&rdquo;, &ldquo;us&rdquo;) is committed to protecting your privacy.
                 This policy explains how we collect, use, and protect information when you visit our website.
               </p>
             </div>

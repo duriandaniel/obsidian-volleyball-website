@@ -51,7 +51,7 @@ const campSchema = {
     priceCurrency: "AUD",
     availability: "https://schema.org/InStock",
     url: "https://obsidianvolleyball.as.me",
-    description: "5-day camp package includes free OVA shirt.",
+    description: "5-day camp package includes a free Obsidian training jersey.",
   },
 };
 
@@ -209,7 +209,7 @@ export default function HolidayCampPage() {
                     <span className="text-[#9B4FDE]">+</span> All 5 days of camp
                   </li>
                   <li className="flex items-center gap-2">
-                    <span className="text-[#9B4FDE]">+</span> Free OVA shirt included
+                    <span className="text-[#9B4FDE]">+</span> Free Obsidian training jersey included
                   </li>
                   <li className="flex items-center gap-2">
                     <span className="text-[#9B4FDE]">+</span> 9AM – 1PM daily
@@ -274,7 +274,7 @@ export default function HolidayCampPage() {
               { label: "WHO", value: "Juniors aged 8–18, all skill levels" },
               { label: "TIME", value: "Full-day: 9AM–1PM. Half-day sessions also available" },
               { label: "GROUPS", value: "Small groups with high coach-to-player ratio" },
-              { label: "INCLUDED", value: "Free OVA shirt with 5-day package booking" },
+              { label: "INCLUDED", value: "Free Obsidian training jersey with 5-day package booking" },
             ].map((detail, i) => (
               <SectionReveal key={detail.label} delay={i * 0.05}>
                 <div className="bg-[#111] p-8 group hover:bg-[#161616] transition-colors duration-500">

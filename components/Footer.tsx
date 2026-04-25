@@ -11,7 +11,7 @@ export default function Footer() {
           {/* Brand */}
           <div className="lg:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <Image src="/images/logo.png" alt="OVA" width={36} height={36} className="w-9 h-9" />
+              <Image src="/images/logo.png" alt="Obsidian Volleyball Academy" width={36} height={36} className="w-9 h-9" />
               <span className="font-heading text-2xl text-white tracking-[0.08em]">
                 OBSIDIAN<span className="text-[#9B4FDE]"> VOLLEYBALL</span>
               </span>

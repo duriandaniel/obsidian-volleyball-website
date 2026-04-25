@@ -53,7 +53,7 @@ export default function AboutPage() {
             <SectionReveal delay={0.1}>
               <div className="flex flex-col justify-center">
                 <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">THE ORIGIN</p>
-                <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide mb-8">WHY OVA EXISTS</h2>
+                <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide mb-8">WHY OBSIDIAN EXISTS</h2>
                 <div className="space-y-5 text-gray-400 leading-relaxed">
                   <p>
                     Dan founded Obsidian Volleyball Academy in 2025 after seeing firsthand how
@@ -65,12 +65,12 @@ export default function AboutPage() {
                     for inconsistent local coaching. Neither was good enough.
                   </p>
                   <p>
-                    OVA was built to solve that problem. By securing a permanent venue at
+                    Obsidian was built to solve that problem. By securing a permanent venue at
                     Baulkham Hills High School, Dan created an academy that brings
                     professional coaching standards to the Hills District.
                   </p>
                   <p>
-                    Today, OVA runs holiday camps and term programs for juniors aged 8 to 18,
+                    Today, Obsidian runs holiday camps and term programs for juniors aged 8 to 18,
                     with coaches who have competitive playing experience and a genuine passion
                     for developing the next generation of volleyball players.
                   </p>
@@ -140,7 +140,7 @@ export default function AboutPage() {
               },
               {
                 title: "ACCESSIBILITY",
-                desc: "Elite coaching shouldn't require a long commute. OVA brings quality training to the Hills District.",
+                desc: "Quality coaching shouldn't require a long commute. Obsidian brings high-quality training to the Hills District.",
               },
               {
                 title: "DEVELOPMENT",
@@ -166,7 +166,7 @@ export default function AboutPage() {
             <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
               BECOME PART
               <br />
-              OF <span className="text-[#9B4FDE]">OVA</span>
+              OF <span className="text-[#9B4FDE]">OBSIDIAN</span>
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <TrackedBookingLink

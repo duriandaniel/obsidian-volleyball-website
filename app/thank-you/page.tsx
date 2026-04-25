@@ -83,7 +83,7 @@ export default function ThankYouPage() {
       <section className="py-16 lg:py-24 bg-[#111] text-center">
         <div className="max-w-2xl mx-auto px-4">
           <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">SPREAD THE WORD</p>
-          <h2 className="font-heading text-3xl text-white tracking-wide mb-6">KNOW SOMEONE WHO&apos;D LOVE OVA?</h2>
+          <h2 className="font-heading text-3xl text-white tracking-wide mb-6">KNOW SOMEONE WHO&apos;D LOVE OBSIDIAN?</h2>
           <p className="text-gray-500 text-sm mb-8">Share with a friend. The more the merrier on court.</p>
           <div className="flex gap-4 justify-center">
             <a

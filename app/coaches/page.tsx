@@ -7,7 +7,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Volleyball Coaches | Baulkham Hills, Hills District Sydney",
   description:
-    "Meet the OVA coaching team. Accredited coaches based in Baulkham Hills, Hills District. Expert junior volleyball coaching.",
+    "Meet the Obsidian coaching team. Accredited coaches based in Baulkham Hills, Hills District. Expert junior volleyball coaching.",
   keywords: [
     "volleyball coaching Baulkham Hills",
     "volleyball coach Hills District",
@@ -18,14 +18,13 @@ export const metadata: Metadata = {
 const coaches = [
   {
     name: "Melinda",
-    role: "Head Coach & Co-Founder",
-    bio: "Melinda founded OVA in 2025 after years of competitive volleyball and a frustration that Hills District juniors had to travel for quality coaching. Her approach combines technical rigour with a supportive, athlete-centred environment. Specialises in beginner and intermediate development.",
+    role: "Coach",
+    bio: "Melinda combines years of competitive volleyball with a deep commitment to junior development. Her approach blends technical rigour with a supportive, athlete-centred environment. Specialises in beginner and intermediate development.",
     qualifications: [
       "NSWCHS Opens Champion",
       "Sydney West Opens Champion",
       "NSWCHS U16 All Schools",
       "NSW & SW Blues Award",
-      "Working With Children Check (NSW)",
     ],
     image: "/images/coach-melinda-card.jpg",
   },
@@ -38,7 +37,6 @@ const coaches = [
       "2x Women Division 1 SVL Champion",
       "2x AYVC Medalist",
       "CHS Champion",
-      "Working With Children Check (NSW)",
     ],
     image: "/images/coach-jessica-card.jpg",
   },
@@ -51,7 +49,6 @@ const coaches = [
       "2022 18s SVL Champions",
       "Sydney West Team (multiple years)",
       "AVSC National Competition 2nd Place",
-      "Working With Children Check (NSW)",
     ],
     image: "/images/coach-kaveesh-card.jpg",
   },
@@ -64,7 +61,6 @@ const coaches = [
       "AVSC Silver Medallist",
       "Sydney West Representative",
       "U16 All Schools National Champions",
-      "Working With Children Check (NSW)",
     ],
     image: "/images/coach-ethan-card.jpg",
   },
