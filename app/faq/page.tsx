@@ -26,7 +26,7 @@ const faqCategories = [
       },
       {
         q: "How much does it cost?",
-        a: "A 5-day holiday camp package is $200 and includes a free OVA shirt. Individual day rates and half-day rates are also available. Check the booking page for current pricing.",
+        a: "A 5-day holiday camp package is $200 and includes a free Obsidian training jersey. Individual day rates and half-day rates are also available. Check the booking page for current pricing.",
       },
       {
         q: "Do you run programs during school terms?",
@@ -94,7 +94,7 @@ const faqCategories = [
     faqs: [
       {
         q: "Are your coaches qualified?",
-        a: "All OVA coaches are accredited and hold current Working With Children Checks (WWCC). They bring competitive playing experience alongside their coaching credentials.",
+        a: "All Obsidian coaches are accredited and hold current Working With Children Checks. They bring competitive playing experience alongside their coaching credentials.",
       },
       {
         q: "What is the coach-to-player ratio?",

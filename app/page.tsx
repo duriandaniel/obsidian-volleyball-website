@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Hero from "@/components/Hero";
 import CoachCard from "@/components/CoachCard";
 import Gallery from "@/components/Gallery";
-import InstagramFeed from "@/components/InstagramFeed";
 import SectionReveal from "@/components/SectionReveal";
 import Image from "next/image";
 import Link from "next/link";
@@ -79,7 +78,7 @@ const eventSchema = {
     priceCurrency: "AUD",
     availability: "https://schema.org/InStock",
     url: "https://obsidianvolleyball.as.me",
-    description: "5-day camp package includes free OVA shirt",
+    description: "5-day camp package includes a free Obsidian training jersey",
   },
   audience: {
     "@type": "PeopleAudience",
@@ -106,26 +105,12 @@ export default function Home() {
                 <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
                   ABOUT
                   <br />
-                  <span className="text-[#9B4FDE]">OVA</span>
+                  <span className="text-[#9B4FDE]">OBSIDIAN</span>
                 </h2>
                 <p className="text-gray-400 leading-relaxed">
-                  Founded in 2025 to bring elite volleyball coaching to the Hills District.
-                  High-performance training at Baulkham Hills High School, so families don't have to travel across Sydney.
+                  Founded in 2025 to bring high-quality volleyball coaching to the Hills District.
+                  Professional training at Baulkham Hills High School, so families don't have to travel across Sydney.
                 </p>
-                <div className="flex gap-10 mt-10">
-                  <div>
-                    <p className="font-heading text-5xl text-[#9B4FDE]">2025</p>
-                    <p className="text-gray-600 text-xs mt-1 tracking-wider">EST.</p>
-                  </div>
-                  <div>
-                    <p className="font-heading text-5xl text-[#9B4FDE]">3</p>
-                    <p className="text-gray-600 text-xs mt-1 tracking-wider">LEVELS</p>
-                  </div>
-                  <div>
-                    <p className="font-heading text-5xl text-[#9B4FDE]">8–18</p>
-                    <p className="text-gray-600 text-xs mt-1 tracking-wider">AGES</p>
-                  </div>
-                </div>
               </div>
             </SectionReveal>
             <SectionReveal delay={0.2}>
@@ -147,9 +132,6 @@ export default function Home() {
 
       {/* Gallery */}
       <Gallery />
-
-      {/* Instagram */}
-      <InstagramFeed />
 
       {/* Coaches */}
       <section id="coaches" className="py-24 lg:py-32 bg-[#111]">
@@ -174,9 +156,9 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
             <CoachCard
               name="Melinda"
-              role="Head Coach & Co-Founder"
+              role="Coach"
               bio="Years of competitive volleyball experience and a deep commitment to junior development."
-              qualifications={["NSWCHS Opens Champion", "NSW & SW Blues Award", "WWCC Verified"]}
+              qualifications={["NSWCHS Opens Champion", "NSW & SW Blues Award"]}
               image="/images/coach-melinda-card.jpg"
               index={0}
             />
@@ -184,7 +166,7 @@ export default function Home() {
               name="Jessica"
               role="Lead Coach"
               bio="Energetic style and technical expertise. Specialises in skill development for intermediate and advanced juniors."
-              qualifications={["2x Women Div 1 SVL Champion", "2x AYVC Medalist", "WWCC Verified"]}
+              qualifications={["2x Women Div 1 SVL Champion", "2x AYVC Medalist"]}
               image="/images/coach-jessica-card.jpg"
               index={1}
             />
@@ -192,7 +174,7 @@ export default function Home() {
               name="Kaveesh"
               role="Coach"
               bio="Years of representative volleyball with a passion for coaching juniors. Energy and technical knowledge make sessions fun and effective."
-              qualifications={["16s NSWCHS State Team", "2022 18s SVL Champions", "WWCC Verified"]}
+              qualifications={["16s NSWCHS State Team", "2022 18s SVL Champions"]}
               image="/images/coach-kaveesh-card.jpg"
               index={2}
             />
@@ -209,12 +191,12 @@ export default function Home() {
               <div>
                 <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">GEAR UP</p>
                 <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
-                  OVA
+                  OBSIDIAN
                   <br />
-                  <span className="text-[#9B4FDE]">JERSEYS</span>
+                  <span className="text-[#9B4FDE]">TRAINING JERSEY</span>
                 </h2>
                 <p className="text-gray-400 leading-relaxed mb-6">
-                  Grab an official OVA training jersey at camp. Try on different sizes on-site and take one home.
+                  Grab an official Obsidian training jersey at camp. Try on different sizes on-site and take one home.
                 </p>
                 <div className="flex items-baseline gap-3 mb-8">
                   <p className="font-heading text-5xl text-[#9B4FDE]">$36</p>

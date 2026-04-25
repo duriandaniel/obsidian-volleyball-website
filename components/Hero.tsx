@@ -55,7 +55,7 @@ export default function Hero() {
             transition={{ duration: 0.7, ease: "easeOut" }}
           >
             <p className="text-[#9B4FDE] font-heading text-base sm:text-lg tracking-[0.4em] mb-6">
-              HILLS DISTRICT &middot; SYDNEY
+              HILLS DISTRICT
             </p>
           </motion.div>
 
@@ -65,11 +65,9 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
           >
-            ELITE
-            <br />
             JUNIOR
             <br />
-            <span className="text-[#9B4FDE]">VOLLEY</span>BALL
+            <span className="text-[#9B4FDE]">VOLLEYBALL</span>
           </motion.h1>
 
           <motion.p
@@ -97,7 +95,7 @@ export default function Hero() {
               href="/holiday-camp"
               className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
             >
-              VIEW CAMPS
+              VIEW PROGRAMS
             </a>
           </motion.div>
         </div>

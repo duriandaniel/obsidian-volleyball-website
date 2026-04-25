@@ -88,58 +88,6 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Location + Map */}
-      <section className="py-24 lg:py-32 bg-[#0A0A0A]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-12">
-            <SectionReveal>
-              <div>
-                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">TRAINING VENUE</p>
-                <h2 className="font-heading text-4xl lg:text-5xl text-white tracking-wide mb-8">LOCATION</h2>
-                <address className="not-italic space-y-3 mb-8">
-                  <p className="text-white text-lg">Baulkham Hills High School</p>
-                  <p className="text-gray-500 text-sm">Windsor Road, Baulkham Hills</p>
-                  <p className="text-gray-500 text-sm">NSW 2153, Australia</p>
-                </address>
-                <div className="border-t border-white/[0.06] pt-6 mb-8">
-                  <h3 className="font-heading text-lg text-white mb-3 tracking-wide">NEARBY SUBURBS</h3>
-                  <p className="text-gray-600 text-sm leading-relaxed">
-                    Castle Hill, Kellyville, Cherrybrook, Bella Vista,
-                    Winston Hills, Northmead, North Rocks, Carlingford,
-                    West Pennant Hills, Dural
-                  </p>
-                </div>
-                <a
-                  href="https://www.google.com/maps/place/Obsidian+Volleyball+Academy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"
-                >
-                  Get directions
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M7 17L17 7M17 7H7M17 7v10" />
-                  </svg>
-                </a>
-              </div>
-            </SectionReveal>
-            <SectionReveal delay={0.15}>
-              <div className="aspect-[16/10] lg:aspect-auto lg:h-full min-h-[400px] overflow-hidden bg-[#111]">
-                <iframe
-                  src="https://www.google.com/maps?q=Obsidian+Volleyball+Academy&output=embed"
-                  width="100%"
-                  height="100%"
-                  style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2)" }}
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                  title="Obsidian Volleyball Academy location"
-                />
-              </div>
-            </SectionReveal>
-          </div>
-        </div>
-      </section>
-
     </div>
   );
 }

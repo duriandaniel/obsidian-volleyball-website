@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import CoachCard from "@/components/CoachCard";
 import SectionReveal from "@/components/SectionReveal";
-import TrackedBookingLink from "@/components/TrackedBookingLink";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Volleyball Coaches | Baulkham Hills, Hills District Sydney",
   description:
-    "Meet the OVA coaching team. Accredited coaches based in Baulkham Hills, Hills District. Expert junior volleyball coaching.",
+    "Meet the Obsidian coaching team. Experienced players coaching juniors in Baulkham Hills, Hills District.",
   keywords: [
     "volleyball coaching Baulkham Hills",
     "volleyball coach Hills District",
@@ -18,14 +16,13 @@ export const metadata: Metadata = {
 const coaches = [
   {
     name: "Melinda",
-    role: "Head Coach & Co-Founder",
-    bio: "Melinda founded OVA in 2025 after years of competitive volleyball and a frustration that Hills District juniors had to travel for quality coaching. Her approach combines technical rigour with a supportive, athlete-centred environment. Specialises in beginner and intermediate development.",
+    role: "Coach",
+    bio: "Melinda combines years of competitive volleyball with a deep commitment to junior development. Her approach blends technical rigour with a supportive, athlete-centred environment. Specialises in beginner and intermediate development.",
     qualifications: [
       "NSWCHS Opens Champion",
       "Sydney West Opens Champion",
       "NSWCHS U16 All Schools",
       "NSW & SW Blues Award",
-      "Working With Children Check (NSW)",
     ],
     image: "/images/coach-melinda-card.jpg",
   },
@@ -38,7 +35,6 @@ const coaches = [
       "2x Women Division 1 SVL Champion",
       "2x AYVC Medalist",
       "CHS Champion",
-      "Working With Children Check (NSW)",
     ],
     image: "/images/coach-jessica-card.jpg",
   },
@@ -51,7 +47,6 @@ const coaches = [
       "2022 18s SVL Champions",
       "Sydney West Team (multiple years)",
       "AVSC National Competition 2nd Place",
-      "Working With Children Check (NSW)",
     ],
     image: "/images/coach-kaveesh-card.jpg",
   },
@@ -64,7 +59,6 @@ const coaches = [
       "AVSC Silver Medallist",
       "Sydney West Representative",
       "U16 All Schools National Champions",
-      "Working With Children Check (NSW)",
     ],
     image: "/images/coach-ethan-card.jpg",
   },
@@ -84,8 +78,7 @@ export default function CoachesPage() {
               <span className="text-[#9B4FDE]">COACHES</span>
             </h1>
             <p className="text-gray-400 text-xl max-w-2xl leading-relaxed">
-              Accredited professionals who combine competitive
-              experience with a genuine passion for junior development.
+              Experienced players with a passion for coaching at all levels.
             </p>
           </SectionReveal>
         </div>
@@ -102,34 +95,6 @@ export default function CoachesPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 lg:py-32 bg-[#0A0A0A] text-center">
-        <div className="section-divider absolute left-0 right-0" />
-        <div className="max-w-2xl mx-auto px-4">
-          <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">TRAIN WITH THE BEST</p>
-            <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
-              BOOK A
-              <br />
-              <span className="text-[#9B4FDE]">SESSION</span>
-            </h2>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <TrackedBookingLink
-                location="coaches_cta"
-                className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
-              >
-                BOOK NOW
-              </TrackedBookingLink>
-              <Link
-                href="/contact"
-                className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide"
-              >
-                CONTACT US
-              </Link>
-            </div>
-          </SectionReveal>
-        </div>
-      </section>
     </div>
   );
 }

@@ -39,11 +39,9 @@ export default function ThankYouPage() {
           <h2 className="font-heading text-3xl text-white tracking-wide mb-8">WHAT TO BRING</h2>
           <ul className="space-y-4">
             {[
-              "Sports shoes (clean, non-marking soles)",
-              "Water bottle (large, sessions are active)",
+              "Shoes suitable for volleyball",
+              "Water bottle",
               "Lunch and snacks for full-day camps",
-              "Hat and sunscreen for any outdoor warm-up",
-              "A positive attitude and readiness to work hard",
             ].map((item, i) => (
               <li key={i} className="flex items-start gap-4 text-gray-400">
                 <span className="text-[#9B4FDE] font-heading text-lg flex-shrink-0 w-6">{i + 1}</span>
@@ -63,7 +61,7 @@ export default function ThankYouPage() {
             <p className="text-gray-500 text-sm">Windsor Road, Baulkham Hills, NSW 2153</p>
           </address>
           <p className="text-gray-600 text-sm mb-6">
-            Free parking on-site. Indoor courts, so weather is never a problem.
+            Free parking on-site.
           </p>
           <a
             href="https://www.google.com/maps/place/Obsidian+Volleyball+Academy"
@@ -83,7 +81,7 @@ export default function ThankYouPage() {
       <section className="py-16 lg:py-24 bg-[#111] text-center">
         <div className="max-w-2xl mx-auto px-4">
           <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">SPREAD THE WORD</p>
-          <h2 className="font-heading text-3xl text-white tracking-wide mb-6">KNOW SOMEONE WHO&apos;D LOVE OVA?</h2>
+          <h2 className="font-heading text-3xl text-white tracking-wide mb-6">KNOW SOMEONE WHO&apos;D LOVE OBSIDIAN?</h2>
           <p className="text-gray-500 text-sm mb-8">Share with a friend. The more the merrier on court.</p>
           <div className="flex gap-4 justify-center">
             <a
