@@ -10,7 +10,6 @@ const navLinks = [
   { href: "/holiday-camp", label: "Camps" },
   { href: "/term-programs", label: "Term Programs" },
   { href: "/coaches", label: "Coaches" },
-  { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
 ];
