@@ -6,9 +6,9 @@ import ReelPlayer from "@/components/ReelPlayer";
 import SectionReveal from "@/components/SectionReveal";
 
 const FEATURED_REELS = [
-  "ova/reels/reel-1",
-  "ova/reels/reel-2",
-  "ova/reels/reel-3",
+  "Ethan_Beginner_Setting_Hand_Position_pdsrrv",
+  "Ethan_Beginner_Blocking_No_Net_Touch_xhe6rp",
+  "Ethan_Blocking_Tight_Hands_tivhlv",
 ];
 import Image from "next/image";
 import Link from "next/link";
