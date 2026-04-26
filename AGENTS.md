@@ -48,3 +48,11 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Vercel auth token already at `~/.local/share/com.vercel.cli/auth.json`
 - Never push directly to `main` for content/code changes — staging first, always
 - If git auto-deploy is ever wired up via Vercel dashboard (Settings → Git), step 2 of prod deploy can be dropped — but until then, always run `vercel deploy --prod` after pushing main
+
+## Cloudinary
+- Cloud name: `dibp8icbq`
+- API credentials in `.env.local` (gitignored): `CLOUDINARY_API_KEY` + `CLOUDINARY_API_SECRET`
+- List videos: `curl -u "$KEY:$SECRET" "https://api.cloudinary.com/v1_1/dibp8icbq/resources/video?max_results=50"`
+- List images: change `/video` to `/image` in URL
+- Public ID is what `ReelPlayer` and `CldImage` need (e.g. `Ethan_Blocking_Tight_Hands_tivhlv`)
+- Reels use `<ReelPlayer publicId={...} />`; images use `<CloudImage src={...} />`
