@@ -28,7 +28,7 @@ const coaches = [
   },
   {
     name: "Jessica",
-    role: "Lead Coach",
+    role: "Coach",
     bio: "Jessica's competitive playing background and natural ability to connect with young athletes makes her invaluable. Sharp eye for technique and a knack for breaking complex skills into learnable steps. Leads intermediate and advanced sessions.",
     qualifications: [
       "u17-18 Phoenix Sky",
