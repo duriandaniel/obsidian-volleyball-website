@@ -11,6 +11,14 @@ export const metadata: Metadata = {
     "volleyball coach Hills District",
     "accredited volleyball coach Sydney",
   ],
+  alternates: { canonical: "/coaches" },
+  openGraph: {
+    title: "Volleyball Coaches | Baulkham Hills, Hills District Sydney",
+    description:
+      "Meet the Obsidian coaching team. Experienced players coaching juniors in Baulkham Hills, Hills District.",
+    images: ["/images/coach-instruction.jpg"],
+    url: "/coaches",
+  },
 };
 
 const coaches = [

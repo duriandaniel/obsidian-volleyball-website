@@ -71,7 +71,7 @@ export function generateMetadata({ params }: { params: Promise<{ suburb: string 
     if (!data) return { title: "Area Not Found" };
     return {
       title: `Volleyball Academy Near ${data.name} | Junior Volleyball ${data.name}`,
-      description: `Junior volleyball academy ${data.drive} from ${data.name}. Holiday camps and term programs at Baulkham Hills High School for ages 8–18. Book now.`,
+      description: `Junior volleyball academy ${data.drive} from ${data.name}. Holiday camps and term programs at Baulkham Hills High School for ages 8 to 18. Book now.`,
       keywords: [
         `volleyball ${data.name.toLowerCase()}`,
         `junior volleyball ${data.name.toLowerCase()}`,
@@ -79,6 +79,13 @@ export function generateMetadata({ params }: { params: Promise<{ suburb: string 
         `volleyball academy near ${data.name.toLowerCase()}`,
         `kids volleyball ${data.name.toLowerCase()}`,
       ],
+      alternates: { canonical: `/areas/${data.slug}` },
+      openGraph: {
+        title: `Volleyball Academy Near ${data.name}`,
+        description: `Junior volleyball ${data.drive} from ${data.name}. Holiday camps and term programs.`,
+        url: `/areas/${data.slug}`,
+        images: ["/images/hero.jpg"],
+      },
     };
   });
 }
@@ -97,8 +104,24 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
 
   const otherSuburbs = suburbs.filter((s) => s.slug !== suburb).slice(0, 4);
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://obsidianvolleyball.com" },
+      { "@type": "ListItem", position: 2, name: "Service Areas", item: "https://obsidianvolleyball.com/areas" },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: data.name,
+        item: `https://obsidianvolleyball.com/areas/${data.slug}`,
+      },
+    ],
+  };
+
   return (
     <div className="pt-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* Hero */}
       <section className="py-24 lg:py-32 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

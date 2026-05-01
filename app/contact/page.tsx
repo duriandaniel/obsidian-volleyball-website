@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "Contact | Obsidian Volleyball Academy Baulkham Hills",
   description:
     "Get in touch with Obsidian Volleyball Academy. Located at Baulkham Hills High School, Hills District Sydney. Email, Instagram, or book directly.",
+  alternates: { canonical: "/contact" },
 };
 
 const contactMethods = [

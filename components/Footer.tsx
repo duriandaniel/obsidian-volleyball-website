@@ -2,6 +2,18 @@ import Link from "next/link";
 import Image from "next/image";
 import TrackedBookingLink from "./TrackedBookingLink";
 
+const serviceAreas = [
+  { slug: "castle-hill", name: "Castle Hill" },
+  { slug: "kellyville", name: "Kellyville" },
+  { slug: "cherrybrook", name: "Cherrybrook" },
+  { slug: "bella-vista", name: "Bella Vista" },
+  { slug: "winston-hills", name: "Winston Hills" },
+  { slug: "northmead", name: "Northmead" },
+  { slug: "carlingford", name: "Carlingford" },
+  { slug: "west-pennant-hills", name: "West Pennant Hills" },
+  { slug: "dural", name: "Dural" },
+];
+
 export default function Footer() {
   return (
     <footer className="bg-[#0A0A0A] border-t border-white/[0.06] mt-auto">
@@ -86,6 +98,32 @@ export default function Footer() {
               Book a session &rarr;
             </TrackedBookingLink>
           </div>
+        </div>
+
+        {/* Service areas */}
+        <div className="mt-12 pt-8 border-t border-white/[0.04]">
+          <h3 className="font-heading text-base text-gray-400 mb-4 tracking-[0.2em]">SERVICE AREAS</h3>
+          <p className="text-gray-700 text-xs mb-4">Junior volleyball coaching across the Hills District:</p>
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+            {serviceAreas.map((area) => (
+              <li key={area.slug}>
+                <Link
+                  href={`/areas/${area.slug}`}
+                  className="text-gray-600 hover:text-[#9B4FDE] text-sm transition-colors duration-300"
+                >
+                  Volleyball {area.name}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link
+                href="/areas"
+                className="text-gray-500 hover:text-[#9B4FDE] text-sm transition-colors duration-300"
+              >
+                All areas &rarr;
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
 

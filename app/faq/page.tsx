@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "FAQ | Obsidian Volleyball Academy Baulkham Hills",
   description:
     "Frequently asked questions about Obsidian Volleyball Academy. Programs, pricing, age groups, and more.",
+  alternates: { canonical: "/faq" },
 };
 
 const faqCategories = [

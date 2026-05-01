@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Term Programs | Obsidian Volleyball Academy",
   description:
     "Weekly volleyball term programs at Obsidian Volleyball Academy. Term 2 details coming soon.",
+  alternates: { canonical: "/term-programs" },
 };
 
 export default function TermProgramsPage() {

@@ -14,6 +14,14 @@ export const metadata: Metadata = {
     "volleyball camp Castle Hill",
     "junior volleyball holiday program Hills District",
   ],
+  alternates: { canonical: "/holiday-camp" },
+  openGraph: {
+    title: "Volleyball Holiday Camps | Baulkham Hills, Sydney Hills District",
+    description:
+      "Volleyball holiday camps in Baulkham Hills for juniors aged 8 to 18. School holiday programs in the Hills District, Sydney.",
+    images: ["/images/gallery-spike.jpg"],
+    url: "/holiday-camp",
+  },
 };
 
 const campSchema = {

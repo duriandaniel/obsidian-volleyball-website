@@ -19,7 +19,8 @@ export type BookingLocation =
   | "coaches_cta"
   | "about_cta"
   | "term_programs_hero"
-  | "book_page";
+  | "book_page"
+  | "areas_index_cta";
 
 export function trackBookingClick(tier: BookingTier, location: BookingLocation) {
   if (typeof window !== "undefined" && window.dataLayer) {
