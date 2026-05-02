@@ -233,7 +233,8 @@ function VenueGroup({
 }) {
   return (
     <div>
-      {/* Venue header: name + suburb + day, single block, no thumbnail */}
+      {/* Venue header: name + suburb. Day moves to each slot row so future
+          venues can host multiple days without contradicting a header label. */}
       <div className="border-l-2 border-[#9B4FDE] pl-5 sm:pl-6 lg:pl-8 mb-6 lg:mb-8">
         <h4 className="font-heading text-2xl sm:text-3xl lg:text-5xl text-white tracking-wide leading-[1.0]">
           {venue.name.toUpperCase()}
@@ -241,9 +242,6 @@ function VenueGroup({
             ({venue.suburb})
           </span>
         </h4>
-        <p className="text-[#9B4FDE] text-[11px] sm:text-xs tracking-[0.3em] uppercase mt-3">
-          {venue.day}
-        </p>
       </div>
 
       {/* Time rows */}
@@ -251,6 +249,7 @@ function VenueGroup({
         {times.map((time) => (
           <SlotRow
             key={time}
+            day={venue.day}
             time={time}
             coaches={venue.coaches}
             enrolHref={enrolHref}
@@ -292,10 +291,12 @@ function SmallCoachAvatar({ coach }: { coach: Coach }) {
 }
 
 function SlotRow({
+  day,
   time,
   coaches,
   enrolHref,
 }: {
+  day: string;
   time: string;
   coaches: Coach[];
   enrolHref: string;
@@ -303,12 +304,17 @@ function SlotRow({
   const coachNames = coaches.map((c) => c.name).join(" + ");
   return (
     <div className="bg-[#0A0A0A] flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6 px-5 sm:px-6 lg:px-8 py-5 lg:py-6 hover:bg-[#111] transition-colors duration-300">
-      {/* Left: time + coaches + duration */}
+      {/* Left: day + time + coaches + duration */}
       <div className="flex items-center gap-4 sm:gap-5 lg:gap-7 flex-wrap min-w-0">
-        <span className="font-heading text-lg sm:text-xl lg:text-2xl text-[#9B4FDE] tracking-wider shrink-0">
-          {time}
-        </span>
-        <span className="hidden sm:inline-block w-px h-6 bg-white/10 shrink-0" />
+        <div className="flex flex-col shrink-0">
+          <span className="text-[10px] sm:text-[11px] tracking-[0.3em] uppercase text-gray-500 font-heading">
+            {day}
+          </span>
+          <span className="font-heading text-lg sm:text-xl lg:text-2xl text-[#9B4FDE] tracking-wider leading-tight">
+            {time}
+          </span>
+        </div>
+        <span className="hidden sm:inline-block w-px h-8 bg-white/10 shrink-0" />
         <div className="flex items-center gap-2.5 min-w-0">
           <div className="flex -space-x-2">
             {coaches.map((c) => (
