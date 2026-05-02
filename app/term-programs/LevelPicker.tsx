@@ -219,7 +219,7 @@ function VenueGroup({
 }) {
   return (
     <div>
-      {/* Venue header: thumbnail + name(suburb) + coach avatars */}
+      {/* Venue header: thumbnail + name(suburb) + coach avatars (inline) */}
       <div className="flex items-start gap-5 lg:gap-6 mb-8">
         {/* Thumbnail */}
         <div className="w-28 sm:w-36 lg:w-44 aspect-[4/3] relative shrink-0 overflow-hidden border border-white/[0.08]">
@@ -234,19 +234,16 @@ function VenueGroup({
           <div className="absolute inset-0 bg-gradient-to-tr from-[#0A0A0A]/40 to-transparent" />
         </div>
 
-        {/* Name + coaches */}
+        {/* Name + coaches (inline on desktop, stacked on mobile) */}
         <div className="flex-1 min-w-0 pt-1">
-          <h4 className="font-heading text-2xl sm:text-3xl lg:text-5xl text-white tracking-wide leading-[1.0]">
-            {venue.name.toUpperCase()}
-            <span className="block sm:inline text-gray-500 text-base sm:text-lg lg:text-2xl tracking-wider sm:ml-2">
-              ({venue.suburb})
-            </span>
-          </h4>
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
+            <h4 className="font-heading text-2xl sm:text-3xl lg:text-5xl text-white tracking-wide leading-[1.0]">
+              {venue.name.toUpperCase()}
+              <span className="block sm:inline text-gray-500 text-base sm:text-lg lg:text-2xl tracking-wider sm:ml-2">
+                ({venue.suburb})
+              </span>
+            </h4>
 
-          <div className="flex items-center gap-4 mt-5">
-            <span className="text-gray-600 text-[10px] tracking-[0.3em] uppercase font-heading">
-              Coaches
-            </span>
             <div className="flex -space-x-2">
               {venue.coaches.map((coach) => (
                 <CoachAvatar key={coach.slug} coach={coach} />
@@ -279,19 +276,19 @@ function CoachAvatar({ coach }: { coach: Coach }) {
       aria-label={`Coach ${coach.name} profile`}
       className="block group/av"
     >
-      <div className="relative w-11 h-11 lg:w-12 lg:h-12 rounded-full overflow-hidden border-2 border-[#0A0A0A] bg-[#0F0F0F] ring-1 ring-white/10 group-hover/av:ring-[#9B4FDE] transition-all duration-300">
+      <div className="relative w-14 h-14 lg:w-16 lg:h-16 rounded-full overflow-hidden border-2 border-[#0A0A0A] bg-[#0F0F0F] ring-1 ring-white/10 group-hover/av:ring-[#9B4FDE] transition-all duration-300">
         {coach.image ? (
           <Image
             src={coach.image}
             alt={coach.name}
             fill
             className="object-cover"
-            sizes="48px"
+            sizes="64px"
             quality={75}
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1424] to-[#0F0F0F]">
-            <span className="text-[#9B4FDE] font-heading text-sm">
+            <span className="text-[#9B4FDE] font-heading text-base lg:text-lg">
               {coach.name[0]}
             </span>
           </div>
@@ -312,12 +309,12 @@ function SlotRow({
 }) {
   return (
     <div className="bg-[#0A0A0A] flex items-center justify-between gap-4 sm:gap-6 px-5 sm:px-6 lg:px-8 py-5 lg:py-6 hover:bg-[#111] transition-colors duration-300">
-      <div className="flex items-center gap-3 sm:gap-5 lg:gap-6 min-w-0">
-        <span className="font-heading text-[11px] sm:text-xs text-gray-500 tracking-[0.3em] uppercase shrink-0">
+      <div className="flex items-center gap-4 sm:gap-6 lg:gap-8 min-w-0">
+        <span className="font-heading text-base sm:text-lg lg:text-2xl text-white tracking-[0.2em] uppercase shrink-0">
           {day}
         </span>
-        <span className="hidden sm:inline-block w-px h-5 bg-white/10 shrink-0" />
-        <span className="font-heading text-lg sm:text-xl lg:text-2xl text-[#9B4FDE] tracking-wider truncate">
+        <span className="hidden sm:inline-block w-px h-7 bg-[#9B4FDE]/40 shrink-0" />
+        <span className="font-heading text-base sm:text-lg lg:text-2xl text-[#9B4FDE] tracking-wider truncate">
           {time}
         </span>
         <span className="hidden md:inline-block text-gray-700 text-[10px] tracking-wider shrink-0">
