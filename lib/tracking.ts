@@ -20,7 +20,8 @@ export type BookingLocation =
   | "about_cta"
   | "term_programs_hero"
   | "book_page"
-  | "areas_index_cta";
+  | "areas_index_cta"
+  | "promo_banner";
 
 export function trackBookingClick(tier: BookingTier, location: BookingLocation) {
   if (typeof window !== "undefined" && window.dataLayer) {

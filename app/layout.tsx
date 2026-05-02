@@ -160,7 +160,7 @@ export default function RootLayout({
         <GoogleTagManagerNoScript />
         <PromoBanner />
         <Nav />
-        <main className="flex-1 pt-7">{children}</main>
+        <main className="flex-1 pt-8">{children}</main>
         <Footer />
         <CookieConsent />
       </body>
