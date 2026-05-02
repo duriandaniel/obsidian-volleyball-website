@@ -36,11 +36,12 @@ const ENROL_PLACEHOLDER = "/contact";
 const VENUES: Venue[] = [
   {
     id: "kings",
-    name: "Kings School Sports Centre",
+    name: "Kings School",
     suburb: "Parramatta",
-    day: "Thursdays",
+    day: "Thursday",
+    thumbnail: "/images/hero.jpg",
     coaches: [
-      { name: "Jessica", slug: "jessica" },
+      { name: "Jessica", slug: "jessica", image: "/images/coach-jessica-card.jpg" },
       { name: "Chris", slug: "chris" },
     ],
     slots: [
@@ -52,10 +53,11 @@ const VENUES: Venue[] = [
     id: "bennelong",
     name: "Bennelong Sports Centre",
     suburb: "West Ryde",
-    day: "Fridays",
+    day: "Friday",
+    thumbnail: "/images/venue.jpg",
     coaches: [
       { name: "Sandeep", slug: "sandeep" },
-      { name: "Kaveesh", slug: "kaveesh" },
+      { name: "Kaveesh", slug: "kaveesh", image: "/images/coach-kaveesh-card.jpg" },
     ],
     slots: [
       { time: "5:00 – 6:30 PM", levels: ["Beginner", "Intermediate"] },
@@ -76,7 +78,7 @@ const LEVELS: LevelInfo[] = [
     level: "Intermediate",
     description:
       "Comfortable with the basics. Working on positional play, rotations, and team systems.",
-    image: "/images/gallery-setting.jpg",
+    image: "/images/gallery-game.jpg",
   },
   {
     level: "Advanced",

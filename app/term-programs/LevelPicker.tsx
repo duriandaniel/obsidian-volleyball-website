@@ -9,12 +9,15 @@ export type Level = "Beginner" | "Intermediate" | "Advanced";
 
 export type Slot = { time: string; levels: Level[] };
 
+export type Coach = { name: string; slug: string; image?: string };
+
 export type Venue = {
   id: string;
   name: string;
   suburb: string;
   day: string;
-  coaches: { name: string; slug: string }[];
+  thumbnail: string;
+  coaches: Coach[];
   slots: Slot[];
 };
 
@@ -47,7 +50,7 @@ export default function LevelPicker({ levels, venues, enrolHref }: LevelPickerPr
   return (
     <div>
       {/* Level cards grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 items-stretch">
         {levels.map((info) => {
           const isActive = info.level === selected;
           const isDimmed = selected !== null && !isActive;
@@ -55,14 +58,16 @@ export default function LevelPicker({ levels, venues, enrolHref }: LevelPickerPr
             <button
               key={info.level}
               onClick={() => setSelected(info.level)}
-              className={`group relative text-left transition-all duration-500 overflow-hidden ${
+              className={`group relative text-left flex flex-col h-full transition-all duration-500 overflow-hidden ${
                 isDimmed ? "opacity-55 hover:opacity-100" : "opacity-100"
               }`}
             >
-              {/* Image header */}
+              {/* Image */}
               <div
-                className={`aspect-[4/3] relative overflow-hidden border ${
-                  isActive ? "border-[#9B4FDE]" : "border-white/[0.06]"
+                className={`aspect-[4/3] relative overflow-hidden border-2 transition-colors duration-500 ${
+                  isActive
+                    ? "border-[#9B4FDE]"
+                    : "border-white/[0.06] group-hover:border-[#9B4FDE]/40"
                 }`}
               >
                 <Image
@@ -75,39 +80,39 @@ export default function LevelPicker({ levels, venues, enrolHref }: LevelPickerPr
                   sizes="(max-width: 768px) 100vw, 33vw"
                   quality={85}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/40 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/70 via-transparent to-transparent" />
                 <div
                   className={`absolute inset-0 transition-colors duration-500 ${
-                    isActive ? "bg-[#9B4FDE]/[0.06]" : "group-hover:bg-[#9B4FDE]/[0.04]"
+                    isActive ? "bg-[#9B4FDE]/[0.08]" : "group-hover:bg-[#9B4FDE]/[0.04]"
                   }`}
                 />
-                {/* Level chip floating on image */}
-                <div className="absolute top-4 left-4">
-                  <span
-                    className={`inline-block text-[11px] font-heading tracking-[0.3em] px-3 py-1.5 uppercase border transition-colors duration-300 ${
-                      isActive
-                        ? "bg-[#9B4FDE] text-white border-[#9B4FDE]"
-                        : "bg-[#0A0A0A]/70 text-[#9B4FDE] border-[#9B4FDE]/30"
-                    }`}
-                  >
-                    {info.level}
-                  </span>
-                </div>
               </div>
 
               {/* Body */}
               <div
-                className={`p-6 lg:p-8 border border-t-0 transition-colors duration-500 ${
+                className={`flex-1 flex flex-col p-7 lg:p-9 border-2 border-t-0 transition-colors duration-500 ${
                   isActive
                     ? "border-[#9B4FDE] bg-[#161020]"
                     : "border-white/[0.06] bg-[#0F0F0F] group-hover:bg-[#141114] group-hover:border-[#9B4FDE]/30"
                 }`}
               >
-                <p className="text-gray-400 text-sm leading-relaxed mb-6 min-h-[68px]">
+                {/* Big level name */}
+                <h3
+                  className={`font-heading text-4xl lg:text-6xl tracking-wide leading-[0.95] mb-5 transition-colors duration-300 ${
+                    isActive ? "text-[#9B4FDE]" : "text-white group-hover:text-[#9B4FDE]"
+                  }`}
+                >
+                  {info.level.toUpperCase()}
+                </h3>
+
+                {/* Description */}
+                <p className="text-gray-400 text-sm lg:text-base leading-relaxed flex-1 mb-7">
                   {info.description}
                 </p>
+
+                {/* CTA pinned to bottom */}
                 <span
-                  className={`inline-flex items-center gap-2 font-heading text-sm tracking-[0.2em] uppercase transition-colors duration-300 ${
+                  className={`inline-flex items-center gap-2 font-heading text-sm tracking-[0.25em] uppercase transition-colors duration-300 ${
                     isActive
                       ? "text-[#9B4FDE]"
                       : "text-gray-400 group-hover:text-[#9B4FDE]"
@@ -181,17 +186,13 @@ function ClassesList({
   return (
     <div>
       <div className="mb-12">
-        <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">
-          STEP 2
-        </p>
         <h3 className="font-heading text-4xl lg:text-6xl text-white tracking-wide leading-[0.95]">
-          AVAILABLE
-          <br />
-          <span className="text-[#9B4FDE]">{level.toUpperCase()} CLASSES</span>
+          {level.toUpperCase()}{" "}
+          <span className="text-[#9B4FDE]">CLASSES</span>
         </h3>
       </div>
 
-      <div className="space-y-14">
+      <div className="space-y-16">
         {optionsByVenue.map(({ venue, times }, i) => (
           <motion.div
             key={venue.id}
@@ -218,64 +219,129 @@ function VenueGroup({
 }) {
   return (
     <div>
-      {/* Venue header — venue name primary, suburb secondary */}
-      <div className="border-l-2 border-[#9B4FDE] pl-6 lg:pl-8 mb-6">
-        <h4 className="font-heading text-3xl lg:text-5xl text-white tracking-wide leading-[0.95] mb-3">
-          {venue.name.toUpperCase()}
-        </h4>
-        <p className="text-gray-500 text-xs tracking-[0.3em] uppercase mb-3">
-          {venue.suburb} &middot; {venue.day}
-        </p>
-        <p className="text-gray-500 text-sm">
-          Coached by{" "}
-          {venue.coaches.map((c, i) => (
-            <span key={c.slug}>
-              <Link
-                href={`/coaches#${c.slug}`}
-                className="text-white hover:text-[#9B4FDE] transition-colors underline decoration-white/20 underline-offset-4 hover:decoration-[#9B4FDE]"
-              >
-                {c.name}
-              </Link>
-              {i < venue.coaches.length - 1 ? " and " : ""}
+      {/* Venue header: thumbnail + name(suburb) + coach avatars */}
+      <div className="flex items-start gap-5 lg:gap-6 mb-8">
+        {/* Thumbnail */}
+        <div className="w-28 sm:w-36 lg:w-44 aspect-[4/3] relative shrink-0 overflow-hidden border border-white/[0.08]">
+          <Image
+            src={venue.thumbnail}
+            alt={`${venue.name} venue`}
+            fill
+            className="object-cover"
+            sizes="(max-width: 640px) 112px, (max-width: 1024px) 144px, 176px"
+            quality={80}
+          />
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#0A0A0A]/40 to-transparent" />
+        </div>
+
+        {/* Name + coaches */}
+        <div className="flex-1 min-w-0 pt-1">
+          <h4 className="font-heading text-2xl sm:text-3xl lg:text-5xl text-white tracking-wide leading-[1.0]">
+            {venue.name.toUpperCase()}
+            <span className="block sm:inline text-gray-500 text-base sm:text-lg lg:text-2xl tracking-wider sm:ml-2">
+              ({venue.suburb})
             </span>
-          ))}
-        </p>
+          </h4>
+
+          <div className="flex items-center gap-4 mt-5">
+            <span className="text-gray-600 text-[10px] tracking-[0.3em] uppercase font-heading">
+              Coaches
+            </span>
+            <div className="flex -space-x-2">
+              {venue.coaches.map((coach) => (
+                <CoachAvatar key={coach.slug} coach={coach} />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Time rows */}
       <div className="space-y-px bg-white/[0.04] border border-white/[0.04]">
         {times.map((time) => (
-          <div
+          <SlotRow
             key={time}
-            className="bg-[#0A0A0A] flex items-center justify-between gap-6 px-6 lg:px-8 py-5 lg:py-6 hover:bg-[#111] transition-colors duration-300"
-          >
-            <div className="flex items-center gap-6">
-              <p className="font-heading text-xl lg:text-2xl text-[#9B4FDE] tracking-wider">
-                {time}
-              </p>
-              <p className="text-gray-700 text-[10px] tracking-wider hidden sm:block">
-                1.5 HR
-              </p>
-            </div>
-            <Link
-              href={enrolHref}
-              className="inline-flex items-center gap-2 text-[#9B4FDE] font-heading text-sm tracking-[0.2em] hover:gap-3 transition-all duration-300 uppercase"
-            >
-              <span>Enrol</span>
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </Link>
-          </div>
+            day={venue.day}
+            time={time}
+            enrolHref={enrolHref}
+          />
         ))}
       </div>
+    </div>
+  );
+}
+
+function CoachAvatar({ coach }: { coach: Coach }) {
+  return (
+    <Link
+      href={`/coaches#${coach.slug}`}
+      title={coach.name}
+      aria-label={`Coach ${coach.name} profile`}
+      className="block group/av"
+    >
+      <div className="relative w-11 h-11 lg:w-12 lg:h-12 rounded-full overflow-hidden border-2 border-[#0A0A0A] bg-[#0F0F0F] ring-1 ring-white/10 group-hover/av:ring-[#9B4FDE] transition-all duration-300">
+        {coach.image ? (
+          <Image
+            src={coach.image}
+            alt={coach.name}
+            fill
+            className="object-cover"
+            sizes="48px"
+            quality={75}
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1424] to-[#0F0F0F]">
+            <span className="text-[#9B4FDE] font-heading text-sm">
+              {coach.name[0]}
+            </span>
+          </div>
+        )}
+      </div>
+    </Link>
+  );
+}
+
+function SlotRow({
+  day,
+  time,
+  enrolHref,
+}: {
+  day: string;
+  time: string;
+  enrolHref: string;
+}) {
+  return (
+    <div className="bg-[#0A0A0A] flex items-center justify-between gap-4 sm:gap-6 px-5 sm:px-6 lg:px-8 py-5 lg:py-6 hover:bg-[#111] transition-colors duration-300">
+      <div className="flex items-center gap-3 sm:gap-5 lg:gap-6 min-w-0">
+        <span className="font-heading text-[11px] sm:text-xs text-gray-500 tracking-[0.3em] uppercase shrink-0">
+          {day}
+        </span>
+        <span className="hidden sm:inline-block w-px h-5 bg-white/10 shrink-0" />
+        <span className="font-heading text-lg sm:text-xl lg:text-2xl text-[#9B4FDE] tracking-wider truncate">
+          {time}
+        </span>
+        <span className="hidden md:inline-block text-gray-700 text-[10px] tracking-wider shrink-0">
+          1.5 HR
+        </span>
+      </div>
+
+      <Link
+        href={enrolHref}
+        className="inline-flex items-center gap-2 bg-[#7B2FBE] text-white font-heading text-xs sm:text-sm tracking-[0.2em] uppercase px-4 sm:px-6 py-2.5 sm:py-3 hover:bg-white hover:text-[#7B2FBE] transition-all duration-300 glow-purple shrink-0"
+      >
+        <span>Enrol</span>
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          className="hidden sm:block"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </Link>
     </div>
   );
 }
