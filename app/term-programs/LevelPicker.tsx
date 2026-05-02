@@ -306,15 +306,15 @@ function SlotRow({
     <div className="bg-[#0A0A0A] flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6 px-5 sm:px-6 lg:px-8 py-5 lg:py-6 hover:bg-[#111] transition-colors duration-300">
       {/* Left: day + time + coaches + duration */}
       <div className="flex items-center gap-4 sm:gap-5 lg:gap-7 flex-wrap min-w-0">
-        <div className="flex flex-col shrink-0">
-          <span className="text-[10px] sm:text-[11px] tracking-[0.3em] uppercase text-gray-500 font-heading">
+        <div className="flex items-baseline gap-3 sm:gap-4 lg:gap-5 shrink-0">
+          <span className="font-heading text-base sm:text-lg lg:text-2xl text-white tracking-[0.2em] uppercase">
             {day}
           </span>
-          <span className="font-heading text-lg sm:text-xl lg:text-2xl text-[#9B4FDE] tracking-wider leading-tight">
+          <span className="font-heading text-base sm:text-lg lg:text-2xl text-[#9B4FDE] tracking-wider">
             {time}
           </span>
         </div>
-        <span className="hidden sm:inline-block w-px h-8 bg-white/10 shrink-0" />
+        <span className="hidden sm:inline-block w-px h-7 bg-white/10 shrink-0" />
         <div className="flex items-center gap-2.5 min-w-0">
           <div className="flex -space-x-2">
             {coaches.map((c) => (
