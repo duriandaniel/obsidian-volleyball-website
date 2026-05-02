@@ -3,9 +3,9 @@ import SectionReveal from "@/components/SectionReveal";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "FAQ | Obsidian Volleyball Academy Baulkham Hills",
+  title: "FAQ | Obsidian Volleyball Academy Sydney",
   description:
-    "Frequently asked questions about Obsidian Volleyball Academy. Programs, pricing, age groups, and more.",
+    "Frequently asked questions about Obsidian Volleyball Academy. Programs, pricing, venues across Sydney, age groups, and more.",
   alternates: { canonical: "/faq" },
 };
 
@@ -27,11 +27,11 @@ const faqCategories = [
       },
       {
         q: "How much does it cost?",
-        a: "A 5-day holiday camp package is $200 and includes a free Obsidian training jersey. Individual day rates and half-day rates are also available. Check the booking page for current pricing.",
+        a: "Holiday camp pricing varies by venue. The 5-day Baulkham Hills package is $200 and includes a free Obsidian training jersey, with individual day and half-day rates also available. Pricing for additional venues is being finalised. Check the booking page or get in touch for the current schedule.",
       },
       {
         q: "Do you run programs during school terms?",
-        a: "Yes. We run weekly term programs during the school year in addition to our holiday camps. Check the booking page for current term program schedules.",
+        a: "Yes. We run weekly term programs during the school year on Thursdays at Kings School (Parramatta) and Fridays at Bennelong Sports Centre (West Ryde), in addition to our holiday camps at Baulkham Hills. See the term programs page for current options.",
       },
     ],
   },
@@ -70,23 +70,27 @@ const faqCategories = [
     ],
   },
   {
-    category: "VENUE & LOGISTICS",
+    category: "VENUES & LOGISTICS",
     faqs: [
       {
-        q: "Where are the camps held?",
-        a: "All sessions are at Baulkham Hills High School in the Hills District of Sydney. The venue has multiple indoor courts, so sessions run rain or shine.",
+        q: "Where do you run programs?",
+        a: "Holiday camps run at Baulkham Hills High School in the Hills District. Term programs run on Thursdays at Kings School in Parramatta and Fridays at Bennelong Sports Centre in West Ryde. We are continuing to expand to additional Sydney locations — check back for updates.",
+      },
+      {
+        q: "Are all the venues indoor?",
+        a: "Yes. Every venue we run from has indoor courts, so sessions run rain or shine.",
       },
       {
         q: "Is there parking available?",
-        a: "Yes, free on-site parking. Enter via the school main entrance and follow signs to the sports hall.",
+        a: "Free on-site or nearby parking is available at all venues. Specific parking instructions are sent in your booking confirmation.",
       },
       {
         q: "What should my child bring?",
-        a: "Sports shoes (clean, non-marking soles), a large water bottle, lunch and snacks for full-day camps, and sunscreen for any outdoor warm-ups.",
+        a: "Sports shoes (clean, non-marking soles), a large water bottle, and lunch + snacks for full-day camps. Sunscreen if any of the warm-up happens outside.",
       },
       {
         q: "What time do sessions start and end?",
-        a: "Full-day camps run 9AM to 1PM with half-day options available. Exact times are confirmed on the booking page for each program.",
+        a: "Holiday camps run 9 AM to 1 PM (full day) with half-day options available. Term programs run in 1.5-hour evening blocks (5 PM, 6:30 PM, and an 8 PM advanced slot at Bennelong). Exact times are on each program's booking page.",
       },
     ],
   },

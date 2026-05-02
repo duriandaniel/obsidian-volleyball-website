@@ -15,9 +15,9 @@ export default function Hero() {
           alt="Obsidian Volleyball Academy training session"
           fill
           priority
-          className="object-cover opacity-50"
+          className="object-cover opacity-75 object-[80%_center] sm:object-[75%_center]"
           sizes="100vw"
-          quality={85}
+          quality={90}
         />
 
         {/* Radial glow */}
@@ -42,8 +42,9 @@ export default function Hero() {
           }}
         />
 
-        {/* Gradient overlays for text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/80 to-transparent" />
+        {/* Gradient overlay focused on the LEFT half so text stays legible
+            while the right half (where the spiking player sits) breathes. */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/85 via-40% to-transparent to-65%" />
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0A0A0A] to-transparent" />
       </div>
 
@@ -67,7 +68,9 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            Professional Volleyball Coaching in Sydney. Holiday camps and term programs for beginner to competitive players.
+            Professional Volleyball Coaching in Sydney.
+            <br />
+            Holiday camps and term programs for beginner to competitive players.
           </motion.p>
 
           <motion.div

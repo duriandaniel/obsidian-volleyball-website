@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
@@ -35,6 +35,7 @@ interface LevelPickerProps {
 
 export default function LevelPicker({ levels, venues, enrolHref }: LevelPickerProps) {
   const [selected, setSelected] = useState<Level | null>(null);
+  const revealRef = useRef<HTMLDivElement | null>(null);
 
   const optionsByVenue = selected
     ? venues
@@ -47,6 +48,18 @@ export default function LevelPicker({ levels, venues, enrolHref }: LevelPickerPr
         .filter((o) => o.times.length > 0)
     : [];
 
+  function handleSelect(level: Level) {
+    setSelected(level);
+    // Scroll the reveal area into view after the next paint so the user
+    // (especially on mobile, where level cards are stacked) sees the
+    // freshly rendered class options.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        revealRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    });
+  }
+
   return (
     <div>
       {/* Level cards grid */}
@@ -57,7 +70,7 @@ export default function LevelPicker({ levels, venues, enrolHref }: LevelPickerPr
           return (
             <button
               key={info.level}
-              onClick={() => setSelected(info.level)}
+              onClick={() => handleSelect(info.level)}
               className={`group relative text-left flex flex-col h-full transition-all duration-500 overflow-hidden ${
                 isDimmed ? "opacity-55 hover:opacity-100" : "opacity-100"
               }`}
@@ -152,24 +165,26 @@ export default function LevelPicker({ levels, venues, enrolHref }: LevelPickerPr
       )}
 
       {/* Reveal */}
-      <AnimatePresence mode="wait">
-        {selected && (
-          <motion.div
-            key={selected}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="mt-20"
-          >
-            <ClassesList
-              level={selected}
-              optionsByVenue={optionsByVenue}
-              enrolHref={enrolHref}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div ref={revealRef} className="scroll-mt-32">
+        <AnimatePresence mode="wait">
+          {selected && (
+            <motion.div
+              key={selected}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+              className="mt-20"
+            >
+              <ClassesList
+                level={selected}
+                optionsByVenue={optionsByVenue}
+                enrolHref={enrolHref}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
@@ -244,7 +259,7 @@ function VenueGroup({
               </span>
             </h4>
 
-            <div className="flex -space-x-2">
+            <div className="flex gap-3">
               {venue.coaches.map((coach) => (
                 <CoachAvatar key={coach.slug} coach={coach} />
               ))}
@@ -276,23 +291,28 @@ function CoachAvatar({ coach }: { coach: Coach }) {
       aria-label={`Coach ${coach.name} profile`}
       className="block group/av"
     >
-      <div className="relative w-14 h-14 lg:w-16 lg:h-16 rounded-full overflow-hidden border-2 border-[#0A0A0A] bg-[#0F0F0F] ring-1 ring-white/10 group-hover/av:ring-[#9B4FDE] transition-all duration-300">
-        {coach.image ? (
-          <Image
-            src={coach.image}
-            alt={coach.name}
-            fill
-            className="object-cover"
-            sizes="64px"
-            quality={75}
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1424] to-[#0F0F0F]">
-            <span className="text-[#9B4FDE] font-heading text-base lg:text-lg">
-              {coach.name[0]}
-            </span>
-          </div>
-        )}
+      <div className="flex flex-col items-center">
+        <div className="relative w-20 lg:w-24 aspect-[3/4] overflow-hidden bg-[#0F0F0F] ring-1 ring-white/10 group-hover/av:ring-[#9B4FDE] transition-all duration-300">
+          {coach.image ? (
+            <Image
+              src={coach.image}
+              alt={coach.name}
+              fill
+              className="object-cover object-top"
+              sizes="(max-width: 1024px) 80px, 96px"
+              quality={80}
+            />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1424] to-[#0F0F0F]">
+              <span className="text-[#9B4FDE] font-heading text-2xl lg:text-3xl">
+                {coach.name[0]}
+              </span>
+            </div>
+          )}
+        </div>
+        <span className="text-gray-500 text-[10px] lg:text-xs tracking-[0.15em] uppercase mt-2 group-hover/av:text-[#9B4FDE] transition-colors duration-300">
+          {coach.name}
+        </span>
       </div>
     </Link>
   );

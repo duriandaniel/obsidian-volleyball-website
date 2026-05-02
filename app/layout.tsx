@@ -3,7 +3,7 @@ import { Bebas_Neue, DM_Sans } from "next/font/google";
 import "./globals.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import BookingCTA from "@/components/BookingCTA";
+import PromoBanner from "@/components/PromoBanner";
 import { GoogleTagManagerScript, GoogleTagManagerNoScript } from "@/components/GoogleTagManager";
 import CookieConsent from "@/components/CookieConsent";
 
@@ -158,10 +158,10 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-obsidian text-white">
         <GoogleTagManagerNoScript />
+        <PromoBanner />
         <Nav />
-        <main className="flex-1">{children}</main>
+        <main className="flex-1 pt-7">{children}</main>
         <Footer />
-        <BookingCTA />
         <CookieConsent />
       </body>
     </html>

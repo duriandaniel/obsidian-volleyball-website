@@ -1,6 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import TrackedBookingLink from "./TrackedBookingLink";
 
 const serviceAreas = [
   { slug: "castle-hill", name: "Castle Hill" },
@@ -29,7 +28,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed max-w-sm mb-6">
-              Premium junior volleyball academy in the Hills District of Sydney.
+              Premium junior volleyball academy across Sydney.
               Established 2025.
             </p>
             <div className="flex items-center gap-4">
@@ -85,25 +84,25 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h3 className="font-heading text-base text-gray-400 mb-4 tracking-[0.2em]">VENUE</h3>
-            <address className="not-italic text-gray-600 text-sm space-y-2 mb-6">
-              <p className="text-gray-400">Baulkham Hills High School</p>
-              <p>Baulkham Hills, NSW 2153</p>
-              <p>Hills District, Sydney</p>
-            </address>
-            <TrackedBookingLink
-              location="footer"
+            <h3 className="font-heading text-base text-gray-400 mb-4 tracking-[0.2em]">VENUES</h3>
+            <ul className="not-italic text-gray-600 text-sm space-y-2 mb-6">
+              <li className="text-gray-400">Baulkham Hills High School</li>
+              <li>Bennelong Sports Centre, West Ryde</li>
+              <li>Kings School, Parramatta</li>
+            </ul>
+            <Link
+              href="/term-programs"
               className="inline-block text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors duration-300"
             >
-              Book a session &rarr;
-            </TrackedBookingLink>
+              View term programs &rarr;
+            </Link>
           </div>
         </div>
 
         {/* Service areas */}
         <div className="mt-12 pt-8 border-t border-white/[0.04]">
           <h3 className="font-heading text-base text-gray-400 mb-4 tracking-[0.2em]">SERVICE AREAS</h3>
-          <p className="text-gray-700 text-xs mb-4">Junior volleyball coaching across the Hills District:</p>
+          <p className="text-gray-700 text-xs mb-4">Junior volleyball coaching across Sydney:</p>
           <ul className="flex flex-wrap gap-x-5 gap-y-2">
             {serviceAreas.map((area) => (
               <li key={area.slug}>
@@ -137,7 +136,7 @@ export default function Footer() {
             <Link href="/privacy" className="hover:text-[#9B4FDE] transition-colors">
               Privacy Policy
             </Link>
-            <span>Hills District, Sydney</span>
+            <span>Sydney, Australia</span>
           </div>
         </div>
       </div>
