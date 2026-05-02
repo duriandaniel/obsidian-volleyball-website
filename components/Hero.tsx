@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import TrackedBookingLink from "./TrackedBookingLink";
 
 export default function Hero() {
@@ -49,25 +50,15 @@ export default function Hero() {
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 pb-20">
         <div>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-          >
-            <p className="text-[#9B4FDE] font-heading text-base sm:text-lg tracking-[0.4em] mb-6">
-              HILLS DISTRICT
-            </p>
-          </motion.div>
-
           <motion.h1
             className="font-heading text-[clamp(3.5rem,12vw,10rem)] leading-[0.9] text-white tracking-wide mb-8"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
           >
-            JUNIOR
+            Junior
             <br />
-            <span className="text-[#9B4FDE]">VOLLEYBALL</span>
+            <span className="text-[#9B4FDE]">Volleyball</span>
           </motion.h1>
 
           <motion.p
@@ -76,7 +67,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            Professional volleyball coaching in Baulkham Hills. Holiday camps and term programs for beginner to competitive players.
+            Professional Volleyball Coaching in Sydney. Holiday camps and term programs for beginner to competitive players.
           </motion.p>
 
           <motion.div
@@ -91,12 +82,12 @@ export default function Hero() {
             >
               BOOK NOW
             </TrackedBookingLink>
-            <a
-              href="/holiday-camp"
+            <Link
+              href="/term-programs"
               className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
             >
-              VIEW PROGRAMS
-            </a>
+              View Term Programs
+            </Link>
           </motion.div>
         </div>
       </div>
