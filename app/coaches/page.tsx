@@ -70,6 +70,22 @@ const coaches = [
     ],
     image: "/images/coach-ethan-card.jpg",
   },
+  {
+    name: "Sandeep",
+    role: "Coach",
+    bio: "Full profile coming soon. Sandeep joins the OVA coaching team for Term 2, leading sessions at our West Ryde venue.",
+    qualifications: [
+      "Profile being updated",
+    ],
+  },
+  {
+    name: "Chris",
+    role: "Coach",
+    bio: "Full profile coming soon. Chris joins the OVA coaching team for Term 2, leading sessions at our Parramatta venue.",
+    qualifications: [
+      "Profile being updated",
+    ],
+  },
 ];
 
 export default function CoachesPage() {
@@ -97,7 +113,13 @@ export default function CoachesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
             {coaches.map((coach, i) => (
-              <CoachCard key={coach.name} {...coach} index={i} />
+              <div
+                key={coach.name}
+                id={coach.name.toLowerCase()}
+                className="scroll-mt-24"
+              >
+                <CoachCard {...coach} index={i} />
+              </div>
             ))}
           </div>
         </div>
