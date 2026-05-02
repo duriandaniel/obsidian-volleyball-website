@@ -16,7 +16,6 @@ export type Venue = {
   name: string;
   suburb: string;
   day: string;
-  thumbnail: string;
   coaches: Coach[];
   slots: Slot[];
 };
@@ -234,38 +233,17 @@ function VenueGroup({
 }) {
   return (
     <div>
-      {/* Venue header: thumbnail + name(suburb) + coach avatars (inline) */}
-      <div className="flex items-start gap-5 lg:gap-6 mb-8">
-        {/* Thumbnail */}
-        <div className="w-28 sm:w-36 lg:w-44 aspect-[4/3] relative shrink-0 overflow-hidden border border-white/[0.08]">
-          <Image
-            src={venue.thumbnail}
-            alt={`${venue.name} venue`}
-            fill
-            className="object-cover"
-            sizes="(max-width: 640px) 112px, (max-width: 1024px) 144px, 176px"
-            quality={80}
-          />
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#0A0A0A]/40 to-transparent" />
-        </div>
-
-        {/* Name + coaches (inline on desktop, stacked on mobile) */}
-        <div className="flex-1 min-w-0 pt-1">
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-4">
-            <h4 className="font-heading text-2xl sm:text-3xl lg:text-5xl text-white tracking-wide leading-[1.0]">
-              {venue.name.toUpperCase()}
-              <span className="block sm:inline text-gray-500 text-base sm:text-lg lg:text-2xl tracking-wider sm:ml-2">
-                ({venue.suburb})
-              </span>
-            </h4>
-
-            <div className="flex gap-3">
-              {venue.coaches.map((coach) => (
-                <CoachAvatar key={coach.slug} coach={coach} />
-              ))}
-            </div>
-          </div>
-        </div>
+      {/* Venue header: name + suburb + day, single block, no thumbnail */}
+      <div className="border-l-2 border-[#9B4FDE] pl-5 sm:pl-6 lg:pl-8 mb-6 lg:mb-8">
+        <h4 className="font-heading text-2xl sm:text-3xl lg:text-5xl text-white tracking-wide leading-[1.0]">
+          {venue.name.toUpperCase()}
+          <span className="block sm:inline text-gray-500 text-base sm:text-xl lg:text-2xl tracking-wider sm:ml-2">
+            ({venue.suburb})
+          </span>
+        </h4>
+        <p className="text-[#9B4FDE] text-[11px] sm:text-xs tracking-[0.3em] uppercase mt-3">
+          {venue.day}
+        </p>
       </div>
 
       {/* Time rows */}
@@ -273,8 +251,8 @@ function VenueGroup({
         {times.map((time) => (
           <SlotRow
             key={time}
-            day={venue.day}
             time={time}
+            coaches={venue.coaches}
             enrolHref={enrolHref}
           />
         ))}
@@ -283,7 +261,7 @@ function VenueGroup({
   );
 }
 
-function CoachAvatar({ coach }: { coach: Coach }) {
+function SmallCoachAvatar({ coach }: { coach: Coach }) {
   return (
     <Link
       href={`/coaches#${coach.slug}`}
@@ -291,60 +269,65 @@ function CoachAvatar({ coach }: { coach: Coach }) {
       aria-label={`Coach ${coach.name} profile`}
       className="block group/av"
     >
-      <div className="flex flex-col items-center">
-        <div className="relative w-20 lg:w-24 aspect-[3/4] overflow-hidden bg-[#0F0F0F] ring-1 ring-white/10 group-hover/av:ring-[#9B4FDE] transition-all duration-300">
-          {coach.image ? (
-            <Image
-              src={coach.image}
-              alt={coach.name}
-              fill
-              className="object-cover object-top"
-              sizes="(max-width: 1024px) 80px, 96px"
-              quality={80}
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1424] to-[#0F0F0F]">
-              <span className="text-[#9B4FDE] font-heading text-2xl lg:text-3xl">
-                {coach.name[0]}
-              </span>
-            </div>
-          )}
-        </div>
-        <span className="text-gray-500 text-[10px] lg:text-xs tracking-[0.15em] uppercase mt-2 group-hover/av:text-[#9B4FDE] transition-colors duration-300">
-          {coach.name}
-        </span>
+      <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-[#0A0A0A] bg-[#0F0F0F] ring-1 ring-white/10 group-hover/av:ring-[#9B4FDE] transition-all duration-300">
+        {coach.image ? (
+          <Image
+            src={coach.image}
+            alt={coach.name}
+            fill
+            className="object-cover object-top"
+            sizes="40px"
+            quality={75}
+          />
+        ) : (
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1424] to-[#0F0F0F]">
+            <span className="text-[#9B4FDE] font-heading text-sm">
+              {coach.name[0]}
+            </span>
+          </div>
+        )}
       </div>
     </Link>
   );
 }
 
 function SlotRow({
-  day,
   time,
+  coaches,
   enrolHref,
 }: {
-  day: string;
   time: string;
+  coaches: Coach[];
   enrolHref: string;
 }) {
+  const coachNames = coaches.map((c) => c.name).join(" + ");
   return (
-    <div className="bg-[#0A0A0A] flex items-center justify-between gap-4 sm:gap-6 px-5 sm:px-6 lg:px-8 py-5 lg:py-6 hover:bg-[#111] transition-colors duration-300">
-      <div className="flex items-center gap-4 sm:gap-6 lg:gap-8 min-w-0">
-        <span className="font-heading text-base sm:text-lg lg:text-2xl text-white tracking-[0.2em] uppercase shrink-0">
-          {day}
-        </span>
-        <span className="hidden sm:inline-block w-px h-7 bg-[#9B4FDE]/40 shrink-0" />
-        <span className="font-heading text-base sm:text-lg lg:text-2xl text-[#9B4FDE] tracking-wider truncate">
+    <div className="bg-[#0A0A0A] flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6 px-5 sm:px-6 lg:px-8 py-5 lg:py-6 hover:bg-[#111] transition-colors duration-300">
+      {/* Left: time + coaches + duration */}
+      <div className="flex items-center gap-4 sm:gap-5 lg:gap-7 flex-wrap min-w-0">
+        <span className="font-heading text-lg sm:text-xl lg:text-2xl text-[#9B4FDE] tracking-wider shrink-0">
           {time}
         </span>
-        <span className="hidden md:inline-block text-gray-700 text-[10px] tracking-wider shrink-0">
+        <span className="hidden sm:inline-block w-px h-6 bg-white/10 shrink-0" />
+        <div className="flex items-center gap-2.5 min-w-0">
+          <div className="flex -space-x-2">
+            {coaches.map((c) => (
+              <SmallCoachAvatar key={c.slug} coach={c} />
+            ))}
+          </div>
+          <span className="text-gray-400 text-xs sm:text-sm tracking-wide truncate">
+            {coachNames}
+          </span>
+        </div>
+        <span className="hidden md:inline-block text-gray-700 text-[10px] tracking-wider shrink-0 ml-auto md:ml-0">
           1.5 HR
         </span>
       </div>
 
+      {/* Right: enrol */}
       <Link
         href={enrolHref}
-        className="inline-flex items-center gap-2 bg-[#7B2FBE] text-white font-heading text-xs sm:text-sm tracking-[0.2em] uppercase px-4 sm:px-6 py-2.5 sm:py-3 hover:bg-white hover:text-[#7B2FBE] transition-all duration-300 glow-purple shrink-0"
+        className="inline-flex items-center gap-2 bg-[#7B2FBE] text-white font-heading text-xs sm:text-sm tracking-[0.2em] uppercase px-5 sm:px-6 py-2.5 sm:py-3 hover:bg-white hover:text-[#7B2FBE] transition-all duration-300 glow-purple self-start sm:self-auto shrink-0"
       >
         <span>Enrol</span>
         <svg

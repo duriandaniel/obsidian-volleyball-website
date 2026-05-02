@@ -38,8 +38,7 @@ const VENUES: Venue[] = [
     id: "kings",
     name: "Kings School",
     suburb: "Parramatta",
-    day: "Thursday",
-    thumbnail: "/images/hero.jpg",
+    day: "Thursdays",
     coaches: [
       { name: "Jessica", slug: "jessica", image: "/images/coach-jessica-card.jpg" },
       { name: "Chris", slug: "chris" },
@@ -53,8 +52,7 @@ const VENUES: Venue[] = [
     id: "bennelong",
     name: "Bennelong Sports Centre",
     suburb: "West Ryde",
-    day: "Friday",
-    thumbnail: "/images/venue.jpg",
+    day: "Fridays",
     coaches: [
       { name: "Sandeep", slug: "sandeep" },
       { name: "Kaveesh", slug: "kaveesh", image: "/images/coach-kaveesh-card.jpg" },
