@@ -4,6 +4,7 @@ import TrackedBookingLink from "@/components/TrackedBookingLink";
 import Image from "next/image";
 import Link from "next/link";
 import CampLocationPicker from "./CampLocationPicker";
+import TrackPixelView from "@/components/TrackPixelView";
 
 export const metadata: Metadata = {
   title: "Volleyball Holiday Camps | Sydney Junior Volleyball | Obsidian",
@@ -67,6 +68,7 @@ const campSchema = {
 export default function HolidayCampPage() {
   return (
     <div className="pt-20">
+      <TrackPixelView contentName="holiday_camp" contentCategory="camp" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(campSchema) }} />
 
       {/* Hero */}

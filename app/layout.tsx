@@ -5,6 +5,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PromoBanner from "@/components/PromoBanner";
 import { GoogleTagManagerScript, GoogleTagManagerNoScript } from "@/components/GoogleTagManager";
+import { MetaPixelScript, MetaPixelNoScript } from "@/components/MetaPixel";
 import CookieConsent from "@/components/CookieConsent";
 
 const bebasNeue = Bebas_Neue({
@@ -146,6 +147,7 @@ export default function RootLayout({
     <html lang="en" className={`${bebasNeue.variable} ${dmSans.variable}`}>
       <head>
         <GoogleTagManagerScript />
+        <MetaPixelScript />
         <script dangerouslySetInnerHTML={{ __html: "window.dataLayer=window.dataLayer||[];" }} />
         <script
           type="application/ld+json"
@@ -158,6 +160,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-obsidian text-white">
         <GoogleTagManagerNoScript />
+        <MetaPixelNoScript />
         <PromoBanner />
         <Nav />
         <main className="flex-1 pt-8">{children}</main>

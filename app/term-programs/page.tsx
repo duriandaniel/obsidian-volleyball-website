@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import SectionReveal from "@/components/SectionReveal";
 import Link from "next/link";
 import LevelPicker, { type Venue, type LevelInfo } from "./LevelPicker";
+import TrackPixelView from "@/components/TrackPixelView";
 
 export const metadata: Metadata = {
   title:
@@ -108,6 +109,7 @@ const courseSchema = {
 export default function TermProgramsPage() {
   return (
     <div className="pt-20">
+      <TrackPixelView contentName="term_programs" contentCategory="program" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
