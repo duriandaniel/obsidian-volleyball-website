@@ -16,14 +16,16 @@ export default function PromoBanner() {
     >
       <div className="max-w-7xl mx-auto px-4 py-2 text-center">
         <p className="text-xs sm:text-sm font-heading text-white tracking-[0.2em] uppercase">
-          <span>Weekly Training Launch</span>
+          <span>20% Off Opening Sale</span>
           <span
             className="text-[#D4A4FF] mx-2 sm:mx-3 inline-block align-middle text-[8px]"
             aria-hidden
           >
             ●
           </span>
-          <span>20% Off + Free Shirt</span>
+          <span>
+            Use Code <span className="text-[#D4A4FF]">OPEN20</span>
+          </span>
           <span
             className="hidden md:inline-block ml-3 lg:ml-4 text-[#D4A4FF] tracking-[0.2em]"
             aria-hidden

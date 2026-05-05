@@ -315,20 +315,14 @@ function SlotRow({
     <div className="bg-[#0A0A0A] hover:bg-[#111] transition-colors duration-300">
       {/* Mobile: stacked card layout */}
       <div className="flex flex-col gap-5 px-5 py-5 sm:hidden">
-        {/* Top: day + time on the left, price on the right */}
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-baseline gap-2.5 flex-wrap min-w-0">
-            <span className="font-heading text-sm text-white tracking-[0.25em] uppercase">
-              {day}
-            </span>
-            <span className="font-heading text-base text-[#9B4FDE] tracking-wider">
-              {time}
-            </span>
-          </div>
-          <div className="flex items-baseline gap-2 leading-none shrink-0">
-            <span className="text-gray-600 text-xs line-through">$360</span>
-            <span className="font-heading text-lg text-[#9B4FDE]">$288</span>
-          </div>
+        {/* Top: day + time */}
+        <div className="flex items-baseline gap-2.5 flex-wrap min-w-0">
+          <span className="font-heading text-sm text-white tracking-[0.25em] uppercase">
+            {day}
+          </span>
+          <span className="font-heading text-base text-[#9B4FDE] tracking-wider">
+            {time}
+          </span>
         </div>
 
         {/* Middle: coach + duration */}
@@ -378,12 +372,8 @@ function SlotRow({
           </span>
         </div>
 
-        {/* Right: price + enrol */}
-        <div className="flex items-center gap-4 shrink-0">
-          <div className="flex items-baseline gap-2 leading-none">
-            <span className="text-gray-600 text-sm line-through">$360</span>
-            <span className="font-heading text-xl text-[#9B4FDE]">$288</span>
-          </div>
+        {/* Right: enrol */}
+        <div className="shrink-0">
           <Link
             href={enrolHref}
             className="inline-flex items-center gap-2 bg-[#7B2FBE] text-white font-heading text-sm tracking-[0.2em] uppercase px-6 py-3 hover:bg-white hover:text-[#7B2FBE] transition-all duration-300 glow-purple"
