@@ -303,56 +303,96 @@ function SlotRow({
 }) {
   const coachNames = coaches.map((c) => c.name).join(" + ");
   return (
-    <div className="bg-[#0A0A0A] flex flex-col sm:flex-row sm:items-center justify-between gap-4 sm:gap-6 px-5 sm:px-6 lg:px-8 py-5 lg:py-6 hover:bg-[#111] transition-colors duration-300">
-      {/* Left: day + time + coaches + duration */}
-      <div className="flex items-center gap-4 sm:gap-5 lg:gap-7 flex-wrap min-w-0">
-        <div className="flex items-baseline gap-3 sm:gap-4 lg:gap-5 shrink-0">
-          <span className="font-heading text-base sm:text-lg lg:text-2xl text-white tracking-[0.2em] uppercase">
-            {day}
-          </span>
-          <span className="font-heading text-base sm:text-lg lg:text-2xl text-[#9B4FDE] tracking-wider">
-            {time}
-          </span>
+    <div className="bg-[#0A0A0A] hover:bg-[#111] transition-colors duration-300">
+      {/* Mobile: stacked card layout */}
+      <div className="flex flex-col gap-5 px-5 py-5 sm:hidden">
+        {/* Top: day + time on the left, price on the right */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex items-baseline gap-2.5 flex-wrap min-w-0">
+            <span className="font-heading text-sm text-white tracking-[0.25em] uppercase">
+              {day}
+            </span>
+            <span className="font-heading text-base text-[#9B4FDE] tracking-wider">
+              {time}
+            </span>
+          </div>
+          <div className="flex items-baseline gap-2 leading-none shrink-0">
+            <span className="text-gray-600 text-xs line-through">$300</span>
+            <span className="font-heading text-lg text-[#9B4FDE]">$200</span>
+          </div>
         </div>
-        <span className="hidden sm:inline-block w-px h-7 bg-white/10 shrink-0" />
-        <div className="flex items-center gap-2.5 min-w-0">
-          <div className="flex -space-x-2">
+
+        {/* Middle: coaches + duration */}
+        <div className="flex items-center gap-3">
+          <div className="flex -space-x-2 shrink-0">
             {coaches.map((c) => (
               <SmallCoachAvatar key={c.slug} coach={c} />
             ))}
           </div>
-          <span className="text-gray-400 text-xs sm:text-sm tracking-wide truncate">
+          <span className="text-gray-400 text-xs tracking-wide truncate">
             {coachNames}
           </span>
+          <span className="text-gray-700 text-[10px] tracking-wider ml-auto shrink-0">
+            2 HR
+          </span>
         </div>
-        <span className="hidden md:inline-block text-gray-700 text-[10px] tracking-wider shrink-0 ml-auto md:ml-0">
-          2 HR
-        </span>
-      </div>
 
-      {/* Right: price + enrol */}
-      <div className="flex items-center gap-3 sm:gap-4 self-start sm:self-auto shrink-0">
-        <div className="flex items-baseline gap-2 leading-none">
-          <span className="text-gray-600 text-xs sm:text-sm line-through">$300</span>
-          <span className="font-heading text-lg sm:text-xl text-[#9B4FDE]">$200</span>
-        </div>
+        {/* Bottom: full-width enrol button */}
         <Link
           href={enrolHref}
-          className="inline-flex items-center gap-2 bg-[#7B2FBE] text-white font-heading text-xs sm:text-sm tracking-[0.2em] uppercase px-5 sm:px-6 py-2.5 sm:py-3 hover:bg-white hover:text-[#7B2FBE] transition-all duration-300 glow-purple"
+          className="flex items-center justify-center gap-2 bg-[#7B2FBE] text-white font-heading text-sm tracking-[0.25em] uppercase px-6 py-3.5 hover:bg-white hover:text-[#7B2FBE] active:bg-white active:text-[#7B2FBE] transition-all duration-300 glow-purple"
         >
           <span>Enrol</span>
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            className="hidden sm:block"
-          >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </Link>
+      </div>
+
+      {/* Desktop: single-row layout */}
+      <div className="hidden sm:flex sm:items-center justify-between gap-6 px-6 lg:px-8 py-5 lg:py-6">
+        {/* Left: day + time + coaches + duration */}
+        <div className="flex items-center gap-5 lg:gap-7 flex-wrap min-w-0">
+          <div className="flex items-baseline gap-4 lg:gap-5 shrink-0">
+            <span className="font-heading text-lg lg:text-2xl text-white tracking-[0.2em] uppercase">
+              {day}
+            </span>
+            <span className="font-heading text-lg lg:text-2xl text-[#9B4FDE] tracking-wider">
+              {time}
+            </span>
+          </div>
+          <span className="inline-block w-px h-7 bg-white/10 shrink-0" />
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="flex -space-x-2">
+              {coaches.map((c) => (
+                <SmallCoachAvatar key={c.slug} coach={c} />
+              ))}
+            </div>
+            <span className="text-gray-400 text-sm tracking-wide truncate">
+              {coachNames}
+            </span>
+          </div>
+          <span className="hidden md:inline-block text-gray-700 text-[10px] tracking-wider shrink-0">
+            2 HR
+          </span>
+        </div>
+
+        {/* Right: price + enrol */}
+        <div className="flex items-center gap-4 shrink-0">
+          <div className="flex items-baseline gap-2 leading-none">
+            <span className="text-gray-600 text-sm line-through">$300</span>
+            <span className="font-heading text-xl text-[#9B4FDE]">$200</span>
+          </div>
+          <Link
+            href={enrolHref}
+            className="inline-flex items-center gap-2 bg-[#7B2FBE] text-white font-heading text-sm tracking-[0.2em] uppercase px-6 py-3 hover:bg-white hover:text-[#7B2FBE] transition-all duration-300 glow-purple"
+          >
+            <span>Enrol</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </Link>
+        </div>
       </div>
     </div>
   );
