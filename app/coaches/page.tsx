@@ -3,14 +3,22 @@ import CoachCard from "@/components/CoachCard";
 import SectionReveal from "@/components/SectionReveal";
 
 export const metadata: Metadata = {
-  title: "Volleyball Coaches | Baulkham Hills, Hills District Sydney",
+  title: "Volleyball Coaches | Junior Volleyball Sydney",
   description:
-    "Meet the Obsidian coaching team. Experienced players coaching juniors in Baulkham Hills, Hills District.",
+    "Meet the Obsidian coaching team. Experienced players coaching juniors across Sydney.",
   keywords: [
-    "volleyball coaching Baulkham Hills",
-    "volleyball coach Hills District",
+    "volleyball coaching Sydney",
+    "volleyball coach West Ryde",
     "accredited volleyball coach Sydney",
   ],
+  alternates: { canonical: "/coaches" },
+  openGraph: {
+    title: "Volleyball Coaches | Junior Volleyball Sydney",
+    description:
+      "Meet the Obsidian coaching team. Experienced players coaching juniors across Sydney.",
+    images: ["/images/coach-instruction.jpg"],
+    url: "/coaches",
+  },
 };
 
 const coaches = [
@@ -62,6 +70,15 @@ const coaches = [
     ],
     image: "/images/coach-ethan-card.jpg",
   },
+  {
+    name: "Chris",
+    role: "Coach",
+    bio: "Full profile coming soon. Chris joins the OVA coaching team, leading sessions at Bennelong Sports Centre, West Ryde.",
+    qualifications: [
+      "Profile being updated",
+    ],
+    image: "/images/coach-chris-card.png",
+  },
 ];
 
 export default function CoachesPage() {
@@ -89,7 +106,13 @@ export default function CoachesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
             {coaches.map((coach, i) => (
-              <CoachCard key={coach.name} {...coach} index={i} />
+              <div
+                key={coach.name}
+                id={coach.name.toLowerCase()}
+                className="scroll-mt-24"
+              >
+                <CoachCard {...coach} index={i} />
+              </div>
             ))}
           </div>
         </div>

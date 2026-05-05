@@ -1,62 +1,61 @@
 import type { Metadata } from "next";
 import SectionReveal from "@/components/SectionReveal";
-import TrackedBookingLink from "@/components/TrackedBookingLink";
 import Link from "next/link";
 
 const suburbs = [
   {
-    slug: "castle-hill",
-    name: "Castle Hill",
+    slug: "ryde",
+    name: "Ryde",
+    drive: "3 minutes",
+    description: "Right next door. Ryde families are minutes from Bennelong Sports Centre.",
+  },
+  {
+    slug: "eastwood",
+    name: "Eastwood",
     drive: "5 minutes",
-    description: "Just a short drive down Old Northern Road from Castle Hill to our Baulkham Hills venue.",
+    description: "A quick trip from Eastwood to our West Ryde venue.",
   },
   {
-    slug: "kellyville",
-    name: "Kellyville",
-    drive: "8 minutes",
-    description: "A quick trip via Windsor Road from Kellyville to Baulkham Hills High School.",
-  },
-  {
-    slug: "cherrybrook",
-    name: "Cherrybrook",
-    drive: "10 minutes",
-    description: "Head south via New Line Road or Castle Hill Road from Cherrybrook to reach us.",
-  },
-  {
-    slug: "bella-vista",
-    name: "Bella Vista",
-    drive: "8 minutes",
-    description: "An easy drive east along Norwest Boulevard and Windsor Road from Bella Vista.",
-  },
-  {
-    slug: "winston-hills",
-    name: "Winston Hills",
+    slug: "meadowbank",
+    name: "Meadowbank",
     drive: "5 minutes",
-    description: "Right next door. Winston Hills families can be at our venue in minutes via Windsor Road.",
+    description: "An easy drive from Meadowbank to Bennelong Sports Centre.",
   },
   {
-    slug: "northmead",
-    name: "Northmead",
+    slug: "denistone",
+    name: "Denistone",
+    drive: "5 minutes",
+    description: "Just up the road from Denistone to our West Ryde courts.",
+  },
+  {
+    slug: "top-ryde",
+    name: "Top Ryde",
+    drive: "5 minutes",
+    description: "Top Ryde families can be at the venue in minutes.",
+  },
+  {
+    slug: "putney",
+    name: "Putney",
     drive: "7 minutes",
-    description: "Head north via Windsor Road from Northmead for quick access to quality volleyball coaching.",
+    description: "A short drive from Putney to Bennelong Sports Centre, West Ryde.",
   },
   {
-    slug: "carlingford",
-    name: "Carlingford",
-    drive: "12 minutes",
-    description: "Take Pennant Hills Road and Windsor Road from Carlingford to reach Baulkham Hills.",
+    slug: "north-ryde",
+    name: "North Ryde",
+    drive: "8 minutes",
+    description: "An easy run from North Ryde down to our West Ryde venue.",
   },
   {
-    slug: "west-pennant-hills",
-    name: "West Pennant Hills",
+    slug: "marsfield",
+    name: "Marsfield",
+    drive: "8 minutes",
+    description: "From Marsfield, a quick drive south to Bennelong Sports Centre.",
+  },
+  {
+    slug: "macquarie-park",
+    name: "Macquarie Park",
     drive: "10 minutes",
-    description: "A straightforward drive via Castle Hill Road and Windsor Road from West Pennant Hills.",
-  },
-  {
-    slug: "dural",
-    name: "Dural",
-    drive: "12 minutes",
-    description: "Head south via Old Northern Road from Dural for easy access to the Hills District venue.",
+    description: "Macquarie Park families travel a short distance to West Ryde for premium coaching.",
   },
 ];
 
@@ -71,14 +70,21 @@ export function generateMetadata({ params }: { params: Promise<{ suburb: string 
     if (!data) return { title: "Area Not Found" };
     return {
       title: `Volleyball Academy Near ${data.name} | Junior Volleyball ${data.name}`,
-      description: `Junior volleyball academy ${data.drive} from ${data.name}. Holiday camps and term programs at Baulkham Hills High School for ages 8–18. Book now.`,
+      description: `Premium junior volleyball academy ${data.drive} from ${data.name}. Term programs at Bennelong Sports Centre, West Ryde, for ages 8 to 18. Book now.`,
       keywords: [
         `volleyball ${data.name.toLowerCase()}`,
         `junior volleyball ${data.name.toLowerCase()}`,
-        `volleyball camp ${data.name.toLowerCase()}`,
+        `volleyball coaching ${data.name.toLowerCase()}`,
         `volleyball academy near ${data.name.toLowerCase()}`,
         `kids volleyball ${data.name.toLowerCase()}`,
       ],
+      alternates: { canonical: `/areas/${data.slug}` },
+      openGraph: {
+        title: `Volleyball Academy Near ${data.name}`,
+        description: `Premium junior volleyball ${data.drive} from ${data.name}. Term programs at Bennelong Sports Centre, West Ryde.`,
+        url: `/areas/${data.slug}`,
+        images: ["/images/hero.jpg"],
+      },
     };
   });
 }
@@ -97,8 +103,24 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
 
   const otherSuburbs = suburbs.filter((s) => s.slug !== suburb).slice(0, 4);
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://obsidianvolleyball.com" },
+      { "@type": "ListItem", position: 2, name: "Service Areas", item: "https://obsidianvolleyball.com/areas" },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: data.name,
+        item: `https://obsidianvolleyball.com/areas/${data.slug}`,
+      },
+    ],
+  };
+
   return (
     <div className="pt-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* Hero */}
       <section className="py-24 lg:py-32 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -114,18 +136,19 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
               <span className="text-[#9B4FDE]">{data.name.toUpperCase()}</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl leading-relaxed mb-10">
-              {data.description} Obsidian Volleyball Academy runs holiday camps and term programs
-              for juniors aged 8–18, from complete beginners to advanced players.
+              {data.description} Obsidian Volleyball Academy runs term programs every Friday
+              at Bennelong Sports Centre, West Ryde, for juniors aged 8 to 18, from complete
+              beginners to advanced players.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <TrackedBookingLink
-                location="hero"
+              <Link
+                href="/term-programs"
                 className="bg-[#7B2FBE] text-white font-heading text-xl px-8 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-purple"
               >
-                BOOK A CAMP
-              </TrackedBookingLink>
+                BOOK NOW
+              </Link>
               <Link
-                href="/holiday-camp"
+                href="/term-programs"
                 className="border border-white/20 text-white font-heading text-xl px-8 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
               >
                 VIEW PROGRAMS
@@ -147,28 +170,28 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04]">
             {[
               {
-                title: "HOLIDAY CAMPS",
-                desc: "Full-day (9AM–1PM) and half-day sessions during school holidays. Beginner, intermediate, and advanced groups.",
+                title: "TERM PROGRAMS",
+                desc: "Three two-hour sessions every Friday at Bennelong Sports Centre, West Ryde. Beginner, intermediate, and advanced groups.",
               },
               {
                 title: "ALL SKILL LEVELS",
                 desc: "Grouped by ability, not age. Complete beginners are welcome. No experience needed to start.",
               },
               {
-                title: "QUALIFIED COACHES",
-                desc: "Accredited coaches with competitive playing experience and Working With Children Checks.",
+                title: "EXPERT COACHES",
+                desc: "Accredited coaches with competitive playing experience and Working With Children Checks. The reason families pick us.",
               },
               {
                 title: "INDOOR VENUE",
-                desc: "Baulkham Hills High School gym. Indoor courts, free parking, weather never a problem.",
+                desc: "Two indoor courts at Bennelong Sports Centre. Climate-controlled, ample parking, sessions run rain or shine.",
               },
               {
-                title: "AFFORDABLE",
-                desc: "$200 for a 5-day package (includes free shirt), $50 per day, or $35 for a half-day session.",
+                title: "PREMIUM COACHING",
+                desc: "Small groups, high coach-to-player ratio, structured curriculum. We don't compete on price; we compete on quality.",
               },
               {
                 title: `${data.drive.toUpperCase()} DRIVE`,
-                desc: `${data.description} Easy access with free on-site parking.`,
+                desc: `${data.description}`,
               },
             ].map((item, i) => (
               <SectionReveal key={item.title} delay={i * 0.05}>
@@ -193,16 +216,15 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
                 <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">{data.drive.toUpperCase()} FROM {data.name.toUpperCase()}</p>
                 <h2 className="font-heading text-4xl lg:text-5xl text-white tracking-wide mb-8">VENUE</h2>
                 <address className="not-italic space-y-2 mb-6">
-                  <p className="text-white text-lg">Baulkham Hills High School</p>
-                  <p className="text-gray-500 text-sm">Windsor Road, Baulkham Hills</p>
-                  <p className="text-gray-500 text-sm">NSW 2153</p>
+                  <p className="text-white text-lg">Bennelong Sports Centre</p>
+                  <p className="text-gray-500 text-sm">West Ryde, NSW</p>
                 </address>
                 <p className="text-gray-600 text-sm mb-6 leading-relaxed">
-                  Free parking on-site. Indoor courts. Central to {data.name}, Castle Hill,
-                  Kellyville, and the wider Hills District.
+                  Two indoor courts. Plenty of parking. A short drive from {data.name} and
+                  surrounding suburbs.
                 </p>
                 <a
-                  href="https://www.google.com/maps/place/Obsidian+Volleyball+Academy"
+                  href="https://www.google.com/maps/search/?api=1&query=Bennelong+Sports+Centre+West+Ryde"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"
@@ -217,14 +239,14 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
             <SectionReveal delay={0.15}>
               <div className="aspect-[16/10] lg:aspect-auto lg:h-full min-h-[300px] overflow-hidden bg-[#111]">
                 <iframe
-                  src="https://www.google.com/maps?q=Obsidian+Volleyball+Academy&output=embed"
+                  src="https://www.google.com/maps?q=Bennelong+Sports+Centre+West+Ryde&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2)" }}
                   allowFullScreen
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
-                  title={`Obsidian Volleyball Academy near ${data.name}`}
+                  title={`Bennelong Sports Centre near ${data.name}`}
                 />
               </div>
             </SectionReveal>
@@ -242,12 +264,12 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
               <br />
               <span className="text-[#9B4FDE]">PLACE</span>
             </h2>
-            <TrackedBookingLink
-              location="hero"
+            <Link
+              href="/term-programs"
               className="inline-block bg-[#7B2FBE] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
             >
               BOOK NOW
-            </TrackedBookingLink>
+            </Link>
           </SectionReveal>
         </div>
       </section>

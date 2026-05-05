@@ -3,17 +3,27 @@ import SectionReveal from "@/components/SectionReveal";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 import Image from "next/image";
 import Link from "next/link";
+import CampLocationPicker from "./CampLocationPicker";
+import TrackPixelView from "@/components/TrackPixelView";
 
 export const metadata: Metadata = {
-  title: "Volleyball Holiday Camps | Baulkham Hills, Sydney Hills District",
+  title: "Volleyball Holiday Camps | Sydney Junior Volleyball | Obsidian",
   description:
-    "Volleyball holiday camps in Baulkham Hills for juniors aged 8–18. School holiday programs in the Hills District, Sydney. Book now.",
+    "Junior volleyball holiday camps in Sydney for ages 8–18. Currently running at Baulkham Hills with new venues coming soon. Book now.",
   keywords: [
-    "volleyball holiday camp Baulkham Hills",
+    "volleyball holiday camp Sydney",
     "school holiday volleyball Sydney",
-    "volleyball camp Castle Hill",
-    "junior volleyball holiday program Hills District",
+    "junior volleyball holiday program Sydney",
+    "volleyball camp Baulkham Hills",
   ],
+  alternates: { canonical: "/holiday-camp" },
+  openGraph: {
+    title: "Volleyball Holiday Camps | Sydney Junior Volleyball | Obsidian",
+    description:
+      "Junior volleyball holiday camps in Sydney for ages 8 to 18.",
+    images: ["/images/gallery-spike.jpg"],
+    url: "/holiday-camp",
+  },
 };
 
 const campSchema = {
@@ -21,7 +31,7 @@ const campSchema = {
   "@type": "Course",
   name: "Volleyball Holiday Camp | Obsidian Volleyball Academy",
   description:
-    "Intensive junior volleyball camps during school holidays in Baulkham Hills, Sydney Hills District. Beginner to advanced skill levels, ages 8–18.",
+    "Intensive junior volleyball camps during school holidays in Baulkham Hills, Sydney. Beginner to advanced skill levels, ages 8–18.",
   provider: {
     "@type": "SportsOrganization",
     name: "Obsidian Volleyball Academy",
@@ -58,6 +68,7 @@ const campSchema = {
 export default function HolidayCampPage() {
   return (
     <div className="pt-20">
+      <TrackPixelView contentName="holiday_camp" contentCategory="camp" />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(campSchema) }} />
 
       {/* Hero */}
@@ -107,310 +118,7 @@ export default function HolidayCampPage() {
         </div>
       </section>
 
-      {/* Programs / Classes */}
-      <section className="py-24 lg:py-32 bg-[#111]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="mb-16">
-              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">CHOOSE YOUR LEVEL</p>
-              <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">PROGRAMS</h2>
-            </div>
-          </SectionReveal>
-          <p className="text-gray-500 text-sm max-w-2xl mb-10">
-            Players are grouped by skill level, not age. We split across three courts so everyone trains at the right intensity.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.04]">
-            {[
-              {
-                level: "BEGINNER",
-                points: [
-                  "No prior experience needed",
-                  "Learn the basics: passing, setting, serving",
-                  "Friendly, low-pressure environment",
-                  "Build confidence with the ball",
-                ],
-              },
-              {
-                level: "INTERMEDIATE",
-                points: [
-                  "Refine fundamentals and consistency",
-                  "Spiking, blocking, and rotations",
-                  "Court awareness and positioning",
-                  "Game play in modified formats",
-                ],
-              },
-              {
-                level: "ADVANCED",
-                points: [
-                  "Higher tempo, full-court game play",
-                  "Tactics, systems, and team play",
-                  "Skill polish: jump serve, attacking",
-                  "Suited to players with club or rep experience",
-                ],
-              },
-            ].map((tier, i) => (
-              <SectionReveal key={tier.level} delay={i * 0.1}>
-                <div className="bg-[#111] p-8 lg:p-10 group hover:bg-[#161616] transition-colors duration-500 h-full">
-                  <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.3em] mb-6">{tier.level}</p>
-                  <ul className="space-y-2 text-gray-400 text-sm">
-                    {tier.points.map((point) => (
-                      <li key={point} className="flex gap-3">
-                        <span className="text-[#9B4FDE] flex-shrink-0">+</span>
-                        <span>{point}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </SectionReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Daily Schedule */}
-      <section className="py-24 lg:py-32 bg-[#0A0A0A]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="mb-12">
-              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">A DAY AT CAMP</p>
-              <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">DAILY SCHEDULE</h2>
-            </div>
-          </SectionReveal>
-          <div className="space-y-0">
-            {[
-              { time: "9:00 AM", title: "Check-in", body: "Drop-off at the venue. Coaches greet players and direct them to the court." },
-              { time: "9:15 AM", title: "Introduction & warm-up", body: "Group introduction, mobility, and dynamic warm-up." },
-              { time: "9:30 AM", title: "Split into three courts", body: "Players move to their level (beginner, intermediate, advanced). Drills on passing and setting." },
-              { time: "11:00 AM", title: "Break", body: "20-minute break. Snacks, water, rest." },
-              { time: "11:20 AM", title: "Serving, spiking, game play", body: "Serving and attacking work, then game play. Cool-down at the end." },
-              { time: "1:00 PM", title: "Dismissal", body: "Players collected from the venue." },
-            ].map((slot, i) => (
-              <SectionReveal key={slot.time} delay={i * 0.04}>
-                <div className="grid grid-cols-[80px_1fr] sm:grid-cols-[120px_1fr] gap-4 sm:gap-8 py-5 border-b border-white/[0.06] group">
-                  <p className="font-heading text-base sm:text-lg text-[#9B4FDE] tracking-wider pt-1">{slot.time}</p>
-                  <div>
-                    <p className="text-white text-base sm:text-lg font-medium mb-1 group-hover:text-[#9B4FDE] transition-colors duration-300">{slot.title}</p>
-                    <p className="text-gray-500 text-sm leading-relaxed">{slot.body}</p>
-                  </div>
-                </div>
-              </SectionReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section className="py-24 lg:py-32 bg-[#0A0A0A]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="mb-16">
-              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">INVESTMENT</p>
-              <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">PRICING</h2>
-            </div>
-          </SectionReveal>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
-            {/* Single Day */}
-            <SectionReveal>
-              <div className="border border-white/[0.06] p-8 lg:p-10 hover:border-[#9B4FDE]/20 transition-all duration-500">
-                <p className="text-gray-600 font-heading text-xs tracking-[0.3em] mb-6">FLEXIBLE</p>
-                <p className="font-heading text-5xl text-white mb-2">$50</p>
-                <p className="text-gray-600 text-sm mb-6">Per day</p>
-                <ul className="space-y-3 text-gray-400 text-sm mb-8">
-                  <li className="flex items-center gap-2">
-                    <span className="text-[#9B4FDE]">+</span> Single day attendance
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-[#9B4FDE]">+</span> 9AM – 1PM
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-[#9B4FDE]">+</span> No commitment required
-                  </li>
-                </ul>
-                <TrackedBookingLink
-                  tier="single_day"
-                  location="pricing_single"
-                  className="block border border-white/20 text-white font-heading text-lg px-6 py-3 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
-                >
-                  BOOK A DAY
-                </TrackedBookingLink>
-              </div>
-            </SectionReveal>
-
-            {/* 5-Day Package - Featured */}
-            <SectionReveal delay={0.1}>
-              <div className="border-2 border-[#9B4FDE]/40 p-8 lg:p-12 hover:border-[#9B4FDE] transition-all duration-500 relative">
-                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className="bg-[#7B2FBE] text-white font-heading text-xs tracking-[0.2em] px-4 py-1.5">BEST VALUE</span>
-                </div>
-                <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.3em] mb-6 mt-2">5-DAY PACKAGE</p>
-                <p className="font-heading text-7xl text-white mb-2">$200</p>
-                <p className="text-gray-600 text-sm mb-6">All 5 days + free shirt</p>
-                <ul className="space-y-3 text-gray-400 text-sm mb-8">
-                  <li className="flex items-center gap-2">
-                    <span className="text-[#9B4FDE]">+</span> All 5 days of camp
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-[#9B4FDE]">+</span> Free Obsidian training jersey included
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-[#9B4FDE]">+</span> 9AM – 1PM daily
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-[#9B4FDE]">+</span> Save $50 vs single days
-                  </li>
-                </ul>
-                <TrackedBookingLink
-                  tier="5_day_pack"
-                  location="pricing_package"
-                  className="block bg-[#7B2FBE] text-white font-heading text-lg px-6 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-purple"
-                >
-                  BOOK 5-DAY PACK
-                </TrackedBookingLink>
-              </div>
-            </SectionReveal>
-
-            {/* Half Day */}
-            <SectionReveal delay={0.2}>
-              <div className="border border-white/[0.06] p-8 lg:p-10 hover:border-[#9B4FDE]/20 transition-all duration-500">
-                <p className="text-gray-600 font-heading text-xs tracking-[0.3em] mb-6">HALF DAY</p>
-                <p className="font-heading text-5xl text-white mb-2">$35</p>
-                <p className="text-gray-600 text-sm mb-6">Half-day session</p>
-                <ul className="space-y-3 text-gray-400 text-sm mb-8">
-                  <li className="flex items-center gap-2">
-                    <span className="text-[#9B4FDE]">+</span> Morning session
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-[#9B4FDE]">+</span> 9 AM – 11 AM
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="text-[#9B4FDE]">+</span> 2 hours of coaching
-                  </li>
-                </ul>
-                <TrackedBookingLink
-                  tier="half_day"
-                  location="pricing_half"
-                  className="block border border-white/20 text-white font-heading text-lg px-6 py-3 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
-                >
-                  BOOK HALF DAY
-                </TrackedBookingLink>
-              </div>
-            </SectionReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* Camp Details */}
-      <section className="py-24 lg:py-32 bg-[#111]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="mb-16">
-              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">CAMP INFO</p>
-              <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">WHAT TO EXPECT</h2>
-            </div>
-          </SectionReveal>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04]">
-            {[
-              { label: "WHEN", value: "School holiday periods: April, July, October, January" },
-              { label: "WHERE", value: "Baulkham Hills High School, Hills District" },
-              { label: "WHO", value: "Juniors aged 8–18, all skill levels" },
-              { label: "TIME", value: "Full-day: 9AM–1PM. Half-day sessions also available" },
-              { label: "GROUPS", value: "Small groups with high coach-to-player ratio" },
-              { label: "INCLUDED", value: "Free Obsidian training jersey with 5-day package booking" },
-            ].map((detail, i) => (
-              <SectionReveal key={detail.label} delay={i * 0.05}>
-                <div className="bg-[#111] p-8 group hover:bg-[#161616] transition-colors duration-500">
-                  <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.3em] mb-3">{detail.label}</p>
-                  <p className="text-gray-300 text-sm leading-relaxed">{detail.value}</p>
-                </div>
-              </SectionReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* What to Bring + Venue */}
-      <section className="py-24 lg:py-32 bg-[#0A0A0A]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-            <SectionReveal>
-              <div>
-                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">PREPARE</p>
-                <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide mb-10">WHAT TO BRING</h2>
-                <ul className="space-y-4">
-                  {[
-                    "Shoes suitable for volleyball",
-                    "Water bottle",
-                    "Lunch and snacks for full-day camps",
-                  ].map((item, i) => (
-                    <li key={i} className="flex items-start gap-4 text-gray-400">
-                      <span className="text-[#9B4FDE] font-heading text-lg flex-shrink-0 w-6">{i + 1}</span>
-                      <span className="text-sm leading-relaxed pt-0.5">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </SectionReveal>
-            <SectionReveal delay={0.15}>
-              <div>
-                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">LOCATION</p>
-                <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide mb-8">VENUE</h2>
-                <div className="mb-6">
-                  <address className="not-italic space-y-2">
-                    <p className="text-white text-lg">Baulkham Hills High School</p>
-                    <p className="text-gray-500 text-sm">Windsor Road, Baulkham Hills</p>
-                    <p className="text-gray-500 text-sm">NSW 2153, Hills District</p>
-                  </address>
-                  <p className="text-gray-600 text-sm mt-4 leading-relaxed">
-                    Free parking on-site. Central to Castle Hill, Kellyville, Cherrybrook, and Bella Vista.
-                  </p>
-                </div>
-                <a
-                  href="https://www.google.com/maps/place/Obsidian+Volleyball+Academy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"
-                >
-                  Get directions
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M7 17L17 7M17 7H7M17 7v10" />
-                  </svg>
-                </a>
-              </div>
-            </SectionReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-24 lg:py-32 bg-[#111] text-center relative overflow-hidden">
-        <div className="section-divider absolute top-0 left-0 right-0" />
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[40vh]"
-          style={{ background: "radial-gradient(ellipse at center, rgba(123,47,190,0.03) 0%, transparent 60%)" }}
-        />
-        <div className="relative max-w-2xl mx-auto px-4">
-          <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">SPOTS ARE LIMITED</p>
-            <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
-              BOOK YOUR
-              <br />
-              <span className="text-[#9B4FDE]">PLACE</span>
-            </h2>
-            <p className="text-gray-500 mb-10 leading-relaxed">
-              Holiday camps fill fast. Book early to guarantee a spot.
-            </p>
-            <TrackedBookingLink
-              location="camp_cta"
-              className="inline-block bg-[#7B2FBE] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
-            >
-              BOOK NOW
-            </TrackedBookingLink>
-            <p className="text-gray-700 text-xs mt-6 tracking-wider">
-              BAULKHAM HILLS &middot; ALL SKILL LEVELS &middot; AGES 8–18
-            </p>
-          </SectionReveal>
-        </div>
-      </section>
+      <CampLocationPicker />
     </div>
   );
 }

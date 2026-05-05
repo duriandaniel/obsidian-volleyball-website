@@ -1,37 +1,194 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import SectionReveal from "@/components/SectionReveal";
-import Link from "next/link";
+import LevelPicker, { type Venue, type LevelInfo } from "./LevelPicker";
+import TrackPixelView from "@/components/TrackPixelView";
 
 export const metadata: Metadata = {
-  title: "Term Programs | Obsidian Volleyball Academy",
+  title:
+    "Junior Classes | West Ryde Volleyball Sydney | Obsidian Volleyball Academy",
   description:
-    "Weekly volleyball term programs at Obsidian Volleyball Academy. Term 2 details coming soon.",
+    "Premium junior volleyball classes every Friday at Bennelong Sports Centre, West Ryde. Beginner, intermediate, and advanced sessions for ages 8 to 18. Now launching with 20% off and a free training shirt.",
+  keywords: [
+    "junior volleyball West Ryde",
+    "junior volleyball classes Sydney",
+    "volleyball lessons West Ryde",
+    "junior volleyball coaching Sydney",
+    "kids volleyball Sydney",
+    "volleyball Bennelong Sports Centre",
+  ],
+  alternates: { canonical: "/term-programs" },
+  openGraph: {
+    title:
+      "Junior Classes | West Ryde Volleyball Sydney | Obsidian Volleyball Academy",
+    description:
+      "Premium junior volleyball classes every Friday at Bennelong Sports Centre, West Ryde.",
+    images: ["/images/gallery-spike.jpg"],
+    url: "/term-programs",
+  },
 };
 
-export default function TermProgramsPage() {
+const CHRIS = {
+  name: "Chris",
+  slug: "chris",
+  image: "/images/coach-chris-card.png",
+};
+const KAVEESH = {
+  name: "Kaveesh",
+  slug: "kaveesh",
+  image: "/images/coach-kaveesh-card.jpg",
+};
+
+// Per-class Acuity appointment URLs. One per (slot x level x court).
+const ACUITY = {
+  beg_4pm: "https://obsidianvolleyball.as.me/?appointmentType=92833866",
+  int_4pm: "https://obsidianvolleyball.as.me/?appointmentType=92833644",
+  int_530pm: "https://obsidianvolleyball.as.me/?appointmentType=92833584",
+  adv_530pm: "https://obsidianvolleyball.as.me/?appointmentType=92802606",
+};
+
+const VENUES: Venue[] = [
+  {
+    id: "bennelong",
+    name: "Bennelong Sports Centre",
+    suburb: "West Ryde",
+    day: "Friday",
+    slots: [
+      {
+        time: "4:00 – 5:30 PM",
+        courts: [
+          { level: "Beginner", coach: CHRIS, enrolHref: ACUITY.beg_4pm },
+          { level: "Intermediate", coach: KAVEESH, enrolHref: ACUITY.int_4pm },
+        ],
+      },
+      {
+        time: "5:30 – 7:00 PM",
+        courts: [
+          { level: "Intermediate", coach: CHRIS, enrolHref: ACUITY.int_530pm },
+          { level: "Advanced", coach: KAVEESH, enrolHref: ACUITY.adv_530pm },
+        ],
+      },
+    ],
+  },
+];
+
+const LEVELS: LevelInfo[] = [
+  {
+    level: "Beginner",
+    description:
+      "We teach you everything: passing, setting, serving, and the fundamentals of the game.",
+    image: "/images/gallery-coaching.jpg",
+  },
+  {
+    level: "Intermediate",
+    description:
+      "Comfortable with the basics. Working on positional play, rotations, and team systems.",
+    image: "/images/gallery-game.jpg",
+  },
+  {
+    level: "Advanced",
+    description:
+      "Plays organised competitive volleyball, e.g. YSVL. Higher tempo, full-court play, tactics, and skill polish.",
+    image: "/images/gallery-spike.jpg",
+  },
+];
+
+const courseSchema = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  name: "Junior Classes | Obsidian Volleyball Academy",
+  description:
+    "Junior volleyball classes at Bennelong Sports Centre, West Ryde. Premium coaching every Friday for ages 8 to 18.",
+  provider: {
+    "@type": "SportsOrganization",
+    name: "Obsidian Volleyball Academy",
+    url: "https://obsidianvolleyball.com",
+  },
+  educationalLevel: "Beginner, Intermediate, Advanced",
+  audience: {
+    "@type": "PeopleAudience",
+    suggestedMinAge: 8,
+    suggestedMaxAge: 18,
+  },
+};
+
+export default function JuniorClassesPage() {
   return (
     <div className="pt-20">
-      <section className="min-h-[70vh] flex items-center bg-[#0A0A0A]">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <TrackPixelView contentName="junior_classes" contentCategory="program" />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
+      />
+
+      {/* Hero */}
+      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">WEEKLY TRAINING</p>
-            <h1 className="font-heading text-6xl sm:text-8xl text-white tracking-wide mb-8 leading-[0.9]">
-              TERM
-              <br />
-              <span className="text-[#9B4FDE]">PROGRAMS</span>
-            </h1>
-            <p className="text-gray-400 text-lg leading-relaxed mb-10">
-              We&apos;re still working out the details for Term 2. Check back later for locations, times, and registration.
+            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">
+              NOW LAUNCHING &middot; WEST RYDE
             </p>
-            <Link
-              href="/contact"
-              className="inline-block border border-white/20 text-white font-heading text-xl px-8 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide"
-            >
-              CONTACT US
-            </Link>
+            <h1 className="font-heading text-6xl sm:text-8xl text-white tracking-wide mb-6 leading-[0.9]">
+              JUNIOR
+              <br />
+              <span className="text-[#9B4FDE]">CLASSES</span>
+            </h1>
+            <p className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed">
+              Premium volleyball coaching. Term 2 enrolment open.
+            </p>
           </SectionReveal>
         </div>
       </section>
+
+      {/* Choose your level */}
+      <section id="levels" className="py-12 lg:py-16 bg-[#0A0A0A] scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <LevelPicker
+            levels={LEVELS}
+            venues={VENUES}
+          />
+        </div>
+      </section>
+
+      {/* Venue showcase */}
+      <section className="py-20 lg:py-28 bg-[#111]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-12 items-center">
+            <SectionReveal>
+              <div className="aspect-[4/3] relative overflow-hidden border border-white/[0.08]">
+                <Image
+                  src="/images/bennelong-courtyard.png"
+                  alt="Bennelong Sports Centre indoor courts, West Ryde"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                  quality={85}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 via-transparent to-transparent" />
+              </div>
+            </SectionReveal>
+            <SectionReveal delay={0.15}>
+              <div>
+                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">THE VENUE</p>
+                <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide leading-[0.95] mb-6">
+                  BENNELONG
+                  <br />
+                  <span className="text-[#9B4FDE]">SPORTS CENTRE</span>
+                </h2>
+                <p className="text-gray-400 text-base leading-relaxed mb-4">
+                  State-of-the-art indoor volleyball courts in West Ryde,
+                  climate-controlled, plenty of parking. Sessions run rain or shine,
+                  every Friday during the school term.
+                </p>
+                <p className="text-gray-500 text-sm">
+                  Bennelong Sports Centre &middot; West Ryde, NSW
+                </p>
+              </div>
+            </SectionReveal>
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }

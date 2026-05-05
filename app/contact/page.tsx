@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import SectionReveal from "@/components/SectionReveal";
 
 export const metadata: Metadata = {
-  title: "Contact | Obsidian Volleyball Academy Baulkham Hills",
+  title: "Contact | Obsidian Volleyball Academy Sydney",
   description:
-    "Get in touch with Obsidian Volleyball Academy. Located at Baulkham Hills High School, Hills District Sydney. Email, Instagram, or book directly.",
+    "Get in touch with Obsidian Volleyball Academy. Term programs in West Ryde, holiday camps in Baulkham Hills. Email, Instagram, or book directly.",
+  alternates: { canonical: "/contact" },
 };
 
 const contactMethods = [

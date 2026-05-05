@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import TrackedBookingLink from "./TrackedBookingLink";
 
 export default function Hero() {
@@ -14,9 +15,9 @@ export default function Hero() {
           alt="Obsidian Volleyball Academy training session"
           fill
           priority
-          className="object-cover opacity-50"
+          className="object-cover opacity-75 object-[80%_center] sm:object-[75%_center]"
           sizes="100vw"
-          quality={85}
+          quality={90}
         />
 
         {/* Radial glow */}
@@ -41,8 +42,9 @@ export default function Hero() {
           }}
         />
 
-        {/* Gradient overlays for text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/80 to-transparent" />
+        {/* Gradient overlay focused on the LEFT half so text stays legible
+            while the right half (where the spiking player sits) breathes. */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/85 via-40% to-transparent to-65%" />
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-[#0A0A0A] to-transparent" />
       </div>
 
@@ -50,12 +52,12 @@ export default function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 pb-20">
         <div>
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            transition={{ duration: 0.6, delay: 0.05 }}
           >
             <p className="text-[#9B4FDE] font-heading text-base sm:text-lg tracking-[0.4em] mb-6">
-              HILLS DISTRICT
+              NOW LAUNCHING &middot; WEST RYDE
             </p>
           </motion.div>
 
@@ -65,9 +67,9 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
           >
-            JUNIOR
+            Term
             <br />
-            <span className="text-[#9B4FDE]">VOLLEYBALL</span>
+            <span className="text-[#9B4FDE]">Programs</span>
           </motion.h1>
 
           <motion.p
@@ -76,7 +78,8 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            Professional volleyball coaching in Baulkham Hills. Holiday camps and term programs for beginner to competitive players.
+            Premium junior volleyball coaching at Bennelong Sports Centre, West Ryde.
+            Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open.
           </motion.p>
 
           <motion.div
@@ -87,16 +90,17 @@ export default function Hero() {
           >
             <TrackedBookingLink
               location="hero"
+              href="https://obsidianvolleyball.as.me/?appointmentType=category:Weekly%20Training"
               className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 hover:bg-[#9B4FDE] transition-all duration-300 tracking-wide text-center glow-purple"
             >
               BOOK NOW
             </TrackedBookingLink>
-            <a
-              href="/holiday-camp"
+            <Link
+              href="/term-programs"
               className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
             >
-              VIEW PROGRAMS
-            </a>
+              VIEW SCHEDULE
+            </Link>
           </motion.div>
         </div>
       </div>

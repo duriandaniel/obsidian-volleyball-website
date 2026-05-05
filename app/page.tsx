@@ -14,27 +14,27 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Obsidian Volleyball Academy | Junior Volleyball Sydney Hills District",
+  title: "Obsidian Volleyball Academy | Junior Volleyball Sydney",
   description:
-    "Premium junior volleyball academy in Baulkham Hills, Sydney Hills District. Holiday camps and term programs for ages 8–18.",
+    "Premium junior volleyball academy in Sydney. Term programs at Bennelong Sports Centre, West Ryde. Now launching with 20% off and a free training shirt.",
   keywords: [
     "volleyball academy Sydney",
     "junior volleyball Sydney",
-    "volleyball holiday camp Hills District",
-    "volleyball Baulkham Hills",
-    "junior volleyball Hills District",
+    "volleyball West Ryde",
+    "volleyball Bennelong Sports Centre",
+    "junior volleyball coaching Sydney",
   ],
 };
 
 
 const faqs = [
   {
-    q: "Where are the camps held?",
-    a: "Baulkham Hills High School. Indoor courts in the Hills District.",
+    q: "Where do you run programs?",
+    a: "Term programs at Bennelong Sports Centre, West Ryde, every Friday. Holiday camps at Baulkham Hills High School.",
   },
   {
     q: "What age groups do you cater for?",
-    a: "Juniors aged 8–18, grouped by skill level not age.",
+    a: "Juniors aged 8 to 18, grouped by skill level not age.",
   },
   {
     q: "My child has never played. Is that OK?",
@@ -158,8 +158,9 @@ export default function Home() {
                   <span className="text-[#9B4FDE]">OBSIDIAN</span>
                 </h2>
                 <p className="text-gray-400 leading-relaxed">
-                  Founded in 2025 to bring high-quality volleyball coaching to the Hills District.
-                  Professional training at Baulkham Hills High School, so families don't have to travel across Sydney.
+                  Founded in 2025 to bring premium junior volleyball coaching to Sydney families.
+                  Now launching term programs at Bennelong Sports Centre, West Ryde, with holiday
+                  camps at Baulkham Hills High School.
                 </p>
               </div>
             </SectionReveal>
@@ -167,7 +168,7 @@ export default function Home() {
               <div className="aspect-[3/4] relative overflow-hidden">
                 <Image
                   src="/images/about.jpg"
-                  alt="Obsidian Volleyball Academy players at Baulkham Hills High School"
+                  alt="Obsidian Volleyball Academy junior players in training"
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 45vw"
@@ -245,14 +246,17 @@ export default function Home() {
                   <span className="text-[#9B4FDE]">TRAINING JERSEY</span>
                 </h2>
                 <p className="text-gray-400 leading-relaxed mb-6">
-                  Grab an official Obsidian training jersey at camp. Try on different sizes on-site and take one home.
+                  High-quality training jerseys, designed in collaboration with{" "}
+                  <span className="text-white">Mt Sportswear HK</span>. Buy on-site, try
+                  on different sizes, take one home the same day.
                 </p>
                 <div className="flex items-baseline gap-3 mb-8">
                   <p className="font-heading text-5xl text-[#9B4FDE]">$36</p>
                   <p className="text-gray-600 text-sm">per jersey</p>
                 </div>
                 <p className="text-gray-600 text-sm">
-                  Available for purchase on-site at any holiday camp. Multiple sizes available, so you can try before you buy.
+                  Available on-site. Multiple sizes available so you can try before you
+                  buy.
                 </p>
               </div>
             </SectionReveal>
@@ -284,38 +288,66 @@ export default function Home() {
           </SectionReveal>
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-8 lg:gap-12">
             <SectionReveal>
-              <div>
-                <div className="mb-8">
-                  <h3 className="font-heading text-2xl text-[#9B4FDE] mb-4 tracking-wide">VENUE</h3>
-                  <address className="not-italic space-y-2 text-gray-300 text-sm">
-                    <p className="text-white text-lg">Baulkham Hills High School</p>
+              <div className="space-y-8">
+                {/* Bennelong Sports Centre - West Ryde (term programs) */}
+                <div>
+                  <p className="text-gray-500 text-[10px] font-heading tracking-[0.3em] uppercase mb-2">
+                    Term programs &middot; West Ryde
+                  </p>
+                  <h3 className="font-heading text-2xl text-[#9B4FDE] mb-3 tracking-wide">BENNELONG SPORTS CENTRE</h3>
+                  <address className="not-italic space-y-1 text-gray-300 text-sm">
+                    <p className="text-white text-base">Bennelong Sports Centre</p>
+                    <p>West Ryde, NSW</p>
+                  </address>
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Bennelong+Sports+Centre+West+Ryde"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-[#9B4FDE] text-xs font-medium hover:text-white transition-colors mt-3"
+                  >
+                    Directions
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M7 17L17 7M17 7H7M17 7v10" />
+                    </svg>
+                  </a>
+                </div>
+
+                {/* Baulkham Hills High School (holiday camps) */}
+                <div className="border-t border-white/[0.06] pt-8">
+                  <p className="text-gray-500 text-[10px] font-heading tracking-[0.3em] uppercase mb-2">
+                    Holiday camps &middot; Baulkham Hills
+                  </p>
+                  <h3 className="font-heading text-2xl text-[#9B4FDE] mb-3 tracking-wide">BAULKHAM HILLS HIGH SCHOOL</h3>
+                  <address className="not-italic space-y-1 text-gray-300 text-sm">
+                    <p className="text-white text-base">Baulkham Hills High School</p>
                     <p>Windsor Road, Baulkham Hills</p>
                     <p>NSW 2153</p>
                   </address>
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Baulkham+Hills+High+School"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-[#9B4FDE] text-xs font-medium hover:text-white transition-colors mt-3"
+                  >
+                    Directions
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M7 17L17 7M17 7H7M17 7v10" />
+                    </svg>
+                  </a>
                 </div>
-                <div className="border-t border-white/[0.06] pt-6 mb-8">
-                  <p className="text-gray-500 text-sm">
-                    Free parking. Indoor courts. Central to Castle Hill, Kellyville, Cherrybrook, Bella Vista.
+
+                <div className="border-t border-white/[0.06] pt-6">
+                  <p className="text-gray-500 text-xs leading-relaxed">
+                    Indoor courts at both venues. Plenty of parking. Sessions run rain or shine.
                   </p>
                 </div>
-                <a
-                  href="https://www.google.com/maps/place/Obsidian+Volleyball+Academy"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"
-                >
-                  Get directions
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M7 17L17 7M17 7H7M17 7v10" />
-                  </svg>
-                </a>
               </div>
             </SectionReveal>
             {/* Google Maps */}
             <SectionReveal delay={0.15}>
               <div className="aspect-[16/10] lg:aspect-auto lg:h-full min-h-[300px] overflow-hidden bg-[#111]">
                 <iframe
-                  src="https://www.google.com/maps?q=Obsidian+Volleyball+Academy&output=embed"
+                  src="https://www.google.com/maps?q=Bennelong+Sports+Centre+West+Ryde&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2)" }}
