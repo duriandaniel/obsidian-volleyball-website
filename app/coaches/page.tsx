@@ -3,19 +3,19 @@ import CoachCard from "@/components/CoachCard";
 import SectionReveal from "@/components/SectionReveal";
 
 export const metadata: Metadata = {
-  title: "Volleyball Coaches | Baulkham Hills, Hills District Sydney",
+  title: "Volleyball Coaches | Junior Volleyball Sydney",
   description:
-    "Meet the Obsidian coaching team. Experienced players coaching juniors in Baulkham Hills, Hills District.",
+    "Meet the Obsidian coaching team. Experienced players coaching juniors across Sydney.",
   keywords: [
-    "volleyball coaching Baulkham Hills",
-    "volleyball coach Hills District",
+    "volleyball coaching Sydney",
+    "volleyball coach West Ryde",
     "accredited volleyball coach Sydney",
   ],
   alternates: { canonical: "/coaches" },
   openGraph: {
-    title: "Volleyball Coaches | Baulkham Hills, Hills District Sydney",
+    title: "Volleyball Coaches | Junior Volleyball Sydney",
     description:
-      "Meet the Obsidian coaching team. Experienced players coaching juniors in Baulkham Hills, Hills District.",
+      "Meet the Obsidian coaching team. Experienced players coaching juniors across Sydney.",
     images: ["/images/coach-instruction.jpg"],
     url: "/coaches",
   },

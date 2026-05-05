@@ -4,27 +4,27 @@ import SectionReveal from "@/components/SectionReveal";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 
 export const metadata: Metadata = {
-  title: "Service Areas | Junior Volleyball Across the Hills District",
+  title: "Service Areas | Junior Volleyball Sydney | Obsidian Volleyball Academy",
   description:
-    "Obsidian Volleyball Academy serves families across the Hills District of Sydney. Find your suburb and see how close you are to our Baulkham Hills venue.",
+    "Obsidian Volleyball Academy runs term programs at Bennelong Sports Centre, West Ryde. Find your suburb and see how close you are.",
   keywords: [
-    "junior volleyball Hills District",
-    "volleyball coaching Sydney Hills",
+    "junior volleyball Sydney",
+    "volleyball coaching West Ryde",
     "volleyball academy near me",
   ],
   alternates: { canonical: "/areas" },
 };
 
 const areas = [
-  { slug: "castle-hill", name: "Castle Hill", drive: "5 min" },
-  { slug: "winston-hills", name: "Winston Hills", drive: "5 min" },
-  { slug: "northmead", name: "Northmead", drive: "7 min" },
-  { slug: "kellyville", name: "Kellyville", drive: "8 min" },
-  { slug: "bella-vista", name: "Bella Vista", drive: "8 min" },
-  { slug: "cherrybrook", name: "Cherrybrook", drive: "10 min" },
-  { slug: "west-pennant-hills", name: "West Pennant Hills", drive: "10 min" },
-  { slug: "carlingford", name: "Carlingford", drive: "12 min" },
-  { slug: "dural", name: "Dural", drive: "12 min" },
+  { slug: "ryde", name: "Ryde", drive: "3 min" },
+  { slug: "eastwood", name: "Eastwood", drive: "5 min" },
+  { slug: "meadowbank", name: "Meadowbank", drive: "5 min" },
+  { slug: "denistone", name: "Denistone", drive: "5 min" },
+  { slug: "top-ryde", name: "Top Ryde", drive: "5 min" },
+  { slug: "putney", name: "Putney", drive: "7 min" },
+  { slug: "north-ryde", name: "North Ryde", drive: "8 min" },
+  { slug: "marsfield", name: "Marsfield", drive: "8 min" },
+  { slug: "macquarie-park", name: "Macquarie Park", drive: "10 min" },
 ];
 
 const breadcrumbSchema = {
@@ -45,16 +45,16 @@ export default function AreasIndexPage() {
       <section className="py-24 lg:py-32 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">HILLS DISTRICT, SYDNEY</p>
+            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">SYDNEY</p>
             <h1 className="font-heading text-6xl sm:text-8xl lg:text-9xl text-white tracking-wide mb-8 leading-[0.9]">
               SERVICE
               <br />
               <span className="text-[#9B4FDE]">AREAS</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
-              Obsidian Volleyball Academy is based at Baulkham Hills High School, central to the
-              Hills District of Sydney. Families travel from suburbs across the region. Find yours
-              below.
+              Obsidian Volleyball Academy runs term programs at Bennelong Sports Centre,
+              West Ryde. Families travel from across Sydney for premium junior volleyball
+              coaching. Find your suburb below.
             </p>
           </SectionReveal>
         </div>

@@ -23,18 +23,17 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Obsidian Volleyball Academy | Junior Volleyball Sydney Hills District",
+    default: "Obsidian Volleyball Academy | Junior Volleyball Sydney",
     template: "%s | Obsidian Volleyball Academy",
   },
   description:
-    "Premium junior volleyball academy in Baulkham Hills, Sydney Hills District. Holiday camps and term programs for all skill levels.",
+    "Premium junior volleyball academy in Sydney. Term programs at Bennelong Sports Centre, West Ryde. Holiday camps at Baulkham Hills.",
   keywords: [
     "volleyball academy Sydney",
     "junior volleyball Sydney",
-    "volleyball holiday camp Hills District",
-    "volleyball Baulkham Hills",
-    "volleyball camp Castle Hill",
-    "junior volleyball Hills District",
+    "volleyball West Ryde",
+    "volleyball Bennelong Sports Centre",
+    "junior volleyball coaching Sydney",
   ],
   openGraph: {
     type: "website",
@@ -42,13 +41,13 @@ export const metadata: Metadata = {
     siteName: "Obsidian Volleyball Academy",
     title: "Obsidian Volleyball Academy | Junior Volleyball Sydney",
     description:
-      "Premium junior volleyball academy in Baulkham Hills. Holiday camps, term programs for all skill levels.",
+      "Premium junior volleyball academy in Sydney. Term programs in West Ryde.",
     images: [
       {
         url: "/images/hero.jpg",
         width: 1200,
         height: 630,
-        alt: "Obsidian Volleyball Academy: Junior Volleyball in the Hills District",
+        alt: "Obsidian Volleyball Academy: Junior Volleyball in Sydney",
       },
     ],
   },
@@ -56,7 +55,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Obsidian Volleyball Academy | Junior Volleyball Sydney",
     description:
-      "Premium junior volleyball academy in Baulkham Hills. Holiday camps, term programs for all skill levels.",
+      "Premium junior volleyball academy in Sydney. Term programs in West Ryde.",
     images: ["/images/hero.jpg"],
   },
   robots: {
@@ -83,7 +82,7 @@ const organizationSchema = {
   email: "obsidianvolleyball@gmail.com",
   sameAs: ["https://instagram.com/obsidianvolleyball"],
   foundingDate: "2025",
-  areaServed: { "@type": "AdministrativeArea", name: "Hills District, Sydney" },
+  areaServed: { "@type": "AdministrativeArea", name: "Sydney, NSW" },
 };
 
 const localBusinessSchema = {
@@ -92,38 +91,29 @@ const localBusinessSchema = {
   "@id": `${SITE_URL}/#localbusiness`,
   name: "Obsidian Volleyball Academy",
   description:
-    "Premium junior volleyball academy in Baulkham Hills, Sydney Hills District. Holiday camps and term programs for ages 8 to 18.",
+    "Premium junior volleyball academy in Sydney. Term programs every Friday at Bennelong Sports Centre, West Ryde, for ages 8 to 18.",
   url: SITE_URL,
   image: `${SITE_URL}/images/hero.jpg`,
   email: "obsidianvolleyball@gmail.com",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Windsor Road",
-    addressLocality: "Baulkham Hills",
+    addressLocality: "West Ryde",
     addressRegion: "NSW",
-    postalCode: "2153",
     addressCountry: "AU",
   },
-  geo: {
-    "@type": "GeoCoordinates",
-    latitude: -33.7627,
-    longitude: 150.9927,
-  },
   sport: "Volleyball",
-  priceRange: "$35-$200",
   sameAs: ["https://instagram.com/obsidianvolleyball"],
   areaServed: [
-    "Baulkham Hills",
-    "Castle Hill",
-    "Kellyville",
-    "Cherrybrook",
-    "Bella Vista",
-    "Winston Hills",
-    "Northmead",
-    "Carlingford",
-    "West Pennant Hills",
-    "Dural",
-    "Hills District",
+    "West Ryde",
+    "Ryde",
+    "Eastwood",
+    "Meadowbank",
+    "Denistone",
+    "Top Ryde",
+    "Putney",
+    "North Ryde",
+    "Marsfield",
+    "Macquarie Park",
     "Sydney",
   ],
   openingHoursSpecification: [

@@ -19,7 +19,7 @@ const LOCATIONS: LocationOption[] = [
   {
     id: "baulkham",
     label: "Baulkham Hills",
-    sub: "Hills District",
+    sub: "Sydney",
     available: true,
   },
   {

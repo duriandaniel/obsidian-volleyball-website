@@ -326,7 +326,7 @@ function SlotRow({
           </span>
         </div>
         <span className="hidden md:inline-block text-gray-700 text-[10px] tracking-wider shrink-0 ml-auto md:ml-0">
-          1.5 HR
+          2 HR
         </span>
       </div>
 

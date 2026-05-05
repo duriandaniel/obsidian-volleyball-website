@@ -1,28 +1,29 @@
 import type { Metadata } from "next";
-import SectionReveal from "@/components/SectionReveal";
+import Image from "next/image";
 import Link from "next/link";
+import SectionReveal from "@/components/SectionReveal";
 import LevelPicker, { type Venue, type LevelInfo } from "./LevelPicker";
 import TrackPixelView from "@/components/TrackPixelView";
 
 export const metadata: Metadata = {
   title:
-    "Junior Volleyball School Term Programs | West Ryde + Parramatta Sydney | Obsidian",
+    "Junior Volleyball Term Programs | West Ryde Sydney | Obsidian Volleyball Academy",
   description:
-    "Weekly junior volleyball training in West Ryde (Friday) and Parramatta (Thursday). Beginner, intermediate, and advanced school term programs at Obsidian Volleyball Academy.",
+    "Premium junior volleyball training every Friday at Bennelong Sports Centre, West Ryde. Beginner, intermediate, and advanced sessions. Now launching with 20% off and a free training shirt.",
   keywords: [
-    "junior volleyball Sydney",
-    "school term volleyball Sydney",
+    "junior volleyball West Ryde",
     "volleyball lessons West Ryde",
-    "volleyball lessons Parramatta",
     "junior volleyball coaching Sydney",
+    "school term volleyball Sydney",
+    "volleyball Bennelong Sports Centre",
     "weekly volleyball training",
   ],
   alternates: { canonical: "/term-programs" },
   openGraph: {
     title:
-      "Junior Volleyball School Term Programs | West Ryde + Parramatta Sydney | Obsidian",
+      "Junior Volleyball Term Programs | West Ryde Sydney | Obsidian Volleyball Academy",
     description:
-      "Weekly junior volleyball training in West Ryde and Parramatta. School term programs for all skill levels.",
+      "Premium junior volleyball training every Friday at Bennelong Sports Centre, West Ryde.",
     images: ["/images/gallery-spike.jpg"],
     url: "/term-programs",
   },
@@ -36,32 +37,18 @@ const ENROL_PLACEHOLDER = "/contact";
 
 const VENUES: Venue[] = [
   {
-    id: "kings",
-    name: "Kings School",
-    suburb: "Parramatta",
-    day: "Thursday",
-    coaches: [
-      { name: "Jessica", slug: "jessica", image: "/images/coach-jessica-card.jpg" },
-      { name: "Chris", slug: "chris" },
-    ],
-    slots: [
-      { time: "5:00 – 6:30 PM", levels: ["Beginner", "Intermediate"] },
-      { time: "6:30 – 8:00 PM", levels: ["Beginner", "Intermediate"] },
-    ],
-  },
-  {
     id: "bennelong",
     name: "Bennelong Sports Centre",
     suburb: "West Ryde",
     day: "Friday",
     coaches: [
-      { name: "Sandeep", slug: "sandeep" },
       { name: "Kaveesh", slug: "kaveesh", image: "/images/coach-kaveesh-card.jpg" },
+      { name: "Chris", slug: "chris" },
     ],
     slots: [
-      { time: "5:00 – 6:30 PM", levels: ["Beginner", "Intermediate"] },
-      { time: "6:30 – 8:00 PM", levels: ["Beginner", "Intermediate"] },
-      { time: "8:00 – 9:30 PM", levels: ["Intermediate", "Advanced"] },
+      { time: "4:00 – 6:00 PM", levels: ["Beginner", "Intermediate"] },
+      { time: "6:00 – 8:00 PM", levels: ["Beginner", "Intermediate"] },
+      { time: "8:00 – 10:00 PM", levels: ["Intermediate", "Advanced"] },
     ],
   },
 ];
@@ -120,7 +107,7 @@ export default function TermProgramsPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">
-              JUNIOR DEVELOPMENT PROGRAM
+              NOW LAUNCHING &middot; WEST RYDE
             </p>
             <h1 className="font-heading text-6xl sm:text-8xl text-white tracking-wide mb-6 leading-[0.9]">
               SCHOOL TERM
@@ -128,10 +115,49 @@ export default function TermProgramsPage() {
               <span className="text-[#9B4FDE]">PROGRAMS</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-xl leading-relaxed">
-              Weekly junior volleyball training across two Sydney venues. Pick
-              your level below to see the available classes and times.
+              Premium junior volleyball coaching every Friday at Bennelong Sports Centre,
+              West Ryde. Two indoor courts, three sessions, expert coaches. Pick your level
+              below.
             </p>
           </SectionReveal>
+        </div>
+      </section>
+
+      {/* Venue showcase */}
+      <section className="py-12 lg:py-16 bg-[#0A0A0A]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-12 items-center">
+            <SectionReveal>
+              <div className="aspect-[4/3] relative overflow-hidden border border-white/[0.08]">
+                <Image
+                  src="/images/venue.jpg"
+                  alt="Bennelong Sports Centre indoor volleyball courts"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 55vw"
+                  quality={85}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 via-transparent to-transparent" />
+              </div>
+            </SectionReveal>
+            <SectionReveal delay={0.15}>
+              <div>
+                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">THE VENUE</p>
+                <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide leading-[0.95] mb-6">
+                  BENNELONG
+                  <br />
+                  <span className="text-[#9B4FDE]">SPORTS CENTRE</span>
+                </h2>
+                <p className="text-gray-400 text-base leading-relaxed mb-4">
+                  Two full-size indoor courts in West Ryde, climate-controlled, plenty of
+                  parking. Sessions run rain or shine, every Friday during the school term.
+                </p>
+                <p className="text-gray-500 text-sm">
+                  Bennelong Sports Centre West &middot; West Ryde, NSW
+                </p>
+              </div>
+            </SectionReveal>
+          </div>
         </div>
       </section>
 
@@ -207,7 +233,7 @@ export default function TermProgramsPage() {
               GET IN TOUCH
             </Link>
             <p className="text-gray-700 text-xs mt-6 tracking-wider">
-              KINGS SCHOOL &middot; BENNELONG &middot; ALL SKILL LEVELS
+              BENNELONG SPORTS CENTRE &middot; WEST RYDE &middot; ALL SKILL LEVELS
             </p>
           </SectionReveal>
         </div>

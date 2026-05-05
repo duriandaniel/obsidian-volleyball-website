@@ -27,11 +27,11 @@ const faqCategories = [
       },
       {
         q: "How much does it cost?",
-        a: "Holiday camp pricing varies by venue. The 5-day Baulkham Hills package is $200 and includes a free Obsidian training jersey, with individual day and half-day rates also available. Pricing for additional venues is being finalised. Check the booking page or get in touch for the current schedule.",
+        a: "Term program and holiday camp pricing is on the booking page. We're a premium club: small groups, expert coaches, structured curriculum. We're currently running a launch promotion for new players (20% off plus a free training shirt).",
       },
       {
         q: "Do you run programs during school terms?",
-        a: "Yes. We run weekly term programs during the school year on Thursdays at Kings School (Parramatta) and Fridays at Bennelong Sports Centre (West Ryde), in addition to our holiday camps at Baulkham Hills. See the term programs page for current options.",
+        a: "Yes. Term programs run every Friday at Bennelong Sports Centre, West Ryde. Three two-hour sessions across two indoor courts. Holiday camps run separately at Baulkham Hills High School during school holidays.",
       },
     ],
   },
@@ -74,7 +74,7 @@ const faqCategories = [
     faqs: [
       {
         q: "Where do you run programs?",
-        a: "Holiday camps run at Baulkham Hills High School in the Hills District. Term programs run on Thursdays at Kings School in Parramatta and Fridays at Bennelong Sports Centre in West Ryde. We are continuing to expand to additional Sydney locations — check back for updates.",
+        a: "Term programs run every Friday at Bennelong Sports Centre, West Ryde. Holiday camps run at Baulkham Hills High School during school holiday periods. We are continuing to expand to additional Sydney locations.",
       },
       {
         q: "Are all the venues indoor?",
@@ -90,7 +90,7 @@ const faqCategories = [
       },
       {
         q: "What time do sessions start and end?",
-        a: "Holiday camps run 9 AM to 1 PM (full day) with half-day options available. Term programs run in 1.5-hour evening blocks (5 PM, 6:30 PM, and an 8 PM advanced slot at Bennelong). Exact times are on each program's booking page.",
+        a: "Holiday camps run 9 AM to 1 PM (full day) with half-day options available. Term programs run in three two-hour Friday evening blocks at Bennelong Sports Centre. Exact times are on the term programs page.",
       },
     ],
   },

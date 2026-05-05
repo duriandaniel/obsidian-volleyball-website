@@ -31,7 +31,7 @@ const campSchema = {
   "@type": "Course",
   name: "Volleyball Holiday Camp | Obsidian Volleyball Academy",
   description:
-    "Intensive junior volleyball camps during school holidays in Baulkham Hills, Sydney Hills District. Beginner to advanced skill levels, ages 8–18.",
+    "Intensive junior volleyball camps during school holidays in Baulkham Hills, Sydney. Beginner to advanced skill levels, ages 8–18.",
   provider: {
     "@type": "SportsOrganization",
     name: "Obsidian Volleyball Academy",

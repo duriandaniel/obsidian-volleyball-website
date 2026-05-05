@@ -2,15 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 
 const serviceAreas = [
-  { slug: "castle-hill", name: "Castle Hill" },
-  { slug: "kellyville", name: "Kellyville" },
-  { slug: "cherrybrook", name: "Cherrybrook" },
-  { slug: "bella-vista", name: "Bella Vista" },
-  { slug: "winston-hills", name: "Winston Hills" },
-  { slug: "northmead", name: "Northmead" },
-  { slug: "carlingford", name: "Carlingford" },
-  { slug: "west-pennant-hills", name: "West Pennant Hills" },
-  { slug: "dural", name: "Dural" },
+  { slug: "ryde", name: "Ryde" },
+  { slug: "eastwood", name: "Eastwood" },
+  { slug: "meadowbank", name: "Meadowbank" },
+  { slug: "denistone", name: "Denistone" },
+  { slug: "north-ryde", name: "North Ryde" },
+  { slug: "marsfield", name: "Marsfield" },
+  { slug: "putney", name: "Putney" },
+  { slug: "top-ryde", name: "Top Ryde" },
+  { slug: "macquarie-park", name: "Macquarie Park" },
 ];
 
 export default function Footer() {
@@ -86,9 +86,10 @@ export default function Footer() {
           <div>
             <h3 className="font-heading text-base text-gray-400 mb-4 tracking-[0.2em]">VENUES</h3>
             <ul className="not-italic text-gray-600 text-sm space-y-2 mb-6">
-              <li className="text-gray-400">Baulkham Hills High School</li>
-              <li>Bennelong Sports Centre, West Ryde</li>
-              <li>Kings School, Parramatta</li>
+              <li className="text-gray-400">Bennelong Sports Centre</li>
+              <li>West Ryde, NSW (term programs)</li>
+              <li className="pt-2 text-gray-400">Baulkham Hills High School</li>
+              <li>Baulkham Hills, NSW (holiday camps)</li>
             </ul>
             <Link
               href="/term-programs"

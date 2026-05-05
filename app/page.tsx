@@ -14,27 +14,27 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Obsidian Volleyball Academy | Junior Volleyball Sydney Hills District",
+  title: "Obsidian Volleyball Academy | Junior Volleyball Sydney",
   description:
-    "Premium junior volleyball academy in Baulkham Hills, Sydney Hills District. Holiday camps and term programs for ages 8–18.",
+    "Premium junior volleyball academy in Sydney. Term programs at Bennelong Sports Centre, West Ryde. Now launching with 20% off and a free training shirt.",
   keywords: [
     "volleyball academy Sydney",
     "junior volleyball Sydney",
-    "volleyball holiday camp Hills District",
-    "volleyball Baulkham Hills",
-    "junior volleyball Hills District",
+    "volleyball West Ryde",
+    "volleyball Bennelong Sports Centre",
+    "junior volleyball coaching Sydney",
   ],
 };
 
 
 const faqs = [
   {
-    q: "Where are the camps held?",
-    a: "Baulkham Hills High School. Indoor courts in the Hills District.",
+    q: "Where do you run programs?",
+    a: "Term programs at Bennelong Sports Centre, West Ryde, every Friday. Holiday camps at Baulkham Hills High School.",
   },
   {
     q: "What age groups do you cater for?",
-    a: "Juniors aged 8–18, grouped by skill level not age.",
+    a: "Juniors aged 8 to 18, grouped by skill level not age.",
   },
   {
     q: "My child has never played. Is that OK?",
@@ -158,8 +158,9 @@ export default function Home() {
                   <span className="text-[#9B4FDE]">OBSIDIAN</span>
                 </h2>
                 <p className="text-gray-400 leading-relaxed">
-                  Founded in 2025 to bring high-quality volleyball coaching to the Hills District.
-                  Professional training at Baulkham Hills High School, so families don't have to travel across Sydney.
+                  Founded in 2025 to bring premium junior volleyball coaching to Sydney families.
+                  Now launching term programs at Bennelong Sports Centre, West Ryde, with holiday
+                  camps at Baulkham Hills High School.
                 </p>
               </div>
             </SectionReveal>
@@ -167,7 +168,7 @@ export default function Home() {
               <div className="aspect-[3/4] relative overflow-hidden">
                 <Image
                   src="/images/about.jpg"
-                  alt="Obsidian Volleyball Academy players at Baulkham Hills High School"
+                  alt="Obsidian Volleyball Academy junior players in training"
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 45vw"

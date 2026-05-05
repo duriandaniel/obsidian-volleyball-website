@@ -16,7 +16,7 @@ export default function PromoBanner() {
     >
       <div className="max-w-7xl mx-auto px-4 py-2 text-center">
         <p className="text-[11px] sm:text-xs font-heading text-white tracking-[0.4em] uppercase">
-          <span>New Player Promotion</span>
+          <span>Launch Sale 20% Off</span>
           <span
             className="text-[#D4A4FF] mx-4 sm:mx-6 inline-block align-middle text-[8px]"
             aria-hidden
@@ -28,7 +28,7 @@ export default function PromoBanner() {
             className="hidden md:inline-block ml-5 lg:ml-7 text-[#D4A4FF] tracking-[0.3em]"
             aria-hidden
           >
-            Claim &rarr;
+            Book Now &rarr;
           </span>
         </p>
       </div>

@@ -51,15 +51,25 @@ export default function Hero() {
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 pb-20">
         <div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.05 }}
+          >
+            <p className="text-[#9B4FDE] font-heading text-base sm:text-lg tracking-[0.4em] mb-6">
+              NOW LAUNCHING &middot; WEST RYDE
+            </p>
+          </motion.div>
+
           <motion.h1
             className="font-heading text-[clamp(3.5rem,12vw,10rem)] leading-[0.9] text-white tracking-wide mb-8"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
           >
-            Junior
+            Term
             <br />
-            <span className="text-[#9B4FDE]">Volleyball</span>
+            <span className="text-[#9B4FDE]">Programs</span>
           </motion.h1>
 
           <motion.p
@@ -68,9 +78,8 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            Professional Volleyball Coaching in Sydney.
-            <br />
-            Holiday camps and term programs for beginner to competitive players.
+            Premium junior volleyball coaching at Bennelong Sports Centre, West Ryde.
+            Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open.
           </motion.p>
 
           <motion.div
@@ -79,18 +88,18 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <TrackedBookingLink
-              location="hero"
+            <Link
+              href="/term-programs"
               className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 hover:bg-[#9B4FDE] transition-all duration-300 tracking-wide text-center glow-purple"
             >
               BOOK NOW
-            </TrackedBookingLink>
-            <Link
-              href="/term-programs"
+            </Link>
+            <TrackedBookingLink
+              location="hero"
               className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
             >
-              View Term Programs
-            </Link>
+              VIEW SCHEDULE
+            </TrackedBookingLink>
           </motion.div>
         </div>
       </div>
