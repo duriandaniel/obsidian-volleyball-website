@@ -88,18 +88,18 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <Link
-              href="/term-programs"
+            <TrackedBookingLink
+              location="hero"
               className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 hover:bg-[#9B4FDE] transition-all duration-300 tracking-wide text-center glow-purple"
             >
               BOOK NOW
-            </Link>
-            <TrackedBookingLink
-              location="hero"
+            </TrackedBookingLink>
+            <Link
+              href="/term-programs"
               className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
             >
               VIEW SCHEDULE
-            </TrackedBookingLink>
+            </Link>
           </motion.div>
         </div>
       </div>
