@@ -31,7 +31,7 @@ const faqCategories = [
       },
       {
         q: "Do you run programs during school terms?",
-        a: "Yes. Term programs run every Friday at Bennelong Sports Centre, West Ryde. Three two-hour sessions across two indoor courts. Holiday camps run separately at Baulkham Hills High School during school holidays.",
+        a: "Yes. Junior classes run every Friday at Bennelong Sports Centre, West Ryde, in two 1.5-hour sessions (4:00–5:30 PM and 5:30–7:00 PM). Adult scrims run the same evening from 7:00–9:00 PM. Holiday camps run separately at Baulkham Hills High School during school holidays.",
       },
     ],
   },
@@ -90,7 +90,7 @@ const faqCategories = [
       },
       {
         q: "What time do sessions start and end?",
-        a: "Holiday camps run 9 AM to 1 PM (full day) with half-day options available. Term programs run in three two-hour Friday evening blocks at Bennelong Sports Centre. Exact times are on the term programs page.",
+        a: "Holiday camps run 9 AM to 1 PM (full day) with half-day options available. Junior classes run in 1.5-hour Friday evening blocks (4:00 PM and 5:30 PM starts), with adult scrims from 7:00–9:00 PM at the same venue.",
       },
     ],
   },

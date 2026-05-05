@@ -51,14 +51,14 @@ const VENUES: Venue[] = [
     day: "Friday",
     slots: [
       {
-        time: "4:00 – 6:00 PM",
+        time: "4:00 – 5:30 PM",
         courts: [
           { level: "Beginner", coach: CHRIS },
           { level: "Intermediate", coach: KAVEESH },
         ],
       },
       {
-        time: "6:00 – 8:00 PM",
+        time: "5:30 – 7:00 PM",
         courts: [
           { level: "Intermediate", coach: CHRIS },
           { level: "Advanced", coach: KAVEESH },

@@ -73,7 +73,7 @@ export default function AdultSessionsPage() {
                     </span>
                     <span className="hidden sm:inline-block w-px h-7 bg-[#9B4FDE]/40" />
                     <span className="font-heading text-xl sm:text-2xl lg:text-3xl text-[#9B4FDE] tracking-wider">
-                      8:00 &ndash; 9:30 PM
+                      7:00 &ndash; 9:00 PM
                     </span>
                   </div>
 
@@ -97,7 +97,7 @@ export default function AdultSessionsPage() {
                     </li>
                     <li className="flex items-start gap-3">
                       <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
-                      <span>1.5 hours of court time, weekly during school terms.</span>
+                      <span>Two-hour block, weekly during school terms.</span>
                     </li>
                   </ul>
 
