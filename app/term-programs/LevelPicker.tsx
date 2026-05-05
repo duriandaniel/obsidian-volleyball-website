@@ -317,8 +317,8 @@ function SlotRow({
             </span>
           </div>
           <div className="flex items-baseline gap-2 leading-none shrink-0">
-            <span className="text-gray-600 text-xs line-through">$300</span>
-            <span className="font-heading text-lg text-[#9B4FDE]">$200</span>
+            <span className="text-gray-600 text-xs line-through">$360</span>
+            <span className="font-heading text-lg text-[#9B4FDE]">$288</span>
           </div>
         </div>
 
@@ -380,8 +380,8 @@ function SlotRow({
         {/* Right: price + enrol */}
         <div className="flex items-center gap-4 shrink-0">
           <div className="flex items-baseline gap-2 leading-none">
-            <span className="text-gray-600 text-sm line-through">$300</span>
-            <span className="font-heading text-xl text-[#9B4FDE]">$200</span>
+            <span className="text-gray-600 text-sm line-through">$360</span>
+            <span className="font-heading text-xl text-[#9B4FDE]">$288</span>
           </div>
           <Link
             href={enrolHref}
