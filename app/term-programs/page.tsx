@@ -28,10 +28,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Online enrolment via Acuity is not wired up yet for term programs.
-// Replace with a per-program appointmentType URL when Acuity is live.
-const ENROL_PLACEHOLDER = "/contact";
-
 const CHRIS = {
   name: "Chris",
   slug: "chris",
@@ -41,6 +37,14 @@ const KAVEESH = {
   name: "Kaveesh",
   slug: "kaveesh",
   image: "/images/coach-kaveesh-card.jpg",
+};
+
+// Per-class Acuity appointment URLs. One per (slot x level x court).
+const ACUITY = {
+  beg_4pm: "https://obsidianvolleyball.as.me/?appointmentType=92833866",
+  int_4pm: "https://obsidianvolleyball.as.me/?appointmentType=92833644",
+  int_530pm: "https://obsidianvolleyball.as.me/?appointmentType=92833584",
+  adv_530pm: "https://obsidianvolleyball.as.me/?appointmentType=92802606",
 };
 
 const VENUES: Venue[] = [
@@ -53,15 +57,15 @@ const VENUES: Venue[] = [
       {
         time: "4:00 – 5:30 PM",
         courts: [
-          { level: "Beginner", coach: CHRIS },
-          { level: "Intermediate", coach: KAVEESH },
+          { level: "Beginner", coach: CHRIS, enrolHref: ACUITY.beg_4pm },
+          { level: "Intermediate", coach: KAVEESH, enrolHref: ACUITY.int_4pm },
         ],
       },
       {
         time: "5:30 – 7:00 PM",
         courts: [
-          { level: "Intermediate", coach: CHRIS },
-          { level: "Advanced", coach: KAVEESH },
+          { level: "Intermediate", coach: CHRIS, enrolHref: ACUITY.int_530pm },
+          { level: "Advanced", coach: KAVEESH, enrolHref: ACUITY.adv_530pm },
         ],
       },
     ],
@@ -142,7 +146,6 @@ export default function JuniorClassesPage() {
           <LevelPicker
             levels={LEVELS}
             venues={VENUES}
-            enrolHref={ENROL_PLACEHOLDER}
           />
         </div>
       </section>

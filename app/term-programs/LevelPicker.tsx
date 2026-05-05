@@ -10,8 +10,9 @@ export type Level = "Beginner" | "Intermediate" | "Advanced";
 export type Coach = { name: string; slug: string; image?: string };
 
 // One court within a slot: a level + the single coach assigned to that
-// level for that slot. A slot has one or more courts running in parallel.
-export type SlotCourt = { level: Level; coach: Coach };
+// level for that slot, plus its per-class Acuity booking URL. A slot has
+// one or more courts running in parallel.
+export type SlotCourt = { level: Level; coach: Coach; enrolHref: string };
 
 export type Slot = { time: string; courts: SlotCourt[] };
 
@@ -32,10 +33,9 @@ export type LevelInfo = {
 interface LevelPickerProps {
   levels: LevelInfo[];
   venues: Venue[];
-  enrolHref: string;
 }
 
-export default function LevelPicker({ levels, venues, enrolHref }: LevelPickerProps) {
+export default function LevelPicker({ levels, venues }: LevelPickerProps) {
   const [selected, setSelected] = useState<Level | null>(null);
   const revealRef = useRef<HTMLDivElement | null>(null);
 
@@ -48,9 +48,14 @@ export default function LevelPicker({ levels, venues, enrolHref }: LevelPickerPr
           slots: v.slots
             .map((s) => {
               const court = s.courts.find((c) => c.level === selected);
-              return court ? { time: s.time, coach: court.coach } : null;
+              return court
+                ? { time: s.time, coach: court.coach, enrolHref: court.enrolHref }
+                : null;
             })
-            .filter((s): s is { time: string; coach: Coach } => s !== null),
+            .filter(
+              (s): s is { time: string; coach: Coach; enrolHref: string } =>
+                s !== null
+            ),
         }))
         .filter((o) => o.slots.length > 0)
     : [];
@@ -186,7 +191,6 @@ export default function LevelPicker({ levels, venues, enrolHref }: LevelPickerPr
               <ClassesList
                 level={selected}
                 optionsByVenue={optionsByVenue}
-                enrolHref={enrolHref}
               />
             </motion.div>
           )}
@@ -196,16 +200,14 @@ export default function LevelPicker({ levels, venues, enrolHref }: LevelPickerPr
   );
 }
 
-type SlotMatch = { time: string; coach: Coach };
+type SlotMatch = { time: string; coach: Coach; enrolHref: string };
 
 function ClassesList({
   level,
   optionsByVenue,
-  enrolHref,
 }: {
   level: Level;
   optionsByVenue: { venue: Venue; slots: SlotMatch[] }[];
-  enrolHref: string;
 }) {
   return (
     <div>
@@ -224,7 +226,7 @@ function ClassesList({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.1 + i * 0.08, ease: "easeOut" }}
           >
-            <VenueGroup venue={venue} slots={slots} enrolHref={enrolHref} />
+            <VenueGroup venue={venue} slots={slots} />
           </motion.div>
         ))}
       </div>
@@ -235,11 +237,9 @@ function ClassesList({
 function VenueGroup({
   venue,
   slots,
-  enrolHref,
 }: {
   venue: Venue;
   slots: SlotMatch[];
-  enrolHref: string;
 }) {
   return (
     <div>
@@ -262,7 +262,7 @@ function VenueGroup({
             day={venue.day}
             time={slot.time}
             coach={slot.coach}
-            enrolHref={enrolHref}
+            enrolHref={slot.enrolHref}
           />
         ))}
       </div>

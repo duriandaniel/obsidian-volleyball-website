@@ -90,6 +90,7 @@ export default function Hero() {
           >
             <TrackedBookingLink
               location="hero"
+              href="https://obsidianvolleyball.as.me/?appointmentType=category:Weekly%20Training"
               className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 hover:bg-[#9B4FDE] transition-all duration-300 tracking-wide text-center glow-purple"
             >
               BOOK NOW
