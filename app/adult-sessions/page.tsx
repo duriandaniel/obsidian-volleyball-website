@@ -67,7 +67,7 @@ export default function AdultSessionsPage() {
                     Bennelong Sports Centre &middot; West Ryde
                   </p>
 
-                  <div className="flex items-baseline gap-3 sm:gap-5 mb-8 flex-wrap">
+                  <div className="flex items-baseline gap-3 sm:gap-5 mb-6 flex-wrap">
                     <span className="font-heading text-xl sm:text-2xl lg:text-3xl text-white tracking-[0.2em] uppercase">
                       Friday
                     </span>
@@ -75,6 +75,11 @@ export default function AdultSessionsPage() {
                     <span className="font-heading text-xl sm:text-2xl lg:text-3xl text-[#9B4FDE] tracking-wider">
                       8:00 &ndash; 10:00 PM
                     </span>
+                  </div>
+
+                  <div className="flex items-baseline gap-3 mb-8">
+                    <span className="font-heading text-4xl lg:text-5xl text-[#9B4FDE]">$20</span>
+                    <span className="text-gray-500 text-sm">per person</span>
                   </div>
 
                   <ul className="space-y-3 mb-10 text-gray-300 text-sm lg:text-base">

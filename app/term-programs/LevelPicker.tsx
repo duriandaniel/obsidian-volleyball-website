@@ -330,24 +330,30 @@ function SlotRow({
         </span>
       </div>
 
-      {/* Right: enrol */}
-      <Link
-        href={enrolHref}
-        className="inline-flex items-center gap-2 bg-[#7B2FBE] text-white font-heading text-xs sm:text-sm tracking-[0.2em] uppercase px-5 sm:px-6 py-2.5 sm:py-3 hover:bg-white hover:text-[#7B2FBE] transition-all duration-300 glow-purple self-start sm:self-auto shrink-0"
-      >
-        <span>Enrol</span>
-        <svg
-          width="14"
-          height="14"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          className="hidden sm:block"
+      {/* Right: price + enrol */}
+      <div className="flex items-center gap-3 sm:gap-4 self-start sm:self-auto shrink-0">
+        <div className="flex items-baseline gap-2 leading-none">
+          <span className="text-gray-600 text-xs sm:text-sm line-through">$300</span>
+          <span className="font-heading text-lg sm:text-xl text-[#9B4FDE]">$200</span>
+        </div>
+        <Link
+          href={enrolHref}
+          className="inline-flex items-center gap-2 bg-[#7B2FBE] text-white font-heading text-xs sm:text-sm tracking-[0.2em] uppercase px-5 sm:px-6 py-2.5 sm:py-3 hover:bg-white hover:text-[#7B2FBE] transition-all duration-300 glow-purple"
         >
-          <path d="M5 12h14M12 5l7 7-7 7" />
-        </svg>
-      </Link>
+          <span>Enrol</span>
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            className="hidden sm:block"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </Link>
+      </div>
     </div>
   );
 }

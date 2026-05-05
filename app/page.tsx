@@ -246,14 +246,17 @@ export default function Home() {
                   <span className="text-[#9B4FDE]">TRAINING JERSEY</span>
                 </h2>
                 <p className="text-gray-400 leading-relaxed mb-6">
-                  Grab an official Obsidian training jersey at camp. Try on different sizes on-site and take one home.
+                  High-quality training jerseys, designed in collaboration with{" "}
+                  <span className="text-white">Mt Sportswear HK</span>. Buy on-site, try
+                  on different sizes, take one home the same day.
                 </p>
                 <div className="flex items-baseline gap-3 mb-8">
                   <p className="font-heading text-5xl text-[#9B4FDE]">$36</p>
                   <p className="text-gray-600 text-sm">per jersey</p>
                 </div>
                 <p className="text-gray-600 text-sm">
-                  Available for purchase on-site at any holiday camp. Multiple sizes available, so you can try before you buy.
+                  Available on-site. Multiple sizes available so you can try before you
+                  buy.
                 </p>
               </div>
             </SectionReveal>
