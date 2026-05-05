@@ -171,8 +171,8 @@ export default function AdultSessionsPage() {
                   <span className="text-[#9B4FDE]">SPORTS CENTRE</span>
                 </h2>
                 <p className="text-gray-400 text-base leading-relaxed mb-4">
-                  Two full-size indoor courts in West Ryde, climate-controlled,
-                  plenty of parking. Sessions run rain or shine.
+                  State-of-the-art indoor volleyball courts in West Ryde,
+                  climate-controlled, plenty of parking. Sessions run rain or shine.
                 </p>
                 <p className="text-gray-500 text-sm">
                   Bennelong Sports Centre &middot; West Ryde, NSW

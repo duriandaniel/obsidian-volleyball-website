@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import SectionReveal from "@/components/SectionReveal";
 import LevelPicker, { type Venue, type LevelInfo } from "./LevelPicker";
 import TrackPixelView from "@/components/TrackPixelView";
@@ -41,7 +40,7 @@ const VENUES: Venue[] = [
     day: "Friday",
     coaches: [
       { name: "Kaveesh", slug: "kaveesh", image: "/images/coach-kaveesh-card.jpg" },
-      { name: "Chris", slug: "chris" },
+      { name: "Chris", slug: "chris", image: "/images/coach-chris-card.png" },
     ],
     slots: [
       { time: "4:00 – 6:00 PM", levels: ["Beginner", "Intermediate"] },
@@ -157,8 +156,9 @@ export default function JuniorClassesPage() {
                   <span className="text-[#9B4FDE]">SPORTS CENTRE</span>
                 </h2>
                 <p className="text-gray-400 text-base leading-relaxed mb-4">
-                  Two full-size indoor courts in West Ryde, climate-controlled, plenty of
-                  parking. Sessions run rain or shine, every Friday during the school term.
+                  State-of-the-art indoor volleyball courts in West Ryde,
+                  climate-controlled, plenty of parking. Sessions run rain or shine,
+                  every Friday during the school term.
                 </p>
                 <p className="text-gray-500 text-sm">
                   Bennelong Sports Centre &middot; West Ryde, NSW
@@ -169,41 +169,6 @@ export default function JuniorClassesPage() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-24 lg:py-32 bg-[#0A0A0A] text-center relative overflow-hidden">
-        <div className="section-divider absolute top-0 left-0 right-0" />
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[40vh]"
-          style={{
-            background:
-              "radial-gradient(ellipse at center, rgba(123,47,190,0.03) 0%, transparent 60%)",
-          }}
-        />
-        <div className="relative max-w-2xl mx-auto px-4">
-          <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">
-              JOIN THE CLUB
-            </p>
-            <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
-              SAVE YOUR
-              <br />
-              <span className="text-[#9B4FDE]">SPOT</span>
-            </h2>
-            <p className="text-gray-500 mb-10 leading-relaxed">
-              Cohorts are small. Reach out and we&apos;ll book you in.
-            </p>
-            <Link
-              href="/contact"
-              className="inline-block bg-[#7B2FBE] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
-            >
-              GET IN TOUCH
-            </Link>
-            <p className="text-gray-700 text-xs mt-6 tracking-wider">
-              BENNELONG SPORTS CENTRE &middot; WEST RYDE &middot; AGES 8&ndash;18
-            </p>
-          </SectionReveal>
-        </div>
-      </section>
     </div>
   );
 }

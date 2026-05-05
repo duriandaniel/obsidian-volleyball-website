@@ -81,10 +81,11 @@ const coaches = [
   {
     name: "Chris",
     role: "Coach",
-    bio: "Full profile coming soon. Chris joins the OVA coaching team for Term 2, leading sessions at our Parramatta venue.",
+    bio: "Full profile coming soon. Chris joins the OVA coaching team, leading sessions at Bennelong Sports Centre, West Ryde.",
     qualifications: [
       "Profile being updated",
     ],
+    image: "/images/coach-chris-card.png",
   },
 ];
 
