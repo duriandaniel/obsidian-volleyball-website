@@ -7,16 +7,19 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export type Level = "Beginner" | "Intermediate" | "Advanced";
 
-export type Slot = { time: string; levels: Level[] };
-
 export type Coach = { name: string; slug: string; image?: string };
+
+// One court within a slot: a level + the single coach assigned to that
+// level for that slot. A slot has one or more courts running in parallel.
+export type SlotCourt = { level: Level; coach: Coach };
+
+export type Slot = { time: string; courts: SlotCourt[] };
 
 export type Venue = {
   id: string;
   name: string;
   suburb: string;
   day: string;
-  coaches: Coach[];
   slots: Slot[];
 };
 
@@ -36,15 +39,20 @@ export default function LevelPicker({ levels, venues, enrolHref }: LevelPickerPr
   const [selected, setSelected] = useState<Level | null>(null);
   const revealRef = useRef<HTMLDivElement | null>(null);
 
+  // For the picked level: per venue, find every slot that has a court
+  // teaching that level, and pull the coach assigned to that court.
   const optionsByVenue = selected
     ? venues
         .map((v) => ({
           venue: v,
-          times: v.slots
-            .filter((s) => s.levels.includes(selected))
-            .map((s) => s.time),
+          slots: v.slots
+            .map((s) => {
+              const court = s.courts.find((c) => c.level === selected);
+              return court ? { time: s.time, coach: court.coach } : null;
+            })
+            .filter((s): s is { time: string; coach: Coach } => s !== null),
         }))
-        .filter((o) => o.times.length > 0)
+        .filter((o) => o.slots.length > 0)
     : [];
 
   function handleSelect(level: Level) {
@@ -188,13 +196,15 @@ export default function LevelPicker({ levels, venues, enrolHref }: LevelPickerPr
   );
 }
 
+type SlotMatch = { time: string; coach: Coach };
+
 function ClassesList({
   level,
   optionsByVenue,
   enrolHref,
 }: {
   level: Level;
-  optionsByVenue: { venue: Venue; times: string[] }[];
+  optionsByVenue: { venue: Venue; slots: SlotMatch[] }[];
   enrolHref: string;
 }) {
   return (
@@ -207,14 +217,14 @@ function ClassesList({
       </div>
 
       <div className="space-y-16">
-        {optionsByVenue.map(({ venue, times }, i) => (
+        {optionsByVenue.map(({ venue, slots }, i) => (
           <motion.div
             key={venue.id}
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35, delay: 0.1 + i * 0.08, ease: "easeOut" }}
           >
-            <VenueGroup venue={venue} times={times} enrolHref={enrolHref} />
+            <VenueGroup venue={venue} slots={slots} enrolHref={enrolHref} />
           </motion.div>
         ))}
       </div>
@@ -224,11 +234,11 @@ function ClassesList({
 
 function VenueGroup({
   venue,
-  times,
+  slots,
   enrolHref,
 }: {
   venue: Venue;
-  times: string[];
+  slots: SlotMatch[];
   enrolHref: string;
 }) {
   return (
@@ -246,12 +256,12 @@ function VenueGroup({
 
       {/* Time rows */}
       <div className="space-y-px bg-white/[0.04] border border-white/[0.04]">
-        {times.map((time) => (
+        {slots.map((slot) => (
           <SlotRow
-            key={time}
+            key={slot.time}
             day={venue.day}
-            time={time}
-            coaches={venue.coaches}
+            time={slot.time}
+            coach={slot.coach}
             enrolHref={enrolHref}
           />
         ))}
@@ -293,15 +303,14 @@ function SmallCoachAvatar({ coach }: { coach: Coach }) {
 function SlotRow({
   day,
   time,
-  coaches,
+  coach,
   enrolHref,
 }: {
   day: string;
   time: string;
-  coaches: Coach[];
+  coach: Coach;
   enrolHref: string;
 }) {
-  const coachNames = coaches.map((c) => c.name).join(" + ");
   return (
     <div className="bg-[#0A0A0A] hover:bg-[#111] transition-colors duration-300">
       {/* Mobile: stacked card layout */}
@@ -322,15 +331,11 @@ function SlotRow({
           </div>
         </div>
 
-        {/* Middle: coaches + duration */}
+        {/* Middle: coach + duration */}
         <div className="flex items-center gap-3">
-          <div className="flex -space-x-2 shrink-0">
-            {coaches.map((c) => (
-              <SmallCoachAvatar key={c.slug} coach={c} />
-            ))}
-          </div>
+          <SmallCoachAvatar coach={coach} />
           <span className="text-gray-400 text-xs tracking-wide truncate">
-            {coachNames}
+            Coach {coach.name}
           </span>
           <span className="text-gray-700 text-[10px] tracking-wider ml-auto shrink-0">
             2 HR
@@ -363,13 +368,9 @@ function SlotRow({
           </div>
           <span className="inline-block w-px h-7 bg-white/10 shrink-0" />
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="flex -space-x-2">
-              {coaches.map((c) => (
-                <SmallCoachAvatar key={c.slug} coach={c} />
-              ))}
-            </div>
+            <SmallCoachAvatar coach={coach} />
             <span className="text-gray-400 text-sm tracking-wide truncate">
-              {coachNames}
+              Coach {coach.name}
             </span>
           </div>
           <span className="hidden md:inline-block text-gray-700 text-[10px] tracking-wider shrink-0">

@@ -71,14 +71,6 @@ const coaches = [
     image: "/images/coach-ethan-card.jpg",
   },
   {
-    name: "Sandeep",
-    role: "Coach",
-    bio: "Full profile coming soon. Sandeep joins the OVA coaching team for Term 2, leading sessions at our West Ryde venue.",
-    qualifications: [
-      "Profile being updated",
-    ],
-  },
-  {
     name: "Chris",
     role: "Coach",
     bio: "Full profile coming soon. Chris joins the OVA coaching team, leading sessions at Bennelong Sports Centre, West Ryde.",

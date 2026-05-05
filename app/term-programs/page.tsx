@@ -32,19 +32,38 @@ export const metadata: Metadata = {
 // Replace with a per-program appointmentType URL when Acuity is live.
 const ENROL_PLACEHOLDER = "/contact";
 
+const CHRIS = {
+  name: "Chris",
+  slug: "chris",
+  image: "/images/coach-chris-card.png",
+};
+const KAVEESH = {
+  name: "Kaveesh",
+  slug: "kaveesh",
+  image: "/images/coach-kaveesh-card.jpg",
+};
+
 const VENUES: Venue[] = [
   {
     id: "bennelong",
     name: "Bennelong Sports Centre",
     suburb: "West Ryde",
     day: "Friday",
-    coaches: [
-      { name: "Kaveesh", slug: "kaveesh", image: "/images/coach-kaveesh-card.jpg" },
-      { name: "Chris", slug: "chris", image: "/images/coach-chris-card.png" },
-    ],
     slots: [
-      { time: "4:00 – 6:00 PM", levels: ["Beginner", "Intermediate"] },
-      { time: "6:00 – 8:00 PM", levels: ["Intermediate", "Advanced"] },
+      {
+        time: "4:00 – 6:00 PM",
+        courts: [
+          { level: "Beginner", coach: CHRIS },
+          { level: "Intermediate", coach: KAVEESH },
+        ],
+      },
+      {
+        time: "6:00 – 8:00 PM",
+        courts: [
+          { level: "Intermediate", coach: CHRIS },
+          { level: "Advanced", coach: KAVEESH },
+        ],
+      },
     ],
   },
 ];
