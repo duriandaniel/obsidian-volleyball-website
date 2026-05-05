@@ -64,8 +64,9 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 { href: "/", label: "Home" },
+                { href: "/term-programs", label: "Junior Classes" },
+                { href: "/adult-sessions", label: "Adult Sessions" },
                 { href: "/holiday-camp", label: "Holiday Camps" },
-                { href: "/term-programs", label: "Term Programs" },
                 { href: "/coaches", label: "Coaches" },
                 { href: "/faq", label: "FAQ" },
                 { href: "/contact", label: "Contact" },

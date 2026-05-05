@@ -1,15 +1,15 @@
 import type { MetadataRoute } from "next";
 
 const suburbs = [
-  "castle-hill",
-  "kellyville",
-  "cherrybrook",
-  "bella-vista",
-  "winston-hills",
-  "northmead",
-  "carlingford",
-  "west-pennant-hills",
-  "dural",
+  "ryde",
+  "eastwood",
+  "meadowbank",
+  "denistone",
+  "top-ryde",
+  "putney",
+  "north-ryde",
+  "marsfield",
+  "macquarie-park",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -24,16 +24,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${baseUrl}/holiday-camp`,
+      url: `${baseUrl}/term-programs`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/term-programs`,
+      url: `${baseUrl}/adult-sessions`,
       lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.5,
+      changeFrequency: "weekly",
+      priority: 0.85,
+    },
+    {
+      url: `${baseUrl}/holiday-camp`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/coaches`,

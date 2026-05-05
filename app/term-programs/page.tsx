@@ -2,38 +2,35 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import SectionReveal from "@/components/SectionReveal";
-import { type Venue, type LevelInfo } from "./LevelPicker";
-import ProgramTabs from "./ProgramTabs";
+import LevelPicker, { type Venue, type LevelInfo } from "./LevelPicker";
 import TrackPixelView from "@/components/TrackPixelView";
 
 export const metadata: Metadata = {
   title:
-    "Junior + Adult Volleyball | West Ryde Sydney | Obsidian Volleyball Academy",
+    "Junior Classes | West Ryde Volleyball Sydney | Obsidian Volleyball Academy",
   description:
-    "Junior classes and adult scrims every Friday at Bennelong Sports Centre, West Ryde. Premium coaching, two indoor courts. Now launching with 20% off and a free training shirt.",
+    "Premium junior volleyball classes every Friday at Bennelong Sports Centre, West Ryde. Beginner, intermediate, and advanced sessions for ages 8 to 18. Now launching with 20% off and a free training shirt.",
   keywords: [
     "junior volleyball West Ryde",
-    "adult volleyball West Ryde",
+    "junior volleyball classes Sydney",
     "volleyball lessons West Ryde",
     "junior volleyball coaching Sydney",
-    "adult volleyball scrim Sydney",
+    "kids volleyball Sydney",
     "volleyball Bennelong Sports Centre",
   ],
   alternates: { canonical: "/term-programs" },
   openGraph: {
     title:
-      "Junior + Adult Volleyball | West Ryde Sydney | Obsidian Volleyball Academy",
+      "Junior Classes | West Ryde Volleyball Sydney | Obsidian Volleyball Academy",
     description:
-      "Junior classes and adult scrims every Friday at Bennelong Sports Centre, West Ryde.",
+      "Premium junior volleyball classes every Friday at Bennelong Sports Centre, West Ryde.",
     images: ["/images/gallery-spike.jpg"],
     url: "/term-programs",
   },
 };
 
-// Online enrolment via Acuity is not wired up yet for Term 2 programs.
-// All enrol CTAs point to /contact for now. When Acuity is live, replace
-// the ENROL_PLACEHOLDER with the per-program appointmentType URL, e.g.
-//   https://obsidianvolleyball.as.me/?appointmentType=12345678
+// Online enrolment via Acuity is not wired up yet for term programs.
+// Replace with a per-program appointmentType URL when Acuity is live.
 const ENROL_PLACEHOLDER = "/contact";
 
 const VENUES: Venue[] = [
@@ -77,21 +74,26 @@ const LEVELS: LevelInfo[] = [
 const courseSchema = {
   "@context": "https://schema.org",
   "@type": "Course",
-  name: "Term Programs | Obsidian Volleyball Academy",
+  name: "Junior Classes | Obsidian Volleyball Academy",
   description:
-    "Junior classes and adult scrims at Bennelong Sports Centre, West Ryde. Premium volleyball coaching every Friday.",
+    "Junior volleyball classes at Bennelong Sports Centre, West Ryde. Premium coaching every Friday for ages 8 to 18.",
   provider: {
     "@type": "SportsOrganization",
     name: "Obsidian Volleyball Academy",
     url: "https://obsidianvolleyball.com",
   },
   educationalLevel: "Beginner, Intermediate, Advanced",
+  audience: {
+    "@type": "PeopleAudience",
+    suggestedMinAge: 8,
+    suggestedMaxAge: 18,
+  },
 };
 
-export default function TermProgramsPage() {
+export default function JuniorClassesPage() {
   return (
     <div className="pt-20">
-      <TrackPixelView contentName="term_programs" contentCategory="program" />
+      <TrackPixelView contentName="junior_classes" contentCategory="program" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
@@ -105,31 +107,31 @@ export default function TermProgramsPage() {
               NOW LAUNCHING &middot; WEST RYDE
             </p>
             <h1 className="font-heading text-6xl sm:text-8xl text-white tracking-wide mb-6 leading-[0.9]">
-              TERM
+              JUNIOR
               <br />
-              <span className="text-[#9B4FDE]">PROGRAMS</span>
+              <span className="text-[#9B4FDE]">CLASSES</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-xl leading-relaxed">
-              Junior classes and adult scrims every Friday at Bennelong Sports
-              Centre, West Ryde. Two indoor courts, expert coaches, premium
-              coaching for all skill levels.
+              Premium junior volleyball coaching every Friday at Bennelong Sports
+              Centre, West Ryde. Two indoor courts, expert coaches, ages 8 to 18.
+              Pick your level below.
             </p>
           </SectionReveal>
         </div>
       </section>
 
-      {/* Program tabs (Juniors / Adults) */}
-      <section id="programs" className="py-16 lg:py-20 bg-[#0A0A0A] scroll-mt-24">
+      {/* Choose your level */}
+      <section id="levels" className="py-12 lg:py-16 bg-[#0A0A0A] scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <ProgramTabs
-            venues={VENUES}
+          <LevelPicker
             levels={LEVELS}
+            venues={VENUES}
             enrolHref={ENROL_PLACEHOLDER}
           />
         </div>
       </section>
 
-      {/* Venue showcase — moved below booking */}
+      {/* Venue showcase */}
       <section className="py-20 lg:py-28 bg-[#111]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-12 items-center">
@@ -180,7 +182,7 @@ export default function TermProgramsPage() {
         <div className="relative max-w-2xl mx-auto px-4">
           <SectionReveal>
             <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">
-              JOIN A TERM PROGRAM
+              JOIN THE CLUB
             </p>
             <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
               SAVE YOUR
@@ -197,7 +199,7 @@ export default function TermProgramsPage() {
               GET IN TOUCH
             </Link>
             <p className="text-gray-700 text-xs mt-6 tracking-wider">
-              BENNELONG SPORTS CENTRE &middot; WEST RYDE &middot; JUNIORS + ADULTS
+              BENNELONG SPORTS CENTRE &middot; WEST RYDE &middot; AGES 8&ndash;18
             </p>
           </SectionReveal>
         </div>

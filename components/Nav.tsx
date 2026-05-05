@@ -7,8 +7,9 @@ import TrackedBookingLink from "./TrackedBookingLink";
 
 const navLinks = [
   { href: "/", label: "Home" },
+  { href: "/term-programs", label: "Junior Classes" },
+  { href: "/adult-sessions", label: "Adult Sessions" },
   { href: "/holiday-camp", label: "Camps" },
-  { href: "/term-programs", label: "Term Programs" },
   { href: "/coaches", label: "Coaches" },
   { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact" },
