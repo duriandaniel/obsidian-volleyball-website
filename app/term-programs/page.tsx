@@ -2,28 +2,29 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import SectionReveal from "@/components/SectionReveal";
-import LevelPicker, { type Venue, type LevelInfo } from "./LevelPicker";
+import { type Venue, type LevelInfo } from "./LevelPicker";
+import ProgramTabs from "./ProgramTabs";
 import TrackPixelView from "@/components/TrackPixelView";
 
 export const metadata: Metadata = {
   title:
-    "Junior Volleyball Term Programs | West Ryde Sydney | Obsidian Volleyball Academy",
+    "Junior + Adult Volleyball | West Ryde Sydney | Obsidian Volleyball Academy",
   description:
-    "Premium junior volleyball training every Friday at Bennelong Sports Centre, West Ryde. Beginner, intermediate, and advanced sessions. Now launching with 20% off and a free training shirt.",
+    "Junior classes and adult scrims every Friday at Bennelong Sports Centre, West Ryde. Premium coaching, two indoor courts. Now launching with 20% off and a free training shirt.",
   keywords: [
     "junior volleyball West Ryde",
+    "adult volleyball West Ryde",
     "volleyball lessons West Ryde",
     "junior volleyball coaching Sydney",
-    "school term volleyball Sydney",
+    "adult volleyball scrim Sydney",
     "volleyball Bennelong Sports Centre",
-    "weekly volleyball training",
   ],
   alternates: { canonical: "/term-programs" },
   openGraph: {
     title:
-      "Junior Volleyball Term Programs | West Ryde Sydney | Obsidian Volleyball Academy",
+      "Junior + Adult Volleyball | West Ryde Sydney | Obsidian Volleyball Academy",
     description:
-      "Premium junior volleyball training every Friday at Bennelong Sports Centre, West Ryde.",
+      "Junior classes and adult scrims every Friday at Bennelong Sports Centre, West Ryde.",
     images: ["/images/gallery-spike.jpg"],
     url: "/term-programs",
   },
@@ -47,8 +48,7 @@ const VENUES: Venue[] = [
     ],
     slots: [
       { time: "4:00 – 6:00 PM", levels: ["Beginner", "Intermediate"] },
-      { time: "6:00 – 8:00 PM", levels: ["Beginner", "Intermediate"] },
-      { time: "8:00 – 10:00 PM", levels: ["Intermediate", "Advanced"] },
+      { time: "6:00 – 8:00 PM", levels: ["Intermediate", "Advanced"] },
     ],
   },
 ];
@@ -77,20 +77,15 @@ const LEVELS: LevelInfo[] = [
 const courseSchema = {
   "@context": "https://schema.org",
   "@type": "Course",
-  name: "School Term Programs | Obsidian Volleyball Academy",
+  name: "Term Programs | Obsidian Volleyball Academy",
   description:
-    "Weekly junior volleyball training across two Sydney venues. Beginner, intermediate, and advanced school term programs.",
+    "Junior classes and adult scrims at Bennelong Sports Centre, West Ryde. Premium volleyball coaching every Friday.",
   provider: {
     "@type": "SportsOrganization",
     name: "Obsidian Volleyball Academy",
     url: "https://obsidianvolleyball.com",
   },
   educationalLevel: "Beginner, Intermediate, Advanced",
-  audience: {
-    "@type": "PeopleAudience",
-    suggestedMinAge: 8,
-    suggestedMaxAge: 18,
-  },
 };
 
 export default function TermProgramsPage() {
@@ -102,7 +97,7 @@ export default function TermProgramsPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
       />
 
-      {/* Hero — slim, level-led */}
+      {/* Hero */}
       <section className="py-20 lg:py-28 bg-[#0A0A0A]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
@@ -110,28 +105,39 @@ export default function TermProgramsPage() {
               NOW LAUNCHING &middot; WEST RYDE
             </p>
             <h1 className="font-heading text-6xl sm:text-8xl text-white tracking-wide mb-6 leading-[0.9]">
-              SCHOOL TERM
+              TERM
               <br />
               <span className="text-[#9B4FDE]">PROGRAMS</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-xl leading-relaxed">
-              Premium junior volleyball coaching every Friday at Bennelong Sports Centre,
-              West Ryde. Two indoor courts, three sessions, expert coaches. Pick your level
-              below.
+              Junior classes and adult scrims every Friday at Bennelong Sports
+              Centre, West Ryde. Two indoor courts, expert coaches, premium
+              coaching for all skill levels.
             </p>
           </SectionReveal>
         </div>
       </section>
 
-      {/* Venue showcase */}
-      <section className="py-12 lg:py-16 bg-[#0A0A0A]">
+      {/* Program tabs (Juniors / Adults) */}
+      <section id="programs" className="py-16 lg:py-20 bg-[#0A0A0A] scroll-mt-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ProgramTabs
+            venues={VENUES}
+            levels={LEVELS}
+            enrolHref={ENROL_PLACEHOLDER}
+          />
+        </div>
+      </section>
+
+      {/* Venue showcase — moved below booking */}
+      <section className="py-20 lg:py-28 bg-[#111]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-12 items-center">
             <SectionReveal>
               <div className="aspect-[4/3] relative overflow-hidden border border-white/[0.08]">
                 <Image
-                  src="/images/venue.jpg"
-                  alt="Bennelong Sports Centre indoor volleyball courts"
+                  src="/images/bennelong-courtyard.png"
+                  alt="Bennelong Sports Centre indoor courts, West Ryde"
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 55vw"
@@ -153,52 +159,10 @@ export default function TermProgramsPage() {
                   parking. Sessions run rain or shine, every Friday during the school term.
                 </p>
                 <p className="text-gray-500 text-sm">
-                  Bennelong Sports Centre West &middot; West Ryde, NSW
+                  Bennelong Sports Centre &middot; West Ryde, NSW
                 </p>
               </div>
             </SectionReveal>
-          </div>
-        </div>
-      </section>
-
-      {/* Step 1 — Choose your level */}
-      <section id="levels" className="py-16 lg:py-20 bg-[#0A0A0A] scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="mb-10">
-              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">
-                STEP 1
-              </p>
-              <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide leading-[0.95]">
-                CHOOSE YOUR
-                <br />
-                <span className="text-[#9B4FDE]">LEVEL</span>
-              </h2>
-            </div>
-          </SectionReveal>
-          <LevelPicker
-            levels={LEVELS}
-            venues={VENUES}
-            enrolHref={ENROL_PLACEHOLDER}
-          />
-        </div>
-      </section>
-
-      {/* Enrolment notice */}
-      <section className="py-16 bg-[#111]">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="border border-[#9B4FDE]/30 bg-[#0F0F0F] p-8 lg:p-10">
-            <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.3em] mb-4">
-              ENROLMENT OPENS SOON
-            </p>
-            <p className="text-white text-lg leading-relaxed mb-3">
-              Online bookings for Term 2 are being set up.
-            </p>
-            <p className="text-gray-500 text-sm leading-relaxed">
-              For now, every &ldquo;enrol&rdquo; button points to our contact
-              form. Get in touch and we&apos;ll lock in your spot manually, then
-              switch you over once online enrolment goes live.
-            </p>
           </div>
         </div>
       </section>
@@ -224,7 +188,7 @@ export default function TermProgramsPage() {
               <span className="text-[#9B4FDE]">SPOT</span>
             </h2>
             <p className="text-gray-500 mb-10 leading-relaxed">
-              Term 2 cohorts are small. Reach out and we&apos;ll book you in.
+              Cohorts are small. Reach out and we&apos;ll book you in.
             </p>
             <Link
               href="/contact"
@@ -233,7 +197,7 @@ export default function TermProgramsPage() {
               GET IN TOUCH
             </Link>
             <p className="text-gray-700 text-xs mt-6 tracking-wider">
-              BENNELONG SPORTS CENTRE &middot; WEST RYDE &middot; ALL SKILL LEVELS
+              BENNELONG SPORTS CENTRE &middot; WEST RYDE &middot; JUNIORS + ADULTS
             </p>
           </SectionReveal>
         </div>
