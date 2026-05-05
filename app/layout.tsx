@@ -153,7 +153,7 @@ export default function RootLayout({
         <MetaPixelNoScript />
         <PromoBanner />
         <Nav />
-        <main className="flex-1 pt-8">{children}</main>
+        <main className="flex-1 pt-9">{children}</main>
         <Footer />
         <CookieConsent />
       </body>

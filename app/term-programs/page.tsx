@@ -110,10 +110,8 @@ export default function JuniorClassesPage() {
               <br />
               <span className="text-[#9B4FDE]">CLASSES</span>
             </h1>
-            <p className="text-gray-400 text-lg max-w-xl leading-relaxed">
-              Premium junior volleyball coaching every Friday at Bennelong Sports
-              Centre, West Ryde. Two indoor courts, expert coaches, ages 8 to 18.
-              Pick your level below.
+            <p className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed">
+              Premium volleyball coaching. Term 2 enrolment open.
             </p>
           </SectionReveal>
         </div>
