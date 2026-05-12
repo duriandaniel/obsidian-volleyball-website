@@ -3,6 +3,10 @@ import Image from "next/image";
 import SectionReveal from "@/components/SectionReveal";
 import LevelPicker, { type Venue, type LevelInfo } from "./LevelPicker";
 import TrackPixelView from "@/components/TrackPixelView";
+import TrackedBookingLink from "@/components/TrackedBookingLink";
+
+const TRIAL_ACUITY_URL =
+  "https://obsidianvolleyball.as.me/?appointmentType=93108054";
 
 export const metadata: Metadata = {
   title:
@@ -133,9 +137,16 @@ export default function JuniorClassesPage() {
               <br />
               <span className="text-[#9B4FDE]">CLASSES</span>
             </h1>
-            <p className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed">
+            <p className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed mb-8">
               Premium volleyball coaching. Term 2 enrolment open.
             </p>
+            <TrackedBookingLink
+              location="term_programs_hero"
+              href={TRIAL_ACUITY_URL}
+              className="inline-block bg-[#7B2FBE] text-white font-heading text-xl sm:text-2xl px-9 py-4 hover:bg-[#9B4FDE] transition-all duration-300 tracking-wide glow-purple"
+            >
+              BOOK A FREE TRIAL
+            </TrackedBookingLink>
           </SectionReveal>
         </div>
       </section>
