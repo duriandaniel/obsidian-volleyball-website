@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import SectionReveal from "@/components/SectionReveal";
 import TrackPixelView from "@/components/TrackPixelView";
+import TrackedBookingLink from "@/components/TrackedBookingLink";
 
 export const metadata: Metadata = {
   title:
@@ -27,7 +27,8 @@ export const metadata: Metadata = {
   },
 };
 
-const ENROL_PLACEHOLDER = "/contact";
+const ACUITY_ADULT_URL =
+  "https://obsidianvolleyball.as.me/?appointmentType=93064018";
 
 export default function AdultSessionsPage() {
   return (
@@ -101,8 +102,9 @@ export default function AdultSessionsPage() {
                     </li>
                   </ul>
 
-                  <Link
-                    href={ENROL_PLACEHOLDER}
+                  <TrackedBookingLink
+                    href={ACUITY_ADULT_URL}
+                    location="adult_sessions_cta"
                     className="inline-flex items-center gap-2 bg-[#7B2FBE] text-white font-heading text-sm tracking-[0.2em] uppercase px-7 py-3 hover:bg-white hover:text-[#7B2FBE] transition-all duration-300 glow-purple"
                   >
                     <span>Book a Spot</span>
@@ -116,7 +118,7 @@ export default function AdultSessionsPage() {
                     >
                       <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
-                  </Link>
+                  </TrackedBookingLink>
                 </div>
 
                 {/* Right: details panel */}
@@ -185,42 +187,6 @@ export default function AdultSessionsPage() {
               </div>
             </SectionReveal>
           </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-24 lg:py-32 bg-[#0A0A0A] text-center relative overflow-hidden">
-        <div className="section-divider absolute top-0 left-0 right-0" />
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[40vh]"
-          style={{
-            background:
-              "radial-gradient(ellipse at center, rgba(123,47,190,0.03) 0%, transparent 60%)",
-          }}
-        />
-        <div className="relative max-w-2xl mx-auto px-4">
-          <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">
-              FRIDAY NIGHTS
-            </p>
-            <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
-              GET ON
-              <br />
-              <span className="text-[#9B4FDE]">COURT</span>
-            </h2>
-            <p className="text-gray-500 mb-10 leading-relaxed">
-              Book in for the next Friday scrim and we&apos;ll see you there.
-            </p>
-            <Link
-              href={ENROL_PLACEHOLDER}
-              className="inline-block bg-[#7B2FBE] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
-            >
-              BOOK A SPOT
-            </Link>
-            <p className="text-gray-700 text-xs mt-6 tracking-wider">
-              BENNELONG SPORTS CENTRE &middot; WEST RYDE &middot; ADULT SCRIMS
-            </p>
-          </SectionReveal>
         </div>
       </section>
     </div>

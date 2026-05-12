@@ -48,6 +48,7 @@ export type BookingLocation =
   | "coaches_cta"
   | "about_cta"
   | "term_programs_hero"
+  | "adult_sessions_cta"
   | "book_page"
   | "areas_index_cta"
   | "promo_banner";
