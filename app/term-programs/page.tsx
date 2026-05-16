@@ -151,6 +151,29 @@ export default function JuniorClassesPage() {
         </div>
       </section>
 
+      {/* Pricing */}
+      <section className="py-12 lg:py-16 bg-[#0A0A0A]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <div className="border border-white/[0.08] p-8 lg:p-12 bg-[#0F0F0F]">
+              <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.4em] mb-4">
+                PRICING
+              </p>
+              <div className="flex flex-col sm:flex-row sm:items-baseline gap-2 sm:gap-5 mb-3">
+                <p className="font-heading text-6xl lg:text-7xl text-white tracking-wide">
+                  $360
+                </p>
+                <p className="text-gray-400 text-lg tracking-wide">a term</p>
+              </div>
+              <p className="text-gray-500 text-sm leading-relaxed">
+                10 classes &middot; 1.5 hours each &middot; works out to{" "}
+                <span className="text-white">$36 a class</span>
+              </p>
+            </div>
+          </SectionReveal>
+        </div>
+      </section>
+
       {/* Choose your level */}
       <section id="levels" className="py-12 lg:py-16 bg-[#0A0A0A] scroll-mt-24">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
