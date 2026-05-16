@@ -131,20 +131,12 @@ export default function HomeSections() {
           </SectionReveal>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 lg:gap-16">
             <CoachCard
-              name="Melinda"
+              name="Chris"
               role="Coach"
-              bio="Years of competitive volleyball experience and a deep commitment to junior development."
-              qualifications={["NSWCHS Opens Champion", "NSW & SW Blues Award"]}
-              image="/images/coach-melinda-card.jpg"
+              bio="Plays in Sydney's Men's Premier Volleyball League. Passes years of senior-level experience straight to the next generation."
+              qualifications={["Men's Premier Volleyball League", "Sydney North Gold & MVP"]}
+              image="/images/coach-chris-card.png"
               index={0}
-            />
-            <CoachCard
-              name="Jessica"
-              role="Coach"
-              bio="Energetic style and technical expertise. Specialises in skill development for intermediate and advanced juniors."
-              qualifications={["2x Women Div 1 SVL Champion", "2x AYVC Medalist"]}
-              image="/images/coach-jessica-card.jpg"
-              index={1}
             />
             <CoachCard
               name="Kaveesh"
@@ -152,6 +144,14 @@ export default function HomeSections() {
               bio="Years of representative volleyball with a passion for coaching juniors. Energy and technical knowledge make sessions fun and effective."
               qualifications={["16s NSWCHS State Team", "2022 18s SVL Champions"]}
               image="/images/coach-kaveesh-card.jpg"
+              index={1}
+            />
+            <CoachCard
+              name="Melinda"
+              role="Coach"
+              bio="Years of competitive volleyball experience and a deep commitment to junior development."
+              qualifications={["NSWCHS Opens Champion", "NSW & SW Blues Award"]}
+              image="/images/coach-melinda-card.jpg"
               index={2}
             />
           </div>

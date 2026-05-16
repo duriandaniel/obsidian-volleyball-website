@@ -23,6 +23,31 @@ export const metadata: Metadata = {
 
 const coaches = [
   {
+    name: "Chris",
+    role: "Coach",
+    bio: "Chris currently plays in Sydney's Men's Premier Volleyball League. Years of training alongside veteran players and coaches feed straight into his coaching: he's focused on passing that knowledge down to the next generation of volleyballers and helping them improve.",
+    qualifications: [
+      "Men's Premier Volleyball League player",
+      "U17 Navy AYVC Bronze",
+      "U18 Navy AYVC 4th",
+      "2025 Acers Men's Reserves Gold",
+      "Sydney North Gold Medal & MVP",
+    ],
+    image: "/images/coach-chris-card.png",
+  },
+  {
+    name: "Kaveesh",
+    role: "Coach",
+    bio: "Kaveesh combines years of representative volleyball with a passion for coaching juniors. His energy and technical knowledge make sessions both fun and effective.",
+    qualifications: [
+      "16s NSWCHS State Team",
+      "2022 18s SVL Champions",
+      "Sydney West Team (multiple years)",
+      "AVSC National Competition 2nd Place",
+    ],
+    image: "/images/coach-kaveesh-card.jpg",
+  },
+  {
     name: "Melinda",
     role: "Coach",
     bio: "Melinda combines years of competitive volleyball with a deep commitment to junior development. Her approach blends technical rigour with a supportive, athlete-centred environment. Specialises in beginner and intermediate development.",
@@ -47,18 +72,6 @@ const coaches = [
     image: "/images/coach-jessica-card.jpg",
   },
   {
-    name: "Kaveesh",
-    role: "Coach",
-    bio: "Kaveesh combines years of representative volleyball with a passion for coaching juniors. His energy and technical knowledge make sessions both fun and effective.",
-    qualifications: [
-      "16s NSWCHS State Team",
-      "2022 18s SVL Champions",
-      "Sydney West Team (multiple years)",
-      "AVSC National Competition 2nd Place",
-    ],
-    image: "/images/coach-kaveesh-card.jpg",
-  },
-  {
     name: "Ethan",
     role: "Coach",
     bio: "Ethan brings representative-level experience and a calm, methodical coaching style. He excels at helping players refine technique and build game intelligence.",
@@ -69,15 +82,6 @@ const coaches = [
       "U16 All Schools National Champions",
     ],
     image: "/images/coach-ethan-card.jpg",
-  },
-  {
-    name: "Chris",
-    role: "Coach",
-    bio: "Full profile coming soon. Chris joins the OVA coaching team, leading sessions at Bennelong Sports Centre, West Ryde.",
-    qualifications: [
-      "Profile being updated",
-    ],
-    image: "/images/coach-chris-card.png",
   },
 ];
 
