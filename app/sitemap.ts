@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 
 const suburbs = [
+  // Ryde cluster — term programs
   "ryde",
   "eastwood",
   "meadowbank",
@@ -10,6 +11,14 @@ const suburbs = [
   "north-ryde",
   "marsfield",
   "macquarie-park",
+  // Hills cluster — holiday camps
+  "baulkham-hills",
+  "castle-hill",
+  "bella-vista",
+  "kellyville",
+  "north-rocks",
+  "winston-hills",
+  "northmead",
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -25,6 +34,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/term-programs`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/west-ryde`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/baulkham-hills`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,

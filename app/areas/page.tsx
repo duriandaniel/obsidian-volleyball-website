@@ -6,16 +6,17 @@ import TrackedBookingLink from "@/components/TrackedBookingLink";
 export const metadata: Metadata = {
   title: "Service Areas | Junior Volleyball Sydney | Obsidian Volleyball Academy",
   description:
-    "Obsidian Volleyball Academy runs term programs at Bennelong Sports Centre, West Ryde. Find your suburb and see how close you are.",
+    "Obsidian Volleyball Academy runs term programs in West Ryde and holiday camps in Baulkham Hills. Find your suburb and see how close you are.",
   keywords: [
     "junior volleyball Sydney",
     "volleyball coaching West Ryde",
-    "volleyball academy near me",
+    "volleyball coaching Baulkham Hills",
+    "volleyball academy near me Sydney",
   ],
   alternates: { canonical: "/areas" },
 };
 
-const areas = [
+const rydeCluster = [
   { slug: "ryde", name: "Ryde", drive: "3 min" },
   { slug: "eastwood", name: "Eastwood", drive: "5 min" },
   { slug: "meadowbank", name: "Meadowbank", drive: "5 min" },
@@ -27,6 +28,16 @@ const areas = [
   { slug: "macquarie-park", name: "Macquarie Park", drive: "10 min" },
 ];
 
+const hillsCluster = [
+  { slug: "baulkham-hills", name: "Baulkham Hills", drive: "On site" },
+  { slug: "castle-hill", name: "Castle Hill", drive: "8 min" },
+  { slug: "north-rocks", name: "North Rocks", drive: "7 min" },
+  { slug: "winston-hills", name: "Winston Hills", drive: "8 min" },
+  { slug: "bella-vista", name: "Bella Vista", drive: "10 min" },
+  { slug: "northmead", name: "Northmead", drive: "10 min" },
+  { slug: "kellyville", name: "Kellyville", drive: "12 min" },
+];
+
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -35,6 +46,60 @@ const breadcrumbSchema = {
     { "@type": "ListItem", position: 2, name: "Service Areas", item: "https://obsidianvolleyball.com/areas" },
   ],
 };
+
+interface ClusterProps {
+  badge: string;
+  title: string;
+  venueLine: string;
+  venueLink: { href: string; label: string };
+  areas: { slug: string; name: string; drive: string }[];
+}
+
+function Cluster({ badge, title, venueLine, venueLink, areas }: ClusterProps) {
+  return (
+    <section className="py-20 lg:py-28 bg-[#0A0A0A] border-t border-white/[0.04] first:border-t-0">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionReveal>
+          <div className="mb-12 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+            <div>
+              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">{badge}</p>
+              <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide mb-3">
+                {title}
+              </h2>
+              <p className="text-gray-500 text-sm">{venueLine}</p>
+            </div>
+            <Link
+              href={venueLink.href}
+              className="text-[#9B4FDE] text-sm hover:text-white transition-colors whitespace-nowrap"
+            >
+              {venueLink.label} &rarr;
+            </Link>
+          </div>
+        </SectionReveal>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04]">
+          {areas.map((area, i) => (
+            <SectionReveal key={area.slug} delay={i * 0.04}>
+              <Link
+                href={`/areas/${area.slug}`}
+                className="block bg-[#0A0A0A] p-8 lg:p-10 group hover:bg-[#141114] transition-colors duration-500 h-full"
+              >
+                <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.3em] mb-3">
+                  {area.drive.toUpperCase()}
+                </p>
+                <h3 className="font-heading text-3xl text-white tracking-wide mb-3 group-hover:text-[#9B4FDE] transition-colors duration-300">
+                  {area.name.toUpperCase()}
+                </h3>
+                <p className="text-gray-500 text-sm">
+                  Junior volleyball for {area.name} families &rarr;
+                </p>
+              </Link>
+            </SectionReveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function AreasIndexPage() {
   return (
@@ -52,42 +117,32 @@ export default function AreasIndexPage() {
               <span className="text-[#9B4FDE]">AREAS</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
-              Obsidian Volleyball Academy runs term programs at Bennelong Sports Centre,
-              West Ryde. Families travel from across Sydney for premium junior volleyball
-              coaching. Find your suburb below.
+              Obsidian Volleyball Academy runs Friday term programs at Bennelong Sports Centre,
+              West Ryde, and school-holiday camps at Baulkham Hills High School. Find your
+              suburb and pick the venue closest to you.
             </p>
           </SectionReveal>
         </div>
       </section>
 
-      {/* Areas grid */}
-      <section className="py-24 lg:py-32 bg-[#111]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/[0.04]">
-            {areas.map((area, i) => (
-              <SectionReveal key={area.slug} delay={i * 0.04}>
-                <Link
-                  href={`/areas/${area.slug}`}
-                  className="block bg-[#111] p-8 lg:p-10 group hover:bg-[#161616] transition-colors duration-500 h-full"
-                >
-                  <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.3em] mb-3">
-                    {area.drive.toUpperCase()} AWAY
-                  </p>
-                  <h2 className="font-heading text-3xl text-white tracking-wide mb-3 group-hover:text-[#9B4FDE] transition-colors duration-300">
-                    {area.name.toUpperCase()}
-                  </h2>
-                  <p className="text-gray-500 text-sm">
-                    Junior volleyball coaching for {area.name} families &rarr;
-                  </p>
-                </Link>
-              </SectionReveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Cluster
+        badge="WEST RYDE &middot; TERM PROGRAMS"
+        title="INNER NORTH-WEST"
+        venueLine="Friday evening classes at Bennelong Sports Centre, West Ryde."
+        venueLink={{ href: "/west-ryde", label: "West Ryde venue" }}
+        areas={rydeCluster}
+      />
+
+      <Cluster
+        badge="BAULKHAM HILLS &middot; HOLIDAY CAMPS"
+        title="HILLS DISTRICT"
+        venueLine="School-holiday camps at Baulkham Hills High School, Windsor Road."
+        venueLink={{ href: "/baulkham-hills", label: "Baulkham Hills venue" }}
+        areas={hillsCluster}
+      />
 
       {/* CTA */}
-      <section className="py-24 lg:py-32 bg-[#0A0A0A] text-center">
+      <section className="py-24 lg:py-32 bg-[#111] text-center">
         <div className="max-w-2xl mx-auto px-4">
           <SectionReveal>
             <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">READY TO START?</p>
@@ -100,7 +155,7 @@ export default function AreasIndexPage() {
               location="areas_index_cta"
               className="inline-block bg-[#7B2FBE] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
             >
-              BOOK A CAMP
+              BOOK NOW
             </TrackedBookingLink>
           </SectionReveal>
         </div>

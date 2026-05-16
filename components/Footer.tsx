@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const serviceAreas = [
+const rydeAreas = [
   { slug: "ryde", name: "Ryde" },
   { slug: "eastwood", name: "Eastwood" },
   { slug: "meadowbank", name: "Meadowbank" },
@@ -11,6 +11,16 @@ const serviceAreas = [
   { slug: "putney", name: "Putney" },
   { slug: "top-ryde", name: "Top Ryde" },
   { slug: "macquarie-park", name: "Macquarie Park" },
+];
+
+const hillsAreas = [
+  { slug: "baulkham-hills", name: "Baulkham Hills" },
+  { slug: "castle-hill", name: "Castle Hill" },
+  { slug: "bella-vista", name: "Bella Vista" },
+  { slug: "kellyville", name: "Kellyville" },
+  { slug: "north-rocks", name: "North Rocks" },
+  { slug: "winston-hills", name: "Winston Hills" },
+  { slug: "northmead", name: "Northmead" },
 ];
 
 export default function Footer() {
@@ -87,26 +97,42 @@ export default function Footer() {
           <div>
             <h3 className="font-heading text-base text-gray-400 mb-4 tracking-[0.2em]">VENUES</h3>
             <ul className="not-italic text-gray-600 text-sm space-y-2 mb-6">
-              <li className="text-gray-400">Bennelong Sports Centre</li>
+              <li>
+                <Link
+                  href="/west-ryde"
+                  className="text-gray-400 hover:text-[#9B4FDE] transition-colors duration-300"
+                >
+                  Bennelong Sports Centre
+                </Link>
+              </li>
               <li>West Ryde, NSW (term programs)</li>
-              <li className="pt-2 text-gray-400">Baulkham Hills High School</li>
+              <li className="pt-2">
+                <Link
+                  href="/baulkham-hills"
+                  className="text-gray-400 hover:text-[#9B4FDE] transition-colors duration-300"
+                >
+                  Baulkham Hills High School
+                </Link>
+              </li>
               <li>Baulkham Hills, NSW (holiday camps)</li>
             </ul>
             <Link
-              href="/term-programs"
+              href="/areas"
               className="inline-block text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors duration-300"
             >
-              View term programs &rarr;
+              All service areas &rarr;
             </Link>
           </div>
         </div>
 
-        {/* Service areas */}
+        {/* Service areas — Ryde cluster */}
         <div className="mt-12 pt-8 border-t border-white/[0.04]">
-          <h3 className="font-heading text-base text-gray-400 mb-4 tracking-[0.2em]">SERVICE AREAS</h3>
-          <p className="text-gray-700 text-xs mb-4">Junior volleyball coaching across Sydney:</p>
+          <h3 className="font-heading text-base text-gray-400 mb-4 tracking-[0.2em]">
+            TERM PROGRAMS &middot; WEST RYDE CATCHMENT
+          </h3>
+          <p className="text-gray-700 text-xs mb-4">Friday classes for families from:</p>
           <ul className="flex flex-wrap gap-x-5 gap-y-2">
-            {serviceAreas.map((area) => (
+            {rydeAreas.map((area) => (
               <li key={area.slug}>
                 <Link
                   href={`/areas/${area.slug}`}
@@ -116,14 +142,26 @@ export default function Footer() {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                href="/areas"
-                className="text-gray-500 hover:text-[#9B4FDE] text-sm transition-colors duration-300"
-              >
-                All areas &rarr;
-              </Link>
-            </li>
+          </ul>
+        </div>
+
+        {/* Service areas — Hills cluster */}
+        <div className="mt-10 pt-6 border-t border-white/[0.04]">
+          <h3 className="font-heading text-base text-gray-400 mb-4 tracking-[0.2em]">
+            HOLIDAY CAMPS &middot; HILLS DISTRICT CATCHMENT
+          </h3>
+          <p className="text-gray-700 text-xs mb-4">School-holiday camps for families from:</p>
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+            {hillsAreas.map((area) => (
+              <li key={area.slug}>
+                <Link
+                  href={`/areas/${area.slug}`}
+                  className="text-gray-600 hover:text-[#9B4FDE] text-sm transition-colors duration-300"
+                >
+                  Volleyball {area.name}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>

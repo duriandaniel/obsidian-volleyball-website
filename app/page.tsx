@@ -14,15 +14,18 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Obsidian Volleyball Academy | Junior Volleyball Sydney",
+  title: "Junior Volleyball Coaching Sydney | West Ryde & Baulkham Hills | Obsidian Volleyball Academy",
   description:
-    "Premium junior volleyball academy in Sydney. Term programs at Bennelong Sports Centre, West Ryde. Now launching with 20% off and a free training shirt.",
+    "Premium junior volleyball coaching in Sydney. Friday term programs at Bennelong Sports Centre, West Ryde. School-holiday camps at Baulkham Hills High School. Ages 8 to 18.",
   keywords: [
-    "volleyball academy Sydney",
     "junior volleyball Sydney",
+    "volleyball coaching Sydney",
     "volleyball West Ryde",
+    "volleyball Baulkham Hills",
     "volleyball Bennelong Sports Centre",
+    "volleyball academy Sydney",
     "junior volleyball coaching Sydney",
+    "kids volleyball Sydney",
   ],
 };
 
@@ -299,17 +302,28 @@ export default function Home() {
                     <p className="text-white text-base">Bennelong Sports Centre</p>
                     <p>West Ryde, NSW</p>
                   </address>
-                  <a
-                    href="https://www.google.com/maps/search/?api=1&query=Bennelong+Sports+Centre+West+Ryde"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-[#9B4FDE] text-xs font-medium hover:text-white transition-colors mt-3"
-                  >
-                    Directions
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M7 17L17 7M17 7H7M17 7v10" />
-                    </svg>
-                  </a>
+                  <div className="flex flex-wrap gap-x-5 gap-y-2 mt-3">
+                    <Link
+                      href="/west-ryde"
+                      className="inline-flex items-center gap-2 text-[#9B4FDE] text-xs font-medium hover:text-white transition-colors"
+                    >
+                      West Ryde venue
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=Bennelong+Sports+Centre+West+Ryde"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-gray-500 text-xs font-medium hover:text-[#9B4FDE] transition-colors"
+                    >
+                      Directions
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M7 17L17 7M17 7H7M17 7v10" />
+                      </svg>
+                    </a>
+                  </div>
                 </div>
 
                 {/* Baulkham Hills High School (holiday camps) */}
@@ -323,17 +337,28 @@ export default function Home() {
                     <p>Windsor Road, Baulkham Hills</p>
                     <p>NSW 2153</p>
                   </address>
-                  <a
-                    href="https://www.google.com/maps/search/?api=1&query=Baulkham+Hills+High+School"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-[#9B4FDE] text-xs font-medium hover:text-white transition-colors mt-3"
-                  >
-                    Directions
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M7 17L17 7M17 7H7M17 7v10" />
-                    </svg>
-                  </a>
+                  <div className="flex flex-wrap gap-x-5 gap-y-2 mt-3">
+                    <Link
+                      href="/baulkham-hills"
+                      className="inline-flex items-center gap-2 text-[#9B4FDE] text-xs font-medium hover:text-white transition-colors"
+                    >
+                      Baulkham Hills venue
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                      </svg>
+                    </Link>
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=Baulkham+Hills+High+School"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-gray-500 text-xs font-medium hover:text-[#9B4FDE] transition-colors"
+                    >
+                      Directions
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M7 17L17 7M17 7H7M17 7v10" />
+                      </svg>
+                    </a>
+                  </div>
                 </div>
 
                 <div className="border-t border-white/[0.06] pt-6">
