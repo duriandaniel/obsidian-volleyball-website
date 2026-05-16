@@ -4,8 +4,47 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import TrackedBookingLink from "./TrackedBookingLink";
+import type { BookingLocation, BookingTier } from "@/lib/tracking";
 
-export default function Hero() {
+interface HeroProps {
+  eyebrow?: string;
+  titleLine1?: string;
+  titleLine2?: string;
+  body?: string;
+  primaryHref?: string;
+  primaryLabel?: string;
+  primaryLocation?: BookingLocation;
+  primaryTier?: BookingTier;
+  secondaryHref?: string;
+  secondaryLabel?: string;
+}
+
+const DEFAULTS = {
+  eyebrow: "NOW LAUNCHING · WEST RYDE",
+  titleLine1: "Term",
+  titleLine2: "Programs",
+  body:
+    "Premium junior volleyball coaching at Bennelong Sports Centre, West Ryde. Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open.",
+  primaryHref: "https://obsidianvolleyball.as.me/?appointmentType=category:Trial%20Class",
+  primaryLabel: "BOOK A FREE TRIAL",
+  primaryLocation: "hero" as BookingLocation,
+  primaryTier: "general" as BookingTier,
+  secondaryHref: "/term-programs",
+  secondaryLabel: "VIEW SCHEDULE",
+};
+
+export default function Hero({
+  eyebrow = DEFAULTS.eyebrow,
+  titleLine1 = DEFAULTS.titleLine1,
+  titleLine2 = DEFAULTS.titleLine2,
+  body = DEFAULTS.body,
+  primaryHref = DEFAULTS.primaryHref,
+  primaryLabel = DEFAULTS.primaryLabel,
+  primaryLocation = DEFAULTS.primaryLocation,
+  primaryTier = DEFAULTS.primaryTier,
+  secondaryHref = DEFAULTS.secondaryHref,
+  secondaryLabel = DEFAULTS.secondaryLabel,
+}: HeroProps = {}) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0A0A]">
       {/* Background image */}
@@ -57,7 +96,7 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.05 }}
           >
             <p className="text-[#9B4FDE] font-heading text-base sm:text-lg tracking-[0.4em] mb-6">
-              NOW LAUNCHING &middot; WEST RYDE
+              {eyebrow}
             </p>
           </motion.div>
 
@@ -67,9 +106,9 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
           >
-            Term
+            {titleLine1}
             <br />
-            <span className="text-[#9B4FDE]">Programs</span>
+            <span className="text-[#9B4FDE]">{titleLine2}</span>
           </motion.h1>
 
           <motion.p
@@ -78,8 +117,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            Premium junior volleyball coaching at Bennelong Sports Centre, West Ryde.
-            Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open.
+            {body}
           </motion.p>
 
           <motion.div
@@ -89,17 +127,18 @@ export default function Hero() {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             <TrackedBookingLink
-              location="hero"
-              href="https://obsidianvolleyball.as.me/?appointmentType=93108054"
+              location={primaryLocation}
+              tier={primaryTier}
+              href={primaryHref}
               className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 hover:bg-[#9B4FDE] transition-all duration-300 tracking-wide text-center glow-purple"
             >
-              BOOK A FREE TRIAL
+              {primaryLabel}
             </TrackedBookingLink>
             <Link
-              href="/term-programs"
+              href={secondaryHref}
               className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
             >
-              VIEW SCHEDULE
+              {secondaryLabel}
             </Link>
           </motion.div>
         </div>

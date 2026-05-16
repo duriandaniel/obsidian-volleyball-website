@@ -33,7 +33,7 @@ declare global {
   }
 }
 
-export type BookingTier = "single_day" | "5_day_pack" | "half_day" | "general";
+export type BookingTier = "single_day" | "5_day_pack" | "half_day" | "term_program" | "general";
 export type BookingLocation =
   | "hero"
   | "nav"
@@ -51,7 +51,13 @@ export type BookingLocation =
   | "adult_sessions_cta"
   | "book_page"
   | "areas_index_cta"
-  | "promo_banner";
+  | "promo_banner"
+  | "west_ryde_hero"
+  | "west_ryde_cta"
+  | "baulkham_hills_hero"
+  | "baulkham_hills_cta"
+  | "home_location_card_west_ryde"
+  | "home_location_card_baulkham";
 
 // Subset of Meta's standard events. Extend as needed.
 export type PixelStandardEvent =

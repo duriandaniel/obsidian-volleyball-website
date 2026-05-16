@@ -1,18 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const serviceAreas = [
-  { slug: "ryde", name: "Ryde" },
-  { slug: "eastwood", name: "Eastwood" },
-  { slug: "meadowbank", name: "Meadowbank" },
-  { slug: "denistone", name: "Denistone" },
-  { slug: "north-ryde", name: "North Ryde" },
-  { slug: "marsfield", name: "Marsfield" },
-  { slug: "putney", name: "Putney" },
-  { slug: "top-ryde", name: "Top Ryde" },
-  { slug: "macquarie-park", name: "Macquarie Park" },
-];
-
 export default function Footer() {
   return (
     <footer className="bg-[#0A0A0A] border-t border-white/[0.06] mt-auto">
@@ -93,39 +81,14 @@ export default function Footer() {
               <li>Baulkham Hills, NSW (holiday camps)</li>
             </ul>
             <Link
-              href="/term-programs"
+              href="/areas"
               className="inline-block text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors duration-300"
             >
-              View term programs &rarr;
+              All service areas &rarr;
             </Link>
           </div>
         </div>
 
-        {/* Service areas */}
-        <div className="mt-12 pt-8 border-t border-white/[0.04]">
-          <h3 className="font-heading text-base text-gray-400 mb-4 tracking-[0.2em]">SERVICE AREAS</h3>
-          <p className="text-gray-700 text-xs mb-4">Junior volleyball coaching across Sydney:</p>
-          <ul className="flex flex-wrap gap-x-5 gap-y-2">
-            {serviceAreas.map((area) => (
-              <li key={area.slug}>
-                <Link
-                  href={`/areas/${area.slug}`}
-                  className="text-gray-600 hover:text-[#9B4FDE] text-sm transition-colors duration-300"
-                >
-                  Volleyball {area.name}
-                </Link>
-              </li>
-            ))}
-            <li>
-              <Link
-                href="/areas"
-                className="text-gray-500 hover:text-[#9B4FDE] text-sm transition-colors duration-300"
-              >
-                All areas &rarr;
-              </Link>
-            </li>
-          </ul>
-        </div>
       </div>
 
       {/* Bottom bar */}
