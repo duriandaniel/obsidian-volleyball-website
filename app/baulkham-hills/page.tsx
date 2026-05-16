@@ -82,7 +82,7 @@ export default function BaulkhamHillsPage() {
         eyebrow="BAULKHAM HILLS HIGH SCHOOL · SYDNEY"
         titleLine1="Baulkham"
         titleLine2="Hills"
-        body="School-holiday volleyball camps at Baulkham Hills High School. Three indoor courts, ages 8 to 18, all skill levels. Book the next holiday block."
+        body="School-holiday volleyball camps at Baulkham Hills High School. Three indoor courts, ages 8 to 18, all skill levels. Weekly term programs also running in West Ryde."
         primaryLabel="BOOK A CAMP"
         primaryHref="https://obsidianvolleyball.as.me"
         primaryLocation="baulkham_hills_hero"
