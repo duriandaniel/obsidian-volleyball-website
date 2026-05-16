@@ -25,7 +25,7 @@ const DEFAULTS = {
   titleLine2: "Programs",
   body:
     "Premium junior volleyball coaching at Bennelong Sports Centre, West Ryde. Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open.",
-  primaryHref: "https://obsidianvolleyball.as.me/?appointmentType=93108054",
+  primaryHref: "https://obsidianvolleyball.as.me/?appointmentType=category:Trial%20Class",
   primaryLabel: "BOOK A FREE TRIAL",
   primaryLocation: "hero" as BookingLocation,
   primaryTier: "general" as BookingTier,

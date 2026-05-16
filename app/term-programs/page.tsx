@@ -6,7 +6,7 @@ import TrackPixelView from "@/components/TrackPixelView";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 
 const TRIAL_ACUITY_URL =
-  "https://obsidianvolleyball.as.me/?appointmentType=93108054";
+  "https://obsidianvolleyball.as.me/?appointmentType=category:Trial%20Class";
 
 export const metadata: Metadata = {
   title:
