@@ -57,7 +57,9 @@ export type BookingLocation =
   | "baulkham_hills_hero"
   | "baulkham_hills_cta"
   | "home_location_card_west_ryde"
-  | "home_location_card_baulkham";
+  | "home_location_card_baulkham"
+  | "adult_social_cta"
+  | "adult_advanced_cta";
 
 // Subset of Meta's standard events. Extend as needed.
 export type PixelStandardEvent =

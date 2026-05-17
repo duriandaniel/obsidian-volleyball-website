@@ -6,29 +6,31 @@ import TrackedBookingLink from "@/components/TrackedBookingLink";
 
 export const metadata: Metadata = {
   title:
-    "Adult Sessions | Friday Volleyball Scrims | West Ryde Sydney | Obsidian",
+    "Adult Sessions | Social & Advanced Volleyball Scrims | West Ryde Sydney | Obsidian",
   description:
-    "Casual adult volleyball scrims every Friday 8 to 10 PM at Bennelong Sports Centre, West Ryde. Two indoor courts, all skill levels, weekly during the school term.",
+    "Adult volleyball scrims every Friday 7 to 9 PM at Bennelong Sports Centre, West Ryde. Two formats: social mixed-skill scrim and advanced scrim for current SVL players.",
   keywords: [
     "adult volleyball Sydney",
     "adult volleyball West Ryde",
     "volleyball scrim Sydney",
     "social volleyball Sydney",
+    "advanced volleyball scrim Sydney",
+    "SVL volleyball West Ryde",
     "adult volleyball drop in Sydney",
     "Friday volleyball West Ryde",
   ],
   alternates: { canonical: "/adult-sessions" },
   openGraph: {
-    title: "Adult Sessions | Friday Volleyball Scrims | West Ryde Sydney",
+    title: "Adult Sessions | Social & Advanced Volleyball Scrims | West Ryde Sydney",
     description:
-      "Casual adult volleyball scrims every Friday 8 to 10 PM at Bennelong Sports Centre, West Ryde.",
+      "Adult volleyball scrims every Friday 7 to 9 PM at Bennelong Sports Centre. Social and advanced formats.",
     images: ["/images/bennelong-courtyard.png"],
     url: "/adult-sessions",
   },
 };
 
 const ACUITY_ADULT_URL =
-  "https://obsidianvolleyball.as.me/?appointmentType=93064018";
+  "https://obsidianvolleyball.as.me/schedule/c027025f/category/Adult%20Sessions";
 
 export default function AdultSessionsPage() {
   return (
@@ -48,107 +50,136 @@ export default function AdultSessionsPage() {
               <span className="text-[#9B4FDE]">SESSIONS</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-xl leading-relaxed">
-              Casual scrimmage volleyball for adults at Bennelong Sports Centre.
-              Both courts running, open to all skill levels. Weekly during the
-              school term.
+              Adult volleyball scrims every Friday at Bennelong Sports Centre. Two
+              formats: social mixed-skill scrim, and advanced scrim for current
+              adult SVL players. Pick the one that fits you.
             </p>
           </SectionReveal>
         </div>
       </section>
 
-      {/* Big offering card */}
+      {/* Two scrim cards */}
       <section className="py-12 lg:py-16 bg-[#0A0A0A]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="border border-white/[0.06] bg-[#0F0F0F] hover:border-[#9B4FDE]/40 transition-colors duration-500">
-              <div className="grid grid-cols-1 md:grid-cols-[1.1fr_1fr] gap-px bg-white/[0.04]">
-                {/* Left: details */}
-                <div className="bg-[#0F0F0F] p-8 lg:p-12">
-                  <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.4em] uppercase mb-4">
-                    Bennelong Sports Centre &middot; West Ryde
-                  </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+            {/* Social scrim */}
+            <SectionReveal>
+              <div className="border border-white/[0.06] bg-[#0F0F0F] hover:border-[#9B4FDE]/40 transition-colors duration-500 h-full flex flex-col p-8 lg:p-10">
+                <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.4em] uppercase mb-3">
+                  Format
+                </p>
+                <h2 className="font-heading text-3xl lg:text-4xl text-white tracking-wide mb-6">
+                  SOCIAL SCRIM
+                </h2>
 
-                  <div className="flex items-baseline gap-3 sm:gap-5 mb-6 flex-wrap">
-                    <span className="font-heading text-xl sm:text-2xl lg:text-3xl text-white tracking-[0.2em] uppercase">
-                      Friday
-                    </span>
-                    <span className="hidden sm:inline-block w-px h-7 bg-[#9B4FDE]/40" />
-                    <span className="font-heading text-xl sm:text-2xl lg:text-3xl text-[#9B4FDE] tracking-wider">
-                      7:00 &ndash; 9:00 PM
-                    </span>
-                  </div>
-
-                  <div className="flex items-baseline gap-3 mb-8">
-                    <span className="font-heading text-4xl lg:text-5xl text-[#9B4FDE]">$20</span>
-                    <span className="text-gray-500 text-sm">per person</span>
-                  </div>
-
-                  <ul className="space-y-3 mb-10 text-gray-300 text-sm lg:text-base">
-                    <li className="flex items-start gap-3">
-                      <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
-                      <span>Two indoor courts running in parallel.</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
-                      <span>Open to adults at any skill level.</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
-                      <span>Casual scrimmage format. Show up, get on court, play.</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
-                      <span>Two-hour block, weekly during school terms.</span>
-                    </li>
-                  </ul>
-
-                  <TrackedBookingLink
-                    href={ACUITY_ADULT_URL}
-                    location="adult_sessions_cta"
-                    className="inline-flex items-center gap-2 bg-[#7B2FBE] text-white font-heading text-sm tracking-[0.2em] uppercase px-7 py-3 hover:bg-white hover:text-[#7B2FBE] transition-all duration-300 glow-purple"
-                  >
-                    <span>Book a Spot</span>
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </TrackedBookingLink>
+                <div className="flex items-baseline gap-3 sm:gap-4 mb-4 flex-wrap">
+                  <span className="font-heading text-lg sm:text-xl text-white tracking-[0.2em] uppercase">
+                    Friday
+                  </span>
+                  <span className="hidden sm:inline-block w-px h-5 bg-[#9B4FDE]/40" />
+                  <span className="font-heading text-lg sm:text-xl text-[#9B4FDE] tracking-wider">
+                    7:00 &ndash; 9:00 PM
+                  </span>
                 </div>
 
-                {/* Right: details panel */}
-                <div className="bg-[#0A0A0A] p-8 lg:p-12 flex flex-col justify-between">
-                  <div>
-                    <p className="text-gray-600 font-heading text-xs tracking-[0.3em] uppercase mb-3">
-                      What to expect
-                    </p>
-                    <p className="text-gray-400 text-sm leading-relaxed mb-6">
-                      Adult scrims are a chill way to get court time, meet other
-                      Sydney players, and stay sharp. Skill is mixed; teams are
-                      balanced on the night.
-                    </p>
-
-                    <p className="text-gray-600 font-heading text-xs tracking-[0.3em] uppercase mb-3">
-                      What to bring
-                    </p>
-                    <p className="text-gray-400 text-sm leading-relaxed">
-                      Indoor court shoes (clean, non-marking), water, a friend if
-                      you have one. Knee pads optional.
-                    </p>
-                  </div>
-
-                  <p className="text-gray-700 text-[10px] tracking-wider mt-8">
-                    SAME VENUE AS JUNIOR CLASSES
-                  </p>
+                <div className="flex items-baseline gap-2 mb-8">
+                  <span className="font-heading text-3xl lg:text-4xl text-[#9B4FDE]">$20</span>
+                  <span className="text-gray-500 text-sm">per person</span>
                 </div>
+
+                <ul className="space-y-3 mb-8 text-gray-300 text-sm flex-1">
+                  <li className="flex items-start gap-3">
+                    <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
+                    <span>Open to adults at any skill level.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
+                    <span>2 courts, capacity 21 per court.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
+                    <span>3 teams per court.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
+                    <span>Sets to 15 points.</span>
+                  </li>
+                </ul>
+
+                <TrackedBookingLink
+                  href={ACUITY_ADULT_URL}
+                  location="adult_social_cta"
+                  className="inline-flex items-center justify-center gap-2 bg-[#7B2FBE] text-white font-heading text-sm tracking-[0.2em] uppercase px-7 py-3.5 hover:bg-white hover:text-[#7B2FBE] transition-all duration-300 glow-purple"
+                >
+                  <span>Book Social</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </TrackedBookingLink>
               </div>
-            </div>
-          </SectionReveal>
+            </SectionReveal>
+
+            {/* Advanced scrim */}
+            <SectionReveal delay={0.1}>
+              <div className="border border-white/[0.06] bg-[#0F0F0F] hover:border-[#9B4FDE]/40 transition-colors duration-500 h-full flex flex-col p-8 lg:p-10 relative">
+                <span className="absolute -top-3 left-8 bg-[#7B2FBE] text-white font-heading text-[10px] tracking-[0.3em] px-3 py-1 uppercase">
+                  SVL Players
+                </span>
+                <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.4em] uppercase mb-3">
+                  Format
+                </p>
+                <h2 className="font-heading text-3xl lg:text-4xl text-white tracking-wide mb-6">
+                  ADVANCED SCRIM
+                </h2>
+
+                <div className="flex items-baseline gap-3 sm:gap-4 mb-4 flex-wrap">
+                  <span className="font-heading text-lg sm:text-xl text-white tracking-[0.2em] uppercase">
+                    Friday
+                  </span>
+                  <span className="hidden sm:inline-block w-px h-5 bg-[#9B4FDE]/40" />
+                  <span className="font-heading text-lg sm:text-xl text-[#9B4FDE] tracking-wider">
+                    7:00 &ndash; 9:00 PM
+                  </span>
+                </div>
+
+                <div className="flex items-baseline gap-2 mb-8">
+                  <span className="font-heading text-3xl lg:text-4xl text-[#9B4FDE]">$20</span>
+                  <span className="text-gray-500 text-sm">per person</span>
+                </div>
+
+                <ul className="space-y-3 mb-8 text-gray-300 text-sm flex-1">
+                  <li className="flex items-start gap-3">
+                    <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
+                    <span>For current adult SVL players.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
+                    <span>2 courts, capacity 21 per court.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
+                    <span>3 teams per court.</span>
+                  </li>
+                  <li className="flex items-start gap-3">
+                    <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
+                    <span>Sets to 15 points.</span>
+                  </li>
+                </ul>
+
+                <TrackedBookingLink
+                  href={ACUITY_ADULT_URL}
+                  location="adult_advanced_cta"
+                  className="inline-flex items-center justify-center gap-2 bg-[#7B2FBE] text-white font-heading text-sm tracking-[0.2em] uppercase px-7 py-3.5 hover:bg-white hover:text-[#7B2FBE] transition-all duration-300 glow-purple"
+                >
+                  <span>Book Advanced</span>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </TrackedBookingLink>
+              </div>
+            </SectionReveal>
+          </div>
+
         </div>
       </section>
 
