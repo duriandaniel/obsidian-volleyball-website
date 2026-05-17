@@ -94,15 +94,15 @@ export default function AdultSessionsPage() {
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
-                    <span>Casual scrimmage format. Show up, get on court, play.</span>
+                    <span>2 courts, capacity 21 per court.</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
-                    <span>Teams balanced on the night.</span>
+                    <span>3 teams per court.</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <span className="text-[#9B4FDE] flex-shrink-0 mt-0.5">+</span>
-                    <span>Two-hour block, weekly during school terms.</span>
+                    <span>Sets to 15 points.</span>
                   </li>
                 </ul>
 
@@ -180,30 +180,6 @@ export default function AdultSessionsPage() {
             </SectionReveal>
           </div>
 
-          {/* Shared what-to-expect / bring */}
-          <SectionReveal delay={0.2}>
-            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 border-t border-white/[0.06] pt-8">
-              <div>
-                <p className="text-gray-600 font-heading text-xs tracking-[0.3em] uppercase mb-3">
-                  What to expect
-                </p>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  Both formats run at the same time. Social is mixed-skill and
-                  chill; Advanced is competitive and assumes current SVL game
-                  awareness. Pick the right fit for your level.
-                </p>
-              </div>
-              <div>
-                <p className="text-gray-600 font-heading text-xs tracking-[0.3em] uppercase mb-3">
-                  What to bring
-                </p>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  Indoor court shoes (clean, non-marking), water, a friend if you
-                  have one. Knee pads optional.
-                </p>
-              </div>
-            </div>
-          </SectionReveal>
         </div>
       </section>
 
