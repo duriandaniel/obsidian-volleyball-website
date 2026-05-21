@@ -59,7 +59,8 @@ export type BookingLocation =
   | "home_location_card_west_ryde"
   | "home_location_card_baulkham"
   | "adult_social_cta"
-  | "adult_advanced_cta";
+  | "adult_advanced_cta"
+  | "adult_open_cta";
 
 // Subset of Meta's standard events. Extend as needed.
 export type PixelStandardEvent =
