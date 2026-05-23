@@ -5,11 +5,6 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "res.cloudinary.com",
-        pathname: `/dibp8icbq/**`,
-      },
-      {
-        protocol: "https",
         hostname: "*.cdninstagram.com",
       },
       {

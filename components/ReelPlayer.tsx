@@ -2,8 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 
-const CLOUD = "dibp8icbq";
-
 interface Props {
   publicId: string;
   poster?: string;
@@ -14,9 +12,8 @@ export default function ReelPlayer({ publicId, poster }: Props) {
   const [errored, setErrored] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const videoUrl = `https://res.cloudinary.com/${CLOUD}/video/upload/q_auto,f_auto/${publicId}.mp4`;
-  const posterUrl =
-    poster ?? `https://res.cloudinary.com/${CLOUD}/video/upload/so_0/${publicId}.jpg`;
+  const videoUrl = `/reels/${publicId}.mp4`;
+  const posterUrl = poster ?? `/reels/${publicId}.jpg`;
 
   // Only play when in view; pause when scrolled away
   useEffect(() => {
