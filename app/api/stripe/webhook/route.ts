@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
+import { sendEmail } from "@/lib/email/send";
+import { formatCents } from "@/lib/booking/pricing";
 import type Stripe from "stripe";
 
 // Stripe webhook needs the raw body to verify the signature.
@@ -175,6 +177,68 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     entity_type: "camp_order",
     entity_id: order.id,
     after: { camp_order_id: order.id, session_count: items.length, total_cents: total },
+  });
+
+  // Fetch session details for the confirmation email
+  const sessionIds = items.map((i) => i.session_id);
+  const { data: sessionRows } = await sb
+    .from("sessions")
+    .select("starts_at, ends_at, program_id")
+    .in("id", sessionIds);
+
+  const programId = sessionRows?.[0]?.program_id;
+  let venueName = "Baulkham Hills High School";
+  let programTitle = "Obsidian Holiday Camp";
+  if (programId) {
+    const { data: prog } = await sb
+      .from("programs")
+      .select("title, venue_id")
+      .eq("id", programId)
+      .maybeSingle();
+    if (prog) {
+      programTitle = prog.title;
+      const { data: ven } = await sb
+        .from("venues")
+        .select("name, address")
+        .eq("id", prog.venue_id)
+        .maybeSingle();
+      if (ven) venueName = ven.address ? `${ven.name}, ${ven.address}` : ven.name;
+    }
+  }
+
+  const dayList = (sessionRows ?? [])
+    .map((s) =>
+      new Date(s.starts_at).toLocaleDateString("en-AU", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        timeZone: "Australia/Sydney",
+      })
+    )
+    .join("<br>");
+
+  await sendEmail({
+    to: email,
+    subject: `Booking confirmed: ${programTitle}`,
+    template: "camp_booking_confirmation",
+    relatedCampOrderId: order.id,
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
+        <h2 style="color: #9B4FDE; margin-bottom: 8px;">You're booked in.</h2>
+        <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
+        <p>Thanks for booking ${programTitle}. Here are your days:</p>
+        <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${dayList}</p>
+        <p><strong>Venue:</strong> ${venueName}<br>
+           <strong>Time:</strong> 9:00 AM – 1:00 PM<br>
+           <strong>Total paid:</strong> ${formatCents(total)}</p>
+        <p>What to bring: water bottle, runners, snack. We provide all volleyball gear.</p>
+        <p>If you need to update your child's details (school, level, medical notes) or have any questions, just reply to this email.</p>
+        <p>See you on court!<br>Obsidian Volleyball Academy</p>
+      </div>
+    `,
+    text: `You're booked in.\n\nThanks for booking ${programTitle}. Days: ${(sessionRows ?? [])
+      .map((s) => new Date(s.starts_at).toLocaleDateString("en-AU", { dateStyle: "full", timeZone: "Australia/Sydney" }))
+      .join(", ")}\n\nVenue: ${venueName}\nTime: 9:00 AM – 1:00 PM\nTotal paid: ${formatCents(total)}\n\nReply to this email with any questions.\n\nObsidian Volleyball Academy`,
   });
 }
 
