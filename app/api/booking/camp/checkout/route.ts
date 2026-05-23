@@ -11,6 +11,7 @@ const Body = z.object({
     last_name: z.string().min(1).max(100),
     email: z.string().email(),
     phone: z.string().min(5).max(40),
+    source: z.enum(["", "google", "instagram", "facebook", "word_of_mouth"]).optional(),
   }),
   kid: z.object({
     first_name: z.string().min(1).max(100),
@@ -104,6 +105,7 @@ export async function POST(req: NextRequest) {
           last_name: body.parent.last_name,
           phone: body.parent.phone,
           photo_consent: body.kid.photo_consent,
+          source: body.parent.source || null,
         })
         .select("id")
         .single();

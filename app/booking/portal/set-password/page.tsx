@@ -8,7 +8,14 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default function SetPasswordPage() {
+export default async function SetPasswordPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ token?: string }>;
+}) {
+  const sp = await searchParams;
+  const token = sp.token ?? null;
+
   return (
     <div className="min-h-screen flex items-center justify-center px-6 bg-[#0A0A0A]">
       <div className="w-full max-w-md">
@@ -19,7 +26,7 @@ export default function SetPasswordPage() {
             Pick a password you&apos;ll use to manage your bookings going forward.
           </p>
         </div>
-        <SetPasswordForm />
+        <SetPasswordForm token={token} />
       </div>
     </div>
   );

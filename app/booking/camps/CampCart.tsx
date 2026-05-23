@@ -31,7 +31,24 @@ type ParentForm = {
   last_name: string;
   email: string;
   phone: string;
+  source: "" | "google" | "instagram" | "facebook" | "word_of_mouth";
 };
+
+const SOURCE_OPTIONS: { value: ParentForm["source"]; label: string }[] = [
+  { value: "", label: "Select…" },
+  { value: "google", label: "Google" },
+  { value: "instagram", label: "Instagram" },
+  { value: "facebook", label: "Facebook" },
+  { value: "word_of_mouth", label: "Word of mouth" },
+];
+
+const YEAR_OPTIONS = [
+  { value: "", label: "Select…" },
+  ...Array.from({ length: 11 }, (_, i) => {
+    const n = i + 2;
+    return { value: `Year ${n}`, label: `Year ${n}` };
+  }),
+];
 
 type KidForm = {
   first_name: string;
@@ -54,6 +71,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
     last_name: "",
     email: "",
     phone: "",
+    source: "",
   });
   const [kid, setKid] = useState<KidForm>({
     first_name: "",
@@ -270,6 +288,12 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                   </Row>
                   <Field label="Email" type="email" value={parent.email} onChange={(v) => setParent({ ...parent, email: v })} required />
                   <Field label="Mobile" type="tel" value={parent.phone} onChange={(v) => setParent({ ...parent, phone: v })} required />
+                  <Select
+                    label="How did you hear about us?"
+                    value={parent.source}
+                    onChange={(v) => setParent({ ...parent, source: v as ParentForm["source"] })}
+                    options={SOURCE_OPTIONS}
+                  />
                 </Fieldset>
 
                 <Fieldset legend="Child attending">
@@ -278,7 +302,12 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                     <Field label="Last name" value={kid.last_name} onChange={(v) => setKid({ ...kid, last_name: v })} required />
                   </Row>
                   <Row>
-                    <Field label="Year at school" placeholder="e.g. Year 7" value={kid.year_at_school} onChange={(v) => setKid({ ...kid, year_at_school: v })} />
+                    <Select
+                      label="Year at school"
+                      value={kid.year_at_school}
+                      onChange={(v) => setKid({ ...kid, year_at_school: v })}
+                      options={YEAR_OPTIONS}
+                    />
                     <Select
                       label="Volleyball level"
                       value={kid.volleyball_level}
@@ -291,7 +320,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                       ]}
                     />
                   </Row>
-                  <Field label="School name" value={kid.school_name} onChange={(v) => setKid({ ...kid, school_name: v })} placeholder="Optional" />
+                  <Field label="School name" value={kid.school_name} onChange={(v) => setKid({ ...kid, school_name: v })} />
                   <TextArea
                     label="Medical notes / allergies"
                     value={kid.medical_notes}
