@@ -49,10 +49,8 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Never push directly to `main` for content/code changes — staging first, always
 - If git auto-deploy is ever wired up via Vercel dashboard (Settings → Git), step 2 of prod deploy can be dropped — but until then, always run `vercel deploy --prod` after pushing main
 
-## Cloudinary
-- Cloud name: `dibp8icbq`
-- API credentials in `.env.local` (gitignored): `CLOUDINARY_API_KEY` + `CLOUDINARY_API_SECRET`
-- List videos: `curl -u "$KEY:$SECRET" "https://api.cloudinary.com/v1_1/dibp8icbq/resources/video?max_results=50"`
-- List images: change `/video` to `/image` in URL
-- Public ID is what `ReelPlayer` and `CldImage` need (e.g. `Ethan_Blocking_Tight_Hands_tivhlv`)
-- Reels use `<ReelPlayer publicId={...} />`; images use `<CloudImage src={...} />`
+## Media
+- All media is self-hosted in `public/` and served by Vercel's edge CDN (no third-party host)
+- Reels: `public/reels/{publicId}.mp4` + `{publicId}.jpg` (poster). Rendered via `<ReelPlayer publicId={...} />` — the `publicId` is just the filename stem
+- Images: `public/images/*.jpg|png` referenced directly in `<Image src="/images/..." />`
+- New reel workflow: transcode source to 720x1280 H.264 (`ffmpeg -vf scale=720:1280 -c:v libx264 -crf 26 -preset medium -c:a aac -b:a 96k -movflags +faststart`) before dropping in `public/reels/`. Generate a poster JPG of frame 0 with the same filename stem.
