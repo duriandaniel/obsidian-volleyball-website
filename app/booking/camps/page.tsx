@@ -8,6 +8,9 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+// Always render at request time so we read live capacity from the DB.
+export const dynamic = "force-dynamic";
+
 export type CampSessionView = {
   id: string;
   starts_at: string;
@@ -27,7 +30,14 @@ export type CampSessionView = {
 };
 
 async function loadCampSessions(): Promise<CampSessionView[]> {
-  const sb = supabaseAdmin();
+  // Be tolerant during the bootstrap window: if env vars or schema aren't ready,
+  // show the empty state instead of throwing a 500.
+  let sb;
+  try {
+    sb = supabaseAdmin();
+  } catch {
+    return [];
+  }
   const now = new Date().toISOString();
 
   // First, find published camp programs

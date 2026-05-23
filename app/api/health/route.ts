@@ -4,6 +4,8 @@ import { supabaseAdmin } from "@/lib/supabase/server";
 // Health endpoint for smoke-testing the booking system stack.
 // Returns 200 if env vars are present and Supabase is reachable.
 // Does NOT touch Stripe (avoid wasting API calls).
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   const envs = {
     NEXT_PUBLIC_SUPABASE_URL: !!process.env.NEXT_PUBLIC_SUPABASE_URL,
