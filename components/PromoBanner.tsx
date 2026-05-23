@@ -1,11 +1,14 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { trackBookingClick } from "@/lib/tracking";
 
 const ACUITY_URL =
   process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me";
 
 export default function PromoBanner() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/booking")) return null;
   return (
     <a
       href={ACUITY_URL}

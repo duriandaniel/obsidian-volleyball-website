@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import TrackedBookingLink from "./TrackedBookingLink";
@@ -16,8 +17,14 @@ const navLinks = [
 ];
 
 export default function Nav() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Hide marketing nav on admin and booking app routes (they render their own nav)
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/booking/portal")) {
+    return null;
+  }
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);

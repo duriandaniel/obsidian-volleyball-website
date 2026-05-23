@@ -1,7 +1,12 @@
+"use client";
+
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/booking/portal")) return null;
   return (
     <footer className="bg-[#0A0A0A] border-t border-white/[0.06] mt-auto">
       {/* Main footer */}
