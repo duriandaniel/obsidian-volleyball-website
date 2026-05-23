@@ -3,6 +3,7 @@ import { stripe } from "@/lib/stripe/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/email/send";
 import { formatCents } from "@/lib/booking/pricing";
+import { signPortalToken } from "@/lib/auth/portal";
 import type Stripe from "stripe";
 
 // Stripe webhook needs the raw body to verify the signature.
@@ -221,6 +222,11 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     )
     .join("<br>");
 
+  // Magic link so the parent can come back and manage this booking
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidian-booking-staging.vercel.app";
+  const portalToken = signPortalToken(customerId!);
+  const portalLink = `${appUrl}/api/booking/portal/access?token=${encodeURIComponent(portalToken)}`;
+
   await sendEmail({
     to: email,
     subject: `Booking confirmed: ${programTitle}`,
@@ -236,13 +242,17 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
            <strong>Time:</strong> 9:00 AM – 1:00 PM<br>
            <strong>Total paid:</strong> ${formatCents(total)}</p>
         <p>What to bring: water bottle, runners, snack. We provide all volleyball gear.</p>
-        <p>If you need to update your child's details (school, level, medical notes) or have any questions, just reply to this email.</p>
+        <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
+          Need to update your child's details, cancel, or reschedule?
+          <a href="${portalLink}" style="display:inline-block; margin-top:8px; background:#9B4FDE; color:white; padding:10px 16px; border-radius:6px; text-decoration:none; font-weight:600;">Manage my bookings</a>
+        </p>
+        <p style="font-size: 12px; color: #666;">Or just reply to this email and we'll sort it out for you.</p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
-    text: `You're booked in.\n\nThanks for booking ${programTitle}. Days: ${(sessionRows ?? [])
+    text: `You're booked in.\n\nThanks for booking ${programTitle}.\n\nDays: ${(sessionRows ?? [])
       .map((s) => new Date(s.starts_at).toLocaleDateString("en-AU", { dateStyle: "full", timeZone: "Australia/Sydney" }))
-      .join(", ")}\n\nVenue: ${venueName}\nTime: 9:00 AM – 1:00 PM\nTotal paid: ${formatCents(total)}\n\nReply to this email with any questions.\n\nObsidian Volleyball Academy`,
+      .join(", ")}\n\nVenue: ${venueName}\nTime: 9:00 AM – 1:00 PM\nTotal paid: ${formatCents(total)}\n\nManage your booking: ${portalLink}\n\nOr just reply to this email with any questions.\n\nObsidian Volleyball Academy`,
   });
 }
 

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
 import Link from "next/link";
-import { supabaseServer } from "@/lib/supabase/auth";
+import { currentPortalCustomerId } from "@/lib/auth/portal";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { PortalLoginForm } from "./PortalLoginForm";
 import { CancelButton } from "./CancelButton";
@@ -13,11 +12,15 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function PortalPage() {
-  const supa = await supabaseServer();
-  const { data: { user } } = await supa.auth.getUser();
+export default async function PortalPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string; sent?: string }>;
+}) {
+  const sp = await searchParams;
+  const customerId = await currentPortalCustomerId();
 
-  if (!user) {
+  if (!customerId) {
     return (
       <div className="min-h-screen flex items-center justify-center px-6 bg-[#0A0A0A]">
         <div className="w-full max-w-md">
@@ -25,61 +28,50 @@ export default async function PortalPage() {
             <div className="font-heading text-xs tracking-[0.4em] text-[#9B4FDE] mb-3">OBSIDIAN VOLLEYBALL</div>
             <h1 className="font-heading text-3xl text-white">Manage your bookings</h1>
             <p className="text-sm text-gray-400 mt-3">
-              Sign in with the email you used when booking.
+              Enter your email and we&apos;ll send you a sign-in link.
             </p>
           </div>
+          {sp.error === "expired" && (
+            <div className="text-sm text-yellow-400 bg-yellow-500/10 border border-yellow-500/30 rounded p-3 mb-4">
+              That link has expired. Enter your email below to get a fresh one.
+            </div>
+          )}
           <PortalLoginForm />
           <p className="text-xs text-gray-500 text-center mt-6">
-            New here? Just{" "}
-            <Link href="/booking" className="text-[#9B4FDE]">make a booking</Link>{" "}
-            first — your account is created automatically.
+            No booking yet? <Link href="/booking" className="text-[#9B4FDE]">Book a camp or class first</Link>.
           </p>
         </div>
       </div>
     );
   }
 
-  // Logged in. Get this user's customer record + bookings.
   const sb = supabaseAdmin();
   const { data: customer } = await sb
     .from("customers")
     .select("id, first_name, last_name, email, phone")
-    .or(`auth_user_id.eq.${user.id},email.eq.${user.email?.toLowerCase()}`)
+    .eq("id", customerId)
     .is("deleted_at", null)
-    .order("created_at", { ascending: false })
-    .limit(1)
     .maybeSingle();
-
   if (!customer) {
+    // Stale cookie pointing at a deleted customer
     return (
       <div className="min-h-screen flex items-center justify-center px-6 bg-[#0A0A0A] text-white">
         <div className="text-center max-w-md">
-          <h1 className="font-heading text-2xl mb-3">No bookings under {user.email}</h1>
+          <h1 className="font-heading text-2xl mb-3">Session expired</h1>
           <p className="text-sm text-gray-400 mb-6">
-            We didn&apos;t find any bookings tied to this email. Try signing out and using a different email, or make a booking first.
+            Please request a fresh sign-in link.
           </p>
           <form action="/api/booking/portal/logout" method="POST">
-            <button type="submit" className="text-sm text-[#9B4FDE] hover:text-white">Sign out</button>
+            <button type="submit" className="text-sm text-[#9B4FDE] hover:text-white">Sign out + start over</button>
           </form>
         </div>
       </div>
     );
   }
 
-  // Link auth user to customer if not already
-  if (customer && !customer.id) {
-    // (handled by query above)
-  } else {
-    await sb
-      .from("customers")
-      .update({ auth_user_id: user.id })
-      .eq("id", customer.id)
-      .is("auth_user_id", null);
-  }
-
   const { data: bookings } = await sb
     .from("bookings")
-    .select("id, status, source, paid_amount_cents, session_id, participant_id, cancelled_at, refund_status")
+    .select("id, status, source, paid_amount_cents, session_id, participant_id, cancelled_at, refund_status, created_at")
     .eq("customer_id", customer.id)
     .is("deleted_at", null)
     .order("created_at", { ascending: false });
@@ -136,9 +128,7 @@ export default async function PortalPage() {
             <div className="font-heading text-lg">
               {p ? `${p.first_name} ${p.last_name}` : "(participant)"}
             </div>
-            <div className="text-sm text-gray-400">
-              {program?.title ?? "(program)"}
-            </div>
+            <div className="text-sm text-gray-400">{program?.title ?? "(program)"}</div>
             <div className="text-sm text-gray-300 mt-2">
               {startsAt.toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long", year: "numeric", timeZone: "Australia/Sydney" })}
               {" · "}
@@ -156,8 +146,8 @@ export default async function PortalPage() {
           </div>
         </div>
         {allowCancel && (
-          <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between gap-3">
-            <div className="text-xs text-gray-500 flex-1">
+          <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between gap-3 flex-wrap">
+            <div className="text-xs text-gray-500 flex-1 min-w-[200px]">
               {program?.refund_policy === "forfeit"
                 ? "Term sessions are non-refundable. If you have a significant reason (injury, family situation), email obsidianvolleyball@gmail.com and we'll work something out."
                 : program?.refund_policy === "credit"
@@ -177,9 +167,7 @@ export default async function PortalPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <div className="text-xs text-gray-500 uppercase tracking-wider mb-1">Your bookings</div>
-            <h1 className="font-heading text-3xl">
-              Hi {customer.first_name ?? "there"}
-            </h1>
+            <h1 className="font-heading text-3xl">Hi {customer.first_name ?? "there"}</h1>
             <p className="text-sm text-gray-400">{customer.email}</p>
           </div>
           <form action="/api/booking/portal/logout" method="POST">

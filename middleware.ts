@@ -39,6 +39,8 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 
+// /booking/portal uses its own cookie-based session (not Supabase Auth), so
+// it doesn't need middleware. Only /admin needs the Supabase session refresh.
 export const config = {
-  matcher: ["/admin/:path*", "/booking/portal/:path*"],
+  matcher: ["/admin/:path*"],
 };

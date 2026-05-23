@@ -11,7 +11,7 @@ import crypto from "crypto";
 type Payload = {
   customer_id: string;
   exp: number; // unix seconds
-  purpose: "password_reset";
+  purpose: "password_reset" | "portal_access";
 };
 
 function getSecret(): string {
@@ -34,7 +34,7 @@ export function signRecoveryToken(customerId: string, ttlSeconds = 60 * 60 * 24)
   const payload: Payload = {
     customer_id: customerId,
     exp: Math.floor(Date.now() / 1000) + ttlSeconds,
-    purpose: "password_reset",
+    purpose: "portal_access",
   };
   const payloadStr = JSON.stringify(payload);
   const payloadB64 = b64urlEncode(Buffer.from(payloadStr));
@@ -60,7 +60,7 @@ export function verifyRecoveryToken(token: string): Payload | null {
   } catch {
     return null;
   }
-  if (payload.purpose !== "password_reset") return null;
+  if (payload.purpose !== "password_reset" && payload.purpose !== "portal_access") return null;
   if (typeof payload.exp !== "number" || payload.exp < Math.floor(Date.now() / 1000)) return null;
   if (typeof payload.customer_id !== "string") return null;
   return payload;

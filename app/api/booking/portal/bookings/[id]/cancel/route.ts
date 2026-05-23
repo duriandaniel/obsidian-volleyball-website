@@ -1,15 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { supabaseServer } from "@/lib/supabase/auth";
+import { currentPortalCustomerId } from "@/lib/auth/portal";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/email/send";
 
 const Body = z.object({ reason: z.string().max(2000).optional().nullable() });
 
 export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
-  const supa = await supabaseServer();
-  const { data: { user } } = await supa.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Sign in first" }, { status: 401 });
+  const customerId = await currentPortalCustomerId();
+  if (!customerId) return NextResponse.json({ error: "Sign in first" }, { status: 401 });
 
   const { id } = await ctx.params;
   let body: z.infer<typeof Body>;
@@ -20,17 +19,13 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
   }
 
   const sb = supabaseAdmin();
-
-  // Find the customer owned by this user and confirm the booking belongs to them
   const { data: customer } = await sb
     .from("customers")
     .select("id, email, first_name")
-    .or(`auth_user_id.eq.${user.id},email.eq.${user.email?.toLowerCase()}`)
+    .eq("id", customerId)
     .is("deleted_at", null)
-    .order("created_at", { ascending: false })
-    .limit(1)
     .maybeSingle();
-  if (!customer) return NextResponse.json({ error: "No customer record" }, { status: 403 });
+  if (!customer) return NextResponse.json({ error: "Account not found" }, { status: 403 });
 
   const { data: booking } = await sb
     .from("bookings")
@@ -54,7 +49,6 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   await sb.from("audit_log").insert({
-    actor_user_id: user.id,
     actor_email: customer.email,
     actor_role: "parent",
     action: "booking.cancel",
@@ -63,7 +57,6 @@ export async function POST(req: NextRequest, ctx: { params: Promise<{ id: string
     after: { reason: body.reason ?? null },
   });
 
-  // Send confirmation email to parent
   try {
     await sendEmail({
       to: customer.email,
