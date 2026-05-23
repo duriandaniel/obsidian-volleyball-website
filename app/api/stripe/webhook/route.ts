@@ -66,58 +66,62 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const email = session.customer_details?.email ?? session.customer_email;
   if (!email) throw new Error("Checkout missing customer email");
   const name = session.customer_details?.name ?? "";
-  const phone = session.customer_details?.phone ?? null;
 
-  // Upsert customer by email
-  const { data: existing } = await sb
-    .from("customers")
-    .select("id")
-    .eq("email", email.toLowerCase())
-    .is("deleted_at", null)
-    .maybeSingle();
+  // Prefer customer/participant IDs from metadata (set by the pre-checkout form).
+  // Fall back to legacy email-based lookup for sessions created before the form
+  // was wired up (shouldn't happen post-rollout, but defensive).
+  let customerId = session.metadata?.customer_id;
+  let participantId = session.metadata?.participant_id;
 
-  let customerId = existing?.id as string | undefined;
   if (!customerId) {
-    const [firstName, ...rest] = name.split(" ");
-    const { data: inserted, error: cErr } = await sb
+    const { data: existing } = await sb
       .from("customers")
-      .insert({
-        email: email.toLowerCase(),
-        first_name: firstName ?? null,
-        last_name: rest.join(" ") || null,
-        phone,
-        stripe_customer_id:
-          typeof session.customer === "string" ? session.customer : session.customer?.id ?? null,
-      })
       .select("id")
-      .single();
-    if (cErr) throw cErr;
-    customerId = inserted.id;
+      .eq("email", email.toLowerCase())
+      .is("deleted_at", null)
+      .maybeSingle();
+    customerId = existing?.id;
+    if (!customerId) {
+      const [firstName, ...rest] = name.split(" ");
+      const { data: inserted, error: cErr } = await sb
+        .from("customers")
+        .insert({
+          email: email.toLowerCase(),
+          first_name: firstName ?? null,
+          last_name: rest.join(" ") || null,
+        })
+        .select("id")
+        .single();
+      if (cErr) throw cErr;
+      customerId = inserted.id;
+    }
   }
 
-  // For v1, create a placeholder participant from the parent's details.
-  // The success page collects real kid details after redirect.
-  const { data: existingParticipant } = await sb
-    .from("participants")
-    .select("id")
-    .eq("customer_id", customerId)
-    .is("deleted_at", null)
-    .limit(1)
-    .maybeSingle();
+  // Attach the Stripe customer id if we got one
+  const stripeCustomerId =
+    typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
+  if (stripeCustomerId) {
+    await sb.from("customers").update({ stripe_customer_id: stripeCustomerId }).eq("id", customerId);
+  }
 
-  let participantId = existingParticipant?.id as string | undefined;
   if (!participantId) {
-    const { data: insertedP, error: pErr } = await sb
+    const { data: existingParticipant } = await sb
       .from("participants")
-      .insert({
-        customer_id: customerId,
-        first_name: "(pending)",
-        last_name: "(pending)",
-      })
       .select("id")
-      .single();
-    if (pErr) throw pErr;
-    participantId = insertedP.id;
+      .eq("customer_id", customerId)
+      .is("deleted_at", null)
+      .limit(1)
+      .maybeSingle();
+    participantId = existingParticipant?.id;
+    if (!participantId) {
+      const { data: insertedP, error: pErr } = await sb
+        .from("participants")
+        .insert({ customer_id: customerId, first_name: "(pending)", last_name: "(pending)" })
+        .select("id")
+        .single();
+      if (pErr) throw pErr;
+      participantId = insertedP.id;
+    }
   }
 
   // Idempotency: if we've already processed this Stripe session, do nothing.
