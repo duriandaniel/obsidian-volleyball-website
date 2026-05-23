@@ -24,11 +24,16 @@ export async function GET() {
   let schemaReady = false;
   try {
     const sb = supabaseAdmin();
-    const { error } = await sb.from("venues").select("id", { count: "exact", head: true });
+    // Use a non-HEAD request so PostgREST returns errors properly for missing tables
+    const { error } = await sb.from("venues").select("id").limit(1);
     if (error) {
       dbError = error.message;
-      // If the error is "table not found" the schema migration hasn't been applied yet
-      schemaReady = !/relation .* does not exist/i.test(error.message);
+      // "Could not find the table 'public.X'" is PostgREST's missing-table error.
+      const isMissingTable =
+        error.code === "PGRST205" ||
+        /could not find the table|relation .* does not exist/i.test(error.message);
+      dbReachable = !isMissingTable;
+      schemaReady = !isMissingTable;
     } else {
       dbReachable = true;
       schemaReady = true;
