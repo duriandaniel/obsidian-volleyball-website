@@ -44,6 +44,7 @@ async function AdminNav() {
           <div className="hidden md:flex items-center gap-4 text-sm">
             <NavLink href="/admin" label="Today" />
             <NavLink href="/admin/calendar" label="Calendar" />
+            <NavLink href="/admin/bookings" label="Bookings" />
             <NavLink href="/admin/cancellations" label="Cancellations" />
             <NavLink href="/admin/families" label="Families" />
             <NavLink href="/admin/reports" label="Reports" />
