@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase/server";
+import { hasValidSimpleAdminCookie, SYNTHETIC_ADMIN } from "@/lib/admin/simple-auth";
 
 // Server-side Supabase client that reads/writes the auth cookie.
 // Use from server components, layouts, and route handlers that need to know
@@ -41,6 +42,12 @@ export type AdminUser = {
 // not logged in or not an admin. Bypasses RLS (uses service role) for the lookup
 // because admin_users itself has no RLS.
 export async function currentAdmin(): Promise<AdminUser | null> {
+  // Simple shared-password gate: if the cookie is valid, treat as owner.
+  if (await hasValidSimpleAdminCookie()) {
+    return SYNTHETIC_ADMIN;
+  }
+
+  // Fallback: Supabase email+password (still works for existing admin_users rows)
   const supa = await supabaseServer();
   const { data: { user } } = await supa.auth.getUser();
   if (!user) return null;

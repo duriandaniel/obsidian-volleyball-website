@@ -3,7 +3,6 @@
 import { useState } from "react";
 
 export function LoginForm() {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -18,7 +17,7 @@ export function LoginForm() {
       const res = await fetch(url, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ password }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error ?? "Sign-in failed");
@@ -32,17 +31,6 @@ export function LoginForm() {
   return (
     <form onSubmit={submit} className="space-y-4 bg-white/[0.02] border border-white/10 rounded-lg p-6">
       <label className="block">
-        <span className="block text-xs text-gray-500 mb-1">Email</span>
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#9B4FDE]"
-          autoFocus
-        />
-      </label>
-      <label className="block">
         <span className="block text-xs text-gray-500 mb-1">Password</span>
         <input
           type="password"
@@ -50,6 +38,7 @@ export function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#9B4FDE]"
+          autoFocus
         />
       </label>
       {error && <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded p-3">{error}</div>}

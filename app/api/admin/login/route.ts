@@ -1,11 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { supabaseServer } from "@/lib/supabase/auth";
-import { supabaseAdmin } from "@/lib/supabase/server";
+import { setSimpleAdminCookie, tokenForPassword, verifyPassword } from "@/lib/admin/simple-auth";
 
 const Body = z.object({
-  email: z.string().email(),
-  password: z.string().min(6).max(200),
+  password: z.string().min(1).max(200),
 });
 
 export async function POST(req: NextRequest) {
@@ -13,39 +11,17 @@ export async function POST(req: NextRequest) {
   try {
     body = Body.parse(await req.json());
   } catch {
-    return NextResponse.json({ error: "Email and password required" }, { status: 400 });
+    return NextResponse.json({ error: "Password required" }, { status: 400 });
   }
 
-  const supa = await supabaseServer();
-  const { data, error } = await supa.auth.signInWithPassword({
-    email: body.email,
-    password: body.password,
-  });
-  if (error || !data.user) {
-    return NextResponse.json({ error: "Wrong email or password" }, { status: 401 });
+  if (!process.env.ADMIN_PASSWORD) {
+    return NextResponse.json({ error: "Admin password not configured" }, { status: 500 });
   }
 
-  // Confirm they're in admin_users
-  const sb = supabaseAdmin();
-  const { data: admin } = await sb
-    .from("admin_users")
-    .select("id, role")
-    .eq("auth_user_id", data.user.id)
-    .is("deleted_at", null)
-    .maybeSingle();
-  if (!admin) {
-    await supa.auth.signOut();
-    return NextResponse.json({ error: "This account is not authorised for admin access." }, { status: 403 });
+  if (!verifyPassword(body.password)) {
+    return NextResponse.json({ error: "Wrong password" }, { status: 401 });
   }
 
-  await sb.from("audit_log").insert({
-    actor_user_id: data.user.id,
-    actor_email: data.user.email,
-    actor_role: admin.role,
-    action: "admin.login",
-    entity_type: "admin_user",
-    entity_id: admin.id,
-  });
-
+  await setSimpleAdminCookie(tokenForPassword(body.password));
   return NextResponse.json({ redirect: "/admin" });
 }
