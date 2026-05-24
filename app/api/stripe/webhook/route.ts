@@ -31,9 +31,16 @@ export async function POST(req: NextRequest) {
 
   try {
     switch (event.type) {
-      case "checkout.session.completed":
-        await handleCheckoutCompleted(event.data.object);
+      case "checkout.session.completed": {
+        const session = event.data.object;
+        const bookingType = session.metadata?.booking_type;
+        if (bookingType === "term") {
+          await handleTermCheckoutCompleted(session);
+        } else {
+          await handleCheckoutCompleted(session);
+        }
         break;
+      }
       case "charge.refunded":
         await handleRefund(event.data.object);
         break;
@@ -277,5 +284,139 @@ async function handleRefund(charge: Stripe.Charge) {
     entity_type: "payment_intent",
     entity_id: null,
     after: { payment_intent_id: paymentIntentId, refunded_cents: charge.amount_refunded },
+  });
+}
+
+async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
+  const sb = supabaseAdmin();
+  const customerId = session.metadata?.customer_id;
+  const participantId = session.metadata?.participant_id;
+  const programId = session.metadata?.program_id;
+  const sessionIdsJson = session.metadata?.session_ids;
+  const perWeekCents = parseInt(session.metadata?.per_week_cents ?? "0", 10);
+  const weeks = parseInt(session.metadata?.weeks ?? "0", 10);
+  const email = session.customer_details?.email ?? session.customer_email;
+
+  if (!customerId || !participantId || !programId || !sessionIdsJson || !email) {
+    throw new Error("Term checkout missing required metadata");
+  }
+  const sessionIds: string[] = JSON.parse(sessionIdsJson);
+  const total = session.amount_total ?? perWeekCents * weeks;
+  const paymentIntentId =
+    typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id ?? null;
+
+  // Idempotency: skip if we've already processed this Stripe session
+  const { data: existingEnrolment } = await sb
+    .from("enrolments")
+    .select("id")
+    .eq("stripe_checkout_session_id", session.id)
+    .maybeSingle();
+  if (existingEnrolment) return;
+
+  // Attach Stripe customer id
+  const stripeCustomerId =
+    typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
+  if (stripeCustomerId) {
+    await sb.from("customers").update({ stripe_customer_id: stripeCustomerId }).eq("id", customerId);
+  }
+
+  // Create enrolment row
+  const { data: enrolment, error: eErr } = await sb
+    .from("enrolments")
+    .insert({
+      customer_id: customerId,
+      participant_id: participantId,
+      program_id: programId,
+      stripe_checkout_session_id: session.id,
+      stripe_payment_intent_id: paymentIntentId,
+      weeks_paid: weeks,
+      per_week_cents: perWeekCents,
+      total_cents: total,
+      status: "active",
+      starts_on: new Date().toISOString().slice(0, 10),
+      paid_at: new Date().toISOString(),
+    })
+    .select("id")
+    .single();
+  if (eErr) throw eErr;
+
+  // One booking per remaining session
+  const bookingsToInsert = sessionIds.map((session_id) => ({
+    session_id,
+    participant_id: participantId,
+    customer_id: customerId,
+    source: "term" as const,
+    enrolment_id: enrolment.id,
+    status: "confirmed" as const,
+    paid_amount_cents: perWeekCents,
+    stripe_payment_intent_id: paymentIntentId,
+    paid_at: new Date().toISOString(),
+  }));
+  const { error: bErr } = await sb.from("bookings").insert(bookingsToInsert);
+  if (bErr) throw bErr;
+
+  await sb.from("audit_log").insert({
+    actor_role: "system",
+    action: "enrolment.create",
+    entity_type: "enrolment",
+    entity_id: enrolment.id,
+    after: { enrolment_id: enrolment.id, weeks, total_cents: total },
+  });
+
+  // Fetch program + venue for the confirmation email
+  const { data: program } = await sb
+    .from("programs")
+    .select("title, venue_id")
+    .eq("id", programId)
+    .maybeSingle();
+  let venueName = "Venue TBA";
+  if (program?.venue_id) {
+    const { data: venue } = await sb.from("venues").select("name, address").eq("id", program.venue_id).maybeSingle();
+    if (venue) venueName = venue.address ? `${venue.name}, ${venue.address}` : venue.name;
+  }
+
+  const { data: sessionRows } = await sb
+    .from("sessions")
+    .select("starts_at")
+    .in("id", sessionIds)
+    .order("starts_at");
+  const dayList = (sessionRows ?? [])
+    .map((s) =>
+      new Date(s.starts_at).toLocaleDateString("en-AU", {
+        weekday: "short",
+        day: "numeric",
+        month: "short",
+        timeZone: "Australia/Sydney",
+      })
+    )
+    .join("<br>");
+
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidian-booking-staging.vercel.app";
+  const portalToken = signPortalToken(customerId);
+  const portalLink = `${appUrl}/api/booking/portal/access?token=${encodeURIComponent(portalToken)}`;
+
+  const name = session.customer_details?.name ?? "";
+  await sendEmail({
+    to: email,
+    subject: `Enrolment confirmed: ${program?.title ?? "Term program"}`,
+    template: "term_enrolment_confirmation",
+    relatedEnrolmentId: enrolment.id,
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
+        <h2 style="color: #9B4FDE;">You're enrolled.</h2>
+        <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
+        <p>Thanks for enrolling in ${program?.title ?? "the term program"}. Here are your sessions:</p>
+        <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${dayList}</p>
+        <p><strong>Venue:</strong> ${venueName}<br>
+           <strong>Total paid:</strong> $${(total / 100).toFixed(2)} (${weeks} week${weeks === 1 ? "" : "s"} × $${(perWeekCents / 100).toFixed(2)})</p>
+        <p>What to bring: water bottle, runners, snack. We provide all volleyball gear.</p>
+        <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
+          <a href="${portalLink}" style="display:inline-block; background:#9B4FDE; color:white; padding:10px 16px; border-radius:6px; text-decoration:none; font-weight:600;">Manage my bookings</a>
+        </p>
+        <p style="font-size: 12px; color: #666;">Or just reply to this email and we'll help you out.</p>
+        <p>See you on court!<br>Obsidian Volleyball Academy</p>
+      </div>
+    `,
+    text: `You're enrolled in ${program?.title ?? "the term program"}.\n\nSessions: ${(sessionRows ?? []).length} weeks\nVenue: ${venueName}\nTotal paid: $${(total / 100).toFixed(2)}\n\nManage your enrolment: ${portalLink}\n\nObsidian Volleyball Academy`,
   });
 }
