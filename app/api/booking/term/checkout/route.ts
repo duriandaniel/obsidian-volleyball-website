@@ -168,6 +168,7 @@ export async function POST(req: NextRequest) {
 
   const checkout = await stripe().checkout.sessions.create({
     mode: "payment",
+    ui_mode: "embedded_page",
     payment_method_types: ["card"],
     line_items: [
       {
@@ -182,8 +183,7 @@ export async function POST(req: NextRequest) {
       },
     ],
     customer_email: email,
-    success_url: `${appUrl}/booking/term/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
-    cancel_url: `${appUrl}/booking/term/${program.slug}${bypassQS ? `?${bypassQS.slice(1)}` : ""}`,
+    return_url: `${appUrl}/booking/term/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
     metadata: {
       booking_type: "term",
       program_id: program.id,
@@ -196,5 +196,5 @@ export async function POST(req: NextRequest) {
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
   });
 
-  return NextResponse.json({ url: checkout.url, session_id: checkout.id });
+  return NextResponse.json({ client_secret: checkout.client_secret, session_id: checkout.id });
 }

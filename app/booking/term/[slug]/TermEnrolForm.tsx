@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { formatCents } from "@/lib/booking/pricing";
+import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
 
 type ParentForm = {
   first_name: string;
@@ -51,6 +52,7 @@ export function TermEnrolForm({
   const [open, setOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [parent, setParent] = useState<ParentForm>({ first_name: "", last_name: "", email: "", phone: "", source: "" });
   const [kid, setKid] = useState<KidForm>({
     first_name: "",
@@ -87,8 +89,9 @@ export function TermEnrolForm({
         }),
       });
       const json = await res.json();
-      if (!res.ok || !json.url) throw new Error(json.error ?? "Checkout failed");
-      window.location.href = json.url;
+      if (!res.ok || !json.client_secret) throw new Error(json.error ?? "Checkout failed");
+      setClientSecret(json.client_secret);
+      setSubmitting(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
       setSubmitting(false);
@@ -103,7 +106,7 @@ export function TermEnrolForm({
         <div className="text-xs text-gray-500">{formatCents(perWeekCents)}/week. Whole-term commitment.</div>
       </div>
 
-      {!open ? (
+      {!open && (
         <button
           type="button"
           onClick={() => setOpen(true)}
@@ -112,7 +115,23 @@ export function TermEnrolForm({
         >
           {weeksRemaining === 0 ? "TERM HAS ENDED" : "ENROL NOW"}
         </button>
-      ) : (
+      )}
+
+      {open && clientSecret && (
+        <div className="pt-2 border-t border-white/10">
+          <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE] mb-3">PAYMENT</div>
+          <EmbeddedPayment clientSecret={clientSecret} />
+          <button
+            type="button"
+            onClick={() => setClientSecret(null)}
+            className="text-xs text-gray-500 hover:text-white mt-3"
+          >
+            ← Back to details
+          </button>
+        </div>
+      )}
+
+      {open && !clientSecret && (
         <form onSubmit={submit} className="space-y-4 pt-2 border-t border-white/5">
           <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE]">YOUR DETAILS</div>
 
@@ -152,11 +171,11 @@ export function TermEnrolForm({
               BACK
             </button>
             <button type="submit" disabled={submitting} className="flex-1 bg-[#9B4FDE] hover:bg-[#7d3fb8] disabled:opacity-50 text-white font-heading text-sm tracking-[0.2em] py-3 rounded">
-              {submitting ? "REDIRECTING…" : `PAY ${formatCents(total)}`}
+              {submitting ? "PREPARING…" : "CONTINUE TO PAYMENT"}
             </button>
           </div>
           <div className="text-xs text-gray-500">
-            Payment processed by Stripe. We never see your card details. {programTitle} is non-refundable by default; significant circumstances handled case-by-case via email.
+            Payment processed by Stripe on this page. We never see your card details. {programTitle} is non-refundable by default; significant circumstances handled case-by-case via email.
           </div>
         </form>
       )}

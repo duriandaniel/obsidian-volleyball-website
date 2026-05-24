@@ -164,10 +164,13 @@ export async function POST(req: NextRequest) {
   const reqUrl = new URL(req.url);
   const appUrl = `${reqUrl.protocol}//${reqUrl.host}`;
   const bypass = reqUrl.searchParams.get("x-vercel-protection-bypass");
-  const bypassQS = bypass ? `&x-vercel-protection-bypass=${encodeURIComponent(bypass)}` : "";
+  const bypassQS = bypass
+    ? `&x-vercel-protection-bypass=${encodeURIComponent(bypass)}&x-vercel-set-bypass-cookie=true`
+    : "";
 
   const checkout = await stripe().checkout.sessions.create({
     mode: "payment",
+    ui_mode: "embedded_page",
     payment_method_types: ["card"],
     line_items: [
       {
@@ -192,8 +195,7 @@ export async function POST(req: NextRequest) {
       },
     ],
     customer_email: email,
-    success_url: `${appUrl}/booking/camps/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
-    cancel_url: `${appUrl}/booking/camps${bypassQS ? `?${bypassQS.slice(1)}` : ""}`,
+    return_url: `${appUrl}/booking/camps/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
     metadata: {
       booking_type: "camp",
       customer_id: customerId,
@@ -205,5 +207,5 @@ export async function POST(req: NextRequest) {
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
   });
 
-  return NextResponse.json({ url: checkout.url, session_id: checkout.id });
+  return NextResponse.json({ client_secret: checkout.client_secret, session_id: checkout.id });
 }

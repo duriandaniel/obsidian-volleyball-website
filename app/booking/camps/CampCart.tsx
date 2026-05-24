@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { priceCampCart, formatCents } from "@/lib/booking/pricing";
+import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
 import type { CampSessionView } from "./page";
 
 type Session = CampSessionView;
@@ -23,7 +24,7 @@ function formatTime(iso: string) {
   });
 }
 
-type Mode = "browsing" | "details";
+type Mode = "browsing" | "details" | "paying";
 type Selected = Map<string, { is_half_day: boolean }>;
 
 type ParentForm = {
@@ -65,6 +66,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
   const [mode, setMode] = useState<Mode>("browsing");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
 
   const [parent, setParent] = useState<ParentForm>({
     first_name: "",
@@ -151,8 +153,10 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
         }),
       });
       const json = await res.json();
-      if (!res.ok || !json.url) throw new Error(json.error ?? "Checkout failed");
-      window.location.href = json.url;
+      if (!res.ok || !json.client_secret) throw new Error(json.error ?? "Checkout failed");
+      setClientSecret(json.client_secret);
+      setMode("paying");
+      setSubmitting(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
       setSubmitting(false);
@@ -169,7 +173,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
           const capacity = s.capacity_override ?? s.programs.default_capacity;
           const remaining = capacity - s.booked;
           const soldOut = remaining <= 0;
-          const disabled = mode === "details";
+          const disabled = mode === "details" || mode === "paying";
 
           return (
             <div
@@ -350,13 +354,27 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                     disabled={submitting}
                     className="flex-1 bg-[#9B4FDE] hover:bg-[#7d3fb8] disabled:opacity-50 text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
                   >
-                    {submitting ? "REDIRECTING…" : "PAY " + formatCents(pricing.total_cents)}
+                    {submitting ? "PREPARING…" : "CONTINUE TO PAYMENT"}
                   </button>
                 </div>
                 <div className="text-xs text-gray-500">
-                  Payment processed by Stripe. We never see your card details.
+                  Payment processed by Stripe on this page. We never see your card details.
                 </div>
               </form>
+            )}
+
+            {mode === "paying" && clientSecret && (
+              <div className="pt-2 border-t border-white/10 mt-4">
+                <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE] mb-3">PAYMENT</div>
+                <EmbeddedPayment clientSecret={clientSecret} />
+                <button
+                  type="button"
+                  onClick={() => { setMode("details"); setClientSecret(null); }}
+                  className="text-xs text-gray-500 hover:text-white mt-3"
+                >
+                  ← Back to details
+                </button>
+              </div>
             )}
           </>
         )}
