@@ -82,3 +82,11 @@ export function priceTermEnrolment(perWeekCents: number, weeksRemaining: number)
 export function formatCents(cents: number): string {
   return `$${(cents / 100).toFixed(2)}`;
 }
+
+// Display "spots left" without revealing exact capacity when there's lots of room.
+// Shows a precise number once it drops to single digits (≤9), nudging urgency.
+export function formatSpotsLeft(remaining: number): string {
+  if (remaining <= 0) return "Sold out";
+  if (remaining < 10) return `${remaining} spot${remaining === 1 ? "" : "s"} left`;
+  return "10+ spots left";
+}

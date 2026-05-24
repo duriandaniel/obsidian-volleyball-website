@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { priceCampCart, formatCents } from "@/lib/booking/pricing";
+import { priceCampCart, formatCents, formatSpotsLeft } from "@/lib/booking/pricing";
 import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
 import type { CampSessionView } from "./page";
 
@@ -194,7 +194,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                     {formatTime(s.starts_at)} – {formatTime(s.ends_at)} · {s.programs.venues.name}
                   </div>
                   <div className="text-xs text-gray-500 mt-1">
-                    {soldOut ? "Sold out" : `${remaining} of ${capacity} spots left`}
+                    {formatSpotsLeft(remaining)}
                   </div>
                 </div>
                 <button

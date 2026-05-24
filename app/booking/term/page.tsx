@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { supabaseAdmin } from "@/lib/supabase/server";
-import { formatCents } from "@/lib/booking/pricing";
+import { formatCents, formatSpotsLeft } from "@/lib/booking/pricing";
 
 export const metadata: Metadata = {
   title: "Term Programs | Obsidian Volleyball Academy",
@@ -179,7 +179,7 @@ function TermCard({ program }: { program: TermProgramView }) {
           <div className="text-xs text-gray-500">{formatCents(program.per_week_cents)}/week</div>
         </div>
         <div className="text-xs text-gray-400">
-          {soldOut ? "Sold out" : `${program.capacity - program.booked} spots left`}
+          {formatSpotsLeft(program.capacity - program.booked)}
         </div>
       </div>
     </Link>
