@@ -46,6 +46,7 @@ async function AdminNav() {
             <NavLink href="/admin/calendar" label="Calendar" />
             <NavLink href="/admin/cancellations" label="Cancellations" />
             <NavLink href="/admin/families" label="Families" />
+            <NavLink href="/admin/reports" label="Reports" />
             {admin?.role === "owner" && <NavLink href="/admin/programs" label="Programs" />}
           </div>
         </div>

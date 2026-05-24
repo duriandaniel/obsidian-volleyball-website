@@ -1,5 +1,7 @@
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { AttendanceToggle } from "./AttendanceToggle";
+import { BroadcastButton } from "./BroadcastButton";
+import { AddBookingButton } from "./AddBookingButton";
 
 export const dynamic = "force-dynamic";
 
@@ -176,7 +178,7 @@ function RosterCard({ roster }: { roster: Roster }) {
             {start} – {end} · {roster.venue_name}
           </div>
         </div>
-        <div className="flex items-center gap-3 text-xs">
+        <div className="flex items-center gap-3 text-xs flex-wrap">
           <span className="px-3 py-1 rounded bg-[#9B4FDE]/15 text-[#9B4FDE]">
             {roster.bookings.length}/{roster.capacity} booked
           </span>
@@ -185,6 +187,8 @@ function RosterCard({ roster }: { roster: Roster }) {
           </span>
           {noShow > 0 && <span className="px-3 py-1 rounded bg-red-500/15 text-red-400">{noShow} no-show</span>}
           {confirmed > 0 && <span className="px-3 py-1 rounded bg-white/10 text-gray-300">{confirmed} pending</span>}
+          <AddBookingButton sessionId={roster.session_id} />
+          <BroadcastButton sessionId={roster.session_id} rosterCount={roster.bookings.length} />
         </div>
       </div>
 
