@@ -332,7 +332,7 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
     .select("starts_at, ends_at, program_id")
     .in("id", sessionIds)
     .order("starts_at");
-  let venueName = "Bennelong Sports Centre, West Ryde";
+  let venueName = "Obsidian Volleyball Academy West Ryde";
   const firstProgramId = sessionRows?.[0]?.program_id;
   if (firstProgramId) {
     const { data: program } = await sb.from("programs").select("venue_id").eq("id", firstProgramId).maybeSingle();
