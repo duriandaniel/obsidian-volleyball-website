@@ -59,6 +59,8 @@ export async function POST(req: NextRequest) {
           await handleDropinCheckoutCompleted(session);
         } else if (bookingType === "trial") {
           await handleTrialCheckoutCompleted(session);
+        } else if (bookingType === "casual") {
+          await handleCasualCheckoutCompleted(session);
         } else {
           await handleCheckoutCompleted(session);
         }
@@ -481,6 +483,76 @@ async function handleTrialCheckoutCompleted(session: Stripe.Checkout.Session) {
       </div>
     `,
     text: `Trial booked.\n\nThanks for booking a trial class.\n\nSession: ${when}\nVenue: ${venueName}\n\nWear suitable indoor court shoes.\n\nLimit one trial per player. Want to join for the term afterwards? Reply to this email or book on our website.\n\nObsidian Volleyball Academy`,
+  });
+}
+
+async function handleCasualCheckoutCompleted(session: Stripe.Checkout.Session) {
+  const sb = supabaseAdmin();
+  const customerId = session.metadata?.customer_id;
+  const participantId = session.metadata?.participant_id;
+  const programId = session.metadata?.program_id;
+  const sessionIdsRaw = session.metadata?.session_ids;
+  const perCents = parseInt(session.metadata?.per_session_cents ?? "0", 10);
+  const email = session.customer_details?.email ?? session.customer_email;
+  if (!customerId || !participantId || !sessionIdsRaw || !email) throw new Error("Casual checkout missing metadata");
+  const sessionIds = sessionIdsRaw.split(",").filter(Boolean);
+  const paymentIntentId = typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id ?? null;
+
+  if (paymentIntentId) {
+    const { count } = await sb.from("bookings").select("id", { count: "exact", head: true }).eq("stripe_payment_intent_id", paymentIntentId).is("deleted_at", null);
+    if (count && count > 0) return;
+  }
+  const stripeCustomerId = typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
+  if (stripeCustomerId) await sb.from("customers").update({ stripe_customer_id: stripeCustomerId }).eq("id", customerId);
+
+  const paidAt = new Date().toISOString();
+  // One confirmed booking per casual class. source='term' (single, no enrolment);
+  // the $45 paid_amount_cents distinguishes casual from $36 term-enrolled bookings.
+  const rows = sessionIds.map((session_id) => ({
+    session_id, participant_id: participantId, customer_id: customerId,
+    source: "term" as const, status: "confirmed" as const,
+    paid_amount_cents: perCents, stripe_payment_intent_id: paymentIntentId, paid_at: paidAt,
+  }));
+  const { error: bErr } = await sb.from("bookings").insert(rows);
+  if (bErr) throw bErr;
+
+  const total = session.amount_total ?? perCents * sessionIds.length;
+  await sb.from("audit_log").insert({ actor_role: "system", action: "casual.create", entity_type: "program", entity_id: programId, after: { classes: sessionIds.length, total_cents: total } });
+
+  const { data: program } = await sb.from("programs").select("title, venue_id").eq("id", programId ?? "").maybeSingle();
+  let venueName = "Obsidian Volleyball Academy West Ryde";
+  if (program?.venue_id) {
+    const { data: v } = await sb.from("venues").select("name, address").eq("id", program.venue_id).maybeSingle();
+    if (v) venueName = v.address ? `${v.name}, ${v.address}` : v.name;
+  }
+  const { data: srows } = await sb.from("sessions").select("starts_at, ends_at").in("id", sessionIds).order("starts_at");
+  const fDay = (iso: string) => new Date(iso).toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long", timeZone: "Australia/Sydney" });
+  const fTime = (iso: string) => new Date(iso).toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit", timeZone: "Australia/Sydney" });
+  const list = (srows ?? []).map((s) => `${fDay(s.starts_at)} · ${fTime(s.starts_at)} – ${fTime(s.ends_at)}`).join("<br>");
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidian-booking-staging.vercel.app";
+  const name = session.customer_details?.name ?? "";
+
+  await sendEmail({
+    to: email,
+    subject: `Booking confirmed: ${program?.title ?? "Junior class"}`,
+    template: "casual_booking_confirmation",
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
+        <h2 style="color: #7E57C2; margin-bottom: 8px;">You're booked in.</h2>
+        <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
+        <p>Thanks for booking ${program?.title ?? "a casual class"}. Here ${sessionIds.length === 1 ? "is your class" : "are your classes"}:</p>
+        <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${list}</p>
+        <p><strong>Venue:</strong> ${venueHtml(venueName)}<br>
+           <strong>Total paid:</strong> ${formatCents(total)} (${sessionIds.length} class${sessionIds.length === 1 ? "" : "es"} · casual)</p>
+        <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
+        ${whatsappHtml(WHATSAPP_PARENTS_URL, "parents")}
+        <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
+          Coming regularly? Enrol for the term and pay $36/class instead of $45. Questions? Just reply to this email. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
+        </p>
+        <p>See you on court!<br>Obsidian Volleyball Academy</p>
+      </div>
+    `,
+    text: `You're booked in.\n\nThanks for booking ${program?.title ?? "a casual class"}.\n\n${(srows ?? []).map((s) => `${fDay(s.starts_at)} ${fTime(s.starts_at)} - ${fTime(s.ends_at)}`).join("\n")}\n\nVenue: ${venueName}\nTotal paid: ${formatCents(total)} (casual)\n\nComing regularly? Enrol for the term and pay $36/class instead of $45.\nRefund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
   });
 }
 

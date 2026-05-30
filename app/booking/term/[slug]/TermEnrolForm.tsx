@@ -38,21 +38,32 @@ const YEAR_OPTIONS = [
   }),
 ];
 
+const TZ = "Australia/Sydney";
+const fmtDate = (iso: string) => new Date(iso).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short", timeZone: TZ });
+
+type SessionLite = { id: string; starts_at: string; ends_at: string };
+
 export function TermEnrolForm({
   programId,
   programTitle,
   perWeekCents,
   weeksRemaining,
   defaultPlan = "term",
+  sessions = [],
+  casualPriceCents,
 }: {
   programId: string;
   programTitle: string;
   perWeekCents: number;
   weeksRemaining: number;
-  defaultPlan?: "term" | "trial";
+  defaultPlan?: "term" | "trial" | "casual";
+  sessions?: SessionLite[];
+  casualPriceCents: number;
 }) {
+  const trialLocked = defaultPlan === "trial";
   const [open, setOpen] = useState(false);
-  const [plan] = useState<"term" | "trial">(defaultPlan);
+  const [plan, setPlan] = useState<"term" | "trial" | "casual">(defaultPlan);
+  const [selected, setSelected] = useState<Set<string>>(new Set());
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -68,6 +79,15 @@ export function TermEnrolForm({
   });
 
   const total = perWeekCents * weeksRemaining;
+  const casualTotal = casualPriceCents * selected.size;
+  const toggle = (id: string) =>
+    setSelected((prev) => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
+
+  const proceed = () => {
+    setError(null);
+    if (plan === "casual" && selected.size === 0) { setError("Pick at least one class."); return; }
+    setOpen(true);
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -75,13 +95,14 @@ export function TermEnrolForm({
     setError(null);
     try {
       const bypass = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("x-vercel-protection-bypass") : null;
-      const endpoint = plan === "trial" ? "/api/booking/trial/checkout" : "/api/booking/term/checkout";
+      const endpoint = plan === "trial" ? "/api/booking/trial/checkout" : plan === "casual" ? "/api/booking/casual/checkout" : "/api/booking/term/checkout";
       const apiUrl = `${endpoint}${bypass ? `?x-vercel-protection-bypass=${encodeURIComponent(bypass)}` : ""}`;
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           program_id: programId,
+          ...(plan === "casual" ? { session_ids: Array.from(selected) } : {}),
           parent,
           kid: {
             ...kid,
@@ -104,18 +125,50 @@ export function TermEnrolForm({
 
   return (
     <div className="border border-white/10 rounded-lg p-6 bg-white/[0.02] space-y-4">
+      {!trialLocked && !open && !clientSecret && (
+        <div className="grid grid-cols-2 gap-2">
+          <button type="button" onClick={() => setPlan("term")} className={`rounded px-3 py-2 text-xs font-heading tracking-[0.12em] border transition-colors ${plan === "term" ? "border-[#7E57C2] bg-[#7E57C2]/10 text-white" : "border-white/10 text-gray-400 hover:border-white/30"}`}>FULL TERM</button>
+          <button type="button" onClick={() => setPlan("casual")} className={`rounded px-3 py-2 text-xs font-heading tracking-[0.12em] border transition-colors ${plan === "casual" ? "border-[#7E57C2] bg-[#7E57C2]/10 text-white" : "border-white/10 text-gray-400 hover:border-white/30"}`}>SINGLE CLASS</button>
+        </div>
+      )}
+
       <div>
-        {plan === "term" ? (
+        {plan === "term" && (
           <>
-            <div className="text-xs text-gray-500 mb-1">Pro-rata for {weeksRemaining} week{weeksRemaining === 1 ? "" : "s"}</div>
+            <div className="text-xs text-gray-500 mb-1">Full term · {weeksRemaining} week{weeksRemaining === 1 ? "" : "s"}</div>
             <div className="font-heading text-3xl text-[#7E57C2]">{formatCents(total)}</div>
-            <div className="text-xs text-gray-500">{formatCents(perWeekCents)}/week. Whole-term commitment.</div>
+            <div className="text-xs text-gray-500">{formatCents(perWeekCents)}/week — save {formatCents(casualPriceCents - perWeekCents)}/class vs casual.</div>
           </>
-        ) : (
+        )}
+        {plan === "trial" && (
           <>
             <div className="text-xs text-gray-500 mb-1">Trial class</div>
             <div className="font-heading text-3xl text-[#7E57C2]">{formatCents(TRIAL_PRICE_CENTS)}</div>
             <div className="text-xs text-gray-500">Try a single junior class. Limit one trial per player.</div>
+          </>
+        )}
+        {plan === "casual" && (
+          <>
+            <div className="text-xs text-gray-500 mb-1">Casual · {formatCents(casualPriceCents)}/class</div>
+            <div className="font-heading text-3xl text-[#7E57C2]">{formatCents(casualTotal)}</div>
+            <div className="text-xs text-gray-500 mb-3">Pick the classes to drop into. Coming weekly? The term works out cheaper.</div>
+            {!open && !clientSecret && (
+              <div className="space-y-1.5 max-h-52 overflow-auto">
+                {sessions.length === 0 && <div className="text-xs text-gray-500">No upcoming classes.</div>}
+                {sessions.map((s) => {
+                  const on = selected.has(s.id);
+                  return (
+                    <button type="button" key={s.id} onClick={() => toggle(s.id)} className={`w-full flex items-center justify-between gap-2 rounded border px-3 py-2 text-left text-sm transition-colors ${on ? "border-[#7E57C2] bg-[#7E57C2]/10" : "border-white/10 hover:border-white/30"}`}>
+                      <span className="flex items-center gap-2">
+                        <span className={`flex h-4 w-4 items-center justify-center rounded border text-[10px] ${on ? "bg-[#7E57C2] border-[#7E57C2] text-white" : "border-white/30"}`}>{on ? "✓" : ""}</span>
+                        {fmtDate(s.starts_at)}
+                      </span>
+                      <span className="text-gray-400">{formatCents(casualPriceCents)}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </>
         )}
       </div>
@@ -123,11 +176,11 @@ export function TermEnrolForm({
       {!open && (
         <button
           type="button"
-          onClick={() => setOpen(true)}
-          className="w-full bg-[#7E57C2] hover:bg-[#4A2780] text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
+          onClick={proceed}
+          className="w-full bg-[#7E57C2] hover:bg-[#4A2780] text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors disabled:opacity-40"
           disabled={weeksRemaining === 0}
         >
-          {weeksRemaining === 0 ? "TERM HAS ENDED" : plan === "trial" ? "BOOK A TRIAL" : "ENROL NOW"}
+          {weeksRemaining === 0 ? "TERM HAS ENDED" : plan === "trial" ? "BOOK A TRIAL" : plan === "casual" ? "CONTINUE" : "ENROL NOW"}
         </button>
       )}
 

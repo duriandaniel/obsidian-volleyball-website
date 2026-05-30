@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { isAdultProgram } from "@/lib/booking/audience";
+import { CASUAL_PRICE_CENTS } from "@/lib/booking/pricing";
 import { TermEnrolForm } from "./TermEnrolForm";
 
 export const metadata: Metadata = {
@@ -130,6 +131,8 @@ export default async function TermProgramPage({
                 perWeekCents={perWeekCents}
                 weeksRemaining={remainingSessions.length}
                 defaultPlan={defaultPlan}
+                sessions={remainingSessions.map((s) => ({ id: s.id, starts_at: s.starts_at, ends_at: s.ends_at }))}
+                casualPriceCents={CASUAL_PRICE_CENTS}
               />
             )}
           </div>

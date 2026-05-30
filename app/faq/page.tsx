@@ -34,6 +34,14 @@ const faqCategories = [
         a: "Yes. New players can book a Trial Class: one session of any junior weekly class for $25. It's a one-off paid trial so you can try a class before committing to the term. Limit one trial per player. Book it from the booking page.",
       },
       {
+        q: "How much are junior classes — term vs casual?",
+        a: "Enrol for the full term and it's $36 per class, paid upfront for the remaining weeks of the term — the best value. Prefer to come casually? Drop in to any class for $45. A one-off trial class is $25. Booking the term saves you $9 every class.",
+      },
+      {
+        q: "What if my child misses a week?",
+        a: "Term enrolments aren't refunded week to week. If your child has to miss a session, contact us and we'll offer a makeup at another class or day where we can. If you need real week-to-week flexibility, that's exactly what the casual drop-in rate is for.",
+      },
+      {
         q: "Do you run programs during school terms?",
         a: "Yes. Junior classes run every Friday at Obsidian Volleyball Academy West Ryde, in two 1.5-hour sessions (4:00–5:30 PM and 5:30–7:00 PM). Adult scrims run the same evening from 7:00–9:00 PM. Holiday camps run separately at Baulkham Hills High School during school holidays.",
       },
