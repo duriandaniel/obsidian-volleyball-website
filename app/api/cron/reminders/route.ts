@@ -76,7 +76,7 @@ export async function GET(req: NextRequest) {
     .eq("status", "sent");
   const alreadyReminded = new Set((priorReminders ?? []).map((r) => r.related_booking_id));
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidian-booking-staging.vercel.app";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com";
   const sessionById = new Map(sessions.map((s) => [s.id, s]));
 
   let sent = 0;

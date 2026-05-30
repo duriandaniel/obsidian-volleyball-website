@@ -254,7 +254,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     )
     .join("<br>");
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidian-booking-staging.vercel.app";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com";
 
   await sendEmail({
     to: email,
@@ -368,7 +368,7 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
     .map((s) => `${fmtDay(s.starts_at)} · ${fmtTime(s.starts_at)} – ${fmtTime(s.ends_at)}`)
     .join("<br>");
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidian-booking-staging.vercel.app";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com";
   const name = session.customer_details?.name ?? "";
 
   await sendEmail({
@@ -461,7 +461,7 @@ async function handleTrialCheckoutCompleted(session: Stripe.Checkout.Session) {
     new Date(iso).toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit", timeZone: "Australia/Sydney" });
   const when = sessionRow ? `${fmtDay(sessionRow.starts_at)} · ${fmtTime(sessionRow.starts_at)} – ${fmtTime(sessionRow.ends_at)}` : "";
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidian-booking-staging.vercel.app";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com";
   const name = session.customer_details?.name ?? "";
 
   await sendEmail({
@@ -529,7 +529,7 @@ async function handleCasualCheckoutCompleted(session: Stripe.Checkout.Session) {
   const fDay = (iso: string) => new Date(iso).toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long", timeZone: "Australia/Sydney" });
   const fTime = (iso: string) => new Date(iso).toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit", timeZone: "Australia/Sydney" });
   const list = (srows ?? []).map((s) => `${fDay(s.starts_at)} · ${fTime(s.starts_at)} – ${fTime(s.ends_at)}`).join("<br>");
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidian-booking-staging.vercel.app";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com";
   const name = session.customer_details?.name ?? "";
 
   await sendEmail({
@@ -688,7 +688,7 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
   // All term sessions share the same weekly time, so show it once.
   const classTime = sessionRows?.[0] ? `${fmtT(sessionRows[0].starts_at)} – ${fmtT(sessionRows[0].ends_at)}` : "";
 
-  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidian-booking-staging.vercel.app";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com";
 
   const name = session.customer_details?.name ?? "";
   await sendEmail({
