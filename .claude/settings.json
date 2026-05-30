@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "deny": [
+      "Bash(psql)",
+      "Bash(psql:*)",
+      "Bash(dropdb)",
+      "Bash(dropdb:*)",
+      "Bash(pg_restore)",
+      "Bash(pg_restore:*)",
+      "Bash(supabase db reset)",
+      "Bash(supabase db reset:*)",
+      "Bash(supabase db push)",
+      "Bash(supabase db push:*)",
+      "Bash(supabase migration repair)",
+      "Bash(supabase migration repair:*)"
+    ]
+  }
+}

@@ -24,9 +24,9 @@ const DEFAULTS = {
   titleLine1: "Term",
   titleLine2: "Programs",
   body:
-    "Premium junior volleyball coaching at Bennelong Sports Centre, West Ryde. Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open.",
-  primaryHref: "https://obsidianvolleyball.as.me/?appointmentType=category:Trial%20Class",
-  primaryLabel: "BOOK A FREE TRIAL",
+    "Premium junior volleyball coaching at Obsidian Volleyball Academy West Ryde. Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open.",
+  primaryHref: "/booking/trial",
+  primaryLabel: "BOOK A TRIAL",
   primaryLocation: "hero" as BookingLocation,
   primaryTier: "general" as BookingTier,
   secondaryHref: "/term-programs",
@@ -63,7 +63,7 @@ export default function Hero({
         <motion.div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vh]"
           style={{
-            background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(123,47,190,0.08) 0%, rgba(123,47,190,0.03) 30%, transparent 60%)",
+            background: "radial-gradient(ellipse 60% 50% at 50% 40%, rgba(94,53,168,0.08) 0%, rgba(94,53,168,0.03) 30%, transparent 60%)",
           }}
           animate={{
             scale: [1, 1.05, 1],
@@ -76,7 +76,7 @@ export default function Hero({
         <div
           className="absolute top-0 right-0 w-[1px] h-full origin-top-right"
           style={{
-            background: "linear-gradient(180deg, transparent 10%, rgba(123,47,190,0.2) 40%, rgba(123,47,190,0.2) 60%, transparent 90%)",
+            background: "linear-gradient(180deg, transparent 10%, rgba(94,53,168,0.2) 40%, rgba(94,53,168,0.2) 60%, transparent 90%)",
             transform: "rotate(-20deg) translateX(30vw)",
           }}
         />
@@ -95,7 +95,7 @@ export default function Hero({
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.05 }}
           >
-            <p className="text-[#9B4FDE] font-heading text-base sm:text-lg tracking-[0.4em] mb-6">
+            <p className="text-[#7E57C2] font-heading text-base sm:text-lg tracking-[0.4em] mb-6">
               {eyebrow}
             </p>
           </motion.div>
@@ -108,7 +108,7 @@ export default function Hero({
           >
             {titleLine1}
             <br />
-            <span className="text-[#9B4FDE]">{titleLine2}</span>
+            <span className="text-[#7E57C2]">{titleLine2}</span>
           </motion.h1>
 
           <motion.p
@@ -130,13 +130,13 @@ export default function Hero({
               location={primaryLocation}
               tier={primaryTier}
               href={primaryHref}
-              className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 hover:bg-[#9B4FDE] transition-all duration-300 tracking-wide text-center glow-purple"
+              className="bg-[#5E35A8] text-white font-heading text-2xl px-10 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide text-center glow-purple"
             >
               {primaryLabel}
             </TrackedBookingLink>
             <Link
               href={secondaryHref}
-              className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
+              className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide text-center"
             >
               {secondaryLabel}
             </Link>
@@ -153,7 +153,7 @@ export default function Hero({
       >
         <span className="text-gray-600 text-[10px] tracking-[0.3em] font-heading">SCROLL</span>
         <motion.div
-          className="w-px h-8 bg-gradient-to-b from-[#9B4FDE]/50 to-transparent"
+          className="w-px h-8 bg-gradient-to-b from-[#7E57C2]/50 to-transparent"
           animate={{ scaleY: [1, 0.5, 1], opacity: [0.5, 0.2, 0.5] }}
           transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
         />

@@ -84,7 +84,7 @@ export default function BaulkhamHillsPage() {
         titleLine2="Hills"
         body="School-holiday volleyball camps at Baulkham Hills High School. Three indoor courts, ages 8 to 18, all skill levels. Weekly term programs also running in West Ryde."
         primaryLabel="BOOK A CAMP"
-        primaryHref="https://obsidianvolleyball.as.me"
+        primaryHref="/booking/camps"
         primaryLocation="baulkham_hills_hero"
         primaryTier="5_day_pack"
         secondaryHref="/holiday-camp"

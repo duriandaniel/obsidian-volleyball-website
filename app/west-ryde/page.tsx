@@ -3,24 +3,24 @@ import Hero from "@/components/Hero";
 import HomeSections from "@/components/HomeSections";
 
 export const metadata: Metadata = {
-  title: "Volleyball Coaching West Ryde | Bennelong Sports Centre | Obsidian Volleyball Academy",
+  title: "Volleyball Coaching West Ryde | Obsidian Volleyball Academy West Ryde | Obsidian Volleyball Academy",
   description:
-    "Junior volleyball coaching in West Ryde, Sydney. Friday evening term programs at Bennelong Sports Centre for ages 8 to 18, all skill levels. Book a free trial.",
+    "Junior volleyball coaching in West Ryde, Sydney. Friday evening term programs at Obsidian Volleyball Academy West Ryde for ages 8 to 18, all skill levels. Book a free trial.",
   keywords: [
     "volleyball West Ryde",
     "volleyball coaching West Ryde",
     "junior volleyball West Ryde",
     "kids volleyball West Ryde",
-    "volleyball Bennelong Sports Centre",
+    "Obsidian Volleyball Academy West Ryde",
     "volleyball lessons West Ryde",
     "volleyball academy West Ryde",
     "volleyball near me Ryde",
   ],
   alternates: { canonical: "/west-ryde" },
   openGraph: {
-    title: "Volleyball Coaching West Ryde | Bennelong Sports Centre",
+    title: "Volleyball Coaching West Ryde | Obsidian Volleyball Academy West Ryde",
     description:
-      "Junior volleyball coaching in West Ryde at Bennelong Sports Centre. Friday term programs for ages 8 to 18.",
+      "Junior volleyball coaching in West Ryde at Obsidian Volleyball Academy West Ryde. Friday term programs for ages 8 to 18.",
     images: ["/images/gallery-spike.jpg"],
     url: "/west-ryde",
   },
@@ -31,12 +31,12 @@ const venueSchema = {
   "@type": "SportsActivityLocation",
   name: "Obsidian Volleyball Academy — West Ryde",
   description:
-    "Junior volleyball coaching at Bennelong Sports Centre, West Ryde. Friday evening term programs for ages 8 to 18.",
+    "Junior volleyball coaching at Obsidian Volleyball Academy West Ryde. Friday evening term programs for ages 8 to 18.",
   url: "https://obsidianvolleyball.com/west-ryde",
   image: "https://obsidianvolleyball.com/images/gallery-spike.jpg",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Bennelong Sports Centre",
+    streetAddress: "Obsidian Volleyball Academy West Ryde",
     addressLocality: "West Ryde",
     addressRegion: "NSW",
     postalCode: "2114",
@@ -82,10 +82,10 @@ export default function WestRydePage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(venueSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Hero
-        eyebrow="BENNELONG SPORTS CENTRE · WEST RYDE"
+        eyebrow="OBSIDIAN VOLLEYBALL ACADEMY · WEST RYDE"
         titleLine1="West"
         titleLine2="Ryde"
-        body="Premium junior volleyball coaching at Bennelong Sports Centre, West Ryde. Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open."
+        body="Premium junior volleyball coaching at Obsidian Volleyball Academy West Ryde. Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open."
         primaryLocation="west_ryde_hero"
       />
       <HomeSections />

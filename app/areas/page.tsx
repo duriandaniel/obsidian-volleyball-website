@@ -62,7 +62,7 @@ function Cluster({ badge, title, venueLine, venueLink, areas }: ClusterProps) {
         <SectionReveal>
           <div className="mb-12 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
             <div>
-              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">{badge}</p>
+              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">{badge}</p>
               <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide mb-3">
                 {title}
               </h2>
@@ -70,7 +70,7 @@ function Cluster({ badge, title, venueLine, venueLink, areas }: ClusterProps) {
             </div>
             <Link
               href={venueLink.href}
-              className="text-[#9B4FDE] text-sm hover:text-white transition-colors whitespace-nowrap"
+              className="text-[#7E57C2] text-sm hover:text-white transition-colors whitespace-nowrap"
             >
               {venueLink.label} &rarr;
             </Link>
@@ -83,10 +83,10 @@ function Cluster({ badge, title, venueLine, venueLink, areas }: ClusterProps) {
                 href={`/areas/${area.slug}`}
                 className="block bg-[#0A0A0A] p-8 lg:p-10 group hover:bg-[#141114] transition-colors duration-500 h-full"
               >
-                <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.3em] mb-3">
+                <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-3">
                   {area.drive.toUpperCase()}
                 </p>
-                <h3 className="font-heading text-3xl text-white tracking-wide mb-3 group-hover:text-[#9B4FDE] transition-colors duration-300">
+                <h3 className="font-heading text-3xl text-white tracking-wide mb-3 group-hover:text-[#7E57C2] transition-colors duration-300">
                   {area.name.toUpperCase()}
                 </h3>
                 <p className="text-gray-500 text-sm">
@@ -110,14 +110,14 @@ export default function AreasIndexPage() {
       <section className="py-24 lg:py-32 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">SYDNEY</p>
+            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-6">SYDNEY</p>
             <h1 className="font-heading text-6xl sm:text-8xl lg:text-9xl text-white tracking-wide mb-8 leading-[0.9]">
               SERVICE
               <br />
-              <span className="text-[#9B4FDE]">AREAS</span>
+              <span className="text-[#7E57C2]">AREAS</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
-              Obsidian Volleyball Academy runs Friday term programs at Bennelong Sports Centre,
+              Obsidian Volleyball Academy runs Friday term programs at Obsidian Volleyball Academy West Ryde,
               West Ryde, and school-holiday camps at Baulkham Hills High School. Find your
               suburb and pick the venue closest to you.
             </p>
@@ -128,7 +128,7 @@ export default function AreasIndexPage() {
       <Cluster
         badge="WEST RYDE &middot; TERM PROGRAMS"
         title="INNER NORTH-WEST"
-        venueLine="Friday evening classes at Bennelong Sports Centre, West Ryde."
+        venueLine="Friday evening classes at Obsidian Volleyball Academy West Ryde."
         venueLink={{ href: "/west-ryde", label: "West Ryde venue" }}
         areas={rydeCluster}
       />
@@ -145,15 +145,15 @@ export default function AreasIndexPage() {
       <section className="py-24 lg:py-32 bg-[#111] text-center">
         <div className="max-w-2xl mx-auto px-4">
           <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">READY TO START?</p>
+            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">READY TO START?</p>
             <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
               BOOK YOUR
               <br />
-              <span className="text-[#9B4FDE]">PLACE</span>
+              <span className="text-[#7E57C2]">PLACE</span>
             </h2>
             <TrackedBookingLink
               location="areas_index_cta"
-              className="inline-block bg-[#7B2FBE] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
+              className="inline-block bg-[#5E35A8] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
             >
               BOOK NOW
             </TrackedBookingLink>

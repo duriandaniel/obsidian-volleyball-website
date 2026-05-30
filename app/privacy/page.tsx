@@ -10,11 +10,11 @@ export default function PrivacyPage() {
     <div className="pt-20 min-h-screen bg-[#0A0A0A]">
       <section className="py-24 lg:py-32">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">LEGAL</p>
+          <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-6">LEGAL</p>
           <h1 className="font-heading text-5xl sm:text-7xl text-white tracking-wide mb-12 leading-[0.9]">
             PRIVACY
             <br />
-            <span className="text-[#9B4FDE]">POLICY</span>
+            <span className="text-[#7E57C2]">POLICY</span>
           </h1>
 
           <div className="space-y-8 text-gray-400 text-sm leading-relaxed">
@@ -84,7 +84,7 @@ export default function PrivacyPage() {
               <p>
                 Under Australian privacy law, you have the right to access, correct, or request deletion of your personal
                 information. To make a request, contact us at{" "}
-                <a href="mailto:obsidianvolleyball@gmail.com" className="text-[#9B4FDE] hover:text-white transition-colors">
+                <a href="mailto:obsidianvolleyball@gmail.com" className="text-[#7E57C2] hover:text-white transition-colors">
                   obsidianvolleyball@gmail.com
                 </a>.
               </p>
@@ -94,7 +94,7 @@ export default function PrivacyPage() {
               <h2 className="font-heading text-xl text-white tracking-wide mb-3">CONTACT</h2>
               <p>
                 For privacy-related enquiries, email{" "}
-                <a href="mailto:obsidianvolleyball@gmail.com" className="text-[#9B4FDE] hover:text-white transition-colors">
+                <a href="mailto:obsidianvolleyball@gmail.com" className="text-[#7E57C2] hover:text-white transition-colors">
                   obsidianvolleyball@gmail.com
                 </a>.
               </p>

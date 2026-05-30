@@ -9,7 +9,7 @@ import TrackPixelView from "@/components/TrackPixelView";
 export const metadata: Metadata = {
   title: "Volleyball Holiday Camps | Sydney Junior Volleyball | Obsidian",
   description:
-    "Junior volleyball holiday camps in Sydney for ages 8–18. Currently running at Baulkham Hills with new venues coming soon. Book now.",
+    "Junior volleyball holiday camps in Sydney for ages 8 to 18 at Baulkham Hills. July 6 to 17, Monday to Friday, 9 AM to 1 PM. Bookings open soon.",
   keywords: [
     "volleyball holiday camp Sydney",
     "school holiday volleyball Sydney",
@@ -60,7 +60,7 @@ const campSchema = {
     price: "200",
     priceCurrency: "AUD",
     availability: "https://schema.org/InStock",
-    url: "https://obsidianvolleyball.as.me",
+    url: "https://obsidianvolleyball.com/booking/camps",
     description: "5-day camp package includes a free Obsidian training jersey.",
   },
 };
@@ -77,25 +77,27 @@ export default function HolidayCampPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-16 items-end">
             <SectionReveal>
               <div>
-                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">SCHOOL HOLIDAY PROGRAMS</p>
+                <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-6">SCHOOL HOLIDAY PROGRAMS</p>
                 <h1 className="font-heading text-6xl sm:text-8xl lg:text-9xl text-white tracking-wide mb-8 leading-[0.9]">
                   HOLIDAY
                   <br />
-                  <span className="text-[#9B4FDE]">CAMPS</span>
+                  <span className="text-[#7E57C2]">CAMPS</span>
                 </h1>
-                <p className="text-gray-400 text-lg max-w-xl mb-10 leading-relaxed">
-                  Three courts, three levels, weekdays during school holidays at Baulkham Hills High School. Camps run 9 AM to 1 PM.
+                <p className="text-gray-400 text-lg max-w-xl mb-4 leading-relaxed">
+                  Three courts, three levels at Baulkham Hills High School.
+                  <br />
+                  <span className="text-white">July 6 to 17 &middot; Monday to Friday &middot; 9 AM to 1 PM.</span>
+                </p>
+                <p className="text-gray-500 text-base max-w-xl mb-10">
+                  Bookings open soon — more information coming.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <TrackedBookingLink
-                    location="camp_hero"
-                    className="bg-[#7B2FBE] text-white font-heading text-xl px-8 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-purple"
-                  >
-                    BOOK A CAMP
-                  </TrackedBookingLink>
+                  <span className="bg-white/5 border border-white/15 text-gray-300 font-heading text-xl px-8 py-4 tracking-wide text-center">
+                    BOOKINGS OPEN SOON
+                  </span>
                   <Link
                     href="/contact"
-                    className="border border-white/20 text-white font-heading text-xl px-8 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
+                    className="border border-white/20 text-white font-heading text-xl px-8 py-4 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide text-center"
                   >
                     ASK A QUESTION
                   </Link>

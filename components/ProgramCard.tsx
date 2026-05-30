@@ -24,21 +24,21 @@ export default function ProgramCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="bg-[#111] border border-white/[0.06] hover:border-[#9B4FDE]/30 transition-all duration-500 group relative overflow-hidden"
+      className="bg-[#111] border border-white/[0.06] hover:border-[#7E57C2]/30 transition-all duration-500 group relative overflow-hidden"
     >
       {/* Hover glow */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#9B4FDE]/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#7E57C2]/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
       <div className="relative p-6 lg:p-8">
         {/* Level + Age */}
         <div className="flex items-center gap-3 mb-6">
-          <span className="text-[#9B4FDE] text-[11px] font-heading tracking-[0.3em] border border-[#9B4FDE]/20 px-3 py-1">
+          <span className="text-[#7E57C2] text-[11px] font-heading tracking-[0.3em] border border-[#7E57C2]/20 px-3 py-1">
             {level}
           </span>
           <span className="text-gray-600 text-xs tracking-wider">AGES {ageRange}</span>
         </div>
 
-        <h3 className="font-heading text-4xl text-white tracking-wide mb-4 group-hover:text-[#9B4FDE] transition-colors duration-300">
+        <h3 className="font-heading text-4xl text-white tracking-wide mb-4 group-hover:text-[#7E57C2] transition-colors duration-300">
           {title}
         </h3>
 
@@ -48,7 +48,7 @@ export default function ProgramCard({
         <ul className="space-y-3 mb-8">
           {features.map((feature, i) => (
             <li key={i} className="flex items-start gap-3 text-sm text-gray-300">
-              <span className="text-[#9B4FDE] text-xs mt-1 flex-shrink-0">&#9642;</span>
+              <span className="text-[#7E57C2] text-xs mt-1 flex-shrink-0">&#9642;</span>
               <span>{feature}</span>
             </li>
           ))}
@@ -56,7 +56,7 @@ export default function ProgramCard({
 
         <TrackedBookingLink
           location="hero"
-          className="inline-flex items-center gap-2 text-[#9B4FDE] font-heading text-lg tracking-wide group/btn hover:gap-3 transition-all duration-300"
+          className="inline-flex items-center gap-2 text-[#7E57C2] font-heading text-lg tracking-wide group/btn hover:gap-3 transition-all duration-300"
         >
           <span>BOOK THIS PROGRAM</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

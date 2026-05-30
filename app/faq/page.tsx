@@ -30,8 +30,20 @@ const faqCategories = [
         a: "Term program and holiday camp pricing is on the booking page. We're a premium club: small groups, expert coaches, structured curriculum. We're currently running a launch promotion for new players (20% off plus a free training shirt).",
       },
       {
+        q: "Can my child try a class first?",
+        a: "Yes. New players can book a Trial Class: one session of any junior weekly class for $25. It's a one-off paid trial so you can try a class before committing to the term. Limit one trial per player. Book it from the booking page.",
+      },
+      {
+        q: "How much are junior classes — term vs casual?",
+        a: "Enrol for the full term and it's $36 per class, paid upfront for the remaining weeks of the term — the best value. Prefer to come casually? Drop in to any class for $45. A one-off trial class is $25. Booking the term saves you $9 every class.",
+      },
+      {
+        q: "What if my child misses a week?",
+        a: "Term enrolments aren't refunded week to week. If your child has to miss a session, contact us and we'll offer a makeup at another class or day where we can. If you need real week-to-week flexibility, that's exactly what the casual drop-in rate is for.",
+      },
+      {
         q: "Do you run programs during school terms?",
-        a: "Yes. Junior classes run every Friday at Bennelong Sports Centre, West Ryde, in two 1.5-hour sessions (4:00–5:30 PM and 5:30–7:00 PM). Adult scrims run the same evening from 7:00–9:00 PM. Holiday camps run separately at Baulkham Hills High School during school holidays.",
+        a: "Yes. Junior classes run every Friday at Obsidian Volleyball Academy West Ryde, in two 1.5-hour sessions (4:00–5:30 PM and 5:30–7:00 PM). Adult scrims run the same evening from 7:00–9:00 PM. Holiday camps run separately at Baulkham Hills High School during school holidays.",
       },
     ],
   },
@@ -43,8 +55,8 @@ const faqCategories = [
         a: "We accept credit/debit cards through our secure Stripe payment system. Payment is processed at the time of booking.",
       },
       {
-        q: "What is your refund policy?",
-        a: "Contact us at obsidianvolleyball@gmail.com for refund enquiries. We handle refunds on a case-by-case basis and aim to be fair and flexible.",
+        q: "What is your refund and reschedule policy?",
+        a: "Adult social sessions are non-refundable and non-reschedulable. For junior sessions, refunds and reschedules are handled on a case-by-case basis. Please contact us at obsidianvolleyball@gmail.com and we'll do our best to help you.",
       },
     ],
   },
@@ -74,7 +86,7 @@ const faqCategories = [
     faqs: [
       {
         q: "Where do you run programs?",
-        a: "Term programs run every Friday at Bennelong Sports Centre, West Ryde. Holiday camps run at Baulkham Hills High School during school holiday periods. We are continuing to expand to additional Sydney locations.",
+        a: "Term programs run every Friday at Obsidian Volleyball Academy West Ryde. Holiday camps run at Baulkham Hills High School during school holiday periods. We are continuing to expand to additional Sydney locations.",
       },
       {
         q: "Are all the venues indoor?",
@@ -86,7 +98,7 @@ const faqCategories = [
       },
       {
         q: "What should my child bring?",
-        a: "Sports shoes (clean, non-marking soles), a large water bottle, and lunch + snacks for full-day camps. Sunscreen if any of the warm-up happens outside.",
+        a: "Suitable indoor court shoes and their Obsidian Volleyball training jersey. We provide all volleyball gear.",
       },
       {
         q: "What time do sessions start and end?",
@@ -129,13 +141,13 @@ export default function FAQPage() {
       <section className="py-24 lg:py-32 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">ANSWERS</p>
+            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-6">ANSWERS</p>
             <h1 className="font-heading text-6xl sm:text-8xl lg:text-9xl text-white tracking-wide mb-8 leading-[0.9]">
               FREQUENTLY
               <br />
               ASKED
               <br />
-              <span className="text-[#9B4FDE]">QUESTIONS</span>
+              <span className="text-[#7E57C2]">QUESTIONS</span>
             </h1>
           </SectionReveal>
         </div>
@@ -149,7 +161,7 @@ export default function FAQPage() {
         >
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionReveal>
-              <p className="text-[#9B4FDE] font-heading text-xs tracking-[0.4em] mb-8 pb-4 border-b border-white/[0.06]">
+              <p className="text-[#7E57C2] font-heading text-xs tracking-[0.4em] mb-8 pb-4 border-b border-white/[0.06]">
                 {category.category}
               </p>
             </SectionReveal>
@@ -158,10 +170,10 @@ export default function FAQPage() {
                 <SectionReveal key={i} delay={i * 0.03}>
                   <details className="group border-b border-white/[0.06]">
                     <summary className="flex justify-between items-center py-5 cursor-pointer list-none select-none">
-                      <span className="font-heading text-lg sm:text-xl text-white tracking-wide pr-4 group-hover:text-[#9B4FDE] transition-colors duration-300">
+                      <span className="font-heading text-lg sm:text-xl text-white tracking-wide pr-4 group-hover:text-[#7E57C2] transition-colors duration-300">
                         {faq.q}
                       </span>
-                      <span className="text-gray-600 flex-shrink-0 text-sm font-heading tracking-widest group-open:text-[#9B4FDE] transition-colors">
+                      <span className="text-gray-600 flex-shrink-0 text-sm font-heading tracking-widest group-open:text-[#7E57C2] transition-colors">
                         +
                       </span>
                     </summary>
@@ -178,11 +190,11 @@ export default function FAQPage() {
       <section className="py-24 lg:py-32 bg-[#0A0A0A] text-center">
         <div className="max-w-2xl mx-auto px-4">
           <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">STILL HAVE QUESTIONS?</p>
+            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">STILL HAVE QUESTIONS?</p>
             <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-6">
               WE&apos;RE HERE
               <br />
-              TO <span className="text-[#9B4FDE]">HELP</span>
+              TO <span className="text-[#7E57C2]">HELP</span>
             </h2>
             <p className="text-gray-500 text-lg mb-10 leading-relaxed">
               Email us or send a DM on Instagram. We respond quickly.
@@ -190,13 +202,13 @@ export default function FAQPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
                 href="mailto:obsidianvolleyball@gmail.com"
-                className="bg-[#7B2FBE] text-white font-heading text-xl px-10 py-4 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
+                className="bg-[#5E35A8] text-white font-heading text-xl px-10 py-4 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
               >
                 EMAIL US
               </a>
               <Link
                 href="/contact"
-                className="border border-white/20 text-white font-heading text-xl px-10 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide"
+                className="border border-white/20 text-white font-heading text-xl px-10 py-4 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide"
               >
                 ALL CONTACT OPTIONS
               </Link>
