@@ -15,7 +15,7 @@ export default async function AdultSessionsPage() {
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white pt-24 pb-16">
-      <div className="max-w-xl mx-auto px-6">
+      <div className="max-w-4xl mx-auto px-6">
         <Link href="/booking" className="text-xs text-gray-500 hover:text-white tracking-wider uppercase">← Back</Link>
         <h1 className="font-heading text-3xl md:text-4xl tracking-wide mt-4 mb-1">Adult Social Scrim</h1>
         <p className="text-sm text-gray-500 mb-8">18+ · drop in · $20 per night</p>

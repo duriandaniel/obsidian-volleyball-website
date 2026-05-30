@@ -39,7 +39,7 @@ export default async function JuniorClassesPage({
     <div className="min-h-screen bg-[#0A0A0A] text-white pt-24 pb-16">
       <div className="max-w-2xl mx-auto px-6">
         <Link
-          href={activeKey && keys.length > 1 ? "/booking/term/junior" : "/booking/term"}
+          href={activeKey && keys.length > 1 ? "/booking/term/junior" : "/booking"}
           className="text-xs text-gray-500 hover:text-white tracking-wider uppercase"
         >
           ← Back

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { formatCents } from "@/lib/booking/pricing";
+import { formatCents, formatSpotsLeft } from "@/lib/booking/pricing";
 import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
 
 type AdultSession = {
@@ -13,6 +13,7 @@ type AdultSession = {
   price_cents: number;
 };
 
+type Mode = "browsing" | "details" | "paying";
 type Level = "" | "beginner" | "social_player" | "svl_player";
 type Source = "" | "google" | "instagram" | "facebook" | "word_of_mouth";
 
@@ -39,6 +40,7 @@ const SOURCES: { value: Source; label: string }[] = [
 
 export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [mode, setMode] = useState<Mode>("browsing");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -49,19 +51,31 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
   const [error, setError] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
 
-  const toggle = (id: string) =>
+  const locked = mode !== "browsing";
+
+  const toggle = (id: string) => {
+    if (locked) return;
     setSelected((prev) => {
       const next = new Set(prev);
       next.has(id) ? next.delete(id) : next.add(id);
       return next;
     });
+  };
 
   const count = selected.size;
   const total = sessions.filter((s) => selected.has(s.id)).reduce((sum, s) => sum + s.price_cents, 0);
 
+  const continueToDetails = () => {
+    if (count === 0) return;
+    setError(null);
+    setMode("details");
+    if (typeof window !== "undefined" && window.innerWidth < 768) {
+      setTimeout(() => document.getElementById("adult-summary")?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+    }
+  };
+
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (count === 0) return setError("Pick at least one night.");
     if (!level) return setError("Please select your level.");
     if (!consent) return setError("Please tick the photo/marketing consent box.");
     setSubmitting(true);
@@ -81,6 +95,7 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
       const json = await res.json();
       if (!res.ok || !json.client_secret) throw new Error(json.error ?? "Checkout failed");
       setClientSecret(json.client_secret);
+      setMode("paying");
       setSubmitting(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
@@ -88,86 +103,143 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
     }
   };
 
-  if (clientSecret) {
-    return (
-      <div className="border border-white/10 rounded-lg p-4 bg-white/[0.02]">
-        <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE] mb-3">PAYMENT</div>
-        <EmbeddedPayment clientSecret={clientSecret} />
-        <button type="button" onClick={() => setClientSecret(null)} className="text-xs text-gray-500 hover:text-white mt-3">
-          ← Back
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <form onSubmit={submit} className="space-y-7">
-      {/* Tick-list of nights */}
-      <div className="border border-white/10 rounded-lg overflow-hidden">
+    <div className="grid gap-8 md:grid-cols-[1fr_360px]">
+      {/* LEFT: night list */}
+      <div className="space-y-3">
         {sessions.map((s) => {
-          const sold = s.spots_left <= 0;
-          const on = selected.has(s.id);
+          const isSelected = selected.has(s.id);
+          const soldOut = s.spots_left <= 0;
           return (
-            <button
-              type="button"
+            <div
               key={s.id}
-              onClick={() => !sold && toggle(s.id)}
-              disabled={sold}
-              className={`w-full flex items-center gap-3 px-4 py-3 text-left border-b border-white/5 last:border-b-0 transition-colors ${
-                sold ? "opacity-40 cursor-not-allowed" : on ? "bg-[#9B4FDE]/10" : "hover:bg-white/[0.03]"
-              }`}
+              className={`border rounded-lg p-4 transition-colors ${
+                isSelected
+                  ? "border-[#9B4FDE] bg-[#9B4FDE]/5"
+                  : soldOut
+                  ? "border-white/5 opacity-50"
+                  : "border-white/10 hover:border-white/30"
+              } ${locked ? "opacity-70" : ""}`}
             >
-              <span
-                className={`flex h-5 w-5 shrink-0 items-center justify-center rounded border text-xs ${
-                  on ? "bg-[#9B4FDE] border-[#9B4FDE] text-white" : "border-white/30"
-                }`}
-              >
-                {on ? "✓" : ""}
-              </span>
-              <span className="flex-1 text-sm">
-                <span className="text-white">{fmtDate(s.starts_at)}</span>
-                <span className="text-gray-400">
-                  {" "}· {fmtTime(s.starts_at)}–{fmtTime(s.ends_at)} · {s.venue_name}
-                </span>
-              </span>
-              <span className="text-sm text-gray-400 shrink-0">{sold ? "Sold out" : formatCents(s.price_cents)}</span>
-            </button>
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <div className="font-heading text-lg">{fmtDate(s.starts_at)}</div>
+                  <div className="text-sm text-gray-400">
+                    {fmtTime(s.starts_at)} – {fmtTime(s.ends_at)} · {s.venue_name}
+                  </div>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {formatCents(s.price_cents)} · {formatSpotsLeft(s.spots_left)}
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  disabled={soldOut || locked}
+                  onClick={() => toggle(s.id)}
+                  className={`px-4 py-2 rounded font-heading text-xs tracking-[0.2em] transition-colors ${
+                    isSelected ? "bg-[#9B4FDE] text-white" : "bg-white/5 hover:bg-white/10 text-white"
+                  } ${soldOut || locked ? "cursor-not-allowed" : ""}`}
+                >
+                  {isSelected ? "REMOVE" : "ADD"}
+                </button>
+              </div>
+            </div>
           );
         })}
       </div>
 
-      {/* Details */}
-      <div className="space-y-4">
-        <Input label="Name" value={name} onChange={setName} required />
-        <Input label="Email" type="email" value={email} onChange={setEmail} required />
-        <Input label="Mobile" type="tel" value={phone} onChange={setPhone} required />
-        <Select label="Your level" value={level} onChange={(v) => setLevel(v as Level)} options={LEVELS} required />
-        <Select label="How did you hear about us?" value={source} onChange={(v) => setSource(v as Source)} options={SOURCES} />
-        <label className="flex items-start gap-2 cursor-pointer">
-          <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#9B4FDE]" required />
-          <span className="text-xs text-gray-400">
-            I consent to Obsidian Volleyball Academy capturing and using photos and video from sessions for marketing and social media. <span className="text-[#9B4FDE]">*</span>
-          </span>
-        </label>
-      </div>
+      {/* RIGHT: summary -> details -> payment */}
+      <div id="adult-summary" className="space-y-4 md:sticky md:top-24 self-start border border-white/10 rounded-lg p-6 bg-white/[0.02]">
+        <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE]">YOUR NIGHTS</div>
+        {count === 0 ? (
+          <div className="text-sm text-gray-500">No nights selected yet.</div>
+        ) : (
+          <>
+            <div className="space-y-1 text-sm max-h-40 overflow-auto">
+              {sessions
+                .filter((s) => selected.has(s.id))
+                .map((s) => (
+                  <div key={s.id} className="flex justify-between gap-2">
+                    <span className="text-gray-400">{fmtDate(s.starts_at)}</span>
+                    <span>{formatCents(s.price_cents)}</span>
+                  </div>
+                ))}
+            </div>
+            <div className="flex justify-between font-heading text-lg pt-2 border-t border-white/10">
+              <span>Total</span>
+              <span>{formatCents(total)}</span>
+            </div>
 
-      {error && <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded p-3">{error}</div>}
+            {mode === "browsing" && (
+              <>
+                {error && <div className="text-sm text-red-400">{error}</div>}
+                <button
+                  type="button"
+                  onClick={continueToDetails}
+                  className="w-full bg-[#9B4FDE] hover:bg-[#7d3fb8] text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
+                >
+                  CONTINUE
+                </button>
+                <div className="text-xs text-gray-500">{count} night{count === 1 ? "" : "s"} · $20 each</div>
+              </>
+            )}
 
-      <div className="flex items-center justify-between border-t border-white/10 pt-4">
-        <div>
-          <div className="text-xs text-gray-500">{count} night{count === 1 ? "" : "s"}</div>
-          <div className="font-heading text-2xl text-[#9B4FDE]">{formatCents(total)}</div>
-        </div>
-        <button
-          type="submit"
-          disabled={submitting || count === 0}
-          className="bg-[#9B4FDE] hover:bg-[#7d3fb8] disabled:opacity-40 text-white font-heading text-sm tracking-[0.2em] px-7 py-3 rounded"
-        >
-          {submitting ? "PREPARING…" : "PAY"}
-        </button>
+            {mode === "details" && (
+              <form onSubmit={submit} className="space-y-4 pt-2 border-t border-white/10">
+                <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE]">YOUR DETAILS</div>
+                <Input label="Name" value={name} onChange={setName} required />
+                <Input label="Email" type="email" value={email} onChange={setEmail} required />
+                <Input label="Mobile" type="tel" value={phone} onChange={setPhone} required />
+                <Select label="Your level" value={level} onChange={(v) => setLevel(v as Level)} options={LEVELS} required />
+                <Select label="How did you hear about us?" value={source} onChange={(v) => setSource(v as Source)} options={SOURCES} />
+                <label className="flex items-start gap-2 cursor-pointer">
+                  <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#9B4FDE]" required />
+                  <span className="text-xs text-gray-400">
+                    I consent to Obsidian Volleyball Academy capturing and using photos and video from sessions for marketing and social media. <span className="text-[#9B4FDE]">*</span>
+                  </span>
+                </label>
+
+                {error && <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded p-3">{error}</div>}
+
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setMode("browsing")}
+                    disabled={submitting}
+                    className="px-4 py-3 bg-white/5 hover:bg-white/10 text-white font-heading text-xs tracking-[0.2em] rounded transition-colors"
+                  >
+                    BACK
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="flex-1 bg-[#9B4FDE] hover:bg-[#7d3fb8] disabled:opacity-50 text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
+                  >
+                    {submitting ? "PREPARING…" : "PAY"}
+                  </button>
+                </div>
+                <div className="text-xs text-gray-500">
+                  Payment by Stripe on this page. Have a coupon? Enter it at the payment step. Drop-in nights are non-refundable.
+                </div>
+              </form>
+            )}
+
+            {mode === "paying" && clientSecret && (
+              <div className="pt-2 border-t border-white/10">
+                <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE] mb-3">PAYMENT</div>
+                <EmbeddedPayment clientSecret={clientSecret} />
+                <button
+                  type="button"
+                  onClick={() => { setMode("details"); setClientSecret(null); }}
+                  className="text-xs text-gray-500 hover:text-white mt-3"
+                >
+                  ← Back to details
+                </button>
+              </div>
+            )}
+          </>
+        )}
       </div>
-      <div className="text-xs text-gray-500">Payment by Stripe on this page. Have a coupon? Enter it at the payment step. Drop-in nights are non-refundable.</div>
-    </form>
+    </div>
   );
 }
 
