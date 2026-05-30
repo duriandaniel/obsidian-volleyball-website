@@ -32,7 +32,7 @@ export default async function CampSuccessPage({
           <ul className="space-y-2">
             <li>We&apos;ll email your booking confirmation with venue details.</li>
             <li>You&apos;ll get a reminder 24 hours before your first day.</li>
-            <li>Bring water, runners, and a snack. Volleyball gear provided.</li>
+            <li>Wear suitable indoor court shoes and your Obsidian Volleyball training jersey. We provide all volleyball gear.</li>
             <li>
               Need to update your child&apos;s details (school, level, medical notes)? Reply to
               the confirmation email and we&apos;ll add it.
@@ -42,7 +42,7 @@ export default async function CampSuccessPage({
 
         <Link
           href="/"
-          className="inline-block bg-[#9B4FDE] hover:bg-[#7d3fb8] text-white font-heading text-sm tracking-[0.2em] px-6 py-3 rounded transition-colors"
+          className="inline-block bg-[#7E57C2] hover:bg-[#4A2780] text-white font-heading text-sm tracking-[0.2em] px-6 py-3 rounded transition-colors"
         >
           BACK TO HOME
         </Link>

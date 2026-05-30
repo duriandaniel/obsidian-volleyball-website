@@ -31,9 +31,9 @@ function BookingBox({ href, eyebrow, label }: { href: string; eyebrow: string; l
   return (
     <Link
       href={href}
-      className="flex flex-col items-center justify-center text-center bg-white/[0.04] border border-white/10 hover:border-[#9B4FDE]/50 rounded-xl py-14 px-5 min-h-[180px]"
+      className="flex flex-col items-center justify-center text-center bg-white/[0.04] border border-white/10 hover:border-[#7E57C2]/50 rounded-xl py-14 px-5 min-h-[180px]"
     >
-      <div className="text-[#9B4FDE] font-heading text-lg sm:text-xl tracking-[0.25em] mb-3">{eyebrow}</div>
+      <div className="text-[#7E57C2] font-heading text-lg sm:text-xl tracking-[0.25em] mb-3">{eyebrow}</div>
       <div className="font-heading text-2xl leading-tight">{label}</div>
     </Link>
   );

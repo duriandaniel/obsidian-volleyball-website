@@ -180,7 +180,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
               key={s.id}
               className={`border rounded-lg p-4 transition-colors ${
                 isSelected
-                  ? "border-[#9B4FDE] bg-[#9B4FDE]/5"
+                  ? "border-[#7E57C2] bg-[#7E57C2]/5"
                   : soldOut
                   ? "border-white/5 opacity-50"
                   : "border-white/10 hover:border-white/30"
@@ -203,7 +203,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                   onClick={() => toggle(s.id)}
                   className={`px-4 py-2 rounded font-heading text-xs tracking-[0.2em] transition-colors ${
                     isSelected
-                      ? "bg-[#9B4FDE] text-white"
+                      ? "bg-[#7E57C2] text-white"
                       : "bg-white/5 hover:bg-white/10 text-white"
                   } ${soldOut || disabled ? "cursor-not-allowed" : ""}`}
                 >
@@ -216,7 +216,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                     type="button"
                     onClick={() => setHalfDay(s.id, false)}
                     className={`px-3 py-1.5 rounded ${
-                      !sel?.is_half_day ? "bg-[#9B4FDE] text-white" : "bg-white/5 hover:bg-white/10"
+                      !sel?.is_half_day ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10"
                     }`}
                   >
                     Full day · $50
@@ -225,7 +225,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                     type="button"
                     onClick={() => setHalfDay(s.id, true)}
                     className={`px-3 py-1.5 rounded ${
-                      sel?.is_half_day ? "bg-[#9B4FDE] text-white" : "bg-white/5 hover:bg-white/10"
+                      sel?.is_half_day ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10"
                     }`}
                   >
                     Half day · $35
@@ -239,7 +239,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
 
       {/* RIGHT: cart summary + (when in details mode) form */}
       <div id="details-form" className="space-y-4 md:sticky md:top-24 self-start border border-white/10 rounded-lg p-6 bg-white/[0.02]">
-        <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE]">CART</div>
+        <div className="font-heading text-xs tracking-[0.3em] text-[#7E57C2]">CART</div>
         {selected.size === 0 ? (
           <div className="text-sm text-gray-500">No days selected yet.</div>
         ) : (
@@ -254,7 +254,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                 <span>{formatCents(pricing.subtotal_cents)}</span>
               </div>
               {pricing.discount_cents > 0 && (
-                <div className="flex justify-between text-[#9B4FDE]">
+                <div className="flex justify-between text-[#7E57C2]">
                   <span>Bundle discount</span>
                   <span>−{formatCents(pricing.discount_cents)}</span>
                 </div>
@@ -271,7 +271,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                 <button
                   type="button"
                   onClick={continueToDetails}
-                  className="w-full bg-[#9B4FDE] hover:bg-[#7d3fb8] text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
+                  className="w-full bg-[#7E57C2] hover:bg-[#4A2780] text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
                 >
                   CONTINUE
                 </button>
@@ -283,7 +283,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
 
             {mode === "details" && (
               <form onSubmit={submit} className="space-y-4 pt-2 border-t border-white/10 mt-4">
-                <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE]">YOUR DETAILS</div>
+                <div className="font-heading text-xs tracking-[0.3em] text-[#7E57C2]">YOUR DETAILS</div>
 
                 <Fieldset legend="Parent / guardian">
                   <Row>
@@ -352,7 +352,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="flex-1 bg-[#9B4FDE] hover:bg-[#7d3fb8] disabled:opacity-50 text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
+                    className="flex-1 bg-[#7E57C2] hover:bg-[#4A2780] disabled:opacity-50 text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
                   >
                     {submitting ? "PREPARING…" : "CONTINUE TO PAYMENT"}
                   </button>
@@ -365,7 +365,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
 
             {mode === "paying" && clientSecret && (
               <div className="pt-2 border-t border-white/10 mt-4">
-                <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE] mb-3">PAYMENT</div>
+                <div className="font-heading text-xs tracking-[0.3em] text-[#7E57C2] mb-3">PAYMENT</div>
                 <EmbeddedPayment clientSecret={clientSecret} />
                 <button
                   type="button"
@@ -415,7 +415,7 @@ function Field({
     <label className="block">
       <span className="block text-xs text-gray-500 mb-1">
         {label}
-        {required && <span className="text-[#9B4FDE]">*</span>}
+        {required && <span className="text-[#7E57C2]">*</span>}
       </span>
       <input
         type={type}
@@ -423,7 +423,7 @@ function Field({
         onChange={(e) => onChange(e.target.value)}
         required={required}
         placeholder={placeholder}
-        className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#9B4FDE] transition-colors"
+        className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2] transition-colors"
       />
     </label>
   );
@@ -446,7 +446,7 @@ function Select({
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#9B4FDE] transition-colors"
+        className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2] transition-colors"
       >
         {options.map((o) => (
           <option key={o.value} value={o.value} className="bg-[#0A0A0A]">
@@ -477,7 +477,7 @@ function TextArea({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         rows={2}
-        className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#9B4FDE] transition-colors"
+        className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2] transition-colors"
       />
     </label>
   );
@@ -498,7 +498,7 @@ function Checkbox({
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        className="mt-0.5 w-4 h-4 accent-[#9B4FDE]"
+        className="mt-0.5 w-4 h-4 accent-[#7E57C2]"
       />
       <span className="text-xs text-gray-400">{label}</span>
     </label>

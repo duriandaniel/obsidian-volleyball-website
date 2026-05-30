@@ -27,7 +27,7 @@ export default function BookingCTA() {
         >
           <TrackedBookingLink
             location="floating_cta"
-            className="flex items-center gap-2 bg-[#7B2FBE] text-white font-heading text-lg px-6 py-3 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
+            className="flex items-center gap-2 bg-[#5E35A8] text-white font-heading text-lg px-6 py-3 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
           >
             <span>BOOK NOW</span>
             <svg

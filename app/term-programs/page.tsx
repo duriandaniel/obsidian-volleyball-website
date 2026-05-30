@@ -130,13 +130,13 @@ export default function JuniorClassesPage() {
       <section className="py-20 lg:py-28 bg-[#0A0A0A]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">
+            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-6">
               NOW LAUNCHING &middot; WEST RYDE
             </p>
             <h1 className="font-heading text-6xl sm:text-8xl text-white tracking-wide mb-6 leading-[0.9]">
               JUNIOR
               <br />
-              <span className="text-[#9B4FDE]">CLASSES</span>
+              <span className="text-[#7E57C2]">CLASSES</span>
             </h1>
             <p className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed mb-8">
               Junior classes for all levels, beginner to advanced. We run multiple courts
@@ -146,7 +146,7 @@ export default function JuniorClassesPage() {
             <TrackedBookingLink
               location="term_programs_hero"
               href={TRIAL_URL}
-              className="inline-block bg-[#7B2FBE] text-white font-heading text-xl sm:text-2xl px-9 py-4 hover:bg-[#9B4FDE] transition-all duration-300 tracking-wide glow-purple"
+              className="inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-9 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide glow-purple"
             >
               BOOK A TRIAL
             </TrackedBookingLink>
@@ -185,11 +185,11 @@ export default function JuniorClassesPage() {
             </SectionReveal>
             <SectionReveal delay={0.15}>
               <div>
-                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">THE VENUE</p>
+                <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">THE VENUE</p>
                 <h2 className="font-heading text-3xl lg:text-5xl text-white tracking-wide leading-[0.95] mb-6">
                   OBSIDIAN VOLLEYBALL
                   <br />
-                  <span className="text-[#9B4FDE]">ACADEMY WEST RYDE</span>
+                  <span className="text-[#7E57C2]">ACADEMY WEST RYDE</span>
                 </h2>
                 <p className="text-gray-400 text-base leading-relaxed mb-4">
                   State-of-the-art indoor volleyball courts in West Ryde,
@@ -203,7 +203,7 @@ export default function JuniorClassesPage() {
                   href={MAPS_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[#9B4FDE] hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors"
+                  className="inline-flex items-center gap-2 text-[#7E57C2] hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors"
                 >
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />

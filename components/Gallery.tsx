@@ -24,14 +24,14 @@ export default function Gallery() {
           className="flex items-end justify-between mb-12"
         >
           <div>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">IN ACTION</p>
+            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">IN ACTION</p>
             <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">GALLERY</h2>
           </div>
           <a
             href="https://instagram.com/obsidianvolleyball"
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden sm:flex items-center gap-2 text-gray-500 hover:text-[#9B4FDE] text-sm transition-colors duration-300"
+            className="hidden sm:flex items-center gap-2 text-gray-500 hover:text-[#7E57C2] text-sm transition-colors duration-300"
           >
             <span>Follow @obsidianvolleyball</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -60,8 +60,8 @@ export default function Gallery() {
                 quality={80}
               />
               {/* Hover effects */}
-              <div className="absolute inset-0 bg-[#7B2FBE]/0 group-hover:bg-[#7B2FBE]/10 transition-all duration-500 z-10" />
-              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#9B4FDE] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left z-10" />
+              <div className="absolute inset-0 bg-[#5E35A8]/0 group-hover:bg-[#5E35A8]/10 transition-all duration-500 z-10" />
+              <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#7E57C2] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left z-10" />
             </motion.div>
           ))}
         </div>

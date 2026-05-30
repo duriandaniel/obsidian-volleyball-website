@@ -67,25 +67,25 @@ export default function TestTrackingPage() {
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
             <button
               onClick={() => fireEvent("booking_click (hero)", () => trackBookingClick("general", "hero"))}
-              className="bg-[#7B2FBE] text-white text-sm px-4 py-2 rounded hover:bg-[#9B4FDE] transition-colors"
+              className="bg-[#5E35A8] text-white text-sm px-4 py-2 rounded hover:bg-[#7E57C2] transition-colors"
             >
               Book — Hero
             </button>
             <button
               onClick={() => fireEvent("booking_click (5_day_pack)", () => trackBookingClick("5_day_pack", "pricing_package"))}
-              className="bg-[#7B2FBE] text-white text-sm px-4 py-2 rounded hover:bg-[#9B4FDE] transition-colors"
+              className="bg-[#5E35A8] text-white text-sm px-4 py-2 rounded hover:bg-[#7E57C2] transition-colors"
             >
               Book — 5-Day
             </button>
             <button
               onClick={() => fireEvent("booking_click (single_day)", () => trackBookingClick("single_day", "pricing_single"))}
-              className="bg-[#7B2FBE] text-white text-sm px-4 py-2 rounded hover:bg-[#9B4FDE] transition-colors"
+              className="bg-[#5E35A8] text-white text-sm px-4 py-2 rounded hover:bg-[#7E57C2] transition-colors"
             >
               Book — Single
             </button>
             <button
               onClick={() => fireEvent("booking_click (half_day)", () => trackBookingClick("half_day", "pricing_half"))}
-              className="bg-[#7B2FBE] text-white text-sm px-4 py-2 rounded hover:bg-[#9B4FDE] transition-colors"
+              className="bg-[#5E35A8] text-white text-sm px-4 py-2 rounded hover:bg-[#7E57C2] transition-colors"
             >
               Book — Half Day
             </button>
@@ -126,7 +126,7 @@ export default function TestTrackingPage() {
           <ol className="space-y-3 text-gray-400 text-sm list-decimal list-inside">
             <li>
               <strong className="text-white">GTM Debug Mode:</strong> Go to{" "}
-              <span className="text-[#9B4FDE]">tagassistant.google.com</span>, connect to your site, then click buttons above — events should appear in the Tag Assistant stream.
+              <span className="text-[#7E57C2]">tagassistant.google.com</span>, connect to your site, then click buttons above — events should appear in the Tag Assistant stream.
             </li>
             <li>
               <strong className="text-white">GA4 Real-Time:</strong> Open GA4 → Reports → Realtime → you should see yourself as an active user.

@@ -26,11 +26,11 @@ export default async function TermSuccessPage({
           <ul className="space-y-2">
             <li>The confirmation email lists every session date for the term.</li>
             <li>You&apos;ll get a reminder 24 hours before each session.</li>
-            <li>Bring water, runners, and a snack. Volleyball gear is provided.</li>
+            <li>Wear suitable indoor court shoes and your Obsidian Volleyball training jersey. We provide all volleyball gear.</li>
             <li>Questions or changes? Just reply to your confirmation email and we&apos;ll help.</li>
           </ul>
         </div>
-        <Link href="/" className="inline-block bg-[#9B4FDE] hover:bg-[#7d3fb8] text-white font-heading text-sm tracking-[0.2em] px-6 py-3 rounded">
+        <Link href="/" className="inline-block bg-[#7E57C2] hover:bg-[#4A2780] text-white font-heading text-sm tracking-[0.2em] px-6 py-3 rounded">
           BACK TO HOME
         </Link>
       </div>

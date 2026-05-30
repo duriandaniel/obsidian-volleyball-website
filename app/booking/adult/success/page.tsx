@@ -21,10 +21,10 @@ export default async function AdultSuccessPage({
         <h1 className="font-heading text-4xl mb-4">You&apos;re booked in.</h1>
         <p className="text-gray-400 mb-8">Payment received. A confirmation email with your nights is on its way.</p>
         {sessionId && <p className="text-xs text-gray-600 mb-8">Stripe ref: {sessionId}</p>}
-        <p className="text-sm text-gray-400 mb-10">Bring water and indoor court shoes. See you on court.</p>
+        <p className="text-sm text-gray-400 mb-10">Wear suitable indoor court shoes. See you on court.</p>
         <Link
           href="/"
-          className="inline-block bg-[#9B4FDE] hover:bg-[#7d3fb8] text-white font-heading text-sm tracking-[0.2em] px-6 py-3 rounded transition-colors"
+          className="inline-block bg-[#7E57C2] hover:bg-[#4A2780] text-white font-heading text-sm tracking-[0.2em] px-6 py-3 rounded transition-colors"
         >
           BACK TO HOME
         </Link>

@@ -110,7 +110,7 @@ export function TermEnrolForm({
             type="button"
             onClick={() => setPlan("term")}
             className={`rounded px-3 py-2 text-xs font-heading tracking-[0.15em] border transition-colors ${
-              plan === "term" ? "border-[#9B4FDE] bg-[#9B4FDE]/10 text-white" : "border-white/10 text-gray-400 hover:border-white/30"
+              plan === "term" ? "border-[#7E57C2] bg-[#7E57C2]/10 text-white" : "border-white/10 text-gray-400 hover:border-white/30"
             }`}
           >
             FULL TERM
@@ -119,7 +119,7 @@ export function TermEnrolForm({
             type="button"
             onClick={() => setPlan("trial")}
             className={`rounded px-3 py-2 text-xs font-heading tracking-[0.15em] border transition-colors ${
-              plan === "trial" ? "border-[#9B4FDE] bg-[#9B4FDE]/10 text-white" : "border-white/10 text-gray-400 hover:border-white/30"
+              plan === "trial" ? "border-[#7E57C2] bg-[#7E57C2]/10 text-white" : "border-white/10 text-gray-400 hover:border-white/30"
             }`}
           >
             TRIAL CLASS
@@ -131,14 +131,14 @@ export function TermEnrolForm({
         {plan === "term" ? (
           <>
             <div className="text-xs text-gray-500 mb-1">Pro-rata for {weeksRemaining} week{weeksRemaining === 1 ? "" : "s"}</div>
-            <div className="font-heading text-3xl text-[#9B4FDE]">{formatCents(total)}</div>
+            <div className="font-heading text-3xl text-[#7E57C2]">{formatCents(total)}</div>
             <div className="text-xs text-gray-500">{formatCents(perWeekCents)}/week. Whole-term commitment.</div>
           </>
         ) : (
           <>
             <div className="text-xs text-gray-500 mb-1">Trial class</div>
-            <div className="font-heading text-3xl text-[#9B4FDE]">{formatCents(TRIAL_PRICE_CENTS)}</div>
-            <div className="text-xs text-gray-500">Fully credited toward term enrolment if you join, so it&apos;s risk-free. Limit one trial per player.</div>
+            <div className="font-heading text-3xl text-[#7E57C2]">{formatCents(TRIAL_PRICE_CENTS)}</div>
+            <div className="text-xs text-gray-500">Try a single junior class. Limit one trial per player.</div>
           </>
         )}
       </div>
@@ -147,7 +147,7 @@ export function TermEnrolForm({
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="w-full bg-[#9B4FDE] hover:bg-[#7d3fb8] text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
+          className="w-full bg-[#7E57C2] hover:bg-[#4A2780] text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
           disabled={weeksRemaining === 0}
         >
           {weeksRemaining === 0 ? "TERM HAS ENDED" : plan === "trial" ? "BOOK A TRIAL" : "ENROL NOW"}
@@ -156,7 +156,7 @@ export function TermEnrolForm({
 
       {open && clientSecret && (
         <div className="pt-2 border-t border-white/10">
-          <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE] mb-3">PAYMENT</div>
+          <div className="font-heading text-xs tracking-[0.3em] text-[#7E57C2] mb-3">PAYMENT</div>
           <EmbeddedPayment clientSecret={clientSecret} />
           <button
             type="button"
@@ -170,7 +170,7 @@ export function TermEnrolForm({
 
       {open && !clientSecret && (
         <form onSubmit={submit} className="space-y-4 pt-2 border-t border-white/5">
-          <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE]">YOUR DETAILS</div>
+          <div className="font-heading text-xs tracking-[0.3em] text-[#7E57C2]">YOUR DETAILS</div>
 
           <Fieldset legend="Parent / guardian">
             <Row>
@@ -207,7 +207,7 @@ export function TermEnrolForm({
             <button type="button" onClick={() => setOpen(false)} disabled={submitting} className="px-3 py-3 bg-white/5 hover:bg-white/10 text-white font-heading text-xs tracking-[0.2em] rounded">
               BACK
             </button>
-            <button type="submit" disabled={submitting} className="flex-1 bg-[#9B4FDE] hover:bg-[#7d3fb8] disabled:opacity-50 text-white font-heading text-sm tracking-[0.2em] py-3 rounded">
+            <button type="submit" disabled={submitting} className="flex-1 bg-[#7E57C2] hover:bg-[#4A2780] disabled:opacity-50 text-white font-heading text-sm tracking-[0.2em] py-3 rounded">
               {submitting ? "PREPARING…" : "CONTINUE TO PAYMENT"}
             </button>
           </div>
@@ -236,8 +236,8 @@ function Row({ children }: { children: React.ReactNode }) {
 function Field({ label, value, onChange, type = "text", required, placeholder }: { label: string; value: string; onChange: (v: string) => void; type?: string; required?: boolean; placeholder?: string }) {
   return (
     <label className="block">
-      <span className="block text-xs text-gray-500 mb-1">{label}{required && <span className="text-[#9B4FDE]">*</span>}</span>
-      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} required={required} placeholder={placeholder} className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#9B4FDE]" />
+      <span className="block text-xs text-gray-500 mb-1">{label}{required && <span className="text-[#7E57C2]">*</span>}</span>
+      <input type={type} value={value} onChange={(e) => onChange(e.target.value)} required={required} placeholder={placeholder} className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2]" />
     </label>
   );
 }
@@ -246,7 +246,7 @@ function Select({ label, value, onChange, options }: { label: string; value: str
   return (
     <label className="block">
       <span className="block text-xs text-gray-500 mb-1">{label}</span>
-      <select value={value} onChange={(e) => onChange(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#9B4FDE]">
+      <select value={value} onChange={(e) => onChange(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2]">
         {options.map((o) => <option key={o.value} value={o.value} className="bg-[#0A0A0A]">{o.label}</option>)}
       </select>
     </label>
@@ -257,7 +257,7 @@ function TextArea({ label, value, onChange, placeholder }: { label: string; valu
   return (
     <label className="block">
       <span className="block text-xs text-gray-500 mb-1">{label}</span>
-      <textarea value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} rows={2} className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#9B4FDE]" />
+      <textarea value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} rows={2} className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2]" />
     </label>
   );
 }
@@ -265,7 +265,7 @@ function TextArea({ label, value, onChange, placeholder }: { label: string; valu
 function Checkbox({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label: string }) {
   return (
     <label className="flex items-start gap-2 cursor-pointer">
-      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#9B4FDE]" />
+      <input type="checkbox" checked={checked} onChange={(e) => onChange(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#7E57C2]" />
       <span className="text-xs text-gray-400">{label}</span>
     </label>
   );

@@ -57,7 +57,7 @@ export default async function JuniorClassesPage({
                 <Link
                   key={k}
                   href={`/booking/term/junior?g=${encodeURIComponent(k)}`}
-                  className="border border-[#9B4FDE]/30 hover:border-[#9B4FDE] rounded-xl py-10 text-center font-heading text-2xl transition-colors"
+                  className="border border-[#7E57C2]/30 hover:border-[#7E57C2] rounded-xl py-10 text-center font-heading text-2xl transition-colors"
                 >
                   {groupLabel(groups.get(k)![0])}
                 </Link>
@@ -110,7 +110,7 @@ function ClassRow({ program: p }: { program: TermProgram }) {
           <div className="text-sm text-gray-500">Sold out</div>
         ) : (
           <>
-            <div className="font-heading text-xl text-[#9B4FDE]">{formatCents(total)}</div>
+            <div className="font-heading text-xl text-[#7E57C2]">{formatCents(total)}</div>
             <div className="text-xs text-gray-500">
               {p.weeks_remaining} week{p.weeks_remaining === 1 ? "" : "s"} · {formatSpotsLeft(p.capacity - p.booked)}
             </div>
@@ -126,7 +126,7 @@ function ClassRow({ program: p }: { program: TermProgram }) {
   return (
     <Link
       href={`/booking/term/${p.slug}`}
-      className="block border border-white/10 hover:border-[#9B4FDE] rounded-xl transition-colors"
+      className="block border border-white/10 hover:border-[#7E57C2] rounded-xl transition-colors"
     >
       {inner}
     </Link>
@@ -137,7 +137,7 @@ function Empty() {
   return (
     <div className="border border-white/10 rounded-lg p-10 text-center text-gray-400 mt-4">
       No junior classes are open right now. Follow{" "}
-      <a href="https://instagram.com/obsidianvolleyball" className="text-[#9B4FDE]">@obsidianvolleyball</a>.
+      <a href="https://instagram.com/obsidianvolleyball" className="text-[#7E57C2]">@obsidianvolleyball</a>.
     </div>
   );
 }

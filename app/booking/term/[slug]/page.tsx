@@ -118,7 +118,7 @@ export default async function TermProgramPage({
               <div className="border border-white/10 rounded-lg p-6 text-center">
                 <div className="font-heading text-lg mb-2">Sold out</div>
                 <div className="text-sm text-gray-400">
-                  Email <a href="mailto:obsidianvolleyball@gmail.com" className="text-[#9B4FDE]">obsidianvolleyball@gmail.com</a> to be put on a waiting list.
+                  Email <a href="mailto:obsidianvolleyball@gmail.com" className="text-[#7E57C2]">obsidianvolleyball@gmail.com</a> to be put on a waiting list.
                 </div>
               </div>
             ) : (

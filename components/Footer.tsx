@@ -17,7 +17,7 @@ export default function Footer() {
             <div className="flex items-center gap-2 mb-4">
               <Image src="/images/logo.png" alt="Obsidian Volleyball Academy" width={36} height={36} className="w-9 h-9" />
               <span className="font-heading text-2xl text-white tracking-[0.08em]">
-                OBSIDIAN<span className="text-[#9B4FDE]"> VOLLEYBALL</span>
+                OBSIDIAN<span className="text-[#7E57C2]"> VOLLEYBALL</span>
               </span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed max-w-sm mb-6">
@@ -29,7 +29,7 @@ export default function Footer() {
                 href="https://instagram.com/obsidianvolleyball"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-[#9B4FDE] transition-colors duration-300"
+                className="text-gray-600 hover:text-[#7E57C2] transition-colors duration-300"
                 aria-label="Instagram"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -40,7 +40,7 @@ export default function Footer() {
               </a>
               <a
                 href="mailto:obsidianvolleyball@gmail.com"
-                className="text-gray-600 hover:text-[#9B4FDE] transition-colors duration-300"
+                className="text-gray-600 hover:text-[#7E57C2] transition-colors duration-300"
                 aria-label="Email"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -87,7 +87,7 @@ export default function Footer() {
             </ul>
             <Link
               href="/areas"
-              className="inline-block text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors duration-300"
+              className="inline-block text-[#7E57C2] text-sm font-medium hover:text-white transition-colors duration-300"
             >
               All service areas &rarr;
             </Link>
@@ -103,7 +103,7 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Obsidian Volleyball Academy
           </p>
           <div className="flex items-center gap-4 text-gray-700 text-xs">
-            <Link href="/privacy" className="hover:text-[#9B4FDE] transition-colors">
+            <Link href="/privacy" className="hover:text-[#7E57C2] transition-colors">
               Privacy Policy
             </Link>
             <span>Sydney, Australia</span>

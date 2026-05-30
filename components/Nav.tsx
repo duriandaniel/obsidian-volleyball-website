@@ -65,7 +65,7 @@ export default function Nav() {
                 className="w-9 h-9 lg:w-10 lg:h-10"
               />
               <span className="font-heading text-xl lg:text-2xl text-white tracking-[0.08em]">
-                OBSIDIAN<span className="text-[#9B4FDE]"> VOLLEYBALL</span>
+                OBSIDIAN<span className="text-[#7E57C2]"> VOLLEYBALL</span>
               </span>
             </Link>
 
@@ -84,7 +84,7 @@ export default function Nav() {
             <div className="hidden lg:block">
               <TrackedBookingLink
                 location="nav"
-                className="bg-[#7B2FBE] text-white font-heading text-lg px-6 py-2.5 hover:bg-white transition-colors duration-300 tracking-wide"
+                className="bg-[#5E35A8] text-white font-heading text-lg px-6 py-2.5 hover:bg-white transition-colors duration-300 tracking-wide"
               >
                 BOOK NOW
               </TrackedBookingLink>
@@ -133,7 +133,7 @@ export default function Nav() {
               key={link.href}
               href={link.href}
               onClick={closeMenu}
-              className="font-heading text-3xl sm:text-4xl text-white hover:text-[#9B4FDE] tracking-wider transition-colors py-2"
+              className="font-heading text-3xl sm:text-4xl text-white hover:text-[#7E57C2] tracking-wider transition-colors py-2"
             >
               {link.label}
             </Link>
@@ -141,7 +141,7 @@ export default function Nav() {
           <div className="mt-6">
             <TrackedBookingLink
               location="nav_mobile"
-              className="bg-[#7B2FBE] text-white font-heading text-2xl px-10 py-4 tracking-wide glow-purple block"
+              className="bg-[#5E35A8] text-white font-heading text-2xl px-10 py-4 tracking-wide glow-purple block"
             >
               BOOK NOW
             </TrackedBookingLink>

@@ -77,11 +77,11 @@ export default function HolidayCampPage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr] gap-16 items-end">
             <SectionReveal>
               <div>
-                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">SCHOOL HOLIDAY PROGRAMS</p>
+                <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-6">SCHOOL HOLIDAY PROGRAMS</p>
                 <h1 className="font-heading text-6xl sm:text-8xl lg:text-9xl text-white tracking-wide mb-8 leading-[0.9]">
                   HOLIDAY
                   <br />
-                  <span className="text-[#9B4FDE]">CAMPS</span>
+                  <span className="text-[#7E57C2]">CAMPS</span>
                 </h1>
                 <p className="text-gray-400 text-lg max-w-xl mb-10 leading-relaxed">
                   Three courts, three levels, weekdays during school holidays at Baulkham Hills High School. Camps run 9 AM to 1 PM.
@@ -90,13 +90,13 @@ export default function HolidayCampPage() {
                   <TrackedBookingLink
                     href="/booking/camps"
                     location="camp_hero"
-                    className="bg-[#7B2FBE] text-white font-heading text-xl px-8 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-purple"
+                    className="bg-[#5E35A8] text-white font-heading text-xl px-8 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-purple"
                   >
                     BOOK A CAMP
                   </TrackedBookingLink>
                   <Link
                     href="/contact"
-                    className="border border-white/20 text-white font-heading text-xl px-8 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
+                    className="border border-white/20 text-white font-heading text-xl px-8 py-4 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide text-center"
                   >
                     ASK A QUESTION
                   </Link>

@@ -23,7 +23,7 @@ export default async function AdultSessionsPage() {
         {sessions.length === 0 ? (
           <div className="border border-white/10 rounded-lg p-10 text-center text-gray-400">
             No scrim nights are scheduled right now. Follow{" "}
-            <a href="https://instagram.com/obsidianvolleyball" className="text-[#9B4FDE]">@obsidianvolleyball</a>.
+            <a href="https://instagram.com/obsidianvolleyball" className="text-[#7E57C2]">@obsidianvolleyball</a>.
           </div>
         ) : (
           <AdultSessionsForm sessions={sessions} />

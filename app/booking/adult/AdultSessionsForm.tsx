@@ -115,7 +115,7 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
               key={s.id}
               className={`border rounded-lg p-4 transition-colors ${
                 isSelected
-                  ? "border-[#9B4FDE] bg-[#9B4FDE]/5"
+                  ? "border-[#7E57C2] bg-[#7E57C2]/5"
                   : soldOut
                   ? "border-white/5 opacity-50"
                   : "border-white/10 hover:border-white/30"
@@ -136,7 +136,7 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
                   disabled={soldOut || locked}
                   onClick={() => toggle(s.id)}
                   className={`px-4 py-2 rounded font-heading text-xs tracking-[0.2em] transition-colors ${
-                    isSelected ? "bg-[#9B4FDE] text-white" : "bg-white/5 hover:bg-white/10 text-white"
+                    isSelected ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10 text-white"
                   } ${soldOut || locked ? "cursor-not-allowed" : ""}`}
                 >
                   {isSelected ? "REMOVE" : "ADD"}
@@ -149,7 +149,7 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
 
       {/* RIGHT: summary -> details -> payment */}
       <div id="adult-summary" className="space-y-4 md:sticky md:top-24 self-start border border-white/10 rounded-lg p-6 bg-white/[0.02]">
-        <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE]">YOUR NIGHTS</div>
+        <div className="font-heading text-xs tracking-[0.3em] text-[#7E57C2]">YOUR NIGHTS</div>
         {count === 0 ? (
           <div className="text-sm text-gray-500">No nights selected yet.</div>
         ) : (
@@ -175,7 +175,7 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
                 <button
                   type="button"
                   onClick={continueToDetails}
-                  className="w-full bg-[#9B4FDE] hover:bg-[#7d3fb8] text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
+                  className="w-full bg-[#7E57C2] hover:bg-[#4A2780] text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
                 >
                   CONTINUE
                 </button>
@@ -185,16 +185,16 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
 
             {mode === "details" && (
               <form onSubmit={submit} className="space-y-4 pt-2 border-t border-white/10">
-                <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE]">YOUR DETAILS</div>
+                <div className="font-heading text-xs tracking-[0.3em] text-[#7E57C2]">YOUR DETAILS</div>
                 <Input label="Name" value={name} onChange={setName} required />
                 <Input label="Email" type="email" value={email} onChange={setEmail} required />
                 <Input label="Mobile" type="tel" value={phone} onChange={setPhone} required />
                 <Select label="Your level" value={level} onChange={(v) => setLevel(v as Level)} options={LEVELS} required />
                 <Select label="How did you hear about us?" value={source} onChange={(v) => setSource(v as Source)} options={SOURCES} />
                 <label className="flex items-start gap-2 cursor-pointer">
-                  <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#9B4FDE]" required />
+                  <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#7E57C2]" required />
                   <span className="text-xs text-gray-400">
-                    I consent to Obsidian Volleyball Academy capturing and using photos and video from sessions for marketing and social media. <span className="text-[#9B4FDE]">*</span>
+                    I consent to Obsidian Volleyball Academy capturing and using photos and video from sessions for marketing and social media. <span className="text-[#7E57C2]">*</span>
                   </span>
                 </label>
 
@@ -212,7 +212,7 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="flex-1 bg-[#9B4FDE] hover:bg-[#7d3fb8] disabled:opacity-50 text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
+                    className="flex-1 bg-[#7E57C2] hover:bg-[#4A2780] disabled:opacity-50 text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
                   >
                     {submitting ? "PREPARING…" : "PAY"}
                   </button>
@@ -225,7 +225,7 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
 
             {mode === "paying" && clientSecret && (
               <div className="pt-2 border-t border-white/10">
-                <div className="font-heading text-xs tracking-[0.3em] text-[#9B4FDE] mb-3">PAYMENT</div>
+                <div className="font-heading text-xs tracking-[0.3em] text-[#7E57C2] mb-3">PAYMENT</div>
                 <EmbeddedPayment clientSecret={clientSecret} />
                 <button
                   type="button"
@@ -260,14 +260,14 @@ function Input({
     <label className="block">
       <span className="block text-xs text-gray-500 mb-1">
         {label}
-        {required && <span className="text-[#9B4FDE]">*</span>}
+        {required && <span className="text-[#7E57C2]">*</span>}
       </span>
       <input
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
-        className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#9B4FDE]"
+        className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2]"
       />
     </label>
   );
@@ -290,13 +290,13 @@ function Select({
     <label className="block">
       <span className="block text-xs text-gray-500 mb-1">
         {label}
-        {required && <span className="text-[#9B4FDE]">*</span>}
+        {required && <span className="text-[#7E57C2]">*</span>}
       </span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
         required={required}
-        className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#9B4FDE]"
+        className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2]"
       >
         {options.map((o) => (
           <option key={o.value} value={o.value} className="bg-[#0A0A0A]">

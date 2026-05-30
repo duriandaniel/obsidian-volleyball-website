@@ -92,11 +92,11 @@ export default function CoachesPage() {
       <section className="py-24 lg:py-32 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">WORLD-CLASS INSTRUCTION</p>
+            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-6">WORLD-CLASS INSTRUCTION</p>
             <h1 className="font-heading text-6xl sm:text-8xl lg:text-9xl text-white tracking-wide mb-8 leading-[0.9]">
               MEET THE
               <br />
-              <span className="text-[#9B4FDE]">COACHES</span>
+              <span className="text-[#7E57C2]">COACHES</span>
             </h1>
             <p className="text-gray-400 text-xl max-w-2xl leading-relaxed">
               Experienced players with a passion for coaching at all levels.

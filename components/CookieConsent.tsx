@@ -43,7 +43,7 @@ export default function CookieConsent() {
             <p className="text-white text-sm font-medium mb-1">We use cookies</p>
             <p className="text-gray-500 text-xs leading-relaxed">
               We use analytics and advertising cookies to improve your experience and measure our marketing.{" "}
-              <Link href="/privacy" className="text-[#9B4FDE] hover:text-white transition-colors">
+              <Link href="/privacy" className="text-[#7E57C2] hover:text-white transition-colors">
                 Privacy Policy
               </Link>
             </p>
@@ -57,7 +57,7 @@ export default function CookieConsent() {
             </button>
             <button
               onClick={accept}
-              className="bg-[#7B2FBE] text-white text-sm font-medium px-6 py-2 rounded-lg hover:bg-[#9B4FDE] transition-colors"
+              className="bg-[#5E35A8] text-white text-sm font-medium px-6 py-2 rounded-lg hover:bg-[#7E57C2] transition-colors"
             >
               Accept
             </button>

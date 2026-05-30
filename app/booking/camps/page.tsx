@@ -108,13 +108,13 @@ export default async function CampBookingPage() {
     return (
       <div className="min-h-screen bg-[#0A0A0A] text-white pt-24 pb-16">
         <div className="max-w-3xl mx-auto px-6">
-          <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">HOLIDAY CAMPS</p>
+          <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">HOLIDAY CAMPS</p>
           <h1 className="font-heading text-4xl mb-6">No camps available right now</h1>
           <p className="text-gray-400">
             Check back soon, or follow{" "}
             <a
               href="https://instagram.com/obsidianvolleyball"
-              className="text-[#9B4FDE] hover:text-white"
+              className="text-[#7E57C2] hover:text-white"
             >
               @obsidianvolleyball
             </a>{" "}
@@ -128,7 +128,7 @@ export default async function CampBookingPage() {
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white pt-24 pb-16">
       <div className="max-w-5xl mx-auto px-6">
-        <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">HOLIDAY CAMPS</p>
+        <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">HOLIDAY CAMPS</p>
         <h1 className="font-heading text-4xl mb-6">Pick your days</h1>
         <p className="text-gray-400 mb-8">
           Select the days you want. Bundle discounts apply automatically.

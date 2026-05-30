@@ -91,8 +91,8 @@ export default function LevelPicker({ levels, venues }: LevelPickerProps) {
               <div
                 className={`aspect-[4/3] relative overflow-hidden border-2 transition-colors duration-500 ${
                   isActive
-                    ? "border-[#9B4FDE]"
-                    : "border-white/[0.06] group-hover:border-[#9B4FDE]/40"
+                    ? "border-[#7E57C2]"
+                    : "border-white/[0.06] group-hover:border-[#7E57C2]/40"
                 }`}
               >
                 <Image
@@ -108,7 +108,7 @@ export default function LevelPicker({ levels, venues }: LevelPickerProps) {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/70 via-transparent to-transparent" />
                 <div
                   className={`absolute inset-0 transition-colors duration-500 ${
-                    isActive ? "bg-[#9B4FDE]/[0.08]" : "group-hover:bg-[#9B4FDE]/[0.04]"
+                    isActive ? "bg-[#7E57C2]/[0.08]" : "group-hover:bg-[#7E57C2]/[0.04]"
                   }`}
                 />
               </div>
@@ -117,14 +117,14 @@ export default function LevelPicker({ levels, venues }: LevelPickerProps) {
               <div
                 className={`flex-1 flex flex-col p-7 lg:p-9 border-2 border-t-0 transition-colors duration-500 ${
                   isActive
-                    ? "border-[#9B4FDE] bg-[#161020]"
-                    : "border-white/[0.06] bg-[#0F0F0F] group-hover:bg-[#141114] group-hover:border-[#9B4FDE]/30"
+                    ? "border-[#7E57C2] bg-[#161020]"
+                    : "border-white/[0.06] bg-[#0F0F0F] group-hover:bg-[#141114] group-hover:border-[#7E57C2]/30"
                 }`}
               >
                 {/* Big level name */}
                 <h3
                   className={`font-heading text-4xl lg:text-6xl tracking-wide leading-[0.95] mb-5 transition-colors duration-300 ${
-                    isActive ? "text-[#9B4FDE]" : "text-white group-hover:text-[#9B4FDE]"
+                    isActive ? "text-[#7E57C2]" : "text-white group-hover:text-[#7E57C2]"
                   }`}
                 >
                   {info.level.toUpperCase()}
@@ -139,8 +139,8 @@ export default function LevelPicker({ levels, venues }: LevelPickerProps) {
                 <span
                   className={`inline-flex items-center gap-2 font-heading text-sm tracking-[0.25em] uppercase transition-colors duration-300 ${
                     isActive
-                      ? "text-[#9B4FDE]"
-                      : "text-gray-400 group-hover:text-[#9B4FDE]"
+                      ? "text-[#7E57C2]"
+                      : "text-gray-400 group-hover:text-[#7E57C2]"
                   }`}
                 >
                   <span>{isActive ? "Showing classes" : "View classes"}</span>
@@ -214,7 +214,7 @@ function ClassesList({
       <div className="mb-12">
         <h3 className="font-heading text-4xl lg:text-6xl text-white tracking-wide leading-[0.95]">
           {level.toUpperCase()}{" "}
-          <span className="text-[#9B4FDE]">CLASSES</span>
+          <span className="text-[#7E57C2]">CLASSES</span>
         </h3>
       </div>
 
@@ -245,7 +245,7 @@ function VenueGroup({
     <div>
       {/* Venue header: name + suburb. Day moves to each slot row so future
           venues can host multiple days without contradicting a header label. */}
-      <div className="border-l-2 border-[#9B4FDE] pl-5 sm:pl-6 lg:pl-8 mb-6 lg:mb-8">
+      <div className="border-l-2 border-[#7E57C2] pl-5 sm:pl-6 lg:pl-8 mb-6 lg:mb-8">
         <h4 className="font-heading text-2xl sm:text-3xl lg:text-5xl text-white tracking-wide leading-[1.0]">
           {venue.name.toUpperCase()}
           <span className="block sm:inline text-gray-500 text-base sm:text-xl lg:text-2xl tracking-wider sm:ml-2">
@@ -278,7 +278,7 @@ function SmallCoachAvatar({ coach }: { coach: Coach }) {
       aria-label={`Coach ${coach.name} profile`}
       className="block group/av"
     >
-      <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-[#0A0A0A] bg-[#0F0F0F] ring-1 ring-white/10 group-hover/av:ring-[#9B4FDE] transition-all duration-300">
+      <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden border-2 border-[#0A0A0A] bg-[#0F0F0F] ring-1 ring-white/10 group-hover/av:ring-[#7E57C2] transition-all duration-300">
         {coach.image ? (
           <Image
             src={coach.image}
@@ -290,7 +290,7 @@ function SmallCoachAvatar({ coach }: { coach: Coach }) {
           />
         ) : (
           <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[#1a1424] to-[#0F0F0F]">
-            <span className="text-[#9B4FDE] font-heading text-sm">
+            <span className="text-[#7E57C2] font-heading text-sm">
               {coach.name[0]}
             </span>
           </div>
@@ -321,12 +321,12 @@ function SlotRow({
             <span className="font-heading text-sm text-white tracking-[0.25em] uppercase">
               {day}
             </span>
-            <span className="font-heading text-base text-[#9B4FDE] tracking-wider">
+            <span className="font-heading text-base text-[#7E57C2] tracking-wider">
               {time}
             </span>
           </div>
           <div className="flex items-baseline gap-1.5 leading-none shrink-0">
-            <span className="font-heading text-lg text-[#9B4FDE]">$360</span>
+            <span className="font-heading text-lg text-[#7E57C2]">$360</span>
             <span className="text-gray-500 text-[10px] tracking-wider uppercase">a term</span>
           </div>
         </div>
@@ -345,7 +345,7 @@ function SlotRow({
         {/* Bottom: full-width enrol button */}
         <Link
           href={enrolHref}
-          className="flex items-center justify-center gap-2 bg-[#7B2FBE] text-white font-heading text-sm tracking-[0.25em] uppercase px-6 py-3.5 hover:bg-white hover:text-[#7B2FBE] active:bg-white active:text-[#7B2FBE] transition-all duration-300 glow-purple"
+          className="flex items-center justify-center gap-2 bg-[#5E35A8] text-white font-heading text-sm tracking-[0.25em] uppercase px-6 py-3.5 hover:bg-white hover:text-[#5E35A8] active:bg-white active:text-[#5E35A8] transition-all duration-300 glow-purple"
         >
           <span>Enrol</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -362,7 +362,7 @@ function SlotRow({
             <span className="font-heading text-lg lg:text-2xl text-white tracking-[0.2em] uppercase">
               {day}
             </span>
-            <span className="font-heading text-lg lg:text-2xl text-[#9B4FDE] tracking-wider">
+            <span className="font-heading text-lg lg:text-2xl text-[#7E57C2] tracking-wider">
               {time}
             </span>
           </div>
@@ -381,12 +381,12 @@ function SlotRow({
         {/* Right: price + enrol */}
         <div className="flex items-center gap-4 lg:gap-5 shrink-0">
           <div className="flex items-baseline gap-1.5 leading-none">
-            <span className="font-heading text-xl lg:text-2xl text-[#9B4FDE]">$360</span>
+            <span className="font-heading text-xl lg:text-2xl text-[#7E57C2]">$360</span>
             <span className="text-gray-500 text-[11px] tracking-wider uppercase">a term</span>
           </div>
           <Link
             href={enrolHref}
-            className="inline-flex items-center gap-2 bg-[#7B2FBE] text-white font-heading text-sm tracking-[0.2em] uppercase px-6 py-3 hover:bg-white hover:text-[#7B2FBE] transition-all duration-300 glow-purple"
+            className="inline-flex items-center gap-2 bg-[#5E35A8] text-white font-heading text-sm tracking-[0.2em] uppercase px-6 py-3 hover:bg-white hover:text-[#5E35A8] transition-all duration-300 glow-purple"
           >
             <span>Enrol</span>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

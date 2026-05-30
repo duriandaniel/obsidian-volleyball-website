@@ -124,7 +124,7 @@ export async function GET(req: NextRequest) {
         relatedBookingId: b.id,
         html: `
           <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
-            <h2 style="color: #9B4FDE;">See you tomorrow.</h2>
+            <h2 style="color: #7E57C2;">See you tomorrow.</h2>
             <p>Hi${cust.first_name ? " " + cust.first_name : ""},</p>
             <p>Just a reminder that ${part?.first_name ? part.first_name + " is" : "your child is"} booked in for ${program?.title ?? "an Obsidian session"} tomorrow.</p>
             <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">
@@ -132,14 +132,14 @@ export async function GET(req: NextRequest) {
               ${startStr} – ${endStr}<br>
               ${venueDisplay}
             </p>
-            <p>What to bring: water bottle, runners, snack. We provide all volleyball gear.</p>
+            <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
             <p style="font-size: 12px; color: #666;">
               Can't make it? Just reply to this email and we'll help.
             </p>
             <p>See you on court!<br>Obsidian Volleyball Academy</p>
           </div>
         `,
-        text: `Reminder: ${part?.first_name ?? "your child"}'s session tomorrow.\n\n${dateStr} · ${startStr}–${endStr}\n${venueDisplay}\n\nBring: water bottle, runners, snack.\n\nCan't make it? Just reply to this email and we'll help.\n\nObsidian Volleyball Academy`,
+        text: `Reminder: ${part?.first_name ?? "your child"}'s session tomorrow.\n\n${dateStr} · ${startStr}–${endStr}\n${venueDisplay}\n\nWear suitable indoor court shoes.\n\nCan't make it? Just reply to this email and we'll help.\n\nObsidian Volleyball Academy`,
       });
       sent++;
     } catch (err) {

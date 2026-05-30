@@ -341,7 +341,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
       <section className="py-24 lg:py-32 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-6">
+            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-6">
               {data.drive.toUpperCase()} {data.drive === "On your doorstep" ? "" : `FROM ${data.name.toUpperCase()}`}
             </p>
             <h1 className="font-heading text-5xl sm:text-7xl lg:text-8xl text-white tracking-wide mb-8 leading-[0.9]">
@@ -349,7 +349,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
               <br />
               {isCamp ? "CAMPS FOR" : "ACADEMY NEAR"}
               <br />
-              <span className="text-[#9B4FDE]">{data.name.toUpperCase()}</span>
+              <span className="text-[#7E57C2]">{data.name.toUpperCase()}</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl leading-relaxed mb-10">
               {data.description} {isCamp
@@ -359,13 +359,13 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
                 href={venue.ctaHref}
-                className="bg-[#7B2FBE] text-white font-heading text-xl px-8 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-purple"
+                className="bg-[#5E35A8] text-white font-heading text-xl px-8 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-purple"
               >
                 BOOK NOW
               </Link>
               <Link
                 href={venue.ctaHref}
-                className="border border-white/20 text-white font-heading text-xl px-8 py-4 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
+                className="border border-white/20 text-white font-heading text-xl px-8 py-4 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide text-center"
               >
                 {venue.ctaLabel}
               </Link>
@@ -379,7 +379,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
         <section className="py-20 lg:py-28 bg-[#0F0F0F]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <SectionReveal>
-              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">
+              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">
                 FOR {data.name.toUpperCase()} FAMILIES
               </p>
               <h2 className="font-heading text-4xl lg:text-5xl text-white tracking-wide mb-10">
@@ -400,7 +400,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-16">
-              <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">
+              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">
                 FOR {data.name.toUpperCase()} FAMILIES
               </p>
               <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide">WHAT WE OFFER</h2>
@@ -410,7 +410,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
             {offerCards.map((item, i) => (
               <SectionReveal key={item.title} delay={i * 0.05}>
                 <div className="bg-[#111] p-8 group hover:bg-[#161616] transition-colors duration-500">
-                  <h3 className="font-heading text-xl text-[#9B4FDE] tracking-wide mb-3 group-hover:text-white transition-colors duration-300">
+                  <h3 className="font-heading text-xl text-[#7E57C2] tracking-wide mb-3 group-hover:text-white transition-colors duration-300">
                     {item.title}
                   </h3>
                   <p className="text-gray-500 text-sm leading-relaxed">{item.desc}</p>
@@ -427,7 +427,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-8 lg:gap-12">
             <SectionReveal>
               <div>
-                <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">
+                <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">
                   {data.drive.toUpperCase()} {data.drive === "On your doorstep" ? "" : `FROM ${data.name.toUpperCase()}`}
                 </p>
                 <h2 className="font-heading text-4xl lg:text-5xl text-white tracking-wide mb-8">VENUE</h2>
@@ -441,7 +441,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
                     href={`https://www.google.com/maps/search/?api=1&query=${venue.mapQuery}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-[#9B4FDE] text-sm font-medium hover:text-white transition-colors"
+                    className="inline-flex items-center gap-2 text-[#7E57C2] text-sm font-medium hover:text-white transition-colors"
                   >
                     Get directions from {data.name}
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -451,7 +451,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
                 </div>
                 <Link
                   href={venue.hubHref}
-                  className="inline-flex items-center gap-2 text-gray-500 text-sm hover:text-[#9B4FDE] transition-colors"
+                  className="inline-flex items-center gap-2 text-gray-500 text-sm hover:text-[#7E57C2] transition-colors"
                 >
                   {venue.hubLabel}
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -482,17 +482,17 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
       <section className="py-24 lg:py-32 bg-[#111] text-center">
         <div className="max-w-2xl mx-auto px-4">
           <SectionReveal>
-            <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-4">
+            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">
               {data.drive === "On your doorstep" ? "RIGHT HERE" : `JUST ${data.drive.toUpperCase()} AWAY`}
             </p>
             <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
               BOOK YOUR
               <br />
-              <span className="text-[#9B4FDE]">PLACE</span>
+              <span className="text-[#7E57C2]">PLACE</span>
             </h2>
             <Link
               href={venue.ctaHref}
-              className="inline-block bg-[#7B2FBE] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
+              className="inline-block bg-[#5E35A8] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
             >
               BOOK NOW
             </Link>
@@ -509,12 +509,12 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
               <Link
                 key={s.slug}
                 href={`/areas/${s.slug}`}
-                className="text-gray-500 text-sm hover:text-[#9B4FDE] transition-colors"
+                className="text-gray-500 text-sm hover:text-[#7E57C2] transition-colors"
               >
                 {s.name}
               </Link>
             ))}
-            <Link href="/areas" className="text-gray-500 text-sm hover:text-[#9B4FDE] transition-colors">
+            <Link href="/areas" className="text-gray-500 text-sm hover:text-[#7E57C2] transition-colors">
               All areas &rarr;
             </Link>
           </div>

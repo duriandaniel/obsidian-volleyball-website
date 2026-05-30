@@ -31,13 +31,13 @@ export default async function TrialPage() {
         <Link href="/booking" className="text-xs text-gray-500 hover:text-white tracking-wider uppercase">← Back</Link>
         <h1 className="font-heading text-3xl md:text-4xl tracking-wide mt-4 mb-2">Trial Class</h1>
         <p className="text-sm text-gray-400 mb-8 max-w-lg">
-          {formatCents(TRIAL_PRICE_CENTS)} per player, <span className="text-white">fully credited toward term enrolment if you join</span> — so it&apos;s risk-free. Limit one trial per player. Pick a class to try.
+          {formatCents(TRIAL_PRICE_CENTS)} per player. Try a junior class before committing to the term. Limit one trial per player. Pick a class to try.
         </p>
 
         {classes.length === 0 ? (
           <div className="border border-white/10 rounded-lg p-10 text-center text-gray-400">
             No classes are open for a trial right now. Follow{" "}
-            <a href="https://instagram.com/obsidianvolleyball" className="text-[#9B4FDE]">@obsidianvolleyball</a>.
+            <a href="https://instagram.com/obsidianvolleyball" className="text-[#7E57C2]">@obsidianvolleyball</a>.
           </div>
         ) : (
           <div className="grid gap-3">
@@ -68,7 +68,7 @@ function TrialRow({ program: p }: { program: TermProgram }) {
           <div className="text-sm text-gray-500">Sold out</div>
         ) : (
           <>
-            <div className="font-heading text-xl text-[#9B4FDE]">{formatCents(TRIAL_PRICE_CENTS)}</div>
+            <div className="font-heading text-xl text-[#7E57C2]">{formatCents(TRIAL_PRICE_CENTS)}</div>
             <div className="text-xs text-gray-500">{formatSpotsLeft(p.capacity - p.booked)}</div>
           </>
         )}
@@ -80,7 +80,7 @@ function TrialRow({ program: p }: { program: TermProgram }) {
   return (
     <Link
       href={`/booking/term/${p.slug}?plan=trial`}
-      className="block border border-white/10 hover:border-[#9B4FDE] rounded-xl transition-colors"
+      className="block border border-white/10 hover:border-[#7E57C2] rounded-xl transition-colors"
     >
       {inner}
     </Link>

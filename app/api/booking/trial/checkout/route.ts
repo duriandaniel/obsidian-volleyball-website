@@ -5,10 +5,9 @@ import { stripe } from "@/lib/stripe/server";
 import { isAdultProgram } from "@/lib/booking/audience";
 import { TRIAL_PRICE_CENTS, TRIAL_WINDOW_DAYS } from "@/lib/booking/pricing";
 
-// Paid one-week trial: books the next upcoming session of a junior class at the
-// trial price. Fully credited toward term enrolment if they join (credit applied
-// manually at enrolment for now). One trial per athlete is a stated policy, not
-// enforced here.
+// Paid trial class: books the next upcoming session of a junior class at the
+// trial price. A one-off paid trial — not credited toward term. One trial per
+// athlete is a stated policy, not enforced here.
 const Body = z.object({
   program_id: z.string().regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i),
   parent: z.object({
@@ -173,7 +172,7 @@ export async function POST(req: NextRequest) {
           currency: "aud",
           product_data: {
             name: `${program.title} · 1-week trial`,
-            description: "Fully credited toward term enrolment if you join.",
+            description: "One junior class trial.",
           },
           unit_amount: TRIAL_PRICE_CENTS,
         },

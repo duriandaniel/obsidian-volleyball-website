@@ -241,16 +241,16 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     relatedCampOrderId: order.id,
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
-        <h2 style="color: #9B4FDE; margin-bottom: 8px;">You're booked in.</h2>
+        <h2 style="color: #7E57C2; margin-bottom: 8px;">You're booked in.</h2>
         <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
         <p>Thanks for booking ${programTitle}. Here are your days:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${dayList}</p>
         <p><strong>Venue:</strong> ${venueName}<br>
            <strong>Time:</strong> 9:00 AM – 1:00 PM<br>
            <strong>Total paid:</strong> ${formatCents(total)}</p>
-        <p>What to bring: water bottle, runners, snack. We provide all volleyball gear.</p>
+        <p>Wear suitable indoor court shoes and your Obsidian Volleyball training jersey. We provide all volleyball gear.</p>
         <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
-          Questions or need to change your booking? Just reply to this email and we'll sort it out. See our <a href="${appUrl}/faq" style="color:#9B4FDE;">refund and reschedule policy</a>.
+          Questions or need to change your booking? Just reply to this email and we'll sort it out. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
         </p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
@@ -354,15 +354,15 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
     template: "dropin_booking_confirmation",
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
-        <h2 style="color: #9B4FDE; margin-bottom: 8px;">You're booked in.</h2>
+        <h2 style="color: #7E57C2; margin-bottom: 8px;">You're booked in.</h2>
         <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
         <p>Thanks for booking the Adult Social Scrim. Here ${sessionIds.length === 1 ? "is your night" : "are your nights"}:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${nightList}</p>
         <p><strong>Venue:</strong> ${venueName}<br>
            <strong>Total paid:</strong> ${formatCents(total)} (${sessionIds.length} night${sessionIds.length === 1 ? "" : "s"})</p>
-        <p>Bring water and indoor court shoes. See you on court.</p>
+        <p>Wear suitable indoor court shoes. See you on court.</p>
         <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
-          Adult social nights are non-refundable and non-reschedulable. Questions? Just reply to this email. See our <a href="${appUrl}/faq" style="color:#9B4FDE;">refund and reschedule policy</a>.
+          Adult social nights are non-refundable and non-reschedulable. Questions? Just reply to this email. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
         </p>
         <p>Obsidian Volleyball Academy</p>
       </div>
@@ -446,18 +446,18 @@ async function handleTrialCheckoutCompleted(session: Stripe.Checkout.Session) {
     template: "trial_booking_confirmation",
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
-        <h2 style="color: #9B4FDE; margin-bottom: 8px;">Trial booked.</h2>
+        <h2 style="color: #7E57C2; margin-bottom: 8px;">Trial booked.</h2>
         <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
-        <p><strong>Your ${formatCents(total)} trial is fully credited toward term enrolment if you join</strong> — so it's risk-free.</p>
+        <p>Thanks for booking a trial class.</p>
         <p>Here's your trial session:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${when}</p>
         <p><strong>Venue:</strong> ${venueName}</p>
-        <p>What to bring: water bottle, runners, snack. We provide all volleyball gear.</p>
-        <p style="font-size: 13px; color: #666;">Limit one trial per player. Ready to join after your trial? Just reply to this email and we'll credit your trial against the term. See our <a href="${appUrl}/faq" style="color:#9B4FDE;">refund and reschedule policy</a>.</p>
+        <p>Wear suitable indoor court shoes and your Obsidian Volleyball training jersey. We provide all volleyball gear.</p>
+        <p style="font-size: 13px; color: #666;">Limit one trial per player. Want to join for the term afterwards? Just reply to this email or book from our website. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.</p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
-    text: `Trial booked.\n\nYour ${formatCents(total)} trial is fully credited toward term enrolment if you join, so it's risk-free.\n\nSession: ${when}\nVenue: ${venueName}\n\nBring: water bottle, runners, snack.\n\nLimit one trial per player. Ready to join? Reply to this email and we'll credit your trial against the term.\n\nObsidian Volleyball Academy`,
+    text: `Trial booked.\n\nThanks for booking a trial class.\n\nSession: ${when}\nVenue: ${venueName}\n\nWear suitable indoor court shoes and your Obsidian Volleyball training jersey.\n\nLimit one trial per player. Want to join for the term afterwards? Reply to this email or book on our website.\n\nObsidian Volleyball Academy`,
   });
 }
 
@@ -599,15 +599,15 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
     relatedEnrolmentId: enrolment.id,
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
-        <h2 style="color: #9B4FDE;">You're enrolled.</h2>
+        <h2 style="color: #7E57C2;">You're enrolled.</h2>
         <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
         <p>Thanks for enrolling in ${program?.title ?? "the term program"}. Here are your sessions:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${dayList}</p>
         <p><strong>Venue:</strong> ${venueName}<br>
            <strong>Total paid:</strong> $${(total / 100).toFixed(2)} (${weeks} week${weeks === 1 ? "" : "s"} × $${(perWeekCents / 100).toFixed(2)})</p>
-        <p>What to bring: water bottle, runners, snack. We provide all volleyball gear.</p>
+        <p>Wear suitable indoor court shoes and your Obsidian Volleyball training jersey. We provide all volleyball gear.</p>
         <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
-          Questions or need to change something? Just reply to this email and we'll help. See our <a href="${appUrl}/faq" style="color:#9B4FDE;">refund and reschedule policy</a>.
+          Questions or need to change something? Just reply to this email and we'll help. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
         </p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
