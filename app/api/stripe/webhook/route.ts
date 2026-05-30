@@ -20,7 +20,7 @@ function venueHtml(name: string): string {
 
 // WhatsApp group invites. Fill these in to switch the join links on; empty =
 // the line is omitted from the email.
-const WHATSAPP_PARENTS_URL = "";
+const WHATSAPP_PARENTS_URL = "https://chat.whatsapp.com/HYlStwL25fMJaXpl7hWkbU";
 const WHATSAPP_ADULTS_URL = "https://chat.whatsapp.com/CswUk6K61IE1N3sOxmAWbg";
 function whatsappHtml(url: string, who: string): string {
   return url
