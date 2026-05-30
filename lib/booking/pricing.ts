@@ -71,9 +71,13 @@ export function priceCampCart(cart: CampCartItem[], tiers: CampTier[] = DEFAULT_
   };
 }
 
-// Paid one-week trial for junior weekly classes. Fully credited toward term
+// Paid trial class for junior weekly classes. Fully credited toward term
 // enrolment if the athlete joins. Adjust here to change the trial price.
 export const TRIAL_PRICE_CENTS = 2500;
+
+// Trials are only bookable for a class whose next session is within this many
+// days (keeps trials near-term, not booked weeks ahead).
+export const TRIAL_WINDOW_DAYS = 14;
 
 // Term pricing: per-week × weeks remaining in the term from today.
 export function priceTermEnrolment(perWeekCents: number, weeksRemaining: number) {

@@ -138,7 +138,9 @@ export default function JuniorClassesPage() {
               <span className="text-[#9B4FDE]">CLASSES</span>
             </h1>
             <p className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed mb-8">
-              Premium volleyball coaching. Term 2 enrolment open.
+              Junior classes for all levels, beginner to advanced. We run multiple courts
+              each session with experienced coaches, group players by ability, and coach
+              every player at the right level for them. Term 2 enrolment open.
             </p>
             <TrackedBookingLink
               location="term_programs_hero"

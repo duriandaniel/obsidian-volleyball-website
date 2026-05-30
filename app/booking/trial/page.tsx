@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { loadTermPrograms, weekday, timeRange, type TermProgram } from "@/lib/booking/load";
-import { formatCents, formatSpotsLeft, TRIAL_PRICE_CENTS } from "@/lib/booking/pricing";
+import { formatCents, formatSpotsLeft, TRIAL_PRICE_CENTS, TRIAL_WINDOW_DAYS } from "@/lib/booking/pricing";
 
 export const metadata: Metadata = {
   title: "Trial Class | Obsidian Volleyball Academy",
@@ -19,8 +19,10 @@ function classLabel(title: string): string {
 }
 
 export default async function TrialPage() {
+  // Only classes whose next session is within the trial window (next 2 weeks).
+  const cutoffIso = new Date(Date.now() + TRIAL_WINDOW_DAYS * 86400_000).toISOString();
   const classes = (await loadTermPrograms())
-    .filter((p) => !p.is_adult && p.weeks_remaining > 0)
+    .filter((p) => !p.is_adult && p.weeks_remaining > 0 && p.first_session_at !== null && p.first_session_at <= cutoffIso)
     .sort((a, b) => (a.first_session_at ?? "").localeCompare(b.first_session_at ?? ""));
 
   return (

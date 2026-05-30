@@ -3,7 +3,7 @@ import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
 import { isAdultProgram } from "@/lib/booking/audience";
-import { TRIAL_PRICE_CENTS } from "@/lib/booking/pricing";
+import { TRIAL_PRICE_CENTS, TRIAL_WINDOW_DAYS } from "@/lib/booking/pricing";
 
 // Paid one-week trial: books the next upcoming session of a junior class at the
 // trial price. Fully credited toward term enrolment if they join (credit applied
@@ -68,6 +68,11 @@ export async function POST(req: NextRequest) {
   const trialSession = sessions?.[0];
   if (!trialSession) {
     return NextResponse.json({ error: "No upcoming sessions in this program" }, { status: 400 });
+  }
+  // Trials only for a session within the next two weeks.
+  const cutoffIso = new Date(Date.now() + TRIAL_WINDOW_DAYS * 86400_000).toISOString();
+  if (trialSession.starts_at > cutoffIso) {
+    return NextResponse.json({ error: "No trial available for this class right now" }, { status: 400 });
   }
 
   // Capacity check on the trial session.
