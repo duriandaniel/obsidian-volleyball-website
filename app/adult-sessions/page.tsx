@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 };
 
 // On-site booking funnel, deep-linked straight to the adult drop-in flow.
-const ACUITY_ADULT_URL = "/booking/term/adult";
+const ACUITY_ADULT_URL = "/booking/adult";
 
 export default function AdultSessionsPage() {
   return (

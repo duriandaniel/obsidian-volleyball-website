@@ -35,6 +35,83 @@ export function timeRange(startIso: string, endIso: string | null): string {
   return endIso ? `${fmt(startIso)} – ${fmt(endIso)}` : fmt(startIso);
 }
 
+export type AdultSession = {
+  id: string;
+  starts_at: string;
+  ends_at: string;
+  venue_name: string;
+  spots_left: number;
+  price_cents: number;
+};
+
+// Flat, chronological list of every upcoming adult drop-in night across all
+// adult programs (Tue/Wed/Fri). One booking can mix nights from any of them.
+export async function loadAdultSessions(): Promise<AdultSession[]> {
+  let sb;
+  try {
+    sb = supabaseAdmin();
+  } catch {
+    return [];
+  }
+  const now = new Date().toISOString();
+
+  const { data: programs } = await sb
+    .from("programs")
+    .select("id, age_min, default_capacity, venue_id, pricing_rule_id")
+    .eq("type", "term")
+    .eq("status", "published")
+    .is("deleted_at", null);
+  const adultPrograms = (programs ?? []).filter((p) => isAdultProgram(p));
+  if (adultPrograms.length === 0) return [];
+
+  const programById = new Map(adultPrograms.map((p) => [p.id, p]));
+  const venueIds = Array.from(new Set(adultPrograms.map((p) => p.venue_id)));
+  const ruleIds = Array.from(new Set(adultPrograms.map((p) => p.pricing_rule_id).filter(Boolean)));
+
+  const [{ data: venues }, { data: rules }, { data: sessions }] = await Promise.all([
+    sb.from("venues").select("id, name").in("id", venueIds),
+    sb.from("pricing_rules").select("id, term_per_session_cents").in("id", ruleIds),
+    sb
+      .from("sessions")
+      .select("id, program_id, starts_at, ends_at")
+      .in(
+        "program_id",
+        adultPrograms.map((p) => p.id)
+      )
+      .eq("status", "scheduled")
+      .gte("starts_at", now)
+      .is("deleted_at", null)
+      .order("starts_at"),
+  ]);
+
+  const venueById = new Map((venues ?? []).map((v) => [v.id, v.name]));
+  const ruleById = new Map((rules ?? []).map((r) => [r.id, r.term_per_session_cents ?? 0]));
+
+  const sessionIds = (sessions ?? []).map((s) => s.id);
+  const { data: bookings } = sessionIds.length
+    ? await sb
+        .from("bookings")
+        .select("session_id")
+        .in("session_id", sessionIds)
+        .in("status", ["confirmed", "pending", "attended"])
+        .is("deleted_at", null)
+    : { data: [] as { session_id: string }[] };
+  const bookedBySession = new Map<string, number>();
+  for (const b of bookings ?? []) bookedBySession.set(b.session_id, (bookedBySession.get(b.session_id) ?? 0) + 1);
+
+  return (sessions ?? []).map((s): AdultSession => {
+    const p = programById.get(s.program_id)!;
+    return {
+      id: s.id,
+      starts_at: s.starts_at,
+      ends_at: s.ends_at,
+      venue_name: venueById.get(p.venue_id) ?? "Venue TBA",
+      spots_left: Math.max(0, p.default_capacity - (bookedBySession.get(s.id) ?? 0)),
+      price_cents: ruleById.get(p.pricing_rule_id ?? "") ?? 0,
+    };
+  });
+}
+
 // Load all published term programs with derived booking fields.
 export async function loadTermPrograms(): Promise<TermProgram[]> {
   let sb;

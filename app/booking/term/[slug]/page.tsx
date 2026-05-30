@@ -26,8 +26,8 @@ export default async function TermProgramPage({ params }: { params: Promise<{ sl
     .maybeSingle();
   if (!program) notFound();
 
-  // Adults book per-night through the drop-in flow, not the term enrol form.
-  if (isAdultProgram(program)) redirect(`/booking/term/adult/${program.slug}`);
+  // Adults book per-night through the standalone drop-in flow.
+  if (isAdultProgram(program)) redirect("/booking/adult");
 
   const [{ data: venue }, { data: rule }, { data: sessions }] = await Promise.all([
     sb.from("venues").select("name, address").eq("id", program.venue_id).maybeSingle(),

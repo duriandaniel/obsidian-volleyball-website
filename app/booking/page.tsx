@@ -18,7 +18,7 @@ export default function BookingHomePage() {
         <div className="grid gap-5 sm:grid-cols-3">
           <BookingBox href="/booking/camps" eyebrow="HOLIDAY" label="Holiday Camp" />
           <BookingBox href="/booking/term/junior" eyebrow="AGES 8–18" label="Junior Weekly Classes" />
-          <BookingBox href="/booking/term/adult" eyebrow="18+ DROP-IN" label="Adult Sessions" />
+          <BookingBox href="/booking/adult" eyebrow="18+ DROP-IN" label="Adult Sessions" />
         </div>
 
         <div className="mt-12 text-center text-sm text-gray-500">

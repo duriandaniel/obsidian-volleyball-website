@@ -269,15 +269,16 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
   const sb = supabaseAdmin();
   const customerId = session.metadata?.customer_id;
   const participantId = session.metadata?.participant_id;
-  const programId = session.metadata?.program_id;
-  const sessionIdsJson = session.metadata?.session_ids;
+  const sessionIdsRaw = session.metadata?.session_ids;
   const perSessionCents = parseInt(session.metadata?.per_session_cents ?? "0", 10);
+  const level = session.metadata?.level ?? null;
   const email = session.customer_details?.email ?? session.customer_email;
 
-  if (!customerId || !participantId || !programId || !sessionIdsJson || !email) {
+  if (!customerId || !participantId || !sessionIdsRaw || !email) {
     throw new Error("Drop-in checkout missing required metadata");
   }
-  const sessionIds: string[] = JSON.parse(sessionIdsJson);
+  // Sessions are comma-joined (may span multiple adult programs).
+  const sessionIds: string[] = sessionIdsRaw.split(",").filter(Boolean);
   const paymentIntentId =
     typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id ?? null;
 
@@ -315,26 +316,31 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
   if (bErr) throw bErr;
 
   const total = session.amount_total ?? perSessionCents * sessionIds.length;
+  // Level taxonomy (beginner / social_player / svl_player) has no structured column
+  // yet — captured here (and in Stripe metadata) until a participants column exists.
   await sb.from("audit_log").insert({
     actor_role: "system",
     action: "dropin.create",
-    entity_type: "program",
-    entity_id: programId,
-    after: { program_id: programId, nights: sessionIds.length, total_cents: total },
+    entity_type: "customer",
+    entity_id: customerId,
+    after: { nights: sessionIds.length, total_cents: total, level },
   });
 
-  // Program + venue + session dates for the email
-  const { data: program } = await sb.from("programs").select("title, venue_id").eq("id", programId).maybeSingle();
-  let venueName = "Bennelong Sports Centre, West Ryde";
-  if (program?.venue_id) {
-    const { data: venue } = await sb.from("venues").select("name, address").eq("id", program.venue_id).maybeSingle();
-    if (venue) venueName = venue.address ? `${venue.name}, ${venue.address}` : venue.name;
-  }
+  // Session dates + venue for the email (sessions may span programs; use the first).
   const { data: sessionRows } = await sb
     .from("sessions")
-    .select("starts_at, ends_at")
+    .select("starts_at, ends_at, program_id")
     .in("id", sessionIds)
     .order("starts_at");
+  let venueName = "Bennelong Sports Centre, West Ryde";
+  const firstProgramId = sessionRows?.[0]?.program_id;
+  if (firstProgramId) {
+    const { data: program } = await sb.from("programs").select("venue_id").eq("id", firstProgramId).maybeSingle();
+    if (program?.venue_id) {
+      const { data: venue } = await sb.from("venues").select("name, address").eq("id", program.venue_id).maybeSingle();
+      if (venue) venueName = venue.address ? `${venue.name}, ${venue.address}` : venue.name;
+    }
+  }
   const fmtDay = (iso: string) =>
     new Date(iso).toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long", timeZone: "Australia/Sydney" });
   const fmtTime = (iso: string) =>
@@ -350,13 +356,13 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
 
   await sendEmail({
     to: email,
-    subject: `Booking confirmed: ${program?.title ?? "Adult Social Scrim"}`,
+    subject: `Booking confirmed: Adult Social Scrim`,
     template: "dropin_booking_confirmation",
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
         <h2 style="color: #9B4FDE; margin-bottom: 8px;">You're booked in.</h2>
         <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
-        <p>Thanks for booking ${program?.title ?? "the social scrim"}. Here ${sessionIds.length === 1 ? "is your night" : "are your nights"}:</p>
+        <p>Thanks for booking the Adult Social Scrim. Here ${sessionIds.length === 1 ? "is your night" : "are your nights"}:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${nightList}</p>
         <p><strong>Venue:</strong> ${venueName}<br>
            <strong>Total paid:</strong> ${formatCents(total)} (${sessionIds.length} night${sessionIds.length === 1 ? "" : "s"})</p>
@@ -368,7 +374,7 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Obsidian Volleyball Academy</p>
       </div>
     `,
-    text: `You're booked in.\n\nThanks for booking ${program?.title ?? "the social scrim"}.\n\nNights:\n${(sessionRows ?? [])
+    text: `You're booked in.\n\nThanks for booking the Adult Social Scrim.\n\nNights:\n${(sessionRows ?? [])
       .map((s) => `${fmtDay(s.starts_at)} ${fmtTime(s.starts_at)} - ${fmtTime(s.ends_at)}`)
       .join("\n")}\n\nVenue: ${venueName}\nTotal paid: ${formatCents(total)}\n\nManage your booking: ${portalLink}\n\nObsidian Volleyball Academy`,
   });
