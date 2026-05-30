@@ -5,8 +5,7 @@ import LevelPicker, { type Venue, type LevelInfo } from "./LevelPicker";
 import TrackPixelView from "@/components/TrackPixelView";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 
-const TRIAL_ACUITY_URL =
-  "https://obsidianvolleyball.as.me/?appointmentType=category:Trial%20Class";
+const TRIAL_URL = "/booking/term/junior";
 
 export const metadata: Metadata = {
   title:
@@ -43,12 +42,13 @@ const KAVEESH = {
   image: "/images/coach-kaveesh-card.jpg",
 };
 
-// Per-class Acuity appointment URLs. One per (slot x level x court).
+// On-site enrol pages, one per class. Each opens the class with full-term and
+// 1-week-trial options.
 const ACUITY = {
-  beg_4pm: "https://obsidianvolleyball.as.me/?appointmentType=92833866",
-  int_4pm: "https://obsidianvolleyball.as.me/?appointmentType=92833644",
-  int_530pm: "https://obsidianvolleyball.as.me/?appointmentType=92833584",
-  adv_530pm: "https://obsidianvolleyball.as.me/?appointmentType=92802606",
+  beg_4pm: "/booking/term/fri-beginners-4pm",
+  int_4pm: "/booking/term/fri-intermediate-4pm",
+  int_530pm: "/booking/term/fri-intermediate-530pm",
+  adv_530pm: "/booking/term/fri-advanced-530pm",
 };
 
 const VENUES: Venue[] = [
@@ -142,10 +142,10 @@ export default function JuniorClassesPage() {
             </p>
             <TrackedBookingLink
               location="term_programs_hero"
-              href={TRIAL_ACUITY_URL}
+              href={TRIAL_URL}
               className="inline-block bg-[#7B2FBE] text-white font-heading text-xl sm:text-2xl px-9 py-4 hover:bg-[#9B4FDE] transition-all duration-300 tracking-wide glow-purple"
             >
-              BOOK A FREE TRIAL
+              BOOK A 1-WEEK TRIAL
             </TrackedBookingLink>
           </SectionReveal>
         </div>

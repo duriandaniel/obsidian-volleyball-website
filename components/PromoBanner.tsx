@@ -9,7 +9,7 @@ const BOOKING_URL = "/booking/term/junior";
 
 export default function PromoBanner() {
   const pathname = usePathname();
-  if (pathname?.startsWith("/admin") || pathname?.startsWith("/booking")) return null;
+  if (pathname?.startsWith("/booking")) return null;
   return (
     <Link
       href={BOOKING_URL}

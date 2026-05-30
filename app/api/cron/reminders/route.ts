@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/email/send";
-import { signPortalToken } from "@/lib/auth/portal";
 
 // Daily Vercel cron. Sends 24h-before reminder emails to anyone with a
 // confirmed booking starting in the next 24-36h window. Idempotent: checks
@@ -116,7 +115,6 @@ export async function GET(req: NextRequest) {
       timeZone: "Australia/Sydney",
     });
     const venueDisplay = venue ? (venue.address ? `${venue.name}, ${venue.address}` : venue.name) : "Venue TBA";
-    const portalLink = `${appUrl}/api/booking/portal/access?token=${encodeURIComponent(signPortalToken(b.customer_id))}`;
 
     try {
       await sendEmail({
@@ -136,12 +134,12 @@ export async function GET(req: NextRequest) {
             </p>
             <p>What to bring: water bottle, runners, snack. We provide all volleyball gear.</p>
             <p style="font-size: 12px; color: #666;">
-              Can't make it? <a href="${portalLink}" style="color: #9B4FDE;">Cancel here</a> or just reply to this email.
+              Can't make it? Just reply to this email and we'll help.
             </p>
             <p>See you on court!<br>Obsidian Volleyball Academy</p>
           </div>
         `,
-        text: `Reminder: ${part?.first_name ?? "your child"}'s session tomorrow.\n\n${dateStr} · ${startStr}–${endStr}\n${venueDisplay}\n\nBring: water bottle, runners, snack.\n\nCan't make it? Cancel or reply to this email:\n${portalLink}\n\nObsidian Volleyball Academy`,
+        text: `Reminder: ${part?.first_name ?? "your child"}'s session tomorrow.\n\n${dateStr} · ${startStr}–${endStr}\n${venueDisplay}\n\nBring: water bottle, runners, snack.\n\nCan't make it? Just reply to this email and we'll help.\n\nObsidian Volleyball Academy`,
       });
       sent++;
     } catch (err) {

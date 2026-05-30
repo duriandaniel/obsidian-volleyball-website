@@ -27,7 +27,7 @@ export default async function TermSuccessPage({
             <li>The confirmation email lists every session date for the term.</li>
             <li>You&apos;ll get a reminder 24 hours before each session.</li>
             <li>Bring water, runners, and a snack. Volleyball gear is provided.</li>
-            <li>Use the &quot;Manage my bookings&quot; link in the email to view or cancel sessions.</li>
+            <li>Questions or changes? Just reply to your confirmation email and we&apos;ll help.</li>
           </ul>
         </div>
         <Link href="/" className="inline-block bg-[#9B4FDE] hover:bg-[#7d3fb8] text-white font-heading text-sm tracking-[0.2em] px-6 py-3 rounded">

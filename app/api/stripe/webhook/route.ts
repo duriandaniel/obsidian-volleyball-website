@@ -3,7 +3,6 @@ import { stripe } from "@/lib/stripe/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/email/send";
 import { formatCents } from "@/lib/booking/pricing";
-import { signPortalToken } from "@/lib/auth/portal";
 import type Stripe from "stripe";
 
 // Stripe webhook needs the raw body to verify the signature.
@@ -38,6 +37,8 @@ export async function POST(req: NextRequest) {
           await handleTermCheckoutCompleted(session);
         } else if (bookingType === "dropin") {
           await handleDropinCheckoutCompleted(session);
+        } else if (bookingType === "trial") {
+          await handleTrialCheckoutCompleted(session);
         } else {
           await handleCheckoutCompleted(session);
         }
@@ -231,10 +232,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     )
     .join("<br>");
 
-  // Magic link so the parent can come back and manage this booking
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidian-booking-staging.vercel.app";
-  const portalToken = signPortalToken(customerId!);
-  const portalLink = `${appUrl}/api/booking/portal/access?token=${encodeURIComponent(portalToken)}`;
 
   await sendEmail({
     to: email,
@@ -251,17 +249,15 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
            <strong>Time:</strong> 9:00 AM – 1:00 PM<br>
            <strong>Total paid:</strong> ${formatCents(total)}</p>
         <p>What to bring: water bottle, runners, snack. We provide all volleyball gear.</p>
-        <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
-          Need to update your child's details, cancel, or reschedule?
-          <a href="${portalLink}" style="display:inline-block; margin-top:8px; background:#9B4FDE; color:white; padding:10px 16px; border-radius:6px; text-decoration:none; font-weight:600;">Manage my bookings</a>
+        <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
+          Questions or need to change your booking? Just reply to this email and we'll sort it out. See our <a href="${appUrl}/faq" style="color:#9B4FDE;">refund and reschedule policy</a>.
         </p>
-        <p style="font-size: 12px; color: #666;">Or just reply to this email and we'll sort it out for you.</p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
     text: `You're booked in.\n\nThanks for booking ${programTitle}.\n\nDays: ${(sessionRows ?? [])
       .map((s) => new Date(s.starts_at).toLocaleDateString("en-AU", { dateStyle: "full", timeZone: "Australia/Sydney" }))
-      .join(", ")}\n\nVenue: ${venueName}\nTime: 9:00 AM – 1:00 PM\nTotal paid: ${formatCents(total)}\n\nManage your booking: ${portalLink}\n\nOr just reply to this email with any questions.\n\nObsidian Volleyball Academy`,
+      .join(", ")}\n\nVenue: ${venueName}\nTime: 9:00 AM – 1:00 PM\nTotal paid: ${formatCents(total)}\n\nQuestions or changes? Just reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
   });
 }
 
@@ -350,8 +346,6 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
     .join("<br>");
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidian-booking-staging.vercel.app";
-  const portalToken = signPortalToken(customerId);
-  const portalLink = `${appUrl}/api/booking/portal/access?token=${encodeURIComponent(portalToken)}`;
   const name = session.customer_details?.name ?? "";
 
   await sendEmail({
@@ -367,16 +361,103 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p><strong>Venue:</strong> ${venueName}<br>
            <strong>Total paid:</strong> ${formatCents(total)} (${sessionIds.length} night${sessionIds.length === 1 ? "" : "s"})</p>
         <p>Bring water and indoor court shoes. See you on court.</p>
-        <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
-          <a href="${portalLink}" style="display:inline-block; background:#9B4FDE; color:white; padding:10px 16px; border-radius:6px; text-decoration:none; font-weight:600;">Manage my bookings</a>
+        <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
+          Adult social nights are non-refundable and non-reschedulable. Questions? Just reply to this email. See our <a href="${appUrl}/faq" style="color:#9B4FDE;">refund and reschedule policy</a>.
         </p>
-        <p style="font-size: 12px; color: #666;">Or just reply to this email with any questions.</p>
         <p>Obsidian Volleyball Academy</p>
       </div>
     `,
     text: `You're booked in.\n\nThanks for booking the Adult Social Scrim.\n\nNights:\n${(sessionRows ?? [])
       .map((s) => `${fmtDay(s.starts_at)} ${fmtTime(s.starts_at)} - ${fmtTime(s.ends_at)}`)
-      .join("\n")}\n\nVenue: ${venueName}\nTotal paid: ${formatCents(total)}\n\nManage your booking: ${portalLink}\n\nObsidian Volleyball Academy`,
+      .join("\n")}\n\nVenue: ${venueName}\nTotal paid: ${formatCents(total)}\n\nAdult social nights are non-refundable and non-reschedulable. Questions? Reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
+  });
+}
+
+async function handleTrialCheckoutCompleted(session: Stripe.Checkout.Session) {
+  const sb = supabaseAdmin();
+  const customerId = session.metadata?.customer_id;
+  const participantId = session.metadata?.participant_id;
+  const programId = session.metadata?.program_id;
+  const sessionId = session.metadata?.session_id;
+  const email = session.customer_details?.email ?? session.customer_email;
+  if (!customerId || !participantId || !programId || !sessionId || !email) {
+    throw new Error("Trial checkout missing required metadata");
+  }
+  const paymentIntentId =
+    typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id ?? null;
+
+  // Idempotency
+  if (paymentIntentId) {
+    const { count } = await sb
+      .from("bookings")
+      .select("id", { count: "exact", head: true })
+      .eq("stripe_payment_intent_id", paymentIntentId)
+      .is("deleted_at", null);
+    if (count && count > 0) return;
+  }
+
+  const stripeCustomerId =
+    typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
+  if (stripeCustomerId) {
+    await sb.from("customers").update({ stripe_customer_id: stripeCustomerId }).eq("id", customerId);
+  }
+
+  const total = session.amount_total ?? 0;
+  const { error: bErr } = await sb.from("bookings").insert({
+    session_id: sessionId,
+    participant_id: participantId,
+    customer_id: customerId,
+    source: "trial" as const,
+    status: "confirmed" as const,
+    paid_amount_cents: total,
+    stripe_payment_intent_id: paymentIntentId,
+    paid_at: new Date().toISOString(),
+  });
+  if (bErr) throw bErr;
+
+  await sb.from("audit_log").insert({
+    actor_role: "system",
+    action: "trial.create",
+    entity_type: "program",
+    entity_id: programId,
+    after: { program_id: programId, session_id: sessionId, total_cents: total },
+  });
+
+  // Program + venue + session date for the email
+  const { data: program } = await sb.from("programs").select("title, venue_id").eq("id", programId).maybeSingle();
+  let venueName = "Obsidian Volleyball Academy West Ryde";
+  if (program?.venue_id) {
+    const { data: venue } = await sb.from("venues").select("name, address").eq("id", program.venue_id).maybeSingle();
+    if (venue) venueName = venue.address ? `${venue.name}, ${venue.address}` : venue.name;
+  }
+  const { data: sessionRow } = await sb.from("sessions").select("starts_at, ends_at").eq("id", sessionId).maybeSingle();
+  const fmtDay = (iso: string) =>
+    new Date(iso).toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long", timeZone: "Australia/Sydney" });
+  const fmtTime = (iso: string) =>
+    new Date(iso).toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit", timeZone: "Australia/Sydney" });
+  const when = sessionRow ? `${fmtDay(sessionRow.starts_at)} · ${fmtTime(sessionRow.starts_at)} – ${fmtTime(sessionRow.ends_at)}` : "";
+
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidian-booking-staging.vercel.app";
+  const name = session.customer_details?.name ?? "";
+
+  await sendEmail({
+    to: email,
+    subject: `Trial booked: ${program?.title ?? "Junior class"}`,
+    template: "trial_booking_confirmation",
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
+        <h2 style="color: #9B4FDE; margin-bottom: 8px;">Trial booked.</h2>
+        <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
+        <p><strong>Your ${formatCents(total)} trial is fully credited toward term enrolment if you join</strong> — so it's risk-free.</p>
+        <p>Here's your trial session:</p>
+        <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${when}</p>
+        <p><strong>Venue:</strong> ${venueName}</p>
+        <p>What to bring: water bottle, runners, snack. We provide all volleyball gear.</p>
+        <p style="font-size: 13px; color: #666;">Limit one trial per player. Ready to join after your trial? Just reply to this email and we'll credit your trial against the term. See our <a href="${appUrl}/faq" style="color:#9B4FDE;">refund and reschedule policy</a>.</p>
+        <p>See you on court!<br>Obsidian Volleyball Academy</p>
+      </div>
+    `,
+    text: `Trial booked.\n\nYour ${formatCents(total)} trial is fully credited toward term enrolment if you join, so it's risk-free.\n\nSession: ${when}\nVenue: ${venueName}\n\nBring: water bottle, runners, snack.\n\nLimit one trial per player. Ready to join? Reply to this email and we'll credit your trial against the term.\n\nObsidian Volleyball Academy`,
   });
 }
 
@@ -509,8 +590,6 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
     .join("<br>");
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidian-booking-staging.vercel.app";
-  const portalToken = signPortalToken(customerId);
-  const portalLink = `${appUrl}/api/booking/portal/access?token=${encodeURIComponent(portalToken)}`;
 
   const name = session.customer_details?.name ?? "";
   await sendEmail({
@@ -527,13 +606,12 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p><strong>Venue:</strong> ${venueName}<br>
            <strong>Total paid:</strong> $${(total / 100).toFixed(2)} (${weeks} week${weeks === 1 ? "" : "s"} × $${(perWeekCents / 100).toFixed(2)})</p>
         <p>What to bring: water bottle, runners, snack. We provide all volleyball gear.</p>
-        <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee;">
-          <a href="${portalLink}" style="display:inline-block; background:#9B4FDE; color:white; padding:10px 16px; border-radius:6px; text-decoration:none; font-weight:600;">Manage my bookings</a>
+        <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
+          Questions or need to change something? Just reply to this email and we'll help. See our <a href="${appUrl}/faq" style="color:#9B4FDE;">refund and reschedule policy</a>.
         </p>
-        <p style="font-size: 12px; color: #666;">Or just reply to this email and we'll help you out.</p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
-    text: `You're enrolled in ${program?.title ?? "the term program"}.\n\nSessions: ${(sessionRows ?? []).length} weeks\nVenue: ${venueName}\nTotal paid: $${(total / 100).toFixed(2)}\n\nManage your enrolment: ${portalLink}\n\nObsidian Volleyball Academy`,
+    text: `You're enrolled in ${program?.title ?? "the term program"}.\n\nSessions: ${(sessionRows ?? []).length} weeks\nVenue: ${venueName}\nTotal paid: $${(total / 100).toFixed(2)}\n\nQuestions or changes? Just reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
   });
 }

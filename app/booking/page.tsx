@@ -21,11 +21,6 @@ export default function BookingHomePage() {
           <BookingBox href="/booking/adult" eyebrow="ADULTS" label="Social Scrim" />
         </div>
 
-        <div className="mt-12 text-center text-sm text-gray-500">
-          <Link href="/booking/portal" className="text-[#9B4FDE] hover:text-white">
-            Manage an existing booking
-          </Link>
-        </div>
       </div>
     </div>
   );

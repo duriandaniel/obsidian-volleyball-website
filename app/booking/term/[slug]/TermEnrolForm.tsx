@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { formatCents } from "@/lib/booking/pricing";
+import { formatCents, TRIAL_PRICE_CENTS } from "@/lib/booking/pricing";
 import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
 
 type ParentForm = {
@@ -50,6 +50,7 @@ export function TermEnrolForm({
   weeksRemaining: number;
 }) {
   const [open, setOpen] = useState(false);
+  const [plan, setPlan] = useState<"term" | "trial">("term");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -72,7 +73,8 @@ export function TermEnrolForm({
     setError(null);
     try {
       const bypass = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("x-vercel-protection-bypass") : null;
-      const apiUrl = `/api/booking/term/checkout${bypass ? `?x-vercel-protection-bypass=${encodeURIComponent(bypass)}` : ""}`;
+      const endpoint = plan === "trial" ? "/api/booking/trial/checkout" : "/api/booking/term/checkout";
+      const apiUrl = `${endpoint}${bypass ? `?x-vercel-protection-bypass=${encodeURIComponent(bypass)}` : ""}`;
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -100,10 +102,43 @@ export function TermEnrolForm({
 
   return (
     <div className="border border-white/10 rounded-lg p-6 bg-white/[0.02] space-y-4">
+      {!clientSecret && (
+        <div className="grid grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => setPlan("term")}
+            className={`rounded px-3 py-2 text-xs font-heading tracking-[0.15em] border transition-colors ${
+              plan === "term" ? "border-[#9B4FDE] bg-[#9B4FDE]/10 text-white" : "border-white/10 text-gray-400 hover:border-white/30"
+            }`}
+          >
+            FULL TERM
+          </button>
+          <button
+            type="button"
+            onClick={() => setPlan("trial")}
+            className={`rounded px-3 py-2 text-xs font-heading tracking-[0.15em] border transition-colors ${
+              plan === "trial" ? "border-[#9B4FDE] bg-[#9B4FDE]/10 text-white" : "border-white/10 text-gray-400 hover:border-white/30"
+            }`}
+          >
+            1-WEEK TRIAL
+          </button>
+        </div>
+      )}
+
       <div>
-        <div className="text-xs text-gray-500 mb-1">Pro-rata for {weeksRemaining} week{weeksRemaining === 1 ? "" : "s"}</div>
-        <div className="font-heading text-3xl text-[#9B4FDE]">{formatCents(total)}</div>
-        <div className="text-xs text-gray-500">{formatCents(perWeekCents)}/week. Whole-term commitment.</div>
+        {plan === "term" ? (
+          <>
+            <div className="text-xs text-gray-500 mb-1">Pro-rata for {weeksRemaining} week{weeksRemaining === 1 ? "" : "s"}</div>
+            <div className="font-heading text-3xl text-[#9B4FDE]">{formatCents(total)}</div>
+            <div className="text-xs text-gray-500">{formatCents(perWeekCents)}/week. Whole-term commitment.</div>
+          </>
+        ) : (
+          <>
+            <div className="text-xs text-gray-500 mb-1">1-week trial</div>
+            <div className="font-heading text-3xl text-[#9B4FDE]">{formatCents(TRIAL_PRICE_CENTS)}</div>
+            <div className="text-xs text-gray-500">Fully credited toward term enrolment if you join, so it&apos;s risk-free. Limit one trial per player.</div>
+          </>
+        )}
       </div>
 
       {!open && (
@@ -113,7 +148,7 @@ export function TermEnrolForm({
           className="w-full bg-[#9B4FDE] hover:bg-[#7d3fb8] text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
           disabled={weeksRemaining === 0}
         >
-          {weeksRemaining === 0 ? "TERM HAS ENDED" : "ENROL NOW"}
+          {weeksRemaining === 0 ? "TERM HAS ENDED" : plan === "trial" ? "BOOK 1-WEEK TRIAL" : "ENROL NOW"}
         </button>
       )}
 
