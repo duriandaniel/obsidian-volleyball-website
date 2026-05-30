@@ -8,15 +8,15 @@ interface TrackedBookingLinkProps {
   className?: string;
   children: React.ReactNode;
   /**
-   * Optional Acuity URL override. If omitted, falls back to the default
-   * Acuity page (NEXT_PUBLIC_ACUITY_URL env var, then root domain).
-   * Use this to deep-link into a specific appointment type or category.
+   * Optional href override. If omitted, sends to the on-site booking funnel
+   * (/booking). Pass a deep-link (e.g. "/booking/term/adult") to skip a step,
+   * or an external Acuity URL for flows not yet on the new system (free trials).
    */
   href?: string;
 }
 
-const DEFAULT_ACUITY_URL =
-  process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me";
+// Default: the new on-site booking funnel.
+const DEFAULT_BOOKING_URL = "/booking";
 
 export default function TrackedBookingLink({
   tier = "general",
@@ -25,11 +25,12 @@ export default function TrackedBookingLink({
   children,
   href,
 }: TrackedBookingLinkProps) {
+  const target = href || DEFAULT_BOOKING_URL;
+  const external = /^https?:\/\//.test(target);
   return (
     <a
-      href={href || DEFAULT_ACUITY_URL}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={target}
+      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       className={className}
       onClick={() => trackBookingClick(tier, location)}
     >

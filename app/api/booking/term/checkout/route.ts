@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
+import { isAdultProgram } from "@/lib/booking/audience";
 
 const Body = z.object({
   program_id: z.string().regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i),
@@ -37,13 +38,15 @@ export async function POST(req: NextRequest) {
   // Load program + pricing rule + remaining sessions
   const { data: program } = await sb
     .from("programs")
-    .select("id, slug, title, type, status, default_capacity, pricing_rule_id, venue_id")
+    .select("id, slug, title, type, status, default_capacity, pricing_rule_id, venue_id, age_min")
     .eq("id", body.program_id)
     .is("deleted_at", null)
     .maybeSingle();
   if (!program) return NextResponse.json({ error: "Program not found" }, { status: 404 });
   if (program.type !== "term") return NextResponse.json({ error: "Program is not a term program" }, { status: 400 });
   if (program.status !== "published") return NextResponse.json({ error: "Program not open" }, { status: 400 });
+  // Adult scrims are drop-in (per-night) — they must use /api/booking/dropin/checkout.
+  if (isAdultProgram(program)) return NextResponse.json({ error: "This is a drop-in program" }, { status: 400 });
 
   const { data: rule } = await sb
     .from("pricing_rules")

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase/server";
+import { isAdultProgram } from "@/lib/booking/audience";
 import { TermEnrolForm } from "./TermEnrolForm";
 
 export const metadata: Metadata = {
@@ -24,6 +25,9 @@ export default async function TermProgramPage({ params }: { params: Promise<{ sl
     .is("deleted_at", null)
     .maybeSingle();
   if (!program) notFound();
+
+  // Adults book per-night through the drop-in flow, not the term enrol form.
+  if (isAdultProgram(program)) redirect(`/booking/term/adult/${program.slug}`);
 
   const [{ data: venue }, { data: rule }, { data: sessions }] = await Promise.all([
     sb.from("venues").select("name, address").eq("id", program.venue_id).maybeSingle(),
@@ -57,17 +61,11 @@ export default async function TermProgramPage({ params }: { params: Promise<{ sl
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white pt-24 pb-16">
       <div className="max-w-4xl mx-auto px-6">
-        <Link href="/booking/term" className="text-xs text-gray-500 hover:text-white tracking-wider uppercase">← All term programs</Link>
-        <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mt-4 mb-3">{program.season ?? "TERM PROGRAM"}</p>
-        <h1 className="font-heading text-4xl mb-3">{program.title}</h1>
-        <div className="text-gray-400 space-y-1 mb-6">
-          <div>{venue ? (venue.address ? `${venue.name}, ${venue.address}` : venue.name) : "Venue TBA"}</div>
-          {program.skill_level && <div className="uppercase text-xs tracking-wider">{program.skill_level}</div>}
-          {program.age_min && program.age_max && <div className="text-xs">Ages {program.age_min} to {program.age_max}</div>}
+        <Link href="/booking/term/junior" className="text-xs text-gray-500 hover:text-white tracking-wider uppercase">← All classes</Link>
+        <h1 className="font-heading text-4xl mt-4 mb-2">{program.title}</h1>
+        <div className="text-gray-400 mb-8">
+          {venue ? (venue.address ? `${venue.name}, ${venue.address}` : venue.name) : "Venue TBA"}
         </div>
-        {program.description && (
-          <p className="text-gray-300 mb-8 whitespace-pre-line">{program.description}</p>
-        )}
 
         <div className="grid gap-8 md:grid-cols-[1fr_320px]">
           <div>

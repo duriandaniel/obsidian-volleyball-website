@@ -3,17 +3,15 @@
 import { usePathname } from "next/navigation";
 import { trackBookingClick } from "@/lib/tracking";
 
-const ACUITY_URL =
-  process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me";
+// New junior players land on the on-site junior class funnel.
+const BOOKING_URL = "/booking/term/junior";
 
 export default function PromoBanner() {
   const pathname = usePathname();
   if (pathname?.startsWith("/admin") || pathname?.startsWith("/booking")) return null;
   return (
     <a
-      href={ACUITY_URL}
-      target="_blank"
-      rel="noopener noreferrer"
+      href={BOOKING_URL}
       onClick={() => trackBookingClick("general", "promo_banner")}
       className="fixed top-0 left-0 right-0 z-[60] block bg-[#5C1F94] hover:bg-[#7B2FBE] transition-colors duration-300 border-b border-white/10"
     >

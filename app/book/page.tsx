@@ -3,12 +3,12 @@
 import { useEffect } from "react";
 import { trackBookingClick } from "@/lib/tracking";
 
-const ACUITY_URL = process.env.NEXT_PUBLIC_ACUITY_URL || "https://obsidianvolleyball.as.me";
+const BOOKING_URL = "/booking";
 
 export default function BookPage() {
   useEffect(() => {
     trackBookingClick("general", "book_page");
-    window.location.href = ACUITY_URL;
+    window.location.href = BOOKING_URL;
   }, []);
 
   return (
@@ -18,7 +18,7 @@ export default function BookPage() {
         <h1 className="font-heading text-4xl text-white tracking-wide mb-4">Taking you to booking...</h1>
         <p className="text-gray-500 text-sm">
           If you&apos;re not redirected,{" "}
-          <a href={ACUITY_URL} className="text-[#9B4FDE] hover:text-white transition-colors">
+          <a href={BOOKING_URL} className="text-[#9B4FDE] hover:text-white transition-colors">
             click here
           </a>
         </p>

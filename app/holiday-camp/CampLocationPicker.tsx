@@ -265,6 +265,7 @@ function BaulkhamContent() {
                 <li className="flex items-center gap-2"><span className="text-[#9B4FDE]">+</span> No commitment required</li>
               </ul>
               <TrackedBookingLink
+                href="/booking/camps"
                 tier="single_day"
                 location="pricing_single"
                 className="block border border-white/20 text-white font-heading text-lg px-6 py-3 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
@@ -288,6 +289,7 @@ function BaulkhamContent() {
                 <li className="flex items-center gap-2"><span className="text-[#9B4FDE]">+</span> Save $50 vs single days</li>
               </ul>
               <TrackedBookingLink
+                href="/booking/camps"
                 tier="5_day_pack"
                 location="pricing_package"
                 className="block bg-[#7B2FBE] text-white font-heading text-lg px-6 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-purple"
@@ -307,6 +309,7 @@ function BaulkhamContent() {
                 <li className="flex items-center gap-2"><span className="text-[#9B4FDE]">+</span> 2 hours of coaching</li>
               </ul>
               <TrackedBookingLink
+                href="/booking/camps"
                 tier="half_day"
                 location="pricing_half"
                 className="block border border-white/20 text-white font-heading text-lg px-6 py-3 hover:border-[#9B4FDE] hover:text-[#9B4FDE] transition-all duration-300 tracking-wide text-center"
@@ -384,6 +387,7 @@ function BaulkhamContent() {
           </h2>
           <p className="text-gray-500 mb-10 leading-relaxed">Holiday camps fill fast. Book early to guarantee a spot.</p>
           <TrackedBookingLink
+            href="/booking/camps"
             location="camp_cta"
             className="inline-block bg-[#7B2FBE] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
           >

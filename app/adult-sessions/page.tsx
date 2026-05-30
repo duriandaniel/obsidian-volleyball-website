@@ -28,8 +28,8 @@ export const metadata: Metadata = {
   },
 };
 
-const ACUITY_ADULT_URL =
-  "https://obsidianvolleyball.as.me/schedule/c027025f/category/Adult%20Sessions";
+// On-site booking funnel, deep-linked straight to the adult drop-in flow.
+const ACUITY_ADULT_URL = "/booking/term/adult";
 
 export default function AdultSessionsPage() {
   return (

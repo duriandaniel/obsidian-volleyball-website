@@ -88,6 +88,7 @@ export default function HolidayCampPage() {
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
                   <TrackedBookingLink
+                    href="/booking/camps"
                     location="camp_hero"
                     className="bg-[#7B2FBE] text-white font-heading text-xl px-8 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-purple"
                   >
