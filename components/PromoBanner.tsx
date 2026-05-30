@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { trackBookingClick } from "@/lib/tracking";
 
@@ -10,7 +11,7 @@ export default function PromoBanner() {
   const pathname = usePathname();
   if (pathname?.startsWith("/admin") || pathname?.startsWith("/booking")) return null;
   return (
-    <a
+    <Link
       href={BOOKING_URL}
       onClick={() => trackBookingClick("general", "promo_banner")}
       className="fixed top-0 left-0 right-0 z-[60] block bg-[#5C1F94] hover:bg-[#7B2FBE] transition-colors duration-300 border-b border-white/10"
@@ -33,6 +34,6 @@ export default function PromoBanner() {
           </span>
         </p>
       </div>
-    </a>
+    </Link>
   );
 }

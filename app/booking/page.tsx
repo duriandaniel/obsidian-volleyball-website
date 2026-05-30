@@ -16,9 +16,9 @@ export default function BookingHomePage() {
         </h1>
 
         <div className="grid gap-5 sm:grid-cols-3">
-          <BookingBox href="/booking/camps" eyebrow="HOLIDAY" label="Holiday Camp" />
-          <BookingBox href="/booking/term/junior" eyebrow="AGES 8–18" label="Junior Weekly Classes" />
-          <BookingBox href="/booking/adult" eyebrow="18+ DROP-IN" label="Adult Sessions" />
+          <BookingBox href="/booking/camps" eyebrow="JUNIORS" label="Holiday Camp" />
+          <BookingBox href="/booking/term/junior" eyebrow="JUNIORS" label="Weekly Classes" />
+          <BookingBox href="/booking/adult" eyebrow="ADULTS" label="Social Scrim" />
         </div>
 
         <div className="mt-12 text-center text-sm text-gray-500">
@@ -37,7 +37,7 @@ function BookingBox({ href, eyebrow, label }: { href: string; eyebrow: string; l
       href={href}
       className="flex flex-col items-center justify-center text-center bg-white/[0.04] border border-white/10 hover:border-[#9B4FDE]/50 rounded-xl py-14 px-5 min-h-[180px]"
     >
-      <div className="text-[#9B4FDE] font-heading text-xs tracking-[0.35em] mb-3">{eyebrow}</div>
+      <div className="text-[#9B4FDE] font-heading text-lg sm:text-xl tracking-[0.25em] mb-3">{eyebrow}</div>
       <div className="font-heading text-2xl leading-tight">{label}</div>
     </Link>
   );

@@ -4,7 +4,7 @@ import SectionReveal from "@/components/SectionReveal";
 export const metadata: Metadata = {
   title: "Contact | Obsidian Volleyball Academy Sydney",
   description:
-    "Get in touch with Obsidian Volleyball Academy. Term programs in West Ryde, holiday camps in Baulkham Hills. Email, Instagram, or book directly.",
+    "Get in touch with Obsidian Volleyball Academy. Term programs in West Ryde, holiday camps in Baulkham Hills. Email or Instagram.",
   alternates: { canonical: "/contact" },
 };
 
@@ -20,12 +20,6 @@ const contactMethods = [
     value: "@obsidianvolleyball",
     href: "https://instagram.com/obsidianvolleyball",
     description: "DM us for quick questions or follow for updates",
-  },
-  {
-    label: "BOOK DIRECTLY",
-    value: "obsidianvolleyball.as.me",
-    href: "https://obsidianvolleyball.as.me",
-    description: "Browse programs and book a session instantly",
   },
 ];
 

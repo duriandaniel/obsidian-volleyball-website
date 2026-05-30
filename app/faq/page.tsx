@@ -43,8 +43,8 @@ const faqCategories = [
         a: "We accept credit/debit cards through our secure Stripe payment system. Payment is processed at the time of booking.",
       },
       {
-        q: "What is your refund policy?",
-        a: "Contact us at obsidianvolleyball@gmail.com for refund enquiries. We handle refunds on a case-by-case basis and aim to be fair and flexible.",
+        q: "What is your refund and reschedule policy?",
+        a: "Adult social sessions are non-refundable and non-reschedulable. For junior sessions, refunds and reschedules are handled on a case-by-case basis. Please contact us at obsidianvolleyball@gmail.com and we'll do our best to help you.",
       },
     ],
   },
