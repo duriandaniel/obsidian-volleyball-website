@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = 30; // ISR: cached + prefetchable; capacity re-checked at checkout (DB trigger)
 
 const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 function classLabel(title: string): string {

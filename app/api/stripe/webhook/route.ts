@@ -473,7 +473,7 @@ async function handleTrialCheckoutCompleted(session: Stripe.Checkout.Session) {
         <h2 style="color: #7E57C2; margin-bottom: 8px;">Trial booked.</h2>
         <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
         <p>Thanks for booking a trial class.</p>
-        <p>Here's your trial session:</p>
+        <p>Here's your trial class:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${when}</p>
         <p><strong>Venue:</strong> ${venueHtml(venueName)}</p>
         <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
@@ -700,7 +700,7 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
       <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
         <h2 style="color: #7E57C2;">You're enrolled.</h2>
         <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
-        <p>Thanks for enrolling in ${program?.title ?? "the term program"}. Here are your sessions:</p>
+        <p>Thanks for enrolling in ${program?.title ?? "the term program"}. Here are your classes this term:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${dayList}</p>
         <p><strong>Venue:</strong> ${venueHtml(venueName)}<br>
            ${classTime ? `<strong>Time:</strong> ${classTime}<br>` : ""}
@@ -713,6 +713,6 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
-    text: `You're enrolled in ${program?.title ?? "the term program"}.\n\nSessions: ${(sessionRows ?? []).length} weeks${classTime ? `\nTime: ${classTime}` : ""}\nVenue: ${venueName}\nTotal paid: $${(total / 100).toFixed(2)}\n\nQuestions or changes? Just reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
+    text: `You're enrolled in ${program?.title ?? "the term program"}.\n\nClasses this term: ${(sessionRows ?? []).length}${classTime ? `\nTime: ${classTime}` : ""}\nVenue: ${venueName}\nTotal paid: $${(total / 100).toFixed(2)}\n\nQuestions or changes? Just reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
   });
 }

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 // Always render at request time so we read live capacity from the DB.
-export const dynamic = "force-dynamic";
+export const revalidate = 30; // ISR: cached + prefetchable; capacity re-checked at checkout (DB trigger)
 
 export type CampSessionView = {
   id: string;

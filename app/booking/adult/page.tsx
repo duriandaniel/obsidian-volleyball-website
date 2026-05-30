@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = 30; // ISR: cached + prefetchable; capacity re-checked at checkout (DB trigger)
 
 export default async function AdultSessionsPage() {
   const sessions = await loadAdultSessions();

@@ -18,13 +18,13 @@ export default async function TermSuccessPage({
         <div className="text-5xl mb-6">✓</div>
         <h1 className="font-heading text-4xl mb-4">You&apos;re enrolled.</h1>
         <p className="text-gray-400 mb-8">
-          Payment received. A confirmation email with all your session dates is on its way.
+          Payment received. A confirmation email with all your class dates is on its way.
         </p>
         {sp.session_id && <p className="text-xs text-gray-600 mb-8">Stripe ref: {sp.session_id}</p>}
         <div className="border border-white/10 rounded-lg p-6 text-left text-sm text-gray-400 mb-8">
           <h2 className="font-heading text-white text-lg mb-3">What to expect</h2>
           <ul className="space-y-2">
-            <li>The confirmation email lists every session date for the term.</li>
+            <li>The confirmation email lists every class date for the term.</li>
             <li>Wear suitable indoor court shoes and your Obsidian Volleyball training jersey. We provide all volleyball gear.</li>
             <li>Questions or changes? Just reply to your confirmation email and we&apos;ll help.</li>
           </ul>

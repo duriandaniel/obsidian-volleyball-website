@@ -8,80 +8,36 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export const dynamic = "force-dynamic";
+export const revalidate = 30; // ISR: cached + prefetchable; capacity re-checked at checkout (DB trigger)
 
-const groupKey = (p: TermProgram) =>
-  `${p.first_session_at ? weekday(p.first_session_at) : "TBA"}__${p.venue_id}`;
-const groupLabel = (p: TermProgram) =>
-  `${p.first_session_at ? weekday(p.first_session_at) : "Day TBA"} · ${p.venue_name}`;
-
-export default async function JuniorClassesPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ g?: string }>;
-}) {
-  const { g } = await searchParams;
-  const all = (await loadTermPrograms()).filter((p) => !p.is_adult);
-
-  // Distinct day+venue groups
-  const groups = new Map<string, TermProgram[]>();
-  for (const p of all) {
-    const k = groupKey(p);
-    if (!groups.has(k)) groups.set(k, []);
-    groups.get(k)!.push(p);
-  }
-  const keys = Array.from(groups.keys());
-
-  // Auto-skip: with a single day+venue, go straight to its classes.
-  const activeKey = keys.length === 1 ? keys[0] : g && groups.has(g) ? g : null;
+export default async function JuniorClassesPage() {
+  const all = (await loadTermPrograms())
+    .filter((p) => !p.is_adult)
+    .sort((a, b) => (a.first_session_at ?? "").localeCompare(b.first_session_at ?? ""));
+  const sub = all[0]
+    ? [all[0].first_session_at ? weekday(all[0].first_session_at) : "", all[0].venue_name].filter(Boolean).join(" · ")
+    : "";
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white pt-24 pb-16">
       <div className="max-w-2xl mx-auto px-6">
-        <Link
-          href={activeKey && keys.length > 1 ? "/booking/term/junior" : "/booking"}
-          className="text-xs text-gray-500 hover:text-white tracking-wider uppercase"
-        >
-          ← Back
-        </Link>
+        <Link href="/booking" className="text-xs text-gray-500 hover:text-white tracking-wider uppercase">← Back</Link>
 
         {all.length === 0 ? (
           <Empty />
-        ) : activeKey ? (
-          <ClassList programs={groups.get(activeKey)!} heading={groupLabel(groups.get(activeKey)![0])} />
         ) : (
           <>
-            <h1 className="font-heading text-3xl tracking-wide mt-4 mb-8 text-center">Pick a day</h1>
-            <div className="grid gap-4">
-              {keys.map((k) => (
-                <Link
-                  key={k}
-                  href={`/booking/term/junior?g=${encodeURIComponent(k)}`}
-                  className="border border-[#7E57C2]/30 hover:border-[#7E57C2] rounded-xl py-10 text-center font-heading text-2xl transition-colors"
-                >
-                  {groupLabel(groups.get(k)![0])}
-                </Link>
+            <h1 className="font-heading text-3xl tracking-wide mt-4 mb-1 text-center">Pick a class</h1>
+            {sub && <p className="text-center text-sm text-gray-500 mb-8">{sub}</p>}
+            <div className="grid gap-3">
+              {all.map((p) => (
+                <ClassRow key={p.id} program={p} />
               ))}
             </div>
           </>
         )}
       </div>
     </div>
-  );
-}
-
-function ClassList({ programs, heading }: { programs: TermProgram[]; heading: string }) {
-  const sorted = [...programs].sort((a, b) => (a.first_session_at ?? "").localeCompare(b.first_session_at ?? ""));
-  return (
-    <>
-      <h1 className="font-heading text-3xl tracking-wide mt-4 mb-1 text-center">Pick a class</h1>
-      <p className="text-center text-sm text-gray-500 mb-8">{heading}</p>
-      <div className="grid gap-3">
-        {sorted.map((p) => (
-          <ClassRow key={p.id} program={p} />
-        ))}
-      </div>
-    </>
   );
 }
 
