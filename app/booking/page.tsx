@@ -15,9 +15,10 @@ export default function BookingHomePage() {
           What would you like to book?
         </h1>
 
-        <div className="grid gap-5 sm:grid-cols-2">
-          <BookingBox href="/booking/camps" eyebrow="HOLIDAY" label="Camp" />
-          <BookingBox href="/booking/term" eyebrow="EVERY WEEK" label="Weekly Classes" />
+        <div className="grid gap-5 sm:grid-cols-3">
+          <BookingBox href="/booking/camps" eyebrow="HOLIDAY" label="Holiday Camp" />
+          <BookingBox href="/booking/term/junior" eyebrow="AGES 8–18" label="Junior Weekly Classes" />
+          <BookingBox href="/booking/term/adult" eyebrow="18+ DROP-IN" label="Adult Sessions" />
         </div>
 
         <div className="mt-12 text-center text-sm text-gray-500">
@@ -34,10 +35,10 @@ function BookingBox({ href, eyebrow, label }: { href: string; eyebrow: string; l
   return (
     <Link
       href={href}
-      className="flex flex-col items-center justify-center text-center border border-[#9B4FDE]/30 hover:border-[#9B4FDE] hover:bg-white/[0.02] rounded-xl py-16 px-6 transition-colors"
+      className="flex flex-col items-center justify-center text-center bg-white/[0.04] border border-white/10 hover:border-[#9B4FDE]/50 rounded-xl py-14 px-5 min-h-[180px]"
     >
       <div className="text-[#9B4FDE] font-heading text-xs tracking-[0.35em] mb-3">{eyebrow}</div>
-      <div className="font-heading text-3xl">{label}</div>
+      <div className="font-heading text-2xl leading-tight">{label}</div>
     </Link>
   );
 }
