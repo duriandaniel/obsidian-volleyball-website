@@ -5,27 +5,27 @@ import LevelPicker, { type Venue, type LevelInfo } from "./LevelPicker";
 import TrackPixelView from "@/components/TrackPixelView";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 
-const TRIAL_URL = "/booking/term/junior";
+const TRIAL_URL = "/booking/trial";
 
 export const metadata: Metadata = {
   title:
     "Junior Classes | West Ryde Volleyball Sydney | Obsidian Volleyball Academy",
   description:
-    "Premium junior volleyball classes every Friday at Bennelong Sports Centre, West Ryde. Beginner, intermediate, and advanced sessions for ages 8 to 18. Now launching with 20% off and a free training shirt.",
+    "Premium junior volleyball classes every Friday at Obsidian Volleyball Academy West Ryde. Beginner, intermediate, and advanced sessions for ages 8 to 18. Now launching with 20% off and a free training shirt.",
   keywords: [
     "junior volleyball West Ryde",
     "junior volleyball classes Sydney",
     "volleyball lessons West Ryde",
     "junior volleyball coaching Sydney",
     "kids volleyball Sydney",
-    "volleyball Bennelong Sports Centre",
+    "Obsidian Volleyball Academy West Ryde",
   ],
   alternates: { canonical: "/term-programs" },
   openGraph: {
     title:
       "Junior Classes | West Ryde Volleyball Sydney | Obsidian Volleyball Academy",
     description:
-      "Premium junior volleyball classes every Friday at Bennelong Sports Centre, West Ryde.",
+      "Premium junior volleyball classes every Friday at Obsidian Volleyball Academy West Ryde.",
     images: ["/images/gallery-spike.jpg"],
     url: "/term-programs",
   },
@@ -54,7 +54,7 @@ const ACUITY = {
 const VENUES: Venue[] = [
   {
     id: "bennelong",
-    name: "Bennelong Sports Centre",
+    name: "Obsidian Volleyball Academy West Ryde",
     suburb: "West Ryde",
     day: "Friday",
     slots: [
@@ -102,7 +102,7 @@ const courseSchema = {
   "@type": "Course",
   name: "Junior Classes | Obsidian Volleyball Academy",
   description:
-    "Junior volleyball classes at Bennelong Sports Centre, West Ryde. Premium coaching every Friday for ages 8 to 18.",
+    "Junior volleyball classes at Obsidian Volleyball Academy West Ryde. Premium coaching every Friday for ages 8 to 18.",
   provider: {
     "@type": "SportsOrganization",
     name: "Obsidian Volleyball Academy",
@@ -145,7 +145,7 @@ export default function JuniorClassesPage() {
               href={TRIAL_URL}
               className="inline-block bg-[#7B2FBE] text-white font-heading text-xl sm:text-2xl px-9 py-4 hover:bg-[#9B4FDE] transition-all duration-300 tracking-wide glow-purple"
             >
-              BOOK A 1-WEEK TRIAL
+              BOOK A TRIAL
             </TrackedBookingLink>
           </SectionReveal>
         </div>
@@ -169,7 +169,7 @@ export default function JuniorClassesPage() {
               <div className="aspect-[4/3] relative overflow-hidden border border-white/[0.08]">
                 <Image
                   src="/images/bennelong-courtyard.png"
-                  alt="Bennelong Sports Centre indoor courts, West Ryde"
+                  alt="Obsidian Volleyball Academy West Ryde indoor courts, West Ryde"
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 55vw"
@@ -181,10 +181,10 @@ export default function JuniorClassesPage() {
             <SectionReveal delay={0.15}>
               <div>
                 <p className="text-[#9B4FDE] font-heading text-sm tracking-[0.4em] mb-3">THE VENUE</p>
-                <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide leading-[0.95] mb-6">
-                  BENNELONG
+                <h2 className="font-heading text-3xl lg:text-5xl text-white tracking-wide leading-[0.95] mb-6">
+                  OBSIDIAN VOLLEYBALL
                   <br />
-                  <span className="text-[#9B4FDE]">SPORTS CENTRE</span>
+                  <span className="text-[#9B4FDE]">ACADEMY WEST RYDE</span>
                 </h2>
                 <p className="text-gray-400 text-base leading-relaxed mb-4">
                   State-of-the-art indoor volleyball courts in West Ryde,
@@ -192,7 +192,7 @@ export default function JuniorClassesPage() {
                   every Friday during the school term.
                 </p>
                 <p className="text-gray-500 text-sm">
-                  Bennelong Sports Centre &middot; West Ryde, NSW
+                  Obsidian Volleyball Academy &middot; West Ryde, NSW
                 </p>
               </div>
             </SectionReveal>

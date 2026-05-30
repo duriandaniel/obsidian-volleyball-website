@@ -43,14 +43,16 @@ export function TermEnrolForm({
   programTitle,
   perWeekCents,
   weeksRemaining,
+  defaultPlan = "term",
 }: {
   programId: string;
   programTitle: string;
   perWeekCents: number;
   weeksRemaining: number;
+  defaultPlan?: "term" | "trial";
 }) {
   const [open, setOpen] = useState(false);
-  const [plan, setPlan] = useState<"term" | "trial">("term");
+  const [plan, setPlan] = useState<"term" | "trial">(defaultPlan);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -120,7 +122,7 @@ export function TermEnrolForm({
               plan === "trial" ? "border-[#9B4FDE] bg-[#9B4FDE]/10 text-white" : "border-white/10 text-gray-400 hover:border-white/30"
             }`}
           >
-            1-WEEK TRIAL
+            TRIAL CLASS
           </button>
         </div>
       )}
@@ -134,7 +136,7 @@ export function TermEnrolForm({
           </>
         ) : (
           <>
-            <div className="text-xs text-gray-500 mb-1">1-week trial</div>
+            <div className="text-xs text-gray-500 mb-1">Trial class</div>
             <div className="font-heading text-3xl text-[#9B4FDE]">{formatCents(TRIAL_PRICE_CENTS)}</div>
             <div className="text-xs text-gray-500">Fully credited toward term enrolment if you join, so it&apos;s risk-free. Limit one trial per player.</div>
           </>
@@ -148,7 +150,7 @@ export function TermEnrolForm({
           className="w-full bg-[#9B4FDE] hover:bg-[#7d3fb8] text-white font-heading text-sm tracking-[0.2em] py-3 rounded transition-colors"
           disabled={weeksRemaining === 0}
         >
-          {weeksRemaining === 0 ? "TERM HAS ENDED" : plan === "trial" ? "BOOK 1-WEEK TRIAL" : "ENROL NOW"}
+          {weeksRemaining === 0 ? "TERM HAS ENDED" : plan === "trial" ? "BOOK A TRIAL" : "ENROL NOW"}
         </button>
       )}
 

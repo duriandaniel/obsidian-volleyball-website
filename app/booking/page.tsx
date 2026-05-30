@@ -15,9 +15,10 @@ export default function BookingHomePage() {
           What would you like to book?
         </h1>
 
-        <div className="grid gap-5 sm:grid-cols-3">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           <BookingBox href="/booking/camps" eyebrow="JUNIORS" label="Holiday Camp" />
           <BookingBox href="/booking/term/junior" eyebrow="JUNIORS" label="Weekly Classes" />
+          <BookingBox href="/booking/trial" eyebrow="JUNIORS" label="Trial Class" />
           <BookingBox href="/booking/adult" eyebrow="ADULTS" label="Social Scrim" />
         </div>
 

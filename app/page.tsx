@@ -5,13 +5,13 @@ import HomeSections from "@/components/HomeSections";
 export const metadata: Metadata = {
   title: "Junior Volleyball Coaching Sydney | West Ryde & Baulkham Hills | Obsidian Volleyball Academy",
   description:
-    "Premium junior volleyball coaching in Sydney. Friday term programs at Bennelong Sports Centre, West Ryde. School-holiday camps at Baulkham Hills High School. Ages 8 to 18.",
+    "Premium junior volleyball coaching in Sydney. Friday term programs at Obsidian Volleyball Academy West Ryde. School-holiday camps at Baulkham Hills High School. Ages 8 to 18.",
   keywords: [
     "junior volleyball Sydney",
     "volleyball coaching Sydney",
     "volleyball West Ryde",
     "volleyball Baulkham Hills",
-    "volleyball Bennelong Sports Centre",
+    "Obsidian Volleyball Academy West Ryde",
     "volleyball academy Sydney",
     "junior volleyball coaching Sydney",
     "kids volleyball Sydney",
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 const faqs = [
   {
     q: "Where do you run programs?",
-    a: "Term programs at Bennelong Sports Centre, West Ryde, every Friday. Holiday camps at Baulkham Hills High School.",
+    a: "Term programs at Obsidian Volleyball Academy West Ryde, every Friday. Holiday camps at Baulkham Hills High School.",
   },
   {
     q: "What age groups do you cater for?",
@@ -73,7 +73,7 @@ const eventSchema = {
     price: "200",
     priceCurrency: "AUD",
     availability: "https://schema.org/InStock",
-    url: "https://obsidianvolleyball.as.me",
+    url: "https://obsidianvolleyball.com/booking",
     description: "5-day camp package includes a free Obsidian training jersey",
   },
   audience: {

@@ -60,7 +60,7 @@ const campSchema = {
     price: "200",
     priceCurrency: "AUD",
     availability: "https://schema.org/InStock",
-    url: "https://obsidianvolleyball.as.me",
+    url: "https://obsidianvolleyball.com/booking/camps",
     description: "5-day camp package includes a free Obsidian training jersey.",
   },
 };

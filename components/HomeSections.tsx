@@ -14,7 +14,7 @@ const FEATURED_REELS = [
 const faqs = [
   {
     q: "Where do you run programs?",
-    a: "Term programs at Bennelong Sports Centre, West Ryde, every Friday. Holiday camps at Baulkham Hills High School.",
+    a: "Term programs at Obsidian Volleyball Academy West Ryde, every Friday. Holiday camps at Baulkham Hills High School.",
   },
   {
     q: "What age groups do you cater for?",
@@ -85,7 +85,7 @@ export default function HomeSections() {
                 </h2>
                 <p className="text-gray-400 leading-relaxed">
                   Founded in 2025 to bring premium junior volleyball coaching to Sydney families.
-                  Now launching term programs at Bennelong Sports Centre, West Ryde, with holiday
+                  Now launching term programs at Obsidian Volleyball Academy West Ryde, with holiday
                   camps at Baulkham Hills High School.
                 </p>
               </div>
@@ -215,18 +215,18 @@ export default function HomeSections() {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-8 lg:gap-12">
             <SectionReveal>
               <div className="space-y-8">
-                {/* Bennelong Sports Centre - West Ryde (term programs) */}
+                {/* Obsidian Volleyball Academy West Ryde - West Ryde (term programs) */}
                 <div>
                   <p className="text-gray-500 text-[10px] font-heading tracking-[0.3em] uppercase mb-2">
                     Term programs &middot; West Ryde
                   </p>
-                  <h3 className="font-heading text-2xl text-[#9B4FDE] mb-3 tracking-wide">BENNELONG SPORTS CENTRE</h3>
+                  <h3 className="font-heading text-2xl text-[#9B4FDE] mb-3 tracking-wide">OBSIDIAN VOLLEYBALL ACADEMY</h3>
                   <address className="not-italic space-y-1 text-gray-300 text-sm">
-                    <p className="text-white text-base">Bennelong Sports Centre</p>
+                    <p className="text-white text-base">Obsidian Volleyball Academy West Ryde</p>
                     <p>West Ryde, NSW</p>
                   </address>
                   <a
-                    href="https://www.google.com/maps/search/?api=1&query=Bennelong+Sports+Centre+West+Ryde"
+                    href="https://www.google.com/maps/search/?api=1&query=Obsidian+Volleyball+Academy+West+Ryde"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-[#9B4FDE] text-xs font-medium hover:text-white transition-colors mt-3"
@@ -273,7 +273,7 @@ export default function HomeSections() {
             <SectionReveal delay={0.15}>
               <div className="aspect-[16/10] lg:aspect-auto lg:h-full min-h-[300px] overflow-hidden bg-[#111]">
                 <iframe
-                  src="https://www.google.com/maps?q=Bennelong+Sports+Centre+West+Ryde&output=embed"
+                  src="https://www.google.com/maps?q=Obsidian+Volleyball+Academy+West+Ryde&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2)" }}

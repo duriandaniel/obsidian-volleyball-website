@@ -24,9 +24,9 @@ const DEFAULTS = {
   titleLine1: "Term",
   titleLine2: "Programs",
   body:
-    "Premium junior volleyball coaching at Bennelong Sports Centre, West Ryde. Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open.",
-  primaryHref: "/booking/term/junior",
-  primaryLabel: "BOOK A 1-WEEK TRIAL",
+    "Premium junior volleyball coaching at Obsidian Volleyball Academy West Ryde. Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open.",
+  primaryHref: "/booking/trial",
+  primaryLabel: "BOOK A TRIAL",
   primaryLocation: "hero" as BookingLocation,
   primaryTier: "general" as BookingTier,
   secondaryHref: "/term-programs",

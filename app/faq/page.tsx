@@ -30,8 +30,12 @@ const faqCategories = [
         a: "Term program and holiday camp pricing is on the booking page. We're a premium club: small groups, expert coaches, structured curriculum. We're currently running a launch promotion for new players (20% off plus a free training shirt).",
       },
       {
+        q: "Can my child try a class first?",
+        a: "Yes. New players can book a Trial Class: one session of any junior weekly class for $25. It's fully credited toward term enrolment if you join, so it's risk-free. Limit one trial per player. Book it from the booking page.",
+      },
+      {
         q: "Do you run programs during school terms?",
-        a: "Yes. Junior classes run every Friday at Bennelong Sports Centre, West Ryde, in two 1.5-hour sessions (4:00–5:30 PM and 5:30–7:00 PM). Adult scrims run the same evening from 7:00–9:00 PM. Holiday camps run separately at Baulkham Hills High School during school holidays.",
+        a: "Yes. Junior classes run every Friday at Obsidian Volleyball Academy West Ryde, in two 1.5-hour sessions (4:00–5:30 PM and 5:30–7:00 PM). Adult scrims run the same evening from 7:00–9:00 PM. Holiday camps run separately at Baulkham Hills High School during school holidays.",
       },
     ],
   },
@@ -74,7 +78,7 @@ const faqCategories = [
     faqs: [
       {
         q: "Where do you run programs?",
-        a: "Term programs run every Friday at Bennelong Sports Centre, West Ryde. Holiday camps run at Baulkham Hills High School during school holiday periods. We are continuing to expand to additional Sydney locations.",
+        a: "Term programs run every Friday at Obsidian Volleyball Academy West Ryde. Holiday camps run at Baulkham Hills High School during school holiday periods. We are continuing to expand to additional Sydney locations.",
       },
       {
         q: "Are all the venues indoor?",

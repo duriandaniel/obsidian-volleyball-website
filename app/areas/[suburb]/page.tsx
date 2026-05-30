@@ -16,10 +16,10 @@ interface Suburb {
 
 const BENNELONG = {
   id: "bennelong" as const,
-  name: "Bennelong Sports Centre",
+  name: "Obsidian Volleyball Academy West Ryde",
   city: "West Ryde",
-  mapQuery: "Bennelong+Sports+Centre+West+Ryde",
-  mapTitle: "Bennelong Sports Centre, West Ryde",
+  mapQuery: "Obsidian+Volleyball+Academy+West+Ryde",
+  mapTitle: "Obsidian Volleyball Academy West Ryde",
   programLabel: "Term programs every Friday",
   programDetail:
     "Two indoor courts, four weekly classes (beginner, intermediate, advanced) every Friday from 4:00 to 7:00 PM.",
@@ -55,7 +55,7 @@ const suburbs: Suburb[] = [
     name: "Ryde",
     venue: "bennelong",
     drive: "3 minutes",
-    description: "Right next door. Ryde families are minutes from Bennelong Sports Centre.",
+    description: "Right next door. Ryde families are minutes from Obsidian Volleyball Academy West Ryde.",
   },
   {
     slug: "eastwood",
@@ -69,7 +69,7 @@ const suburbs: Suburb[] = [
     name: "Meadowbank",
     venue: "bennelong",
     drive: "5 minutes",
-    description: "An easy drive from Meadowbank to Bennelong Sports Centre.",
+    description: "An easy drive from Meadowbank to Obsidian Volleyball Academy West Ryde.",
   },
   {
     slug: "denistone",
@@ -90,7 +90,7 @@ const suburbs: Suburb[] = [
     name: "Putney",
     venue: "bennelong",
     drive: "7 minutes",
-    description: "A short drive from Putney to Bennelong Sports Centre, West Ryde.",
+    description: "A short drive from Putney to Obsidian Volleyball Academy West Ryde.",
   },
   {
     slug: "north-ryde",
@@ -104,7 +104,7 @@ const suburbs: Suburb[] = [
     name: "Marsfield",
     venue: "bennelong",
     drive: "8 minutes",
-    description: "From Marsfield, a quick drive south to Bennelong Sports Centre.",
+    description: "From Marsfield, a quick drive south to Obsidian Volleyball Academy West Ryde.",
   },
   {
     slug: "macquarie-park",
@@ -223,7 +223,7 @@ export function generateMetadata({ params }: { params: Promise<{ suburb: string 
       } | Obsidian Volleyball Academy`,
       description: isCamp
         ? `Junior volleyball holiday camps for ${data.name} families. School-holiday programs at Baulkham Hills High School for ages 8 to 18. ${data.drive} away.`
-        : `Junior volleyball coaching for ${data.name} families. Friday term programs at Bennelong Sports Centre, West Ryde, for ages 8 to 18. ${data.drive} away. Book now.`,
+        : `Junior volleyball coaching for ${data.name} families. Friday term programs at Obsidian Volleyball Academy West Ryde, for ages 8 to 18. ${data.drive} away. Book now.`,
       keywords: [
         `volleyball ${data.name.toLowerCase()}`,
         `junior volleyball ${data.name.toLowerCase()}`,
@@ -238,7 +238,7 @@ export function generateMetadata({ params }: { params: Promise<{ suburb: string 
         title: `Volleyball Coaching in ${data.name}`,
         description: isCamp
           ? `Junior volleyball camps ${data.drive} from ${data.name}. Baulkham Hills High School.`
-          : `Junior volleyball ${data.drive} from ${data.name}. Bennelong Sports Centre, West Ryde.`,
+          : `Junior volleyball ${data.drive} from ${data.name}. Obsidian Volleyball Academy West Ryde.`,
         url: `/areas/${data.slug}`,
         images: ["/images/hero.jpg"],
       },
@@ -309,7 +309,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
     : [
         {
           title: "TERM PROGRAMS",
-          desc: "Four 90-minute classes every Friday at Bennelong Sports Centre. Beginner, intermediate, advanced.",
+          desc: "Four 90-minute classes every Friday at Obsidian Volleyball Academy West Ryde. Beginner, intermediate, advanced.",
         },
         {
           title: "ALL SKILL LEVELS",
@@ -321,7 +321,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
         },
         {
           title: "INDOOR VENUE",
-          desc: "Two indoor courts at Bennelong Sports Centre. Climate-controlled, ample parking, sessions run rain or shine.",
+          desc: "Two indoor courts at Obsidian Volleyball Academy West Ryde. Climate-controlled, ample parking, sessions run rain or shine.",
         },
         {
           title: "PREMIUM COACHING",
@@ -354,7 +354,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
             <p className="text-gray-400 text-lg max-w-2xl leading-relaxed mb-10">
               {data.description} {isCamp
                 ? `Obsidian Volleyball Academy runs school-holiday camps at Baulkham Hills High School for juniors aged 8 to 18, from complete beginners to advanced players.`
-                : `Obsidian Volleyball Academy runs term programs every Friday at Bennelong Sports Centre, West Ryde, for juniors aged 8 to 18, from complete beginners to advanced players.`}
+                : `Obsidian Volleyball Academy runs term programs every Friday at Obsidian Volleyball Academy West Ryde, for juniors aged 8 to 18, from complete beginners to advanced players.`}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link

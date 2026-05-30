@@ -12,8 +12,16 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-export default async function TermProgramPage({ params }: { params: Promise<{ slug: string }> }) {
+export default async function TermProgramPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ slug: string }>;
+  searchParams: Promise<{ plan?: string }>;
+}) {
   const { slug } = await params;
+  const { plan } = await searchParams;
+  const defaultPlan = plan === "trial" ? "trial" : "term";
   const sb = supabaseAdmin();
 
   const { data: program } = await sb
@@ -119,6 +127,7 @@ export default async function TermProgramPage({ params }: { params: Promise<{ sl
                 programTitle={program.title}
                 perWeekCents={perWeekCents}
                 weeksRemaining={remainingSessions.length}
+                defaultPlan={defaultPlan}
               />
             )}
           </div>

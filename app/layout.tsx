@@ -27,12 +27,12 @@ export const metadata: Metadata = {
     template: "%s | Obsidian Volleyball Academy",
   },
   description:
-    "Premium junior volleyball academy in Sydney. Term programs at Bennelong Sports Centre, West Ryde. Holiday camps at Baulkham Hills.",
+    "Premium junior volleyball academy in Sydney. Term programs at Obsidian Volleyball Academy West Ryde. Holiday camps at Baulkham Hills.",
   keywords: [
     "volleyball academy Sydney",
     "junior volleyball Sydney",
     "volleyball West Ryde",
-    "volleyball Bennelong Sports Centre",
+    "Obsidian Volleyball Academy West Ryde",
     "junior volleyball coaching Sydney",
   ],
   openGraph: {
@@ -91,7 +91,7 @@ const localBusinessSchema = {
   "@id": `${SITE_URL}/#localbusiness`,
   name: "Obsidian Volleyball Academy",
   description:
-    "Premium junior volleyball academy in Sydney. Term programs every Friday at Bennelong Sports Centre, West Ryde, for ages 8 to 18.",
+    "Premium junior volleyball academy in Sydney. Term programs every Friday at Obsidian Volleyball Academy West Ryde, for ages 8 to 18.",
   url: SITE_URL,
   image: `${SITE_URL}/images/hero.jpg`,
   email: "obsidianvolleyball@gmail.com",

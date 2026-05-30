@@ -117,7 +117,7 @@ export default function AreasIndexPage() {
               <span className="text-[#9B4FDE]">AREAS</span>
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
-              Obsidian Volleyball Academy runs Friday term programs at Bennelong Sports Centre,
+              Obsidian Volleyball Academy runs Friday term programs at Obsidian Volleyball Academy West Ryde,
               West Ryde, and school-holiday camps at Baulkham Hills High School. Find your
               suburb and pick the venue closest to you.
             </p>
@@ -128,7 +128,7 @@ export default function AreasIndexPage() {
       <Cluster
         badge="WEST RYDE &middot; TERM PROGRAMS"
         title="INNER NORTH-WEST"
-        venueLine="Friday evening classes at Bennelong Sports Centre, West Ryde."
+        venueLine="Friday evening classes at Obsidian Volleyball Academy West Ryde."
         venueLink={{ href: "/west-ryde", label: "West Ryde venue" }}
         areas={rydeCluster}
       />

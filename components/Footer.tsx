@@ -80,7 +80,7 @@ export default function Footer() {
           <div>
             <h3 className="font-heading text-base text-gray-400 mb-4 tracking-[0.2em]">VENUES</h3>
             <ul className="not-italic text-gray-600 text-sm space-y-2 mb-6">
-              <li className="text-gray-400">Bennelong Sports Centre</li>
+              <li className="text-gray-400">Obsidian Volleyball Academy West Ryde</li>
               <li>West Ryde, NSW (term programs)</li>
               <li className="pt-2 text-gray-400">Baulkham Hills High School</li>
               <li>Baulkham Hills, NSW (holiday camps)</li>
