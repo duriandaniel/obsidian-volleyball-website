@@ -21,7 +21,7 @@ function venueHtml(name: string): string {
 // WhatsApp group invites. Fill these in to switch the join links on; empty =
 // the line is omitted from the email.
 const WHATSAPP_PARENTS_URL = "";
-const WHATSAPP_ADULTS_URL = "";
+const WHATSAPP_ADULTS_URL = "https://chat.whatsapp.com/CswUk6K61IE1N3sOxmAWbg";
 function whatsappHtml(url: string, who: string): string {
   return url
     ? `<p style="font-size: 13px; color: #666;">Join the ${who} WhatsApp group for updates and reminders: <a href="${url}" style="color:#7E57C2;">tap to join</a>.</p>`
@@ -598,7 +598,7 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
 
   const { data: sessionRows } = await sb
     .from("sessions")
-    .select("starts_at")
+    .select("starts_at, ends_at")
     .in("id", sessionIds)
     .order("starts_at");
   const dayList = (sessionRows ?? [])
@@ -611,6 +611,10 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
       })
     )
     .join("<br>");
+  const fmtT = (iso: string) =>
+    new Date(iso).toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit", timeZone: "Australia/Sydney" });
+  // All term sessions share the same weekly time, so show it once.
+  const classTime = sessionRows?.[0] ? `${fmtT(sessionRows[0].starts_at)} – ${fmtT(sessionRows[0].ends_at)}` : "";
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidian-booking-staging.vercel.app";
 
@@ -627,6 +631,7 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Thanks for enrolling in ${program?.title ?? "the term program"}. Here are your sessions:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${dayList}</p>
         <p><strong>Venue:</strong> ${venueHtml(venueName)}<br>
+           ${classTime ? `<strong>Time:</strong> ${classTime}<br>` : ""}
            <strong>Total paid:</strong> $${(total / 100).toFixed(2)} (${weeks} week${weeks === 1 ? "" : "s"} × $${(perWeekCents / 100).toFixed(2)})</p>
         <p>Wear suitable indoor court shoes and your Obsidian Volleyball training jersey. We provide all volleyball gear.</p>
         ${whatsappHtml(WHATSAPP_PARENTS_URL, "parents")}
@@ -636,6 +641,6 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
-    text: `You're enrolled in ${program?.title ?? "the term program"}.\n\nSessions: ${(sessionRows ?? []).length} weeks\nVenue: ${venueName}\nTotal paid: $${(total / 100).toFixed(2)}\n\nQuestions or changes? Just reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
+    text: `You're enrolled in ${program?.title ?? "the term program"}.\n\nSessions: ${(sessionRows ?? []).length} weeks${classTime ? `\nTime: ${classTime}` : ""}\nVenue: ${venueName}\nTotal paid: $${(total / 100).toFixed(2)}\n\nQuestions or changes? Just reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
   });
 }
