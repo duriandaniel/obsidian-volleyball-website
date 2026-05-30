@@ -15,7 +15,7 @@ const Body = z.object({
     last_name: z.string().min(1).max(100),
     email: z.string().email(),
     phone: z.string().min(5).max(40),
-    source: z.enum(["", "google", "instagram", "facebook", "word_of_mouth"]).optional(),
+    source: z.enum(["", "google", "instagram", "facebook", "word_of_mouth", "flyer", "newsletter"]).optional(),
   }),
   kid: z.object({
     first_name: z.string().min(1).max(100),

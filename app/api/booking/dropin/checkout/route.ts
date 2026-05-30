@@ -13,7 +13,7 @@ const Body = z.object({
     email: z.string().email(),
     phone: z.string().min(5).max(40),
     level: z.enum(["beginner", "social_player", "svl_player"]),
-    source: z.enum(["", "google", "instagram", "facebook", "word_of_mouth"]).optional(),
+    source: z.enum(["", "google", "instagram", "facebook", "word_of_mouth", "flyer", "newsletter"]).optional(),
     marketing_consent: z.literal(true, { message: "Marketing consent is required" }),
   }),
 });

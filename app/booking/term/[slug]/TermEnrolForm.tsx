@@ -9,7 +9,7 @@ type ParentForm = {
   last_name: string;
   email: string;
   phone: string;
-  source: "" | "google" | "instagram" | "facebook" | "word_of_mouth";
+  source: "" | "google" | "instagram" | "facebook" | "word_of_mouth" | "flyer" | "newsletter";
 };
 
 type KidForm = {
@@ -28,6 +28,8 @@ const SOURCE_OPTIONS = [
   { value: "instagram", label: "Instagram" },
   { value: "facebook", label: "Facebook" },
   { value: "word_of_mouth", label: "Word of mouth" },
+  { value: "flyer", label: "Flyer" },
+  { value: "newsletter", label: "Newsletter" },
 ];
 
 const YEAR_OPTIONS = [
@@ -218,15 +220,15 @@ export function TermEnrolForm({
               <Field label="Last name" value={kid.last_name} onChange={(v) => setKid({ ...kid, last_name: v })} required />
             </Row>
             <Row>
-              <Select label="Year at school" value={kid.year_at_school} onChange={(v) => setKid({ ...kid, year_at_school: v })} options={YEAR_OPTIONS} />
-              <Select label="Volleyball level" value={kid.volleyball_level} onChange={(v) => setKid({ ...kid, volleyball_level: v as KidForm["volleyball_level"] })} options={[
+              <Select label="Year at school" value={kid.year_at_school} onChange={(v) => setKid({ ...kid, year_at_school: v })} options={YEAR_OPTIONS} required />
+              <Select label="Volleyball level" value={kid.volleyball_level} onChange={(v) => setKid({ ...kid, volleyball_level: v as KidForm["volleyball_level"] })} required options={[
                 { value: "", label: "Select…" },
                 { value: "beginner", label: "Beginner" },
                 { value: "intermediate", label: "Intermediate" },
                 { value: "advanced", label: "Advanced" },
               ]} />
             </Row>
-            <Field label="School name" value={kid.school_name} onChange={(v) => setKid({ ...kid, school_name: v })} />
+            <Field label="School name" value={kid.school_name} onChange={(v) => setKid({ ...kid, school_name: v })} required />
             <TextArea label="Medical notes / allergies" value={kid.medical_notes} onChange={(v) => setKid({ ...kid, medical_notes: v })} placeholder="Optional. Anything coaches should know." />
             <Checkbox checked={kid.photo_consent} onChange={(v) => setKid({ ...kid, photo_consent: v })} label="I consent to photos/videos of my child being used on Obsidian Volleyball Academy social media and website." />
           </Fieldset>
@@ -272,11 +274,11 @@ function Field({ label, value, onChange, type = "text", required, placeholder }:
   );
 }
 
-function Select({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: { value: string; label: string }[] }) {
+function Select({ label, value, onChange, options, required }: { label: string; value: string; onChange: (v: string) => void; options: { value: string; label: string }[]; required?: boolean }) {
   return (
     <label className="block">
-      <span className="block text-xs text-gray-500 mb-1">{label}</span>
-      <select value={value} onChange={(e) => onChange(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2]">
+      <span className="block text-xs text-gray-500 mb-1">{label}{required && <span className="text-[#7E57C2]">*</span>}</span>
+      <select value={value} onChange={(e) => onChange(e.target.value)} required={required} className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2]">
         {options.map((o) => <option key={o.value} value={o.value} className="bg-[#0A0A0A]">{o.label}</option>)}
       </select>
     </label>

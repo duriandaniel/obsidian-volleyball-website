@@ -15,7 +15,7 @@ type AdultSession = {
 
 type Mode = "browsing" | "details" | "paying";
 type Level = "" | "beginner" | "social_player" | "svl_player";
-type Source = "" | "google" | "instagram" | "facebook" | "word_of_mouth";
+type Source = "" | "google" | "instagram" | "facebook" | "word_of_mouth" | "flyer" | "newsletter";
 
 const TZ = "Australia/Sydney";
 const fmtDate = (iso: string) =>
@@ -36,6 +36,8 @@ const SOURCES: { value: Source; label: string }[] = [
   { value: "instagram", label: "Instagram" },
   { value: "facebook", label: "Facebook" },
   { value: "word_of_mouth", label: "Word of mouth" },
+  { value: "flyer", label: "Flyer" },
+  { value: "newsletter", label: "Newsletter" },
 ];
 
 export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {

@@ -32,7 +32,7 @@ type ParentForm = {
   last_name: string;
   email: string;
   phone: string;
-  source: "" | "google" | "instagram" | "facebook" | "word_of_mouth";
+  source: "" | "google" | "instagram" | "facebook" | "word_of_mouth" | "flyer" | "newsletter";
 };
 
 const SOURCE_OPTIONS: { value: ParentForm["source"]; label: string }[] = [
@@ -41,6 +41,8 @@ const SOURCE_OPTIONS: { value: ParentForm["source"]; label: string }[] = [
   { value: "instagram", label: "Instagram" },
   { value: "facebook", label: "Facebook" },
   { value: "word_of_mouth", label: "Word of mouth" },
+  { value: "flyer", label: "Flyer" },
+  { value: "newsletter", label: "Newsletter" },
 ];
 
 const YEAR_OPTIONS = [
