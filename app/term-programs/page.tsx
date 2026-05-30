@@ -6,6 +6,7 @@ import TrackPixelView from "@/components/TrackPixelView";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 
 const TRIAL_URL = "/booking/trial";
+const MAPS_URL = "https://maps.app.goo.gl/eByotpKjs2mcs4AL8";
 
 export const metadata: Metadata = {
   title:
@@ -168,17 +169,19 @@ export default function JuniorClassesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-12 items-center">
             <SectionReveal>
-              <div className="aspect-[4/3] relative overflow-hidden border border-white/[0.08]">
-                <Image
-                  src="/images/bennelong-courtyard.png"
-                  alt="Obsidian Volleyball Academy West Ryde indoor courts, West Ryde"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 55vw"
-                  quality={85}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 via-transparent to-transparent" />
-              </div>
+              <a href={MAPS_URL} target="_blank" rel="noopener noreferrer" className="block group">
+                <div className="aspect-[4/3] relative overflow-hidden border border-white/[0.08]">
+                  <Image
+                    src="/images/bennelong-courtyard.png"
+                    alt="Obsidian Volleyball Academy West Ryde indoor courts"
+                    fill
+                    className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                    sizes="(max-width: 1024px) 100vw, 55vw"
+                    quality={85}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 via-transparent to-transparent" />
+                </div>
+              </a>
             </SectionReveal>
             <SectionReveal delay={0.15}>
               <div>
@@ -193,9 +196,21 @@ export default function JuniorClassesPage() {
                   climate-controlled, plenty of parking. Sessions run rain or shine,
                   every Friday during the school term.
                 </p>
-                <p className="text-gray-500 text-sm">
+                <p className="text-gray-500 text-sm mb-4">
                   Obsidian Volleyball Academy &middot; West Ryde, NSW
                 </p>
+                <a
+                  href={MAPS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-[#9B4FDE] hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                  <span>View on Google Maps</span>
+                </a>
               </div>
             </SectionReveal>
           </div>
