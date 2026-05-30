@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { loadTermPrograms, weekday, timeRange, type TermProgram } from "@/lib/booking/load";
+import { loadTermPrograms, weekday, type TermProgram } from "@/lib/booking/load";
 import { formatCents, formatSpotsLeft } from "@/lib/booking/pricing";
 
 export const metadata: Metadata = {
@@ -85,17 +85,25 @@ function ClassList({ programs, heading }: { programs: TermProgram[]; heading: st
   );
 }
 
+const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+// The group header already shows the day, so drop a leading weekday from the
+// title: "Friday Beginners 4-5:30pm" -> "Beginners 4-5:30pm".
+function classLabel(title: string): string {
+  for (const d of WEEKDAYS) {
+    if (title.startsWith(d + " ")) return title.slice(d.length + 1);
+  }
+  return title;
+}
+
 function ClassRow({ program: p }: { program: TermProgram }) {
   const soldOut = p.booked >= p.capacity;
   const total = p.per_week_cents * p.weeks_remaining;
-  const level = p.skill_level ? p.skill_level.charAt(0).toUpperCase() + p.skill_level.slice(1) : p.title;
-  const time = p.first_session_at ? timeRange(p.first_session_at, null) : null;
+  const label = classLabel(p.title);
 
   const inner = (
     <div className="flex items-center justify-between gap-4 px-5 py-5">
       <div>
-        <div className="font-heading text-xl">{level}</div>
-        {time && <div className="text-sm text-gray-400 mt-0.5">{time}</div>}
+        <div className="font-heading text-xl">{label}</div>
       </div>
       <div className="text-right">
         {soldOut ? (
