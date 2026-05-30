@@ -52,7 +52,7 @@ export function TermEnrolForm({
   defaultPlan?: "term" | "trial";
 }) {
   const [open, setOpen] = useState(false);
-  const [plan, setPlan] = useState<"term" | "trial">(defaultPlan);
+  const [plan] = useState<"term" | "trial">(defaultPlan);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -104,29 +104,6 @@ export function TermEnrolForm({
 
   return (
     <div className="border border-white/10 rounded-lg p-6 bg-white/[0.02] space-y-4">
-      {!clientSecret && (
-        <div className="grid grid-cols-2 gap-2">
-          <button
-            type="button"
-            onClick={() => setPlan("term")}
-            className={`rounded px-3 py-2 text-xs font-heading tracking-[0.15em] border transition-colors ${
-              plan === "term" ? "border-[#7E57C2] bg-[#7E57C2]/10 text-white" : "border-white/10 text-gray-400 hover:border-white/30"
-            }`}
-          >
-            FULL TERM
-          </button>
-          <button
-            type="button"
-            onClick={() => setPlan("trial")}
-            className={`rounded px-3 py-2 text-xs font-heading tracking-[0.15em] border transition-colors ${
-              plan === "trial" ? "border-[#7E57C2] bg-[#7E57C2]/10 text-white" : "border-white/10 text-gray-400 hover:border-white/30"
-            }`}
-          >
-            TRIAL CLASS
-          </button>
-        </div>
-      )}
-
       <div>
         {plan === "term" ? (
           <>

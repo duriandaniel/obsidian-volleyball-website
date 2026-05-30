@@ -12,10 +12,11 @@ export const dynamic = "force-dynamic";
 
 const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 function classLabel(title: string): string {
+  let t = title;
   for (const d of WEEKDAYS) {
-    if (title.startsWith(d + " ")) return title.slice(d.length + 1);
+    if (t.startsWith(d + " ")) { t = t.slice(d.length + 1); break; }
   }
-  return title;
+  return t.replace(/\s*\d.*$/, "").trim() || t;
 }
 
 export default async function TrialPage() {

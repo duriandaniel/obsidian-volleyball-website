@@ -4,7 +4,6 @@ import { useRef, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import SectionReveal from "@/components/SectionReveal";
-import TrackedBookingLink from "@/components/TrackedBookingLink";
 
 type LocationId = "baulkham" | "tba";
 
@@ -21,12 +20,6 @@ const LOCATIONS: LocationOption[] = [
     label: "Baulkham Hills",
     sub: "Sydney",
     available: true,
-  },
-  {
-    id: "tba",
-    label: "More venues coming",
-    sub: "TBA across Sydney",
-    available: false,
   },
 ];
 
@@ -264,14 +257,9 @@ function BaulkhamContent() {
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 9 AM &ndash; 1 PM</li>
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> No commitment required</li>
               </ul>
-              <TrackedBookingLink
-                href="/booking/camps"
-                tier="single_day"
-                location="pricing_single"
-                className="block border border-white/20 text-white font-heading text-lg px-6 py-3 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide text-center"
-              >
-                BOOK A DAY
-              </TrackedBookingLink>
+              <span className="block border border-white/10 text-gray-500 font-heading text-lg px-6 py-3 tracking-wide text-center">
+                OPENS SOON
+              </span>
             </div>
 
             {/* 5-Day Package */}
@@ -288,14 +276,9 @@ function BaulkhamContent() {
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 9 AM &ndash; 1 PM daily</li>
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Save $50 vs single days</li>
               </ul>
-              <TrackedBookingLink
-                href="/booking/camps"
-                tier="5_day_pack"
-                location="pricing_package"
-                className="block bg-[#5E35A8] text-white font-heading text-lg px-6 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-purple"
-              >
-                BOOK 5-DAY PACK
-              </TrackedBookingLink>
+              <span className="block bg-white/10 text-gray-400 font-heading text-lg px-6 py-4 tracking-wide text-center">
+                OPENS SOON
+              </span>
             </div>
 
             {/* Half Day */}
@@ -308,14 +291,9 @@ function BaulkhamContent() {
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 9 AM &ndash; 11 AM</li>
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 2 hours of coaching</li>
               </ul>
-              <TrackedBookingLink
-                href="/booking/camps"
-                tier="half_day"
-                location="pricing_half"
-                className="block border border-white/20 text-white font-heading text-lg px-6 py-3 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide text-center"
-              >
-                BOOK HALF DAY
-              </TrackedBookingLink>
+              <span className="block border border-white/10 text-gray-500 font-heading text-lg px-6 py-3 tracking-wide text-center">
+                OPENS SOON
+              </span>
             </div>
           </div>
           <p className="text-gray-700 text-xs mt-8 tracking-wider">PRICING SHOWN IS FOR THE BAULKHAM HILLS VENUE.</p>
@@ -379,20 +357,20 @@ function BaulkhamContent() {
           style={{ background: "radial-gradient(ellipse at center, rgba(94,53,168,0.03) 0%, transparent 60%)" }}
         />
         <div className="relative max-w-2xl mx-auto px-4">
-          <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">SPOTS ARE LIMITED</p>
+          <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">JULY HOLIDAYS</p>
           <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
-            BOOK YOUR
+            BOOKINGS
             <br />
-            <span className="text-[#7E57C2]">PLACE</span>
+            <span className="text-[#7E57C2]">OPEN SOON</span>
           </h2>
-          <p className="text-gray-500 mb-10 leading-relaxed">Holiday camps fill fast. Book early to guarantee a spot.</p>
-          <TrackedBookingLink
-            href="/booking/camps"
-            location="camp_cta"
-            className="inline-block bg-[#5E35A8] text-white font-heading text-3xl px-14 py-5 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
+          <p className="text-gray-400 mb-2 leading-relaxed">July 6 to 17 &middot; Monday to Friday &middot; 9 AM to 1 PM.</p>
+          <p className="text-gray-500 mb-10 leading-relaxed">More information coming soon. Have a question in the meantime?</p>
+          <Link
+            href="/contact"
+            className="inline-block border border-white/20 text-white font-heading text-2xl px-12 py-5 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide"
           >
-            BOOK NOW
-          </TrackedBookingLink>
+            ASK A QUESTION
+          </Link>
           <p className="text-gray-700 text-xs mt-6 tracking-wider">BAULKHAM HILLS &middot; ALL SKILL LEVELS &middot; AGES 8&ndash;18</p>
         </div>
       </section>

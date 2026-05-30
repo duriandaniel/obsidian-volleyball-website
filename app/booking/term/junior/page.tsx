@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { loadTermPrograms, weekday, type TermProgram } from "@/lib/booking/load";
+import { loadTermPrograms, weekday, timeRange, type TermProgram } from "@/lib/booking/load";
 import { formatCents, formatSpotsLeft } from "@/lib/booking/pricing";
 
 export const metadata: Metadata = {
@@ -86,24 +86,28 @@ function ClassList({ programs, heading }: { programs: TermProgram[]; heading: st
 }
 
 const WEEKDAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-// The group header already shows the day, so drop a leading weekday from the
-// title: "Friday Beginners 4-5:30pm" -> "Beginners 4-5:30pm".
+// Level only — the day + time shows on its own line, so strip the leading
+// weekday and the trailing time: "Friday Beginners 4-5:30pm" -> "Beginners".
 function classLabel(title: string): string {
+  let t = title;
   for (const d of WEEKDAYS) {
-    if (title.startsWith(d + " ")) return title.slice(d.length + 1);
+    if (t.startsWith(d + " ")) { t = t.slice(d.length + 1); break; }
   }
-  return title;
+  return t.replace(/\s*\d.*$/, "").trim() || t;
 }
 
 function ClassRow({ program: p }: { program: TermProgram }) {
   const soldOut = p.booked >= p.capacity;
   const total = p.per_week_cents * p.weeks_remaining;
   const label = classLabel(p.title);
+  const day = p.first_session_at ? weekday(p.first_session_at) : "";
+  const time = p.first_session_at ? timeRange(p.first_session_at, p.first_session_ends_at) : "";
 
   const inner = (
     <div className="flex items-center justify-between gap-4 px-5 py-5">
       <div>
         <div className="font-heading text-xl">{label}</div>
+        <div className="text-sm text-gray-400 mt-0.5">{[day, time].filter(Boolean).join(" · ")}</div>
       </div>
       <div className="text-right">
         {soldOut ? (

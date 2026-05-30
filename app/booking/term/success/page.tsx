@@ -25,7 +25,6 @@ export default async function TermSuccessPage({
           <h2 className="font-heading text-white text-lg mb-3">What to expect</h2>
           <ul className="space-y-2">
             <li>The confirmation email lists every session date for the term.</li>
-            <li>You&apos;ll get a reminder 24 hours before each session.</li>
             <li>Wear suitable indoor court shoes and your Obsidian Volleyball training jersey. We provide all volleyball gear.</li>
             <li>Questions or changes? Just reply to your confirmation email and we&apos;ll help.</li>
           </ul>

@@ -8,6 +8,26 @@ import type Stripe from "stripe";
 // Stripe webhook needs the raw body to verify the signature.
 export const dynamic = "force-dynamic";
 
+// Per-venue Google Maps links. Venue name comes from the DB, so this stays
+// correct across venues — only venues we have a map for get a link.
+const VENUE_MAPS: { match: RegExp; url: string }[] = [
+  { match: /west ryde/i, url: "https://maps.app.goo.gl/eByotpKjs2mcs4AL8" },
+];
+function venueHtml(name: string): string {
+  const m = VENUE_MAPS.find((v) => v.match.test(name));
+  return m ? `<a href="${m.url}" style="color:#7E57C2;">${name}</a>` : name;
+}
+
+// WhatsApp group invites. Fill these in to switch the join links on; empty =
+// the line is omitted from the email.
+const WHATSAPP_PARENTS_URL = "";
+const WHATSAPP_ADULTS_URL = "";
+function whatsappHtml(url: string, who: string): string {
+  return url
+    ? `<p style="font-size: 13px; color: #666;">Join the ${who} WhatsApp group for updates and reminders: <a href="${url}" style="color:#7E57C2;">tap to join</a>.</p>`
+    : "";
+}
+
 export async function POST(req: NextRequest) {
   const signature = req.headers.get("stripe-signature");
   if (!signature) {
@@ -245,10 +265,11 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
         <p>Thanks for booking ${programTitle}. Here are your days:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${dayList}</p>
-        <p><strong>Venue:</strong> ${venueName}<br>
+        <p><strong>Venue:</strong> ${venueHtml(venueName)}<br>
            <strong>Time:</strong> 9:00 AM – 1:00 PM<br>
            <strong>Total paid:</strong> ${formatCents(total)}</p>
-        <p>Wear suitable indoor court shoes and your Obsidian Volleyball training jersey. We provide all volleyball gear.</p>
+        <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
+        ${whatsappHtml(WHATSAPP_PARENTS_URL, "parents")}
         <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
           Questions or need to change your booking? Just reply to this email and we'll sort it out. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
         </p>
@@ -358,9 +379,10 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
         <p>Thanks for booking the Adult Social Scrim. Here ${sessionIds.length === 1 ? "is your night" : "are your nights"}:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${nightList}</p>
-        <p><strong>Venue:</strong> ${venueName}<br>
+        <p><strong>Venue:</strong> ${venueHtml(venueName)}<br>
            <strong>Total paid:</strong> ${formatCents(total)} (${sessionIds.length} night${sessionIds.length === 1 ? "" : "s"})</p>
         <p>Wear suitable indoor court shoes. See you on court.</p>
+        ${whatsappHtml(WHATSAPP_ADULTS_URL, "adults")}
         <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
           Adult social nights are non-refundable and non-reschedulable. Questions? Just reply to this email. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
         </p>
@@ -451,13 +473,14 @@ async function handleTrialCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Thanks for booking a trial class.</p>
         <p>Here's your trial session:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${when}</p>
-        <p><strong>Venue:</strong> ${venueName}</p>
-        <p>Wear suitable indoor court shoes and your Obsidian Volleyball training jersey. We provide all volleyball gear.</p>
+        <p><strong>Venue:</strong> ${venueHtml(venueName)}</p>
+        <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
+        ${whatsappHtml(WHATSAPP_PARENTS_URL, "parents")}
         <p style="font-size: 13px; color: #666;">Limit one trial per player. Want to join for the term afterwards? Just reply to this email or book from our website. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.</p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
-    text: `Trial booked.\n\nThanks for booking a trial class.\n\nSession: ${when}\nVenue: ${venueName}\n\nWear suitable indoor court shoes and your Obsidian Volleyball training jersey.\n\nLimit one trial per player. Want to join for the term afterwards? Reply to this email or book on our website.\n\nObsidian Volleyball Academy`,
+    text: `Trial booked.\n\nThanks for booking a trial class.\n\nSession: ${when}\nVenue: ${venueName}\n\nWear suitable indoor court shoes.\n\nLimit one trial per player. Want to join for the term afterwards? Reply to this email or book on our website.\n\nObsidian Volleyball Academy`,
   });
 }
 
@@ -603,9 +626,10 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
         <p>Thanks for enrolling in ${program?.title ?? "the term program"}. Here are your sessions:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${dayList}</p>
-        <p><strong>Venue:</strong> ${venueName}<br>
+        <p><strong>Venue:</strong> ${venueHtml(venueName)}<br>
            <strong>Total paid:</strong> $${(total / 100).toFixed(2)} (${weeks} week${weeks === 1 ? "" : "s"} × $${(perWeekCents / 100).toFixed(2)})</p>
         <p>Wear suitable indoor court shoes and your Obsidian Volleyball training jersey. We provide all volleyball gear.</p>
+        ${whatsappHtml(WHATSAPP_PARENTS_URL, "parents")}
         <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
           Questions or need to change something? Just reply to this email and we'll help. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
         </p>

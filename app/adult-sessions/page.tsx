@@ -41,76 +41,25 @@ export default function AdultSessionsPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-6">
-              TUE &middot; WED &middot; FRI &middot; WEST RYDE
+              18+ &middot; WEST RYDE
             </p>
             <h1 className="font-heading text-6xl sm:text-8xl text-white tracking-wide mb-6 leading-[0.9]">
               ADULT
               <br />
               <span className="text-[#7E57C2]">SESSIONS</span>
             </h1>
-            <p className="text-gray-400 text-lg max-w-xl leading-relaxed">
-              Adult open scrims Tuesday, Wednesday and Friday nights at Obsidian
-              Volleyball Academy West Ryde. Two courts, all skill levels welcome.
-              Drop in on any night.
+            <p className="text-gray-300 text-lg max-w-xl leading-relaxed mb-3">
+              Open social scrims, Tuesday / Wednesday / Friday, 7&ndash;9 PM. Drop in any night for <span className="text-white">$20</span>. All skill levels welcome.
             </p>
-          </SectionReveal>
-        </div>
-      </section>
-
-      {/* Open scrim format — plain panel, no box */}
-      <section className="py-12 lg:py-16 bg-[#0A0A0A]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <p className="text-[#7E57C2] font-heading text-xs tracking-[0.4em] uppercase mb-3">
-              Format
+            <p className="text-gray-500 text-sm max-w-xl mb-10">
+              Two courts, three teams per court, sets to 15.
             </p>
-            <h2 className="font-heading text-3xl lg:text-4xl text-white tracking-wide mb-6">
-              OPEN SCRIM
-            </h2>
-
-            <div className="flex items-baseline gap-3 sm:gap-4 mb-4 flex-wrap">
-              <span className="font-heading text-lg sm:text-xl text-white tracking-[0.2em] uppercase">
-                Tue &middot; Wed &middot; Fri
-              </span>
-              <span className="hidden sm:inline-block w-px h-5 bg-[#7E57C2]/40" />
-              <span className="font-heading text-lg sm:text-xl text-[#7E57C2] tracking-wider">
-                7:00 &ndash; 9:00 PM
-              </span>
-            </div>
-
-            <div className="flex items-baseline gap-2 mb-8">
-              <span className="font-heading text-3xl lg:text-4xl text-[#7E57C2]">$20</span>
-              <span className="text-gray-500 text-sm">per night, drop in</span>
-            </div>
-
-            <ul className="space-y-3 mb-8 text-gray-300 text-sm max-w-xl">
-              <li className="flex items-start gap-3">
-                <span className="text-[#7E57C2] flex-shrink-0 mt-0.5">+</span>
-                <span>Open to adults at any skill level.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#7E57C2] flex-shrink-0 mt-0.5">+</span>
-                <span>2 courts, capacity 21 per court.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#7E57C2] flex-shrink-0 mt-0.5">+</span>
-                <span>3 teams per court.</span>
-              </li>
-              <li className="flex items-start gap-3">
-                <span className="text-[#7E57C2] flex-shrink-0 mt-0.5">+</span>
-                <span>Sets to 15 points.</span>
-              </li>
-            </ul>
-
             <TrackedBookingLink
               href={BOOKING_ADULT_URL}
               location="adult_open_cta"
-              className="inline-flex items-center justify-center gap-2 bg-[#5E35A8] text-white font-heading text-sm tracking-[0.2em] uppercase px-7 py-3.5 hover:bg-white hover:text-[#5E35A8] transition-all duration-300 glow-purple"
+              className="inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-10 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide glow-purple"
             >
-              <span>Book a Spot</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
+              BOOK A SPOT
             </TrackedBookingLink>
           </SectionReveal>
         </div>

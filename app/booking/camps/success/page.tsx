@@ -31,8 +31,7 @@ export default async function CampSuccessPage({
           <h2 className="font-heading text-white text-lg mb-3">What happens next?</h2>
           <ul className="space-y-2">
             <li>We&apos;ll email your booking confirmation with venue details.</li>
-            <li>You&apos;ll get a reminder 24 hours before your first day.</li>
-            <li>Wear suitable indoor court shoes and your Obsidian Volleyball training jersey. We provide all volleyball gear.</li>
+            <li>Wear suitable indoor court shoes. We provide all volleyball gear.</li>
             <li>
               Need to update your child&apos;s details (school, level, medical notes)? Reply to
               the confirmation email and we&apos;ll add it.

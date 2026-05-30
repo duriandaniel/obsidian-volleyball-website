@@ -77,14 +77,16 @@ export default async function TermProgramPage({
 
         <div className="grid gap-8 md:grid-cols-[1fr_320px]">
           <div>
-            <h2 className="font-heading text-xl mb-3">Sessions you'll attend ({remainingSessions.length})</h2>
+            <h2 className="font-heading text-xl mb-3">
+              {defaultPlan === "trial" ? "Your trial session" : `Sessions you'll attend (${remainingSessions.length})`}
+            </h2>
             {remainingSessions.length === 0 ? (
               <div className="border border-white/10 rounded-lg p-6 text-gray-400 text-sm">
                 No upcoming sessions in this term. The term may have ended.
               </div>
             ) : (
               <div className="border border-white/10 rounded-lg overflow-hidden">
-                {remainingSessions.map((s) => (
+                {(defaultPlan === "trial" ? remainingSessions.slice(0, 1) : remainingSessions).map((s) => (
                   <div key={s.id} className="px-4 py-3 border-b border-white/5 last:border-b-0 flex items-center justify-between text-sm">
                     <span>
                       {new Date(s.starts_at).toLocaleDateString("en-AU", {

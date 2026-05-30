@@ -143,13 +143,22 @@ export default function JuniorClassesPage() {
               each session with experienced coaches, group players by ability, and coach
               every player at the right level for them. Term 2 enrolment open.
             </p>
-            <TrackedBookingLink
-              location="term_programs_hero"
-              href={TRIAL_URL}
-              className="inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-9 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide glow-purple"
-            >
-              BOOK A TRIAL
-            </TrackedBookingLink>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <TrackedBookingLink
+                location="term_programs_hero"
+                href="/booking/term/junior"
+                className="inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-9 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide glow-purple text-center"
+              >
+                ENROL IN A CLASS
+              </TrackedBookingLink>
+              <TrackedBookingLink
+                location="term_programs_hero"
+                href={TRIAL_URL}
+                className="inline-block border border-white/20 text-white font-heading text-xl sm:text-2xl px-9 py-4 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide text-center"
+              >
+                BOOK A TRIAL
+              </TrackedBookingLink>
+            </div>
           </SectionReveal>
         </div>
       </section>

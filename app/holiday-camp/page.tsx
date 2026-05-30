@@ -9,7 +9,7 @@ import TrackPixelView from "@/components/TrackPixelView";
 export const metadata: Metadata = {
   title: "Volleyball Holiday Camps | Sydney Junior Volleyball | Obsidian",
   description:
-    "Junior volleyball holiday camps in Sydney for ages 8–18. Currently running at Baulkham Hills with new venues coming soon. Book now.",
+    "Junior volleyball holiday camps in Sydney for ages 8 to 18 at Baulkham Hills. July 6 to 17, Monday to Friday, 9 AM to 1 PM. Bookings open soon.",
   keywords: [
     "volleyball holiday camp Sydney",
     "school holiday volleyball Sydney",
@@ -83,17 +83,18 @@ export default function HolidayCampPage() {
                   <br />
                   <span className="text-[#7E57C2]">CAMPS</span>
                 </h1>
-                <p className="text-gray-400 text-lg max-w-xl mb-10 leading-relaxed">
-                  Three courts, three levels, weekdays during school holidays at Baulkham Hills High School. Camps run 9 AM to 1 PM.
+                <p className="text-gray-400 text-lg max-w-xl mb-4 leading-relaxed">
+                  Three courts, three levels at Baulkham Hills High School.
+                  <br />
+                  <span className="text-white">July 6 to 17 &middot; Monday to Friday &middot; 9 AM to 1 PM.</span>
+                </p>
+                <p className="text-gray-500 text-base max-w-xl mb-10">
+                  Bookings open soon — more information coming.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <TrackedBookingLink
-                    href="/booking/camps"
-                    location="camp_hero"
-                    className="bg-[#5E35A8] text-white font-heading text-xl px-8 py-4 hover:bg-white transition-all duration-300 tracking-wide text-center glow-purple"
-                  >
-                    BOOK A CAMP
-                  </TrackedBookingLink>
+                  <span className="bg-white/5 border border-white/15 text-gray-300 font-heading text-xl px-8 py-4 tracking-wide text-center">
+                    BOOKINGS OPEN SOON
+                  </span>
                   <Link
                     href="/contact"
                     className="border border-white/20 text-white font-heading text-xl px-8 py-4 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide text-center"
