@@ -172,7 +172,7 @@ export default function JuniorClassesPage() {
               <a href={MAPS_URL} target="_blank" rel="noopener noreferrer" className="block group">
                 <div className="aspect-[4/3] relative overflow-hidden border border-white/[0.08]">
                   <Image
-                    src="/images/bennelong-courtyard.png"
+                    src="/images/venue-west-ryde.jpg"
                     alt="Obsidian Volleyball Academy West Ryde indoor courts"
                     fill
                     className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
