@@ -507,7 +507,7 @@ async function handleCasualCheckoutCompleted(session: Stripe.Checkout.Session) {
 
   const paidAt = new Date().toISOString();
   // One confirmed booking per casual class. source='term' (single, no enrolment);
-  // the $45 paid_amount_cents distinguishes casual from $36 term-enrolled bookings.
+  // the $40 paid_amount_cents distinguishes casual from $36 term-enrolled bookings.
   const rows = sessionIds.map((session_id) => ({
     session_id, participant_id: participantId, customer_id: customerId,
     source: "term" as const, status: "confirmed" as const,
@@ -547,12 +547,12 @@ async function handleCasualCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
         ${whatsappHtml(WHATSAPP_PARENTS_URL, "parents")}
         <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
-          Coming regularly? Enrol for the term and pay $36/class instead of $45. Questions? Just reply to this email. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
+          Coming regularly? Enrol for the term and pay $36/class instead of $40. Questions? Just reply to this email. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
         </p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
-    text: `You're booked in.\n\nThanks for booking ${program?.title ?? "a casual class"}.\n\n${(srows ?? []).map((s) => `${fDay(s.starts_at)} ${fTime(s.starts_at)} - ${fTime(s.ends_at)}`).join("\n")}\n\nVenue: ${venueName}\nTotal paid: ${formatCents(total)} (casual)\n\nComing regularly? Enrol for the term and pay $36/class instead of $45.\nRefund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
+    text: `You're booked in.\n\nThanks for booking ${program?.title ?? "a casual class"}.\n\n${(srows ?? []).map((s) => `${fDay(s.starts_at)} ${fTime(s.starts_at)} - ${fTime(s.ends_at)}`).join("\n")}\n\nVenue: ${venueName}\nTotal paid: ${formatCents(total)} (casual)\n\nComing regularly? Enrol for the term and pay $36/class instead of $40.\nRefund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
   });
 }
 

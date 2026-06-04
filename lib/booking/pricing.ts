@@ -81,7 +81,7 @@ export const TRIAL_WINDOW_DAYS = 14;
 
 // Casual / drop-in rate for a single junior class (vs $36/week on the full term).
 // Term is marketed as the saving, never casual as a surcharge.
-export const CASUAL_PRICE_CENTS = 4500;
+export const CASUAL_PRICE_CENTS = 4000;
 
 // Term pricing: per-week × weeks remaining in the term from today.
 export function priceTermEnrolment(perWeekCents: number, weeksRemaining: number) {

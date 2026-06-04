@@ -35,7 +35,7 @@ const faqCategories = [
       },
       {
         q: "How much are junior classes — term vs casual?",
-        a: "Enrol for the full term and it's $36 per class, paid upfront for the remaining weeks of the term — the best value. Prefer to come casually? Drop in to any class for $45. A one-off trial class is $25. Booking the term saves you $9 every class.",
+        a: "Enrol for the full term and it's $36 per class, paid upfront for the remaining weeks of the term — the best value. Prefer to come casually? Drop in to any class for $40. A one-off trial class is $25. Booking the term saves you $4 every class.",
       },
       {
         q: "What if my child misses a week?",
