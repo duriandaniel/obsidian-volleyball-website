@@ -173,6 +173,7 @@ export async function POST(req: NextRequest) {
     mode: "payment",
     ui_mode: "embedded_page",
     payment_method_types: ["card"],
+    allow_promotion_codes: true, // parents can enter a discount code at checkout
     line_items: [
       {
         price_data: {
