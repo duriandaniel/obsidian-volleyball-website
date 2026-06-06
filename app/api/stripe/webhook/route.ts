@@ -196,15 +196,24 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     .single();
   if (oErr) throw oErr;
 
-  // Record the optional jersey on the order for fulfilment. Best-effort so a
-  // booking is never blocked: if the jersey columns aren't present yet, the
-  // jersey is still captured in Stripe + the audit_log below.
+  // Record the optional jersey in the context-agnostic jersey_orders table
+  // (works for camp / term / standalone). Best-effort so a booking is never
+  // blocked: if the table isn't present yet, the jersey is still captured in
+  // Stripe + the audit_log below.
   if (jerseySize) {
-    const { error: jErr } = await sb
-      .from("camp_orders")
-      .update({ jersey_size: jerseySize, jersey_cents: jerseyCents })
-      .eq("id", order.id);
-    if (jErr) console.warn("camp_orders jersey columns not populated:", jErr.message);
+    const { error: jErr } = await sb.from("jersey_orders").insert({
+      customer_id: customerId,
+      participant_id: participantId,
+      size: jerseySize,
+      amount_cents: jerseyCents,
+      context: "camp",
+      camp_order_id: order.id,
+      stripe_checkout_session_id: session.id,
+      stripe_payment_intent_id: paymentIntentId,
+      status: "paid",
+      paid_at: new Date().toISOString(),
+    });
+    if (jErr) console.warn("jersey_orders insert skipped (table not present yet?):", jErr.message);
   }
 
   // Create one booking per session
