@@ -7,8 +7,9 @@ import CampDetails from "./CampDetails";
 import TrackPixelView from "@/components/TrackPixelView";
 import { getNextCampWindow, formatCampWindow } from "@/lib/booking/camps";
 
-// Re-check for newly published camps periodically (dates come from the DB).
-export const revalidate = 300;
+// Render at request time so camp dates come from the DB with live (runtime) env.
+// (Build-time env lacks the sensitive Supabase URL, which would bake the fallback.)
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Volleyball Holiday Camps | Sydney Junior Volleyball | Obsidian",
