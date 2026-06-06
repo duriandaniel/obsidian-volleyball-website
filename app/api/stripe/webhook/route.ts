@@ -196,6 +196,17 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     .single();
   if (oErr) throw oErr;
 
+  // Record the optional jersey on the order for fulfilment. Best-effort so a
+  // booking is never blocked: if the jersey columns aren't present yet, the
+  // jersey is still captured in Stripe + the audit_log below.
+  if (jerseySize) {
+    const { error: jErr } = await sb
+      .from("camp_orders")
+      .update({ jersey_size: jerseySize, jersey_cents: jerseyCents })
+      .eq("id", order.id);
+    if (jErr) console.warn("camp_orders jersey columns not populated:", jErr.message);
+  }
+
   // Create one booking per session
   const bookingsToInsert = items.map((item) => ({
     session_id: item.session_id,
