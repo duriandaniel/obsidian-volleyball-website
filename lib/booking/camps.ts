@@ -23,23 +23,19 @@ export async function getNextCampWindow(): Promise<CampWindow | null> {
   if (!programs || programs.length === 0) return null;
   const ids = programs.map((p) => p.id);
 
-  const endpoint = (ascending: boolean) =>
-    sb
-      .from("sessions")
-      .select("starts_at")
-      .in("program_id", ids)
-      .eq("status", "scheduled")
-      .gte("starts_at", now)
-      .is("deleted_at", null)
-      .order("starts_at", { ascending })
-      .limit(1)
-      .maybeSingle();
+  // Fetch the upcoming sessions as an array and take the first/last in JS.
+  // (Mirrors the booking page's working query; avoids a .maybeSingle() quirk.)
+  const { data: sessions } = await sb
+    .from("sessions")
+    .select("starts_at")
+    .in("program_id", ids)
+    .eq("status", "scheduled")
+    .gte("starts_at", now)
+    .is("deleted_at", null)
+    .order("starts_at", { ascending: true });
+  if (!sessions || sessions.length === 0) return null;
 
-  const { data: first } = await endpoint(true);
-  const { data: last } = await endpoint(false);
-  if (!first || !last) return null;
-
-  return { startsAt: first.starts_at, endsAt: last.starts_at };
+  return { startsAt: sessions[0].starts_at, endsAt: sessions[sessions.length - 1].starts_at };
 }
 
 // Format a window like "6 – 17 July" or "29 Sep – 3 Oct" (cross-month).
