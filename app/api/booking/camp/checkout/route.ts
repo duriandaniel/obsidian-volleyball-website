@@ -2,10 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
-import { priceCampCart } from "@/lib/booking/pricing";
+import { priceCampCart, CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
+
+const JERSEY_SIZES = ["XS", "S", "M", "L", "XL"] as const;
 
 const Body = z.object({
   items: z.array(z.object({ session_id: z.string().uuid(), is_half_day: z.boolean() })).min(1).max(20),
+  // Optional jersey add-on. Opt-in only; size required when add === true.
+  jersey: z
+    .object({
+      add: z.boolean().default(false),
+      size: z.enum(JERSEY_SIZES).nullable().optional(),
+    })
+    .optional(),
   parent: z.object({
     first_name: z.string().min(1).max(100),
     last_name: z.string().min(1).max(100),
@@ -71,10 +80,27 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // Authoritative price: always recomputed server-side, never trusted from the client.
   const pricing = priceCampCart(body.items);
   if (pricing.total_cents <= 0) {
     return NextResponse.json({ error: "Total must be positive" }, { status: 400 });
   }
+
+  // Optional jersey add-on (opt-in only; size required when added).
+  const jerseyAdd = body.jersey?.add === true;
+  const jerseySize = body.jersey?.size ?? null;
+  if (jerseyAdd && !jerseySize) {
+    return NextResponse.json({ error: "Please choose a jersey size" }, { status: 400 });
+  }
+  const jerseyCents = jerseyAdd ? CAMP_JERSEY_CENTS : 0;
+
+  const dayLabel =
+    [
+      pricing.full_days > 0 ? `${pricing.full_days} full day${pricing.full_days === 1 ? "" : "s"}` : "",
+      pricing.half_days > 0 ? `${pricing.half_days} half day${pricing.half_days === 1 ? "" : "s"}` : "",
+    ]
+      .filter(Boolean)
+      .join(" + ") || "camp";
 
   // Upsert customer by email (case-insensitive). Always update name/phone with latest input.
   const email = body.parent.email.toLowerCase();
@@ -178,7 +204,7 @@ export async function POST(req: NextRequest) {
         price_data: {
           currency: "aud",
           product_data: {
-            name: `Obsidian Volleyball Camp · ${pricing.full_day_equivalents} day${pricing.full_day_equivalents === 1 ? "" : "s"}`,
+            name: `Obsidian Volleyball Camp · ${dayLabel}`,
             description: sessions
               .map((s) =>
                 new Date(s.starts_at).toLocaleDateString("en-AU", {
@@ -194,6 +220,18 @@ export async function POST(req: NextRequest) {
         },
         quantity: 1,
       },
+      ...(jerseyAdd
+        ? [
+            {
+              price_data: {
+                currency: "aud" as const,
+                product_data: { name: `Obsidian training jersey (Size ${jerseySize})` },
+                unit_amount: CAMP_JERSEY_CENTS,
+              },
+              quantity: 1,
+            },
+          ]
+        : []),
     ],
     customer_email: email,
     return_url: `${appUrl}/booking/camps/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
@@ -204,6 +242,9 @@ export async function POST(req: NextRequest) {
       items: JSON.stringify(body.items),
       subtotal_cents: String(pricing.subtotal_cents),
       discount_cents: String(pricing.discount_cents),
+      camp_total_cents: String(pricing.total_cents),
+      jersey_cents: String(jerseyCents),
+      jersey_size: jerseyAdd ? String(jerseySize) : "none",
     },
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
   });

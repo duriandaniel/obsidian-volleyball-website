@@ -2,9 +2,11 @@ import Image from "next/image";
 import SectionReveal from "@/components/SectionReveal";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 
-// Single venue (Baulkham Hills High School), so camp details render directly
-// with no "choose a location" step.
+// Single venue (Obsidian Volleyball Academy at Baulkham Hills High School), so
+// camp details render directly with no "choose a location" step.
 const VENUE_MAPS_URL = "https://maps.app.goo.gl/c45c2VzRmA5iZVin8";
+// Embed pin: our Google place, not the generic "Baulkham Hills High School".
+const VENUE_MAPS_EMBED = "https://www.google.com/maps?q=Obsidian+Volleyball+Academy+Baulkham+Hills&output=embed";
 // Deep-link straight into the camp booking funnel.
 const CAMP_BOOKING_URL = "/booking/camps";
 
@@ -51,51 +53,26 @@ const GALLERY = [
 const SCHEDULE = [
   { time: "9:00 AM", title: "Check-in", body: "Drop-off at the venue. Coaches greet players and direct them to the court." },
   { time: "9:15 AM", title: "Introduction & warm-up", body: "Group introduction, mobility, and dynamic warm-up." },
-  { time: "9:30 AM", title: "Split into three courts", body: "Players move to their level (beginner, intermediate, advanced). Drills on passing and setting." },
+  {
+    time: "9:30 AM",
+    title: "Split into levels & drills",
+    body: "Players move to their level on one of three courts, then we start volleyball drills such as digging, setting, and defence.",
+  },
   { time: "11:00 AM", title: "Break", body: "20-minute break. Snacks, water, rest." },
   { time: "11:20 AM", title: "Serving, spiking, game play", body: "Serving and attacking work, then game play. Cool-down at the end." },
   { time: "1:00 PM", title: "Dismissal", body: "Players collected from the venue." },
 ];
 
 const WHAT_TO_BRING = [
-  "Shoes suitable for volleyball",
-  "Water bottle",
+  "Shoes suitable for indoor volleyball",
+  "Water bottle — refill stations are available on site",
   "Lunch and snacks for full-day camps",
+  "Your Obsidian Volleyball training jersey",
 ];
 
 export default function CampDetails() {
   return (
     <>
-      {/* Programs / Levels */}
-      <section className="py-20 lg:py-28 bg-[#111]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="mb-12">
-              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">CHOOSE YOUR LEVEL</p>
-              <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">PROGRAMS</h2>
-            </div>
-          </SectionReveal>
-          <p className="text-gray-500 text-sm max-w-2xl mb-10">
-            Players are grouped by skill level, not age. Three courts, three levels — everyone trains at the right intensity.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.04]">
-            {LEVELS.map((tier) => (
-              <div key={tier.level} className="bg-[#111] p-8 lg:p-10 group hover:bg-[#161616] transition-colors duration-500 h-full">
-                <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-6">{tier.level}</p>
-                <ul className="space-y-2 text-gray-400 text-sm">
-                  {tier.points.map((point) => (
-                    <li key={point} className="flex gap-3">
-                      <span className="text-[#7E57C2] flex-shrink-0">+</span>
-                      <span>{point}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Gallery — moments from camp */}
       <section className="py-20 lg:py-28 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -122,8 +99,42 @@ export default function CampDetails() {
         </div>
       </section>
 
-      {/* Daily Schedule */}
+      {/* Train at your level */}
       <section className="py-20 lg:py-28 bg-[#111]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <div className="mb-12">
+              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">BY ABILITY, NOT AGE</p>
+              <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">TRAIN AT YOUR LEVEL</h2>
+            </div>
+          </SectionReveal>
+          <p className="text-gray-500 text-sm max-w-2xl mb-10">
+            Players are grouped by skill level, not age. Three courts, three levels — everyone trains at the right intensity.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.04]">
+            {LEVELS.map((tier) => (
+              <div key={tier.level} className="bg-[#111] p-8 lg:p-10 group hover:bg-[#161616] transition-colors duration-500 h-full">
+                <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-6">{tier.level}</p>
+                <ul className="space-y-2 text-gray-400 text-sm">
+                  {tier.points.map((point) => (
+                    <li key={point} className="flex gap-3">
+                      <span className="text-[#7E57C2] flex-shrink-0">+</span>
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <p className="text-gray-500 text-sm max-w-2xl mt-10 leading-relaxed">
+            Not sure where you fit? No problem. Throughout the camp our coaches encourage players to move up or
+            down a level so everyone is challenged at the right intensity and stays engaged.
+          </p>
+        </div>
+      </section>
+
+      {/* Daily Schedule */}
+      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-12">
@@ -146,7 +157,7 @@ export default function CampDetails() {
       </section>
 
       {/* Pricing */}
-      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
+      <section className="py-20 lg:py-28 bg-[#111]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-12">
@@ -158,7 +169,7 @@ export default function CampDetails() {
             {/* Single Day */}
             <div className="border border-white/[0.06] p-8 lg:p-10 hover:border-[#7E57C2]/20 transition-all duration-500">
               <p className="text-gray-600 font-heading text-xs tracking-[0.3em] mb-6">FLEXIBLE</p>
-              <p className="font-heading text-5xl text-white mb-2">$50</p>
+              <p className="font-heading text-5xl text-white mb-2">$70</p>
               <p className="text-gray-600 text-sm mb-6">Per day</p>
               <ul className="space-y-3 text-gray-400 text-sm mb-8">
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Single day attendance</li>
@@ -175,19 +186,19 @@ export default function CampDetails() {
               </TrackedBookingLink>
             </div>
 
-            {/* 5-Day Package */}
+            {/* 5-Day Week Pass */}
             <div className="border-2 border-[#7E57C2]/40 p-8 lg:p-12 hover:border-[#7E57C2] transition-all duration-500 relative">
               <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                 <span className="bg-[#5E35A8] text-white font-heading text-xs tracking-[0.2em] px-4 py-1.5">BEST VALUE</span>
               </div>
-              <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-6 mt-2">5-DAY PACKAGE</p>
-              <p className="font-heading text-7xl text-white mb-2">$200</p>
-              <p className="text-gray-600 text-sm mb-6">All 5 days + free shirt</p>
+              <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-6 mt-2">5-DAY WEEK PASS</p>
+              <p className="font-heading text-7xl text-white mb-2">$250</p>
+              <p className="text-gray-600 text-sm mb-6">The full week</p>
               <ul className="space-y-3 text-gray-400 text-sm mb-8">
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> All 5 days of camp</li>
-                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Free Obsidian training jersey included</li>
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 9 AM &ndash; 1 PM daily</li>
-                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Save $50 vs single days</li>
+                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Costs less than four single days</li>
+                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Best value for the full week</li>
               </ul>
               <TrackedBookingLink
                 tier="5_day_pack"
@@ -202,11 +213,11 @@ export default function CampDetails() {
             {/* Half Day */}
             <div className="border border-white/[0.06] p-8 lg:p-10 hover:border-[#7E57C2]/20 transition-all duration-500">
               <p className="text-gray-600 font-heading text-xs tracking-[0.3em] mb-6">HALF DAY</p>
-              <p className="font-heading text-5xl text-white mb-2">$35</p>
+              <p className="font-heading text-5xl text-white mb-2">$45</p>
               <p className="text-gray-600 text-sm mb-6">Half-day session</p>
               <ul className="space-y-3 text-gray-400 text-sm mb-8">
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Morning session</li>
-                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 9 AM &ndash; 11 AM</li>
+                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 9 &ndash; 11 AM</li>
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 2 hours of coaching</li>
               </ul>
               <TrackedBookingLink
@@ -219,23 +230,26 @@ export default function CampDetails() {
               </TrackedBookingLink>
             </div>
           </div>
+          <p className="text-gray-600 text-xs mt-8 tracking-wider">
+            ADD AN OBSIDIAN TRAINING JERSEY FOR $36 AT CHECKOUT &middot; OPTIONAL
+          </p>
         </div>
       </section>
 
       {/* What to Bring */}
-      <section className="py-20 lg:py-28 bg-[#111]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-12">
               <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">PREPARE</p>
               <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">WHAT TO BRING</h2>
             </div>
           </SectionReveal>
-          <ul className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/[0.04]">
+          <ul className="space-y-4">
             {WHAT_TO_BRING.map((item, i) => (
-              <li key={item} className="bg-[#111] p-8 lg:p-10 flex items-start gap-4 text-gray-400">
+              <li key={item} className="flex items-start gap-4 text-gray-300 border-b border-white/[0.06] pb-4">
                 <span className="text-[#7E57C2] font-heading text-lg flex-shrink-0 w-6">{i + 1}</span>
-                <span className="text-sm leading-relaxed pt-0.5">{item}</span>
+                <span className="text-base leading-relaxed pt-0.5">{item}</span>
               </li>
             ))}
           </ul>
@@ -243,7 +257,7 @@ export default function CampDetails() {
       </section>
 
       {/* Venue */}
-      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
+      <section className="py-20 lg:py-28 bg-[#111]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-12">
@@ -276,45 +290,17 @@ export default function CampDetails() {
             </div>
             <div className="aspect-[16/10] lg:aspect-auto lg:min-h-[340px] overflow-hidden bg-[#111] border border-white/[0.06]">
               <iframe
-                src="https://www.google.com/maps?q=Baulkham+Hills+High+School&output=embed"
+                src={VENUE_MAPS_EMBED}
                 width="100%"
                 height="100%"
                 style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2)" }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Baulkham Hills High School location"
+                title="Obsidian Volleyball Academy, Baulkham Hills"
               />
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 lg:py-28 bg-[#0A0A0A] text-center relative overflow-hidden">
-        <div className="section-divider absolute top-0 left-0 right-0" />
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[40vh]"
-          style={{ background: "radial-gradient(ellipse at center, rgba(94,53,168,0.03) 0%, transparent 60%)" }}
-        />
-        <div className="relative max-w-2xl mx-auto px-4">
-          <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">JULY HOLIDAYS</p>
-          <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
-            BOOK YOUR
-            <br />
-            <span className="text-[#7E57C2]">SPOT</span>
-          </h2>
-          <p className="text-gray-400 mb-2 leading-relaxed">July 6 to 17 &middot; Monday to Friday &middot; 9 AM to 1 PM.</p>
-          <p className="text-gray-500 mb-10 leading-relaxed">Spots are limited and grouped by level. Bookings open soon — secure your place.</p>
-          <TrackedBookingLink
-            tier="general"
-            location="camp_cta"
-            href={CAMP_BOOKING_URL}
-            className="inline-block bg-[#5E35A8] text-white font-heading text-2xl px-12 py-5 hover:bg-white hover:text-[#5E35A8] transition-all duration-300 tracking-wide glow-purple"
-          >
-            BOOK NOW
-          </TrackedBookingLink>
-          <p className="text-gray-700 text-xs mt-6 tracking-wider">BAULKHAM HILLS &middot; ALL SKILL LEVELS &middot; AGES 8&ndash;18</p>
         </div>
       </section>
     </>

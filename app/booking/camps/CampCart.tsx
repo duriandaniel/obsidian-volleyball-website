@@ -1,7 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { priceCampCart, formatCents, formatSpotsLeft } from "@/lib/booking/pricing";
+import { priceCampCart, formatCents, formatSpotsLeft, CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
+
+const JERSEY_SIZES = ["XS", "S", "M", "L", "XL"] as const;
+type JerseySize = (typeof JERSEY_SIZES)[number];
 import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
 import type { CampSessionView } from "./page";
 
@@ -86,6 +89,8 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
     medical_notes: "",
     photo_consent: false,
   });
+  // Optional jersey add-on. Opt-in only — never pre-ticked.
+  const [jersey, setJersey] = useState<{ add: boolean; size: "" | JerseySize }>({ add: false, size: "" });
 
   const pricing = useMemo(() => {
     return priceCampCart(
@@ -95,6 +100,9 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
       }))
     );
   }, [selected]);
+
+  const jerseyCents = jersey.add ? CAMP_JERSEY_CENTS : 0;
+  const grandTotal = pricing.total_cents + jerseyCents;
 
   const toggle = (id: string) => {
     setSelected((prev) => {
@@ -128,6 +136,10 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (jersey.add && !jersey.size) {
+      setError("Please choose a jersey size, or untick the jersey add-on.");
+      return;
+    }
     setSubmitting(true);
     setError(null);
 
@@ -144,6 +156,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
             session_id,
             is_half_day,
           })),
+          jersey: { add: jersey.add, size: jersey.size || null },
           parent,
           kid: {
             ...kid,
@@ -221,7 +234,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                       !sel?.is_half_day ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10"
                     }`}
                   >
-                    Full day · $50
+                    Full day · 9am–1pm
                   </button>
                   <button
                     type="button"
@@ -230,7 +243,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                       sel?.is_half_day ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10"
                     }`}
                   >
-                    Half day · $35
+                    Half day · 9–11am · $45
                   </button>
                 </div>
               )}
@@ -248,24 +261,73 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
           <>
             <div className="space-y-1 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-400">Days</span>
-                <span>{pricing.full_day_equivalents}</span>
+                <span className="text-gray-400">Full days</span>
+                <span>{pricing.full_days}</span>
               </div>
+              {pricing.half_days > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Half days</span>
+                  <span>{pricing.half_days}</span>
+                </div>
+              )}
               <div className="flex justify-between">
                 <span className="text-gray-400">Subtotal</span>
                 <span>{formatCents(pricing.subtotal_cents)}</span>
               </div>
               {pricing.discount_cents > 0 && (
                 <div className="flex justify-between text-[#7E57C2]">
-                  <span>Bundle discount</span>
+                  <span>Bundle saving</span>
                   <span>−{formatCents(pricing.discount_cents)}</span>
+                </div>
+              )}
+              {jersey.add && (
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Jersey{jersey.size ? ` (${jersey.size})` : ""}</span>
+                  <span>{formatCents(CAMP_JERSEY_CENTS)}</span>
                 </div>
               )}
               <div className="flex justify-between font-heading text-lg pt-2 border-t border-white/10 mt-2">
                 <span>Total</span>
-                <span>{formatCents(pricing.total_cents)}</span>
+                <span>{formatCents(grandTotal)}</span>
               </div>
             </div>
+
+            {pricing.show_five_day_nudge && (
+              <div className="text-xs text-[#7E57C2] bg-[#7E57C2]/10 border border-[#7E57C2]/30 rounded p-2.5 leading-relaxed">
+                Add a 5th day and pay $30 less — the full 5-day pass is $250.
+              </div>
+            )}
+
+            {mode !== "paying" && (
+              <div className="pt-3 border-t border-white/10 space-y-2">
+                <label className="flex items-start gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={jersey.add}
+                    onChange={(e) => setJersey((j) => ({ ...j, add: e.target.checked }))}
+                    className="mt-0.5 w-4 h-4 accent-[#7E57C2]"
+                  />
+                  <span className="text-xs text-gray-300 leading-relaxed">
+                    Add an Obsidian jersey (+{formatCents(CAMP_JERSEY_CENTS)}). New players love wearing the
+                    squad colours from day one.
+                  </span>
+                </label>
+                {jersey.add && (
+                  <select
+                    value={jersey.size}
+                    onChange={(e) => setJersey((j) => ({ ...j, size: e.target.value as "" | JerseySize }))}
+                    className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2] transition-colors"
+                  >
+                    <option value="" className="bg-[#0A0A0A]">Select size…</option>
+                    {JERSEY_SIZES.map((s) => (
+                      <option key={s} value={s} className="bg-[#0A0A0A]">
+                        {s}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            )}
 
             {mode === "browsing" && (
               <>

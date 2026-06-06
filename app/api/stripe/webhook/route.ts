@@ -166,7 +166,14 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   if (existingOrder) return;
 
   // Create camp_order
-  const total = session.amount_total ?? 0;
+  const total = session.amount_total ?? 0; // includes jersey add-on, reflects any promo discount
+  const jerseyCents = parseInt(session.metadata?.jersey_cents ?? "0", 10) || 0;
+  const jerseySize =
+    session.metadata?.jersey_size && session.metadata.jersey_size !== "none"
+      ? session.metadata.jersey_size
+      : null;
+  // Camp-only portion (exclude the jersey) for the per-booking amount.
+  const campPortion = Math.max(0, total - jerseyCents);
   const paymentIntentId =
     typeof session.payment_intent === "string"
       ? session.payment_intent
@@ -197,7 +204,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     source: "camp" as const,
     camp_order_id: order.id,
     status: "confirmed" as const,
-    paid_amount_cents: Math.floor(total / items.length),
+    paid_amount_cents: items.length ? Math.floor(campPortion / items.length) : campPortion,
     stripe_payment_intent_id: paymentIntentId,
     paid_at: new Date().toISOString(),
   }));
@@ -213,7 +220,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     action: "camp_order.create",
     entity_type: "camp_order",
     entity_id: order.id,
-    after: { camp_order_id: order.id, session_count: items.length, total_cents: total },
+    after: { camp_order_id: order.id, session_count: items.length, total_cents: total, jersey_size: jerseySize },
   });
 
   // Fetch session details for the confirmation email
@@ -269,6 +276,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${dayList}</p>
         <p><strong>Venue:</strong> ${venueHtml(venueName)}<br>
            <strong>Time:</strong> 9:00 AM – 1:00 PM<br>
+           ${jerseySize ? `<strong>Jersey:</strong> Obsidian training jersey (size ${jerseySize})<br>` : ""}
            <strong>Total paid:</strong> ${formatCents(total)}</p>
         <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
         ${whatsappHtml(WHATSAPP_PARENTS_URL, "parents")}
@@ -280,7 +288,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     `,
     text: `You're booked in.\n\nThanks for booking ${programTitle}.\n\nDays: ${(sessionRows ?? [])
       .map((s) => new Date(s.starts_at).toLocaleDateString("en-AU", { dateStyle: "full", timeZone: "Australia/Sydney" }))
-      .join(", ")}\n\nVenue: ${venueName}\nTime: 9:00 AM – 1:00 PM\nTotal paid: ${formatCents(total)}\n\nQuestions or changes? Just reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
+      .join(", ")}\n\nVenue: ${venueName}\nTime: 9:00 AM – 1:00 PM${jerseySize ? `\nJersey: Obsidian training jersey (size ${jerseySize})` : ""}\nTotal paid: ${formatCents(total)}\n\nQuestions or changes? Just reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
   });
 }
 
