@@ -5,7 +5,7 @@ import HomeSections from "@/components/HomeSections";
 export const metadata: Metadata = {
   title: "Junior Volleyball Coaching Sydney | West Ryde & Baulkham Hills | Obsidian Volleyball Academy",
   description:
-    "Premium junior volleyball coaching in Sydney. Friday term programs at Obsidian Volleyball Academy West Ryde. School-holiday camps at Baulkham Hills High School. Ages 8 to 18.",
+    "Quality junior volleyball coaching in Sydney. Friday term programs at Obsidian Volleyball Academy West Ryde. School-holiday camps at Baulkham Hills High School. Ages 8 to 18.",
   keywords: [
     "junior volleyball Sydney",
     "volleyball coaching Sydney",

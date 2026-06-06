@@ -50,7 +50,7 @@ const coaches = [
   {
     name: "Melinda",
     role: "Coach",
-    bio: "Melinda combines years of competitive volleyball with a deep commitment to junior development. Her approach blends technical rigour with a supportive, athlete-centred environment. Specialises in beginner and intermediate development.",
+    bio: "Melinda combines years of competitive volleyball with a deep commitment to junior development. Her approach blends technical rigour with a supportive, athlete-centred environment. She currently plays in the Sydney Women's Premier League. Specialises in beginner and intermediate development.",
     qualifications: [
       "NSWCHS Opens Champion",
       "Sydney West Opens Champion",

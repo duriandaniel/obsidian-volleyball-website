@@ -24,7 +24,7 @@ const DEFAULTS = {
   titleLine1: "Term",
   titleLine2: "Programs",
   body:
-    "Premium junior volleyball coaching at Obsidian Volleyball Academy West Ryde. Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open.",
+    "Quality junior volleyball coaching at Obsidian Volleyball Academy West Ryde. Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open.",
   primaryHref: "/booking/trial",
   primaryLabel: "BOOK A TRIAL",
   primaryLocation: "hero" as BookingLocation,

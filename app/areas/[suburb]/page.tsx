@@ -111,7 +111,7 @@ const suburbs: Suburb[] = [
     name: "Macquarie Park",
     venue: "bennelong",
     drive: "10 minutes",
-    description: "Macquarie Park families travel a short distance to West Ryde for premium coaching.",
+    description: "Macquarie Park families travel a short distance to West Ryde for quality coaching.",
   },
 
   // Hills cluster — holiday camps at Baulkham Hills High School
@@ -150,7 +150,7 @@ const suburbs: Suburb[] = [
       "Bella Vista families travel ten minutes east to Baulkham Hills High School for Obsidian's camps.",
     body: [
       "Bella Vista is ten minutes east of Baulkham Hills High School — a clean run along Old Windsor Road and Windsor Road, almost no traffic during school holidays. For Bella Vista families used to driving across Norwest for sport, our Baulkham Hills venue is actually closer than most of the alternatives, and the camp structure means you're not stuck doing five separate drop-offs across the week.",
-      "The Bella Vista catchment has grown fast with young families, and there's real demand for premium junior sport that doesn't require a year-long commitment. Obsidian's holiday camps suit that profile perfectly: pick a five-day block (or even a single day if you want to test it out), get the kids coached properly for four hours a morning, and book again next holiday only if you liked it. No annual fees, no club politics.",
+      "The Bella Vista catchment has grown fast with young families, and there's real demand for quality junior sport that doesn't require a year-long commitment. Obsidian's holiday camps suit that profile perfectly: pick a five-day block (or even a single day if you want to test it out), get the kids coached properly for four hours a morning, and book again next holiday only if you liked it. No annual fees, no club politics.",
       "The camp itself splits players across three courts by ability so a Bella Vista eight-year-old who's never touched a volleyball gets a totally different session to a Bella Vista fifteen-year-old who's already in their school's senior team. Coaches with state or premier-league playing backgrounds, current Working With Children Checks, small ratios, structured progression each day. Bring shoes, water, and snacks — we'll handle the rest.",
     ],
   },
@@ -324,7 +324,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
           desc: "Two indoor courts at Obsidian Volleyball Academy West Ryde. Climate-controlled, ample parking, sessions run rain or shine.",
         },
         {
-          title: "PREMIUM COACHING",
+          title: "QUALITY COACHING",
           desc: "Small groups, high coach-to-player ratio, structured curriculum. We don't compete on price; we compete on quality.",
         },
         {

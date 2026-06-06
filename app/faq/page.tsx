@@ -27,7 +27,7 @@ const faqCategories = [
       },
       {
         q: "How much does it cost?",
-        a: "Term program and holiday camp pricing is on the booking page. We're a premium club: small groups, expert coaches, structured curriculum. We're currently running a launch promotion for new players (20% off plus a free training shirt).",
+        a: "Term program and holiday camp pricing is on the booking page. We're a quality club: small groups, expert coaches, structured curriculum. We're currently running a launch promotion for new players (20% off plus a free training shirt).",
       },
       {
         q: "Can my child try a class first?",

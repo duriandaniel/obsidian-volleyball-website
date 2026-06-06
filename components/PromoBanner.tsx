@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { trackBookingClick } from "@/lib/tracking";
 
-// New junior players land on the on-site junior class funnel.
-const BOOKING_URL = "/booking/term/junior";
+// Promote holiday camp bookings; send straight to the camp funnel.
+const BOOKING_URL = "/booking/camps";
 
 export default function PromoBanner() {
   const pathname = usePathname();
@@ -18,14 +18,14 @@ export default function PromoBanner() {
     >
       <div className="max-w-7xl mx-auto px-4 py-2 text-center">
         <p className="text-xs sm:text-sm font-heading text-white tracking-[0.2em] uppercase">
-          <span>Opening Promotion</span>
+          <span>Holiday Camp Bookings Open</span>
           <span
             className="text-[#D4A4FF] mx-2 sm:mx-3 inline-block align-middle text-[8px]"
             aria-hidden
           >
             ●
           </span>
-          <span>Free Jersey for New Junior Players</span>
+          <span>Limited Spots</span>
           <span
             className="hidden md:inline-block ml-3 lg:ml-4 text-[#D4A4FF] tracking-[0.2em]"
             aria-hidden

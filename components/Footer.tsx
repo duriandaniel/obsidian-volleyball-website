@@ -21,7 +21,7 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed max-w-sm mb-6">
-              Premium junior volleyball academy across Sydney.
+              Quality junior volleyball academy across Sydney.
               Established 2025.
             </p>
             <div className="flex items-center gap-4">

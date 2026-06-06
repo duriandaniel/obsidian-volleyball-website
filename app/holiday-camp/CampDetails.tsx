@@ -64,10 +64,10 @@ const SCHEDULE = [
 ];
 
 const WHAT_TO_BRING = [
+  "Wear your Obsidian Volleyball training jersey",
   "Shoes suitable for indoor volleyball",
   "Water bottle — refill stations are available on site",
   "Lunch and snacks for full-day camps",
-  "Your Obsidian Volleyball training jersey",
 ];
 
 export default function CampDetails() {
@@ -108,14 +108,14 @@ export default function CampDetails() {
               <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">TRAIN AT YOUR LEVEL</h2>
             </div>
           </SectionReveal>
-          <p className="text-gray-500 text-sm max-w-2xl mb-10">
+          <p className="text-gray-400 text-base md:text-lg max-w-2xl mb-10 leading-relaxed">
             Players are grouped by skill level, not age. Three courts, three levels — everyone trains at the right intensity.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/[0.04]">
             {LEVELS.map((tier) => (
               <div key={tier.level} className="bg-[#111] p-8 lg:p-10 group hover:bg-[#161616] transition-colors duration-500 h-full">
-                <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-6">{tier.level}</p>
-                <ul className="space-y-2 text-gray-400 text-sm">
+                <p className="text-[#7E57C2] font-heading text-base tracking-[0.3em] mb-6">{tier.level}</p>
+                <ul className="space-y-3 text-gray-300 text-base leading-relaxed">
                   {tier.points.map((point) => (
                     <li key={point} className="flex gap-3">
                       <span className="text-[#7E57C2] flex-shrink-0">+</span>
@@ -126,7 +126,7 @@ export default function CampDetails() {
               </div>
             ))}
           </div>
-          <p className="text-gray-500 text-sm max-w-2xl mt-10 leading-relaxed">
+          <p className="text-gray-400 text-base md:text-lg max-w-2xl mt-10 leading-relaxed">
             Not sure where you fit? No problem. Throughout the camp our coaches encourage players to move up or
             down a level so everyone is challenged at the right intensity and stays engaged.
           </p>
@@ -147,8 +147,8 @@ export default function CampDetails() {
               <div key={slot.time} className="grid grid-cols-[80px_1fr] sm:grid-cols-[120px_1fr] gap-4 sm:gap-8 py-5 border-b border-white/[0.06] group">
                 <p className="font-heading text-base sm:text-lg text-[#7E57C2] tracking-wider pt-1">{slot.time}</p>
                 <div>
-                  <p className="text-white text-base sm:text-lg font-medium mb-1 group-hover:text-[#7E57C2] transition-colors duration-300">{slot.title}</p>
-                  <p className="text-gray-500 text-sm leading-relaxed">{slot.body}</p>
+                  <p className="text-white text-lg font-medium mb-1 group-hover:text-[#7E57C2] transition-colors duration-300">{slot.title}</p>
+                  <p className="text-gray-400 text-base leading-relaxed">{slot.body}</p>
                 </div>
               </div>
             ))}
@@ -195,7 +195,7 @@ export default function CampDetails() {
               <p className="font-heading text-7xl text-white mb-2">$250</p>
               <p className="text-gray-600 text-sm mb-6">The full week</p>
               <ul className="space-y-3 text-gray-400 text-sm mb-8">
-                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> All 5 days of camp</li>
+                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> All 5 days in a camp week</li>
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 9 AM &ndash; 1 PM daily</li>
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Costs less than four single days</li>
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Best value for the full week</li>
