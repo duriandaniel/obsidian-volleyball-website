@@ -62,6 +62,7 @@ type KidForm = {
   school_name: string;
   medical_notes: string;
   photo_consent: boolean;
+  injury_ack: boolean;
 };
 
 export function CampCart({ sessions }: { sessions: Session[] }) {
@@ -86,6 +87,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
     school_name: "",
     medical_notes: "",
     photo_consent: false,
+    injury_ack: false,
   });
   // Optional jersey add-on. Opt-in only. Size is chosen on collection.
   const [jersey, setJersey] = useState<JerseyChoice>(EMPTY_JERSEY);
@@ -134,6 +136,18 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!kid.school_name.trim()) {
+      setError("Please enter your child's school name.");
+      return;
+    }
+    if (!kid.photo_consent) {
+      setError("Please tick the photo and marketing consent box.");
+      return;
+    }
+    if (!kid.injury_ack) {
+      setError("Please tick the injury disclaimer to continue.");
+      return;
+    }
     setSubmitting(true);
     setError(null);
 
@@ -357,7 +371,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                       ]}
                     />
                   </Row>
-                  <Field label="School name" value={kid.school_name} onChange={(v) => setKid({ ...kid, school_name: v })} />
+                  <Field label="School name" value={kid.school_name} onChange={(v) => setKid({ ...kid, school_name: v })} required />
                   <TextArea
                     label="Medical notes / allergies"
                     value={kid.medical_notes}
@@ -368,6 +382,11 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                     checked={kid.photo_consent}
                     onChange={(v) => setKid({ ...kid, photo_consent: v })}
                     label="I consent to photos/videos of my child being used on Obsidian Volleyball Academy social media and website."
+                  />
+                  <Checkbox
+                    checked={kid.injury_ack}
+                    onChange={(v) => setKid({ ...kid, injury_ack: v })}
+                    label="I understand volleyball involves physical activity and a risk of injury, and I accept responsibility for my child's participation. Any relevant medical conditions are noted above."
                   />
                 </Fieldset>
 
