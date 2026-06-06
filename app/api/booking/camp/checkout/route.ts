@@ -4,17 +4,10 @@ import { supabaseAdmin } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
 import { priceCampCart, CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
 
-const JERSEY_SIZES = ["XS", "S", "M", "L", "XL"] as const;
-
 const Body = z.object({
   items: z.array(z.object({ session_id: z.string().uuid(), is_half_day: z.boolean() })).min(1).max(20),
-  // Optional jersey add-on. Opt-in only; size required when add === true.
-  jersey: z
-    .object({
-      add: z.boolean().default(false),
-      size: z.enum(JERSEY_SIZES).nullable().optional(),
-    })
-    .optional(),
+  // Optional jersey add-on. Opt-in only; size is chosen on collection.
+  jersey: z.object({ add: z.boolean().default(false) }).optional(),
   parent: z.object({
     first_name: z.string().min(1).max(100),
     last_name: z.string().min(1).max(100),
@@ -86,12 +79,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Total must be positive" }, { status: 400 });
   }
 
-  // Optional jersey add-on (opt-in only; size required when added).
+  // Optional jersey add-on (opt-in only; size chosen on collection).
   const jerseyAdd = body.jersey?.add === true;
-  const jerseySize = body.jersey?.size ?? null;
-  if (jerseyAdd && !jerseySize) {
-    return NextResponse.json({ error: "Please choose a jersey size" }, { status: 400 });
-  }
   const jerseyCents = jerseyAdd ? CAMP_JERSEY_CENTS : 0;
 
   const dayLabel =
@@ -225,7 +214,7 @@ export async function POST(req: NextRequest) {
             {
               price_data: {
                 currency: "aud" as const,
-                product_data: { name: `Obsidian training jersey (Size ${jerseySize})` },
+                product_data: { name: "Obsidian training jersey" },
                 unit_amount: CAMP_JERSEY_CENTS,
               },
               quantity: 1,
@@ -244,7 +233,7 @@ export async function POST(req: NextRequest) {
       discount_cents: String(pricing.discount_cents),
       camp_total_cents: String(pricing.total_cents),
       jersey_cents: String(jerseyCents),
-      jersey_size: jerseyAdd ? String(jerseySize) : "none",
+      jersey_size: jerseyAdd ? "TBC" : "none",
     },
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
   });

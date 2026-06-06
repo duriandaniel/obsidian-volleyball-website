@@ -2,14 +2,12 @@
 
 import { useState } from "react";
 import { formatCents, CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
-import { JERSEY_SIZES, type JerseySize } from "@/components/JerseyAddOn";
 import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
 
 export default function JerseyShop() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [size, setSize] = useState<"" | JerseySize>("");
   const [qty, setQty] = useState(1);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -19,10 +17,6 @@ export default function JerseyShop() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!size) {
-      setError("Please choose a size.");
-      return;
-    }
     setSubmitting(true);
     setError(null);
     try {
@@ -31,7 +25,7 @@ export default function JerseyShop() {
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ size, quantity: qty, buyer: { name, email, phone: phone || null } }),
+        body: JSON.stringify({ quantity: qty, buyer: { name, email, phone: phone || null } }),
       });
       const json = await res.json();
       if (!res.ok || !json.client_secret) throw new Error(json.error ?? "Checkout failed");
@@ -62,20 +56,9 @@ export default function JerseyShop() {
         <div className="font-heading text-2xl text-white">{formatCents(total)}</div>
       </div>
 
-      <label className="block">
-        <span className="block text-xs text-gray-500 mb-1">Size<span className="text-[#7E57C2]">*</span></span>
-        <select
-          value={size}
-          onChange={(e) => setSize(e.target.value as "" | JerseySize)}
-          required
-          className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2]"
-        >
-          <option value="" className="bg-[#0A0A0A]">Select size…</option>
-          {JERSEY_SIZES.map((s) => (
-            <option key={s} value={s} className="bg-[#0A0A0A]">{s}</option>
-          ))}
-        </select>
-      </label>
+      <div className="rounded-lg border border-white/10 bg-white/[0.02] p-3 text-xs text-gray-400 leading-relaxed">
+        No need to pick a size now — try it on and choose your size when you collect it at a session.
+      </div>
 
       <label className="block">
         <span className="block text-xs text-gray-500 mb-1">Quantity</span>
@@ -88,7 +71,6 @@ export default function JerseyShop() {
             <option key={n} value={n} className="bg-[#0A0A0A]">{n}</option>
           ))}
         </select>
-        <span className="block text-[11px] text-gray-600 mt-1">All the same size. Need different sizes? Place a separate order.</span>
       </label>
 
       <Input label="Name" value={name} onChange={setName} required />

@@ -82,7 +82,6 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
     e.preventDefault();
     if (!level) return setError("Please select your level.");
     if (!consent) return setError("Please tick the photo/marketing consent box.");
-    if (jersey.add && !jersey.size) return setError("Please choose a jersey size, or untick the jersey add-on.");
     setSubmitting(true);
     setError(null);
     try {
@@ -94,7 +93,7 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           session_ids: Array.from(selected),
-          jersey: { add: jersey.add, size: jersey.size || null },
+          jersey: { add: jersey.add },
           player: { name, email, phone, level, source, marketing_consent: consent },
         }),
       });

@@ -2,9 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { priceCampCart, formatCents, formatSpotsLeft, CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
-
-const JERSEY_SIZES = ["XS", "S", "M", "L", "XL"] as const;
-type JerseySize = (typeof JERSEY_SIZES)[number];
+import JerseyAddOn, { EMPTY_JERSEY, type JerseyChoice } from "@/components/JerseyAddOn";
 import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
 import type { CampSessionView } from "./page";
 
@@ -89,8 +87,8 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
     medical_notes: "",
     photo_consent: false,
   });
-  // Optional jersey add-on. Opt-in only — never pre-ticked.
-  const [jersey, setJersey] = useState<{ add: boolean; size: "" | JerseySize }>({ add: false, size: "" });
+  // Optional jersey add-on. Opt-in only. Size is chosen on collection.
+  const [jersey, setJersey] = useState<JerseyChoice>(EMPTY_JERSEY);
 
   const pricing = useMemo(() => {
     return priceCampCart(
@@ -136,10 +134,6 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (jersey.add && !jersey.size) {
-      setError("Please choose a jersey size, or untick the jersey add-on.");
-      return;
-    }
     setSubmitting(true);
     setError(null);
 
@@ -156,7 +150,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
             session_id,
             is_half_day,
           })),
-          jersey: { add: jersey.add, size: jersey.size || null },
+          jersey: { add: jersey.add },
           parent,
           kid: {
             ...kid,
@@ -282,7 +276,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
               )}
               {jersey.add && (
                 <div className="flex justify-between">
-                  <span className="text-gray-400">Jersey{jersey.size ? ` (${jersey.size})` : ""}</span>
+                  <span className="text-gray-400">Jersey</span>
                   <span>{formatCents(CAMP_JERSEY_CENTS)}</span>
                 </div>
               )}
@@ -299,33 +293,8 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
             )}
 
             {mode !== "paying" && (
-              <div className="pt-3 border-t border-white/10 space-y-2">
-                <label className="flex items-start gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={jersey.add}
-                    onChange={(e) => setJersey((j) => ({ ...j, add: e.target.checked }))}
-                    className="mt-0.5 w-4 h-4 accent-[#7E57C2]"
-                  />
-                  <span className="text-xs text-gray-300 leading-relaxed">
-                    Add an Obsidian jersey (+{formatCents(CAMP_JERSEY_CENTS)}). New players love wearing the
-                    squad colours from day one.
-                  </span>
-                </label>
-                {jersey.add && (
-                  <select
-                    value={jersey.size}
-                    onChange={(e) => setJersey((j) => ({ ...j, size: e.target.value as "" | JerseySize }))}
-                    className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2] transition-colors"
-                  >
-                    <option value="" className="bg-[#0A0A0A]">Select size…</option>
-                    {JERSEY_SIZES.map((s) => (
-                      <option key={s} value={s} className="bg-[#0A0A0A]">
-                        {s}
-                      </option>
-                    ))}
-                  </select>
-                )}
+              <div className="pt-3 border-t border-white/10">
+                <JerseyAddOn value={jersey} onChange={setJersey} />
               </div>
             )}
 

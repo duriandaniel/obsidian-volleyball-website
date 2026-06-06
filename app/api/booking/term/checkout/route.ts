@@ -5,13 +5,9 @@ import { stripe } from "@/lib/stripe/server";
 import { isAdultProgram } from "@/lib/booking/audience";
 import { CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
 
-const JERSEY_SIZES = ["XS", "S", "M", "L", "XL"] as const;
-
 const Body = z.object({
   program_id: z.string().regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i),
-  jersey: z
-    .object({ add: z.boolean().default(false), size: z.enum(JERSEY_SIZES).nullable().optional() })
-    .optional(),
+  jersey: z.object({ add: z.boolean().default(false) }).optional(),
   parent: z.object({
     first_name: z.string().min(1).max(100),
     last_name: z.string().min(1).max(100),
@@ -168,12 +164,8 @@ export async function POST(req: NextRequest) {
   const weeks = sessions.length;
   const total = perWeekCents * weeks;
 
-  // Optional jersey add-on (opt-in; size required when added).
+  // Optional jersey add-on (opt-in; size chosen on collection).
   const jerseyAdd = body.jersey?.add === true;
-  const jerseySize = body.jersey?.size ?? null;
-  if (jerseyAdd && !jerseySize) {
-    return NextResponse.json({ error: "Please choose a jersey size" }, { status: 400 });
-  }
   const jerseyCents = jerseyAdd ? CAMP_JERSEY_CENTS : 0;
 
   const reqUrl = new URL(req.url);
@@ -204,7 +196,7 @@ export async function POST(req: NextRequest) {
             {
               price_data: {
                 currency: "aud" as const,
-                product_data: { name: `Obsidian training jersey (Size ${jerseySize})` },
+                product_data: { name: "Obsidian training jersey" },
                 unit_amount: CAMP_JERSEY_CENTS,
               },
               quantity: 1,
@@ -222,7 +214,7 @@ export async function POST(req: NextRequest) {
       session_ids: JSON.stringify(sessions.map((s) => s.id)),
       per_week_cents: String(perWeekCents),
       weeks: String(weeks),
-      jersey_size: jerseyAdd ? String(jerseySize) : "none",
+      jersey_size: jerseyAdd ? "TBC" : "none",
       jersey_cents: String(jerseyCents),
     },
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,

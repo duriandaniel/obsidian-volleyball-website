@@ -324,7 +324,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${dayList}</p>
         <p><strong>Venue:</strong> ${venueHtml(venueName)}<br>
            <strong>Time:</strong> 9:00 AM – 1:00 PM<br>
-           ${jerseySize ? `<strong>Jersey:</strong> Obsidian training jersey (size ${jerseySize})<br>` : ""}
+           ${jerseySize ? `<strong>Jersey:</strong> Obsidian training jersey (choose your size on collection)<br>` : ""}
            <strong>Total paid:</strong> ${formatCents(total)}</p>
         <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
         ${whatsappHtml(WHATSAPP_PARENTS_URL, "parents")}
@@ -336,7 +336,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     `,
     text: `You're booked in.\n\nThanks for booking ${programTitle}.\n\nDays: ${(sessionRows ?? [])
       .map((s) => new Date(s.starts_at).toLocaleDateString("en-AU", { dateStyle: "full", timeZone: "Australia/Sydney" }))
-      .join(", ")}\n\nVenue: ${venueName}\nTime: 9:00 AM – 1:00 PM${jerseySize ? `\nJersey: Obsidian training jersey (size ${jerseySize})` : ""}\nTotal paid: ${formatCents(total)}\n\nQuestions or changes? Just reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
+      .join(", ")}\n\nVenue: ${venueName}\nTime: 9:00 AM – 1:00 PM${jerseySize ? `\nJersey: Obsidian training jersey (choose your size on collection)` : ""}\nTotal paid: ${formatCents(total)}\n\nQuestions or changes? Just reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
   });
 }
 
@@ -849,13 +849,13 @@ async function handleJerseyCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Hi${firstName ? " " + firstName : ""},</p>
         <p>Thanks for your order. Here are the details:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">
-          <strong>Obsidian training jersey</strong><br>Size: ${size}${qty > 1 ? `<br>Quantity: ${qty}` : ""}<br>Total paid: ${formatCents(total)}
+          <strong>Obsidian training jersey</strong>${qty > 1 ? `<br>Quantity: ${qty}` : ""}<br>Choose your size when you collect it.<br>Total paid: ${formatCents(total)}
         </p>
         <p>We'll be in touch about getting your jersey to you. Just reply to this email with any questions.</p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
-      text: `Order confirmed.\n\nObsidian training jersey\nSize: ${size}${qty > 1 ? `\nQuantity: ${qty}` : ""}\nTotal paid: ${formatCents(total)}\n\nWe'll be in touch about getting your jersey to you. Questions? Reply to this email.\n\nObsidian Volleyball Academy`,
+      text: `Order confirmed.\n\nObsidian training jersey${qty > 1 ? `\nQuantity: ${qty}` : ""}\nChoose your size when you collect it.\nTotal paid: ${formatCents(total)}\n\nWe'll be in touch about getting your jersey to you. Questions? Reply to this email.\n\nObsidian Volleyball Academy`,
     });
   }
 

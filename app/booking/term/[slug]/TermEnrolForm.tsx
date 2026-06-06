@@ -95,10 +95,6 @@ export function TermEnrolForm({
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (plan === "term" && jersey.add && !jersey.size) {
-      setError("Please choose a jersey size, or untick the jersey add-on.");
-      return;
-    }
     setSubmitting(true);
     setError(null);
     try {
@@ -111,7 +107,7 @@ export function TermEnrolForm({
         body: JSON.stringify({
           program_id: programId,
           ...(plan === "casual" ? { session_ids: Array.from(selected) } : {}),
-          ...(plan === "term" ? { jersey: { add: jersey.add, size: jersey.size || null } } : {}),
+          ...(plan === "term" ? { jersey: { add: jersey.add } } : {}),
           parent,
           kid: {
             ...kid,

@@ -4,10 +4,7 @@ import { supabaseAdmin } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
 import { CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
 
-const JERSEY_SIZES = ["XS", "S", "M", "L", "XL"] as const;
-
 const Body = z.object({
-  size: z.enum(JERSEY_SIZES),
   quantity: z.number().int().min(1).max(10).default(1),
   buyer: z.object({
     name: z.string().min(1).max(120),
@@ -64,7 +61,7 @@ export async function POST(req: NextRequest) {
       {
         price_data: {
           currency: "aud",
-          product_data: { name: `Obsidian training jersey (Size ${body.size})` },
+          product_data: { name: "Obsidian training jersey" },
           unit_amount: CAMP_JERSEY_CENTS,
         },
         quantity: qty,
@@ -75,7 +72,7 @@ export async function POST(req: NextRequest) {
     metadata: {
       booking_type: "jersey",
       customer_id: customerId,
-      jersey_size: body.size,
+      jersey_size: "TBC",
       jersey_qty: String(qty),
       jersey_cents: String(totalCents),
     },
