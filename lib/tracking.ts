@@ -5,15 +5,11 @@
 //
 // Standard event mapping:
 //   trackBookingClick       -> Pixel "InitiateCheckout"
-//                              (user clicked an Acuity booking link, leaving our site)
+//                              (user started the on-site booking funnel)
 //   trackContactClick       -> Pixel "Lead"
 //                              (user reached out via email / IG / phone)
-//   trackConversionComplete -> not forwarded to Pixel.
-//                              Acuity itself fires Pixel "Purchase" on its
-//                              confirmation page (that's where the existing
-//                              28-day event volume comes from). Firing a
-//                              second Purchase event from /thank-you would
-//                              double-count without proper deduplication.
+//   trackConversionComplete -> not forwarded to Pixel. See note on the
+//                              function below re: the missing Purchase event.
 //
 // All Pixel calls are no-ops when fbq is unavailable (Pixel not loaded, env
 // var missing, or ad blocker active), so dropping these helpers anywhere is
@@ -121,6 +117,8 @@ export function trackContactClick(method: "email" | "instagram" | "phone") {
 
 export function trackConversionComplete() {
   pushDataLayer({ event: "conversion_complete" });
-  // No Pixel call here on purpose: Acuity already fires Purchase from its
-  // own confirmation page. Re-firing here would double-count attribution.
+  // NOTE: no Pixel "Purchase" is fired here. Historically Acuity fired Purchase
+  // from its own confirmation page, so we deliberately skipped it to avoid
+  // double-counting. Now that booking is fully on-site, NO Purchase event is
+  // sent at all. Revisit if Meta Ads needs on-site Purchase conversions.
 }

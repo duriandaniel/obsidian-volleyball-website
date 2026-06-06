@@ -10,7 +10,7 @@ export type Level = "Beginner" | "Intermediate" | "Advanced";
 export type Coach = { name: string; slug: string; image?: string };
 
 // One court within a slot: a level + the single coach assigned to that
-// level for that slot, plus its per-class Acuity booking URL. A slot has
+// level for that slot, plus its per-class on-site booking URL. A slot has
 // one or more courts running in parallel.
 export type SlotCourt = { level: Level; coach: Coach; enrolHref: string };
 

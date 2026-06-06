@@ -19,7 +19,7 @@ const faqCategories = [
       },
       {
         q: "How do I book a session?",
-        a: "Book directly through our Acuity scheduling page. Select your preferred program and time slot, and pay securely online. You'll receive a confirmation email with all the details.",
+        a: "Book directly through our booking page at obsidianvolleyball.com/booking. Select your preferred program and time slot, and pay securely online. You'll receive a confirmation email with all the details.",
       },
       {
         q: "Can I book a single day or do I need to book the full camp?",
