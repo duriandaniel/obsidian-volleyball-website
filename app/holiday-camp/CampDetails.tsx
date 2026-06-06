@@ -1,9 +1,12 @@
-import Link from "next/link";
+import Image from "next/image";
 import SectionReveal from "@/components/SectionReveal";
+import TrackedBookingLink from "@/components/TrackedBookingLink";
 
 // Single venue (Baulkham Hills High School), so camp details render directly
-// with no "choose a location" step. Venue link points to our Google Maps pin.
+// with no "choose a location" step.
 const VENUE_MAPS_URL = "https://maps.app.goo.gl/c45c2VzRmA5iZVin8";
+// Deep-link straight into the camp booking funnel.
+const CAMP_BOOKING_URL = "/booking/camps";
 
 const LEVELS = [
   {
@@ -35,6 +38,16 @@ const LEVELS = [
   },
 ];
 
+// Camp photos: kids in the Obsidian jerseys at Baulkham Hills.
+const GALLERY = [
+  { src: "/images/gallery-game.jpg", alt: "Juniors setting at the net during an Obsidian holiday camp" },
+  { src: "/images/gallery-setting.jpg", alt: "A camp player setting the ball in an Obsidian jersey" },
+  { src: "/images/jersey-detail.jpg", alt: "Obsidian Volleyball training jersey worn by a camp player" },
+  { src: "/images/gallery-action2.jpg", alt: "A junior serving in an Obsidian jersey at camp" },
+  { src: "/images/gallery-girls.jpg", alt: "Players warming up at the net in Obsidian jerseys" },
+  { src: "/images/gallery-attack.jpg", alt: "A junior attacking during a camp game" },
+];
+
 const SCHEDULE = [
   { time: "9:00 AM", title: "Check-in", body: "Drop-off at the venue. Coaches greet players and direct them to the court." },
   { time: "9:15 AM", title: "Introduction & warm-up", body: "Group introduction, mobility, and dynamic warm-up." },
@@ -42,6 +55,12 @@ const SCHEDULE = [
   { time: "11:00 AM", title: "Break", body: "20-minute break. Snacks, water, rest." },
   { time: "11:20 AM", title: "Serving, spiking, game play", body: "Serving and attacking work, then game play. Cool-down at the end." },
   { time: "1:00 PM", title: "Dismissal", body: "Players collected from the venue." },
+];
+
+const WHAT_TO_BRING = [
+  "Shoes suitable for volleyball",
+  "Water bottle",
+  "Lunch and snacks for full-day camps",
 ];
 
 export default function CampDetails() {
@@ -77,8 +96,34 @@ export default function CampDetails() {
         </div>
       </section>
 
-      {/* Daily Schedule */}
+      {/* Gallery — moments from camp */}
       <section className="py-20 lg:py-28 bg-[#0A0A0A]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <div className="mb-12">
+              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">INSIDE THE CAMP</p>
+              <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">MOMENTS</h2>
+            </div>
+          </SectionReveal>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 lg:gap-4">
+            {GALLERY.map((img) => (
+              <div key={img.src} className="relative aspect-[3/4] overflow-hidden bg-[#111] group">
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  sizes="(max-width: 768px) 50vw, 33vw"
+                  quality={80}
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Daily Schedule */}
+      <section className="py-20 lg:py-28 bg-[#111]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-12">
@@ -120,9 +165,14 @@ export default function CampDetails() {
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 9 AM &ndash; 1 PM</li>
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> No commitment required</li>
               </ul>
-              <span className="block border border-white/10 text-gray-500 font-heading text-lg px-6 py-3 tracking-wide text-center">
-                OPENS SOON
-              </span>
+              <TrackedBookingLink
+                tier="single_day"
+                location="pricing_single"
+                href={CAMP_BOOKING_URL}
+                className="block border border-white/15 text-white font-heading text-lg px-6 py-3 tracking-wide text-center hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300"
+              >
+                BOOK NOW
+              </TrackedBookingLink>
             </div>
 
             {/* 5-Day Package */}
@@ -139,9 +189,14 @@ export default function CampDetails() {
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 9 AM &ndash; 1 PM daily</li>
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Save $50 vs single days</li>
               </ul>
-              <span className="block bg-white/10 text-gray-400 font-heading text-lg px-6 py-4 tracking-wide text-center">
-                OPENS SOON
-              </span>
+              <TrackedBookingLink
+                tier="5_day_pack"
+                location="pricing_package"
+                href={CAMP_BOOKING_URL}
+                className="block bg-[#5E35A8] text-white font-heading text-lg px-6 py-4 tracking-wide text-center hover:bg-white hover:text-[#5E35A8] transition-all duration-300 glow-purple"
+              >
+                BOOK NOW
+              </TrackedBookingLink>
             </div>
 
             {/* Half Day */}
@@ -154,47 +209,59 @@ export default function CampDetails() {
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 9 AM &ndash; 11 AM</li>
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 2 hours of coaching</li>
               </ul>
-              <span className="block border border-white/10 text-gray-500 font-heading text-lg px-6 py-3 tracking-wide text-center">
-                OPENS SOON
-              </span>
+              <TrackedBookingLink
+                tier="half_day"
+                location="pricing_half"
+                href={CAMP_BOOKING_URL}
+                className="block border border-white/15 text-white font-heading text-lg px-6 py-3 tracking-wide text-center hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300"
+              >
+                BOOK NOW
+              </TrackedBookingLink>
             </div>
           </div>
         </div>
       </section>
 
-      {/* What to Bring + Venue */}
+      {/* What to Bring */}
       <section className="py-20 lg:py-28 bg-[#111]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
-            <div>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <div className="mb-12">
               <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">PREPARE</p>
-              <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide mb-10">WHAT TO BRING</h2>
-              <ul className="space-y-4">
-                {[
-                  "Shoes suitable for volleyball",
-                  "Water bottle",
-                  "Lunch and snacks for full-day camps",
-                ].map((item, i) => (
-                  <li key={i} className="flex items-start gap-4 text-gray-400">
-                    <span className="text-[#7E57C2] font-heading text-lg flex-shrink-0 w-6">{i + 1}</span>
-                    <span className="text-sm leading-relaxed pt-0.5">{item}</span>
-                  </li>
-                ))}
-              </ul>
+              <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">WHAT TO BRING</h2>
             </div>
-            <div>
+          </SectionReveal>
+          <ul className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/[0.04]">
+            {WHAT_TO_BRING.map((item, i) => (
+              <li key={item} className="bg-[#111] p-8 lg:p-10 flex items-start gap-4 text-gray-400">
+                <span className="text-[#7E57C2] font-heading text-lg flex-shrink-0 w-6">{i + 1}</span>
+                <span className="text-sm leading-relaxed pt-0.5">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      {/* Venue */}
+      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <div className="mb-12">
               <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">LOCATION</p>
-              <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide mb-8">VENUE</h2>
-              <div className="mb-6">
-                <address className="not-italic space-y-2">
-                  <p className="text-white text-lg">Baulkham Hills High School</p>
-                  <p className="text-gray-500 text-sm">Windsor Road, Baulkham Hills</p>
-                  <p className="text-gray-500 text-sm">NSW 2153, Sydney</p>
-                </address>
-                <p className="text-gray-600 text-sm mt-4 leading-relaxed">
-                  Free parking on-site. Central to Castle Hill, Kellyville, Cherrybrook, and Bella Vista.
-                </p>
-              </div>
+              <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">VENUE</h2>
+            </div>
+          </SectionReveal>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-stretch">
+            <div className="flex flex-col justify-center">
+              <address className="not-italic space-y-2 mb-6">
+                <p className="text-white text-2xl font-heading tracking-wide">Baulkham Hills High School</p>
+                <p className="text-gray-500 text-sm">Windsor Road, Baulkham Hills</p>
+                <p className="text-gray-500 text-sm">NSW 2153, Sydney</p>
+              </address>
+              <p className="text-gray-500 text-sm leading-relaxed mb-6 max-w-md">
+                Free parking on-site. Indoor courts, so camp runs rain or shine. Central to Castle Hill,
+                Kellyville, Cherrybrook, and Bella Vista.
+              </p>
               <a
                 href={VENUE_MAPS_URL}
                 target="_blank"
@@ -206,6 +273,18 @@ export default function CampDetails() {
                   <path d="M7 17L17 7M17 7H7M17 7v10" />
                 </svg>
               </a>
+            </div>
+            <div className="aspect-[16/10] lg:aspect-auto lg:min-h-[340px] overflow-hidden bg-[#111] border border-white/[0.06]">
+              <iframe
+                src="https://www.google.com/maps?q=Baulkham+Hills+High+School&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0, filter: "invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2)" }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Baulkham Hills High School location"
+              />
             </div>
           </div>
         </div>
@@ -221,18 +300,20 @@ export default function CampDetails() {
         <div className="relative max-w-2xl mx-auto px-4">
           <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">JULY HOLIDAYS</p>
           <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide mb-8">
-            BOOKINGS
+            BOOK YOUR
             <br />
-            <span className="text-[#7E57C2]">OPEN SOON</span>
+            <span className="text-[#7E57C2]">SPOT</span>
           </h2>
           <p className="text-gray-400 mb-2 leading-relaxed">July 6 to 17 &middot; Monday to Friday &middot; 9 AM to 1 PM.</p>
-          <p className="text-gray-500 mb-10 leading-relaxed">More information coming soon. Have a question in the meantime?</p>
-          <Link
-            href="/contact"
-            className="inline-block border border-white/20 text-white font-heading text-2xl px-12 py-5 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide"
+          <p className="text-gray-500 mb-10 leading-relaxed">Spots are limited and grouped by level. Bookings open soon — secure your place.</p>
+          <TrackedBookingLink
+            tier="general"
+            location="camp_cta"
+            href={CAMP_BOOKING_URL}
+            className="inline-block bg-[#5E35A8] text-white font-heading text-2xl px-12 py-5 hover:bg-white hover:text-[#5E35A8] transition-all duration-300 tracking-wide glow-purple"
           >
-            ASK A QUESTION
-          </Link>
+            BOOK NOW
+          </TrackedBookingLink>
           <p className="text-gray-700 text-xs mt-6 tracking-wider">BAULKHAM HILLS &middot; ALL SKILL LEVELS &middot; AGES 8&ndash;18</p>
         </div>
       </section>

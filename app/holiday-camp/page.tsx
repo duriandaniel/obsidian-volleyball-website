@@ -89,12 +89,17 @@ export default function HolidayCampPage() {
                   <span className="text-white">July 6 to 17 &middot; Monday to Friday &middot; 9 AM to 1 PM.</span>
                 </p>
                 <p className="text-gray-500 text-base max-w-xl mb-10">
-                  Bookings open soon — more information coming.
+                  Three skill levels, one venue. Book your spot below.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <span className="bg-white/5 border border-white/15 text-gray-300 font-heading text-xl px-8 py-4 tracking-wide text-center">
-                    BOOKINGS OPEN SOON
-                  </span>
+                  <TrackedBookingLink
+                    tier="general"
+                    location="camp_hero"
+                    href="/booking/camps"
+                    className="bg-[#5E35A8] text-white font-heading text-xl px-8 py-4 hover:bg-white hover:text-[#5E35A8] transition-all duration-300 tracking-wide text-center glow-purple"
+                  >
+                    BOOK NOW
+                  </TrackedBookingLink>
                   <Link
                     href="/contact"
                     className="border border-white/20 text-white font-heading text-xl px-8 py-4 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide text-center"
