@@ -45,7 +45,7 @@ const KAVEESH = {
 
 // On-site enrol pages, one per class. Each opens the class with full-term and
 // 1-week-trial options.
-const ACUITY = {
+const ENROL = {
   beg_4pm: "/booking/term/fri-beginners-4pm",
   int_4pm: "/booking/term/fri-intermediate-4pm",
   int_530pm: "/booking/term/fri-intermediate-530pm",
@@ -62,15 +62,15 @@ const VENUES: Venue[] = [
       {
         time: "4:00 – 5:30 PM",
         courts: [
-          { level: "Beginner", coach: CHRIS, enrolHref: ACUITY.beg_4pm },
-          { level: "Intermediate", coach: KAVEESH, enrolHref: ACUITY.int_4pm },
+          { level: "Beginner", coach: CHRIS, enrolHref: ENROL.beg_4pm },
+          { level: "Intermediate", coach: KAVEESH, enrolHref: ENROL.int_4pm },
         ],
       },
       {
         time: "5:30 – 7:00 PM",
         courts: [
-          { level: "Intermediate", coach: CHRIS, enrolHref: ACUITY.int_530pm },
-          { level: "Advanced", coach: KAVEESH, enrolHref: ACUITY.adv_530pm },
+          { level: "Intermediate", coach: CHRIS, enrolHref: ENROL.int_530pm },
+          { level: "Advanced", coach: KAVEESH, enrolHref: ENROL.adv_530pm },
         ],
       },
     ],

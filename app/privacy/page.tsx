@@ -33,7 +33,7 @@ export default function PrivacyPage() {
                 <li>Page views and navigation patterns (via Google Analytics)</li>
                 <li>Device type, browser, and general location (city-level)</li>
                 <li>Interactions with buttons and links (e.g. booking clicks)</li>
-                <li>Information you voluntarily provide when booking through Acuity Scheduling</li>
+                <li>Information you voluntarily provide when booking (name, contact details, participant details)</li>
               </ul>
             </div>
 
@@ -65,8 +65,8 @@ export default function PrivacyPage() {
               <h2 className="font-heading text-xl text-white tracking-wide mb-3">THIRD PARTIES</h2>
               <p>
                 We share data with Google (Analytics, Ads) and Meta (Facebook, Instagram) for analytics and advertising purposes.
-                These services have their own privacy policies. Booking data is processed by Acuity Scheduling and Stripe
-                for payment processing.
+                These services have their own privacy policies. Booking data is stored in our own booking system, and
+                payments are processed by Stripe.
               </p>
             </div>
 

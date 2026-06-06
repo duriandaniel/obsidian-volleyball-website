@@ -11,7 +11,7 @@
 - Email: obsidianvolleyball@gmail.com
 - Instagram: @obsidianvolleyball
 - Website: obsidianvolleyball.com
-- Booking URL: obsidianvolleyball.as.me
+- Booking URL: obsidianvolleyball.com/booking
 - Affiliation: Volleyball NSW (volleyballnsw.org.au)
 - Venue: Baulkham Hills High School, Windsor Road, Baulkham Hills NSW 2153
 - Region: Hills District, Western Sydney, New South Wales, Australia
@@ -93,7 +93,7 @@ Baulkham Hills, Castle Hill, Kellyville, Cherrybrook, Bella Vista, Winston Hills
 ## Payment & Booking
 
 - Payment: Credit/debit cards via Stripe
-- Booking: Online via Acuity Scheduling at obsidianvolleyball.as.me
+- Booking: Online at obsidianvolleyball.com/booking
 
 ## What to Bring
 1. Sports shoes (clean, non-marking soles)
@@ -114,7 +114,7 @@ Q: My child has never played volleyball — is that OK?
 A: Absolutely. The Beginner Blast program is designed for kids with zero experience. Coaches make it fun and non-intimidating.
 
 Q: How do I book?
-A: Book online at obsidianvolleyball.as.me. Select your program and time slot, pay securely, and receive a confirmation email.
+A: Book online at obsidianvolleyball.com/booking. Select your program and time slot, pay securely, and receive a confirmation email.
 
 Q: How much does it cost?
 A: 5-day holiday camp package is $200 (includes free OVA shirt). Individual day and half-day rates also available. Check booking page for current pricing.

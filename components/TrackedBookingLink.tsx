@@ -10,8 +10,7 @@ interface TrackedBookingLinkProps {
   children: React.ReactNode;
   /**
    * Optional href override. If omitted, sends to the on-site booking funnel
-   * (/booking). Pass a deep-link (e.g. "/booking/adult") to skip a step, or an
-   * external Acuity URL for flows not yet on the new system (free trials).
+   * (/booking). Pass a deep-link (e.g. "/booking/adult") to skip a step.
    */
   href?: string;
 }
@@ -30,7 +29,7 @@ export default function TrackedBookingLink({
   const external = /^https?:\/\//.test(target);
   const onClick = () => trackBookingClick(tier, location);
 
-  // External (Acuity) links open in a new tab; internal links use client-side
+  // External (absolute) links open in a new tab; internal links use client-side
   // navigation + prefetch so the booking funnel opens instantly (no full reload).
   if (external) {
     return (

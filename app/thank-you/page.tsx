@@ -27,7 +27,7 @@ export default function ThankYouPage() {
               <span className="text-[#7E57C2]">BOOKED IN</span>
             </h1>
             <p className="text-gray-400 text-lg leading-relaxed max-w-lg mx-auto">
-              Check your email for a confirmation from Acuity Scheduling with all the details.
+              Check your email for your booking confirmation with all the details.
             </p>
           </div>
         </div>
