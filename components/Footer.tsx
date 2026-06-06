@@ -62,6 +62,7 @@ export default function Footer() {
                 { href: "/adult-sessions", label: "Adult Sessions" },
                 { href: "/holiday-camp", label: "Holiday Camps" },
                 { href: "/coaches", label: "Coaches" },
+                { href: "/shop/jersey", label: "Jersey" },
                 { href: "/faq", label: "FAQ" },
               ].map((link) => (
                 <li key={link.href}>

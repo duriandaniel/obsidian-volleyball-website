@@ -3,11 +3,16 @@ import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
 import { isAdultProgram } from "@/lib/booking/audience";
+import { CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const JERSEY_SIZES = ["XS", "S", "M", "L", "XL"] as const;
 
 const Body = z.object({
   session_ids: z.array(z.string().regex(UUID)).min(1).max(12),
+  jersey: z
+    .object({ add: z.boolean().default(false), size: z.enum(JERSEY_SIZES).nullable().optional() })
+    .optional(),
   player: z.object({
     name: z.string().min(1).max(120),
     email: z.string().email(),
@@ -139,6 +144,14 @@ export async function POST(req: NextRequest) {
   const count = sessions.length;
   const total = perSessionCents * count;
 
+  // Optional jersey add-on (opt-in; size required when added).
+  const jerseyAdd = body.jersey?.add === true;
+  const jerseySize = body.jersey?.size ?? null;
+  if (jerseyAdd && !jerseySize) {
+    return NextResponse.json({ error: "Please choose a jersey size" }, { status: 400 });
+  }
+  const jerseyCents = jerseyAdd ? CAMP_JERSEY_CENTS : 0;
+
   const reqUrl = new URL(req.url);
   const appUrl = `${reqUrl.protocol}//${reqUrl.host}`;
   const bypass = reqUrl.searchParams.get("x-vercel-protection-bypass");
@@ -172,6 +185,18 @@ export async function POST(req: NextRequest) {
         },
         quantity: count,
       },
+      ...(jerseyAdd
+        ? [
+            {
+              price_data: {
+                currency: "aud" as const,
+                product_data: { name: `Obsidian training jersey (Size ${jerseySize})` },
+                unit_amount: CAMP_JERSEY_CENTS,
+              },
+              quantity: 1,
+            },
+          ]
+        : []),
     ],
     customer_email: email,
     return_url: `${appUrl}/booking/adult/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
@@ -182,6 +207,8 @@ export async function POST(req: NextRequest) {
       session_ids: sessions.map((s) => s.id).join(","),
       per_session_cents: String(perSessionCents),
       level: body.player.level,
+      jersey_size: jerseyAdd ? String(jerseySize) : "none",
+      jersey_cents: String(jerseyCents),
     },
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
   });

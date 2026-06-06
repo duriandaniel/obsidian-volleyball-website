@@ -28,6 +28,43 @@ function whatsappHtml(url: string, who: string): string {
     : "";
 }
 
+// Record an optional jersey purchase in the context-agnostic jersey_orders table.
+// Best-effort: a missing jersey, missing table, or a duplicate (idempotent index)
+// never blocks the booking. The jersey is always captured in Stripe regardless.
+async function recordJerseyOrder(
+  sb: ReturnType<typeof supabaseAdmin>,
+  session: Stripe.Checkout.Session,
+  opts: {
+    customerId: string;
+    participantId: string | null;
+    context: "camp" | "term" | "standalone";
+    campOrderId?: string | null;
+    enrolmentId?: string | null;
+    paymentIntentId: string | null;
+    quantity?: number;
+  }
+) {
+  const sizeMeta = session.metadata?.jersey_size;
+  const size = sizeMeta && sizeMeta !== "none" ? sizeMeta : null;
+  if (!size) return;
+  const amount = parseInt(session.metadata?.jersey_cents ?? "0", 10) || 0;
+  const { error } = await sb.from("jersey_orders").insert({
+    customer_id: opts.customerId,
+    participant_id: opts.participantId,
+    size,
+    quantity: opts.quantity ?? 1,
+    amount_cents: amount,
+    context: opts.context,
+    camp_order_id: opts.campOrderId ?? null,
+    enrolment_id: opts.enrolmentId ?? null,
+    stripe_checkout_session_id: session.id,
+    stripe_payment_intent_id: opts.paymentIntentId,
+    status: "paid",
+    paid_at: new Date().toISOString(),
+  });
+  if (error) console.warn("jersey_orders insert skipped:", error.message);
+}
+
 export async function POST(req: NextRequest) {
   const signature = req.headers.get("stripe-signature");
   if (!signature) {
@@ -61,6 +98,8 @@ export async function POST(req: NextRequest) {
           await handleTrialCheckoutCompleted(session);
         } else if (bookingType === "casual") {
           await handleCasualCheckoutCompleted(session);
+        } else if (bookingType === "jersey") {
+          await handleJerseyCheckoutCompleted(session);
         } else {
           await handleCheckoutCompleted(session);
         }
@@ -196,25 +235,14 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     .single();
   if (oErr) throw oErr;
 
-  // Record the optional jersey in the context-agnostic jersey_orders table
-  // (works for camp / term / standalone). Best-effort so a booking is never
-  // blocked: if the table isn't present yet, the jersey is still captured in
-  // Stripe + the audit_log below.
-  if (jerseySize) {
-    const { error: jErr } = await sb.from("jersey_orders").insert({
-      customer_id: customerId,
-      participant_id: participantId,
-      size: jerseySize,
-      amount_cents: jerseyCents,
-      context: "camp",
-      camp_order_id: order.id,
-      stripe_checkout_session_id: session.id,
-      stripe_payment_intent_id: paymentIntentId,
-      status: "paid",
-      paid_at: new Date().toISOString(),
-    });
-    if (jErr) console.warn("jersey_orders insert skipped (table not present yet?):", jErr.message);
-  }
+  // Record the optional jersey add-on (camp context).
+  await recordJerseyOrder(sb, session, {
+    customerId: customerId!,
+    participantId: participantId ?? null,
+    context: "camp",
+    campOrderId: order.id,
+    paymentIntentId,
+  });
 
   // Create one booking per session
   const bookingsToInsert = items.map((item) => ({
@@ -371,6 +399,15 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
     entity_type: "customer",
     entity_id: customerId,
     after: { nights: sessionIds.length, total_cents: total, level },
+  });
+
+  // Record the optional jersey add-on. Adults buy for themselves, so there's no
+  // junior participant context — tracked as 'standalone'.
+  await recordJerseyOrder(sb, session, {
+    customerId,
+    participantId,
+    context: "standalone",
+    paymentIntentId,
   });
 
   // Session dates + venue for the email (sessions may span programs; use the first).
@@ -684,6 +721,15 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
     after: { enrolment_id: enrolment.id, weeks, total_cents: total },
   });
 
+  // Record the optional jersey add-on (term context).
+  await recordJerseyOrder(sb, session, {
+    customerId,
+    participantId,
+    context: "term",
+    enrolmentId: enrolment.id,
+    paymentIntentId,
+  });
+
   // Fetch program + venue for the confirmation email
   const { data: program } = await sb
     .from("programs")
@@ -742,5 +788,82 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
       </div>
     `,
     text: `You're enrolled in ${program?.title ?? "the term program"}.\n\nClasses this term: ${(sessionRows ?? []).length}${classTime ? `\nTime: ${classTime}` : ""}\nVenue: ${venueName}\nTotal paid: $${(total / 100).toFixed(2)}\n\nQuestions or changes? Just reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
+  });
+}
+
+// Standalone jersey purchase (no camp/term booking). Records a jersey_orders row
+// with context 'standalone' and sends an order confirmation.
+async function handleJerseyCheckoutCompleted(session: Stripe.Checkout.Session) {
+  const sb = supabaseAdmin();
+  const email = session.customer_details?.email ?? session.customer_email;
+  let customerId = session.metadata?.customer_id ?? null;
+  const participantId = session.metadata?.participant_id ?? null;
+  const size = session.metadata?.jersey_size && session.metadata.jersey_size !== "none" ? session.metadata.jersey_size : null;
+  const qty = parseInt(session.metadata?.jersey_qty ?? "1", 10) || 1;
+  if (!size) throw new Error("Jersey checkout missing size");
+
+  // Idempotency: one jersey_orders row per checkout session.
+  const { data: existing } = await sb
+    .from("jersey_orders")
+    .select("id")
+    .eq("stripe_checkout_session_id", session.id)
+    .maybeSingle();
+  if (existing) return;
+
+  // Defensive: make sure a customer exists (the checkout route normally sets it).
+  if (!customerId && email) {
+    const { data: c } = await sb.from("customers").select("id").eq("email", email.toLowerCase()).is("deleted_at", null).maybeSingle();
+    customerId = c?.id ?? null;
+    if (!customerId) {
+      const name = session.customer_details?.name ?? "";
+      const [first, ...rest] = name.split(" ");
+      const { data: created, error } = await sb
+        .from("customers")
+        .insert({ email: email.toLowerCase(), first_name: first || null, last_name: rest.join(" ") || null })
+        .select("id")
+        .single();
+      if (error) throw error;
+      customerId = created.id;
+    }
+  }
+  if (!customerId) throw new Error("Jersey checkout missing customer");
+
+  const stripeCustomerId = typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
+  if (stripeCustomerId) await sb.from("customers").update({ stripe_customer_id: stripeCustomerId }).eq("id", customerId);
+
+  const paymentIntentId =
+    typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id ?? null;
+
+  await recordJerseyOrder(sb, session, { customerId, participantId, context: "standalone", paymentIntentId, quantity: qty });
+
+  const total = session.amount_total ?? 0;
+  const firstName = (session.customer_details?.name ?? "").split(" ")[0];
+  if (email) {
+    await sendEmail({
+      to: email,
+      subject: "Your Obsidian jersey order",
+      template: "jersey_order_confirmation",
+      html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
+        <h2 style="color: #7E57C2; margin-bottom: 8px;">Order confirmed.</h2>
+        <p>Hi${firstName ? " " + firstName : ""},</p>
+        <p>Thanks for your order. Here are the details:</p>
+        <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">
+          <strong>Obsidian training jersey</strong><br>Size: ${size}${qty > 1 ? `<br>Quantity: ${qty}` : ""}<br>Total paid: ${formatCents(total)}
+        </p>
+        <p>We'll be in touch about getting your jersey to you. Just reply to this email with any questions.</p>
+        <p>See you on court!<br>Obsidian Volleyball Academy</p>
+      </div>
+    `,
+      text: `Order confirmed.\n\nObsidian training jersey\nSize: ${size}${qty > 1 ? `\nQuantity: ${qty}` : ""}\nTotal paid: ${formatCents(total)}\n\nWe'll be in touch about getting your jersey to you. Questions? Reply to this email.\n\nObsidian Volleyball Academy`,
+    });
+  }
+
+  await sb.from("audit_log").insert({
+    actor_role: "system",
+    action: "jersey_order.create",
+    entity_type: "customer",
+    entity_id: customerId,
+    after: { size, quantity: qty, total_cents: total, context: "standalone" },
   });
 }

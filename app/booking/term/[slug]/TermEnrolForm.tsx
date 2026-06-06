@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { formatCents, TRIAL_PRICE_CENTS } from "@/lib/booking/pricing";
 import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
+import JerseyAddOn, { EMPTY_JERSEY, type JerseyChoice } from "@/components/JerseyAddOn";
 
 type ParentForm = {
   first_name: string;
@@ -69,6 +70,7 @@ export function TermEnrolForm({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [jersey, setJersey] = useState<JerseyChoice>(EMPTY_JERSEY);
   const [parent, setParent] = useState<ParentForm>({ first_name: "", last_name: "", email: "", phone: "", source: "" });
   const [kid, setKid] = useState<KidForm>({
     first_name: "",
@@ -93,6 +95,10 @@ export function TermEnrolForm({
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (plan === "term" && jersey.add && !jersey.size) {
+      setError("Please choose a jersey size, or untick the jersey add-on.");
+      return;
+    }
     setSubmitting(true);
     setError(null);
     try {
@@ -105,6 +111,7 @@ export function TermEnrolForm({
         body: JSON.stringify({
           program_id: programId,
           ...(plan === "casual" ? { session_ids: Array.from(selected) } : {}),
+          ...(plan === "term" ? { jersey: { add: jersey.add, size: jersey.size || null } } : {}),
           parent,
           kid: {
             ...kid,
@@ -232,6 +239,8 @@ export function TermEnrolForm({
             <TextArea label="Medical notes / allergies" value={kid.medical_notes} onChange={(v) => setKid({ ...kid, medical_notes: v })} placeholder="Optional. Anything coaches should know." />
             <Checkbox checked={kid.photo_consent} onChange={(v) => setKid({ ...kid, photo_consent: v })} label="I consent to photos/videos of my child being used on Obsidian Volleyball Academy social media and website." />
           </Fieldset>
+
+          {plan === "term" && <JerseyAddOn value={jersey} onChange={setJersey} />}
 
           {error && <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded p-3">{error}</div>}
 
