@@ -1,37 +1,38 @@
 import type { Metadata } from "next";
 import SectionReveal from "@/components/SectionReveal";
-import Link from "next/link";
+import CopyEmail from "@/components/CopyEmail";
 
 export const metadata: Metadata = {
   title: "FAQ | Obsidian Volleyball Academy Sydney",
   description:
-    "Frequently asked questions about Obsidian Volleyball Academy. Programs, pricing, venues across Sydney, age groups, and more.",
+    "Frequently asked questions about Obsidian Volleyball Academy. Programs, pricing, venues across Sydney, age groups, the competitive pathway, and more.",
   alternates: { canonical: "/faq" },
 };
 
 const faqCategories = [
   {
-    category: "PROGRAMS & BOOKING",
+    title: "Getting started",
     faqs: [
       {
         q: "What programs do you offer?",
-        a: "We run holiday camps during school holiday periods and term programs during the school year. Programs are available for beginner, intermediate, and advanced skill levels, catering to juniors aged 8 to 18.",
+        a: "We run holiday camps during school holiday periods and weekly term programs during the school year. Programs cater to juniors aged 8 to 18 across beginner, intermediate, and advanced skill levels.",
       },
       {
-        q: "How do I book a session?",
-        a: "Book directly through our booking page at obsidianvolleyball.com/booking. Select your preferred program and time slot, and pay securely online. You'll receive a confirmation email with all the details.",
-      },
-      {
-        q: "Can I book a single day or do I need to book the full camp?",
-        a: "Both options are available. We offer full camp packages (best value, includes a free shirt) as well as individual day bookings and half-day sessions. Check the booking page for current options.",
-      },
-      {
-        q: "How much does it cost?",
-        a: "Term program and holiday camp pricing is on the booking page. We're a quality club: small groups, expert coaches, structured curriculum. We're currently running a launch promotion for new players (20% off plus a free training shirt).",
+        q: "How do I book?",
+        a: "Book online at obsidianvolleyball.com/booking. Choose your program and days, pay securely, and you'll get a confirmation email with all the details.",
       },
       {
         q: "Can my child try a class first?",
-        a: "Yes. New players can book a Trial Class: one session of any junior weekly class for $25. It's a one-off paid trial so you can try a class before committing to the term. Limit one trial per player. Book it from the booking page.",
+        a: "Yes. New players can book a Trial Class: one session of any junior weekly class for $25, so you can try before committing to the term. Limit one trial per player. Book it from the booking page.",
+      },
+    ],
+  },
+  {
+    title: "Pricing",
+    faqs: [
+      {
+        q: "How much do holiday camps cost?",
+        a: "Full days are $70 each. The 5-day week pass is $250, which is our best value and works out cheaper than four single days. Half-day sessions (9 to 11 AM) are $45. You can also add an Obsidian training jersey for $36 at checkout. Pick your days on the booking page and the total updates as you go.",
       },
       {
         q: "How much are junior classes — term vs casual?",
@@ -41,27 +42,10 @@ const faqCategories = [
         q: "What if my child misses a week?",
         a: "Term enrolments aren't refunded week to week. If your child has to miss a session, contact us and we'll offer a makeup at another class or day where we can. If you need real week-to-week flexibility, that's exactly what the casual drop-in rate is for.",
       },
-      {
-        q: "Do you run programs during school terms?",
-        a: "Yes. Junior classes run every Friday at Obsidian Volleyball Academy West Ryde, in two 1.5-hour sessions (4:00–5:30 PM and 5:30–7:00 PM). Adult scrims run the same evening from 7:00–9:00 PM. Holiday camps run separately at Baulkham Hills High School during school holidays.",
-      },
     ],
   },
   {
-    category: "PAYMENTS",
-    faqs: [
-      {
-        q: "What payment methods do you accept?",
-        a: "We accept credit/debit cards through our secure Stripe payment system. Payment is processed at the time of booking.",
-      },
-      {
-        q: "What is your refund and reschedule policy?",
-        a: "Adult social sessions are non-refundable and non-reschedulable. For junior sessions, refunds and reschedules are handled on a case-by-case basis. Please contact us at obsidianvolleyball@gmail.com and we'll do our best to help you.",
-      },
-    ],
-  },
-  {
-    category: "PLAYERS & SKILL LEVELS",
+    title: "Players & skill levels",
     faqs: [
       {
         q: "What age groups do you cater for?",
@@ -69,27 +53,36 @@ const faqCategories = [
       },
       {
         q: "My child has never played volleyball. Is that OK?",
-        a: "Absolutely. Our Beginner Blast program is specifically designed for kids with zero experience. Coaches are trained to make it fun and non-intimidating from session one.",
+        a: "Absolutely. Our beginner sessions are designed for kids with zero experience, and our coaches make it fun and welcoming from day one. During camp, coaches also move players up or down a level so everyone stays challenged and engaged.",
       },
       {
         q: "How do you group players?",
-        a: "By skill level, not just age. We assess players at the start and place them in the appropriate group, so beginners aren't overwhelmed and advanced players are appropriately challenged.",
-      },
-      {
-        q: "Is there a pathway to competitive volleyball?",
-        a: "Yes. Our Elite Program prepares advanced juniors for club and representative volleyball. Talk to our coaches about your child's development goals.",
+        a: "By skill level, not just age. We assess players and place them in the right group, so beginners aren't overwhelmed and advanced players are properly challenged.",
       },
     ],
   },
   {
-    category: "VENUES & LOGISTICS",
+    title: "Pathway & competition",
+    faqs: [
+      {
+        q: "Is there a pathway to competitive volleyball?",
+        a: "Yes. Players are grouped by ability so stronger players are always pushed, and our advanced sessions build toward representative and club volleyball. From 2027 we're entering junior teams into the Sydney Volleyball League, giving our players a clear competitive pathway.",
+      },
+      {
+        q: "Can my child play in a competitive team?",
+        a: "From 2027 we're fielding junior teams in the Sydney Volleyball League. If your child is keen to compete, let our coaches know and we'll guide the next steps as teams take shape.",
+      },
+    ],
+  },
+  {
+    title: "Venues & logistics",
     faqs: [
       {
         q: "Where do you run programs?",
-        a: "Term programs run every Friday at Obsidian Volleyball Academy West Ryde. Holiday camps run at Baulkham Hills High School during school holiday periods. We are continuing to expand to additional Sydney locations.",
+        a: "Term programs run every Friday at Obsidian Volleyball Academy West Ryde. Holiday camps run at Baulkham Hills High School during school holiday periods. We're continuing to expand to additional Sydney locations.",
       },
       {
-        q: "Are all the venues indoor?",
+        q: "Are the venues indoor?",
         a: "Yes. Every venue we run from has indoor courts, so sessions run rain or shine.",
       },
       {
@@ -98,16 +91,29 @@ const faqCategories = [
       },
       {
         q: "What should my child bring?",
-        a: "Suitable indoor court shoes and their Obsidian Volleyball training jersey. We provide all volleyball gear.",
+        a: "Suitable indoor court shoes, a water bottle (refill stations are on site), and their Obsidian Volleyball training jersey. We provide all volleyball gear.",
       },
       {
         q: "What time do sessions start and end?",
-        a: "Holiday camps run 9 AM to 1 PM (full day) with half-day options available. Junior classes run in 1.5-hour Friday evening blocks (4:00 PM and 5:30 PM starts), with adult scrims from 7:00–9:00 PM at the same venue.",
+        a: "Holiday camps run 9 AM to 1 PM (full day), with half-day options from 9 to 11 AM. Junior classes run in 1.5-hour Friday evening blocks (4:00 PM and 5:30 PM starts), with adult scrims from 7:00 to 9:00 PM at the same venue.",
       },
     ],
   },
   {
-    category: "COACHES & SAFETY",
+    title: "Payments & refunds",
+    faqs: [
+      {
+        q: "What payment methods do you accept?",
+        a: "We accept credit and debit cards through our secure Stripe payment system. Payment is processed at the time of booking.",
+      },
+      {
+        q: "What is your refund and reschedule policy?",
+        a: "Adult social sessions are non-refundable and non-reschedulable. For junior sessions, refunds and reschedules are handled case by case — email us at obsidianvolleyball@gmail.com and we'll do our best to help.",
+      },
+    ],
+  },
+  {
+    title: "Coaches & safety",
     faqs: [
       {
         q: "Are your coaches qualified?",
@@ -115,14 +121,13 @@ const faqCategories = [
       },
       {
         q: "What is the coach-to-player ratio?",
-        a: "We maintain small group sizes to ensure each player receives meaningful coaching attention. Specific ratios vary by program level.",
+        a: "We keep group sizes small so every player gets meaningful coaching attention. Specific ratios vary by program level.",
       },
     ],
   },
 ];
 
 export default function FAQPage() {
-  // Flatten all FAQs for structured data
   const allFaqs = faqCategories.flatMap((c) => c.faqs);
   const faqSchema = {
     "@context": "https://schema.org",
@@ -137,57 +142,56 @@ export default function FAQPage() {
   return (
     <div className="pt-20">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+
       {/* Hero */}
-      <section className="py-24 lg:py-32 bg-[#0A0A0A]">
+      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-6">ANSWERS</p>
-            <h1 className="font-heading text-6xl sm:text-8xl lg:text-9xl text-white tracking-wide mb-8 leading-[0.9]">
-              FREQUENTLY
-              <br />
-              ASKED
+            <h1 className="font-heading text-6xl sm:text-7xl lg:text-8xl text-white tracking-wide mb-6 leading-[0.95]">
+              FREQUENTLY ASKED
               <br />
               <span className="text-[#7E57C2]">QUESTIONS</span>
             </h1>
+            <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
+              Everything about our camps, classes, pricing, and pathway. Can&apos;t find your answer? Reach out below.
+            </p>
           </SectionReveal>
         </div>
       </section>
 
       {/* FAQ Categories */}
-      {faqCategories.map((category, catIndex) => (
-        <section
-          key={category.category}
-          className={`py-16 lg:py-20 ${catIndex % 2 === 0 ? "bg-[#111]" : "bg-[#0A0A0A]"}`}
-        >
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <SectionReveal>
-              <p className="text-[#7E57C2] font-heading text-xs tracking-[0.4em] mb-8 pb-4 border-b border-white/[0.06]">
-                {category.category}
-              </p>
+      <section className="pb-8 bg-[#0A0A0A]">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14">
+          {faqCategories.map((category) => (
+            <SectionReveal key={category.title}>
+              <div>
+                <h2 className="font-heading text-2xl lg:text-3xl text-white tracking-wide mb-6 pb-3 border-b border-[#7E57C2]/30">
+                  {category.title}
+                </h2>
+                <div className="divide-y divide-white/[0.06]">
+                  {category.faqs.map((faq) => (
+                    <details key={faq.q} className="group">
+                      <summary className="flex justify-between items-center gap-4 py-5 cursor-pointer list-none select-none">
+                        <span className="text-lg text-white font-medium leading-snug group-hover:text-[#7E57C2] transition-colors duration-300">
+                          {faq.q}
+                        </span>
+                        <span className="text-[#7E57C2] flex-shrink-0 text-2xl leading-none transition-transform duration-300 group-open:rotate-45">
+                          +
+                        </span>
+                      </summary>
+                      <div className="pb-5 -mt-1 text-gray-400 text-base leading-relaxed max-w-2xl">{faq.a}</div>
+                    </details>
+                  ))}
+                </div>
+              </div>
             </SectionReveal>
-            <div className="space-y-0">
-              {category.faqs.map((faq, i) => (
-                <SectionReveal key={i} delay={i * 0.03}>
-                  <details className="group border-b border-white/[0.06]">
-                    <summary className="flex justify-between items-center py-5 cursor-pointer list-none select-none">
-                      <span className="font-heading text-lg sm:text-xl text-white tracking-wide pr-4 group-hover:text-[#7E57C2] transition-colors duration-300">
-                        {faq.q}
-                      </span>
-                      <span className="text-gray-600 flex-shrink-0 text-sm font-heading tracking-widest group-open:text-[#7E57C2] transition-colors">
-                        +
-                      </span>
-                    </summary>
-                    <div className="pb-5 text-gray-500 text-sm leading-relaxed pl-0">{faq.a}</div>
-                  </details>
-                </SectionReveal>
-              ))}
-            </div>
-          </div>
-        </section>
-      ))}
+          ))}
+        </div>
+      </section>
 
       {/* Still have questions */}
-      <section className="py-24 lg:py-32 bg-[#0A0A0A] text-center">
+      <section className="py-24 lg:py-32 bg-[#111] text-center">
         <div className="max-w-2xl mx-auto px-4">
           <SectionReveal>
             <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">STILL HAVE QUESTIONS?</p>
@@ -196,23 +200,26 @@ export default function FAQPage() {
               <br />
               TO <span className="text-[#7E57C2]">HELP</span>
             </h2>
-            <p className="text-gray-500 text-lg mb-10 leading-relaxed">
-              Email us or send a DM on Instagram. We respond quickly.
+            <p className="text-gray-400 text-lg mb-10 leading-relaxed">
+              Copy our email or send a DM on Instagram. We respond quickly.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a
-                href="mailto:obsidianvolleyball@gmail.com"
-                className="bg-[#5E35A8] text-white font-heading text-xl px-10 py-4 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
+              <CopyEmail
+                copiedLabel="COPIED TO CLIPBOARD ✓"
+                className="bg-[#5E35A8] text-white font-heading text-xl px-10 py-4 hover:bg-white hover:text-[#5E35A8] transition-all duration-300 tracking-wide glow-purple"
               >
-                EMAIL US
-              </a>
-              <Link
-                href="/contact"
+                COPY OUR EMAIL
+              </CopyEmail>
+              <a
+                href="https://instagram.com/obsidianvolleyball"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="border border-white/20 text-white font-heading text-xl px-10 py-4 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide"
               >
-                ALL CONTACT OPTIONS
-              </Link>
+                MESSAGE ON INSTAGRAM
+              </a>
             </div>
+            <p className="text-gray-600 text-sm mt-6">obsidianvolleyball@gmail.com</p>
           </SectionReveal>
         </div>
       </section>

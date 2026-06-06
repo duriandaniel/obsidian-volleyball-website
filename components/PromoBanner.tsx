@@ -16,8 +16,8 @@ export default function PromoBanner() {
       onClick={() => trackBookingClick("general", "promo_banner")}
       className="fixed top-0 left-0 right-0 z-[60] block bg-[#482971] hover:bg-[#5E35A8] transition-colors duration-300 border-b border-white/10"
     >
-      <div className="max-w-7xl mx-auto px-4 py-2 text-center">
-        <p className="text-xs sm:text-sm font-heading text-white tracking-[0.2em] uppercase">
+      <div className="max-w-7xl mx-auto px-4 py-1.5 text-center">
+        <p className="text-sm sm:text-base font-heading text-white tracking-[0.2em] uppercase">
           <span>Holiday Camp Bookings Open</span>
           <span
             className="text-[#D4A4FF] mx-2 sm:mx-3 inline-block align-middle text-[8px]"

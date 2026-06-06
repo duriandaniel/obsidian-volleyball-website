@@ -299,7 +299,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
         },
         {
           title: "FLEXIBLE BOOKING",
-          desc: "Five-day pack (best value, includes free jersey), single day, or half-day options to fit the family schedule.",
+          desc: "Five-day week pass (best value), single day, or half-day options to fit the family schedule.",
         },
         {
           title: `${data.drive.toUpperCase()} AWAY`,
