@@ -84,7 +84,7 @@ export default function HomeSections() {
                   <span className="text-[#7E57C2]">OBSIDIAN</span>
                 </h2>
                 <p className="text-gray-400 leading-relaxed">
-                  Founded in 2025 to bring premium junior volleyball coaching to Sydney families.
+                  Founded in 2025 to bring quality junior volleyball coaching to Sydney families.
                   Now launching term programs at Obsidian Volleyball Academy West Ryde, with holiday
                   camps at Baulkham Hills High School.
                 </p>
@@ -149,7 +149,7 @@ export default function HomeSections() {
             <CoachCard
               name="Melinda"
               role="Coach"
-              bio="Years of competitive volleyball experience and a deep commitment to junior development."
+              bio="Years of competitive volleyball experience and a deep commitment to junior development. Currently plays in the Sydney Women's Premier League."
               qualifications={["NSWCHS Opens Champion", "NSW & SW Blues Award"]}
               image="/images/coach-melinda-card.jpg"
               index={2}

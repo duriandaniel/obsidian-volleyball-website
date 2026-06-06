@@ -1,7 +1,15 @@
 // Pricing engine for camps and term programs.
 // Pure functions, no DB. Easy to unit test.
 
-export type CampTier = { full_days: number; price_cents: number };
+// ── Holiday camp pricing ──────────────────────────────────────────────
+// Full days follow a ladder that gets cheaper at the 5-day week pass.
+// Half days are a flat, separate product and do NOT count toward the
+// full-day ladder. The jersey is an optional, separate add-on.
+export const CAMP_FULL_DAY_CENTS = 7000; // 1–4 days, per day
+export const CAMP_FIVE_DAY_PASS_CENTS = 25000; // flat 5-day week pass
+export const CAMP_EXTRA_DAY_CENTS = 4000; // each full day beyond 5
+export const CAMP_HALF_DAY_CENTS = 4500; // flat, per half day (9–11am)
+export const CAMP_JERSEY_CENTS = 3600; // optional jersey add-on
 
 export type CampCartItem = {
   session_id: string;
@@ -9,65 +17,46 @@ export type CampCartItem = {
 };
 
 export type CampPricingResult = {
-  full_day_equivalents: number;
-  subtotal_cents: number;
-  discount_cents: number;
-  total_cents: number;
-  matched_tier: CampTier | null;
+  full_days: number;
+  half_days: number;
+  full_day_cents: number; // ladder price for the full days
+  half_day_cents: number; // flat half-day price total
+  subtotal_cents: number; // rack rate (full days at per-day) — used to show the bundle saving
+  discount_cents: number; // saving from the 5+ day bundle
+  total_cents: number; // full + half, EXCLUDES the optional jersey
+  show_five_day_nudge: boolean; // exactly 4 full days: a 5-day pass is cheaper
 };
 
-// Default OVA camp tiers (editable via admin later).
-// Half day = 0.5 of a full day for tier matching.
-export const DEFAULT_CAMP_TIERS: CampTier[] = [
-  { full_days: 0.5, price_cents: 3500 },
-  { full_days: 1, price_cents: 5000 },
-  { full_days: 2, price_cents: 9800 },
-  { full_days: 3, price_cents: 14400 },
-  { full_days: 4, price_cents: 18800 },
-  { full_days: 5, price_cents: 20000 },
-];
+// Ladder price for n full days. 1=70, 2=140, 3=210, 4=280, 5=250,
+// 6=290, 7=330, 8=370, 9=410 ... (intentional cliff: 4 days > 5-day pass).
+export function priceCampFullDays(n: number): number {
+  if (n <= 0) return 0;
+  if (n <= 4) return CAMP_FULL_DAY_CENTS * n;
+  if (n === 5) return CAMP_FIVE_DAY_PASS_CENTS;
+  return CAMP_FIVE_DAY_PASS_CENTS + CAMP_EXTRA_DAY_CENTS * (n - 5);
+}
 
-export function priceCampCart(cart: CampCartItem[], tiers: CampTier[] = DEFAULT_CAMP_TIERS): CampPricingResult {
-  if (cart.length === 0) {
-    return { full_day_equivalents: 0, subtotal_cents: 0, discount_cents: 0, total_cents: 0, matched_tier: null };
-  }
+export function priceCampCart(cart: CampCartItem[]): CampPricingResult {
+  const fullDays = cart.reduce((n, i) => n + (i.is_half_day ? 0 : 1), 0);
+  const halfDays = cart.reduce((n, i) => n + (i.is_half_day ? 1 : 0), 0);
 
-  const fullDayEquivalents = cart.reduce((sum, item) => sum + (item.is_half_day ? 0.5 : 1), 0);
+  const fullDayCents = priceCampFullDays(fullDays);
+  const halfDayCents = CAMP_HALF_DAY_CENTS * halfDays;
 
-  // Sum of individual full-day / half-day prices (subtotal without bundle discount)
-  const tierFor = (days: number) => tiers.find((t) => t.full_days === days) ?? null;
-  const halfDayTier = tierFor(0.5);
-  const fullDayTier = tierFor(1);
-  const subtotal = cart.reduce((sum, item) => {
-    const t = item.is_half_day ? halfDayTier : fullDayTier;
-    return sum + (t?.price_cents ?? 0);
-  }, 0);
-
-  // Find the best matching bundle tier (largest full_days <= fullDayEquivalents).
-  // If exact match, use bundle price; else fall back to subtotal.
-  const matched = tiers
-    .filter((t) => t.full_days <= fullDayEquivalents && t.full_days >= 1)
-    .sort((a, b) => b.full_days - a.full_days)[0] ?? null;
-
-  let total = subtotal;
-  if (matched && matched.full_days === fullDayEquivalents) {
-    // Exact tier match (e.g. cart = 5 full days, tier = 5)
-    total = matched.price_cents;
-  } else if (matched) {
-    // Partial match: use bundle price for the bundle-qualifying portion, add per-day for the rest
-    const remainder = fullDayEquivalents - matched.full_days;
-    const remainderPrice =
-      Math.floor(remainder) * (fullDayTier?.price_cents ?? 0) +
-      (remainder % 1 === 0.5 ? halfDayTier?.price_cents ?? 0 : 0);
-    total = matched.price_cents + remainderPrice;
-  }
+  // Rack rate: every full day at the flat per-day price (no bundle), plus
+  // half days. Difference vs the ladder is the bundle saving we surface.
+  const subtotal = CAMP_FULL_DAY_CENTS * fullDays + halfDayCents;
+  const total = fullDayCents + halfDayCents;
 
   return {
-    full_day_equivalents: fullDayEquivalents,
+    full_days: fullDays,
+    half_days: halfDays,
+    full_day_cents: fullDayCents,
+    half_day_cents: halfDayCents,
     subtotal_cents: subtotal,
     discount_cents: Math.max(0, subtotal - total),
     total_cents: total,
-    matched_tier: matched,
+    show_five_day_nudge: fullDays === 4,
   };
 }
 

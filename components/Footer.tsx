@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import CopyEmail from "./CopyEmail";
 
 export default function Footer() {
   const pathname = usePathname();
@@ -21,33 +22,33 @@ export default function Footer() {
               </span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed max-w-sm mb-6">
-              Premium junior volleyball academy across Sydney.
+              Quality junior volleyball academy across Sydney.
               Established 2025.
             </p>
-            <div className="flex items-center gap-4">
+            <div className="space-y-3">
               <a
                 href="https://instagram.com/obsidianvolleyball"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-600 hover:text-[#7E57C2] transition-colors duration-300"
-                aria-label="Instagram"
+                className="group inline-flex items-center gap-3 text-gray-400 hover:text-[#7E57C2] transition-colors duration-300"
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-600 group-hover:text-[#7E57C2] transition-colors">
                   <rect x="2" y="2" width="20" height="20" rx="5" />
                   <circle cx="12" cy="12" r="5" />
                   <circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none" />
                 </svg>
+                <span className="text-sm">@obsidianvolleyball</span>
               </a>
-              <a
-                href="mailto:obsidianvolleyball@gmail.com"
-                className="text-gray-600 hover:text-[#7E57C2] transition-colors duration-300"
-                aria-label="Email"
+              <CopyEmail
+                copiedLabel="Email copied to clipboard!"
+                className="group inline-flex items-center gap-3 text-gray-400 hover:text-[#7E57C2] transition-colors duration-300 cursor-pointer"
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-gray-600 group-hover:text-[#7E57C2] transition-colors">
                   <rect x="2" y="4" width="20" height="16" rx="2" />
                   <path d="M22 7l-10 7L2 7" />
                 </svg>
-              </a>
+                <span className="text-sm">obsidianvolleyball@gmail.com</span>
+              </CopyEmail>
             </div>
           </div>
 
@@ -61,8 +62,8 @@ export default function Footer() {
                 { href: "/adult-sessions", label: "Adult Sessions" },
                 { href: "/holiday-camp", label: "Holiday Camps" },
                 { href: "/coaches", label: "Coaches" },
+                { href: "/shop/jersey", label: "Jersey" },
                 { href: "/faq", label: "FAQ" },
-                { href: "/contact", label: "Contact" },
               ].map((link) => (
                 <li key={link.href}>
                   <Link

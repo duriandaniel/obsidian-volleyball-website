@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { formatCents, TRIAL_PRICE_CENTS } from "@/lib/booking/pricing";
 import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
+import JerseyAddOn, { EMPTY_JERSEY, type JerseyChoice } from "@/components/JerseyAddOn";
 
 type ParentForm = {
   first_name: string;
@@ -20,6 +21,7 @@ type KidForm = {
   school_name: string;
   medical_notes: string;
   photo_consent: boolean;
+  injury_ack: boolean;
 };
 
 const SOURCE_OPTIONS = [
@@ -69,6 +71,7 @@ export function TermEnrolForm({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [jersey, setJersey] = useState<JerseyChoice>(EMPTY_JERSEY);
   const [parent, setParent] = useState<ParentForm>({ first_name: "", last_name: "", email: "", phone: "", source: "" });
   const [kid, setKid] = useState<KidForm>({
     first_name: "",
@@ -78,6 +81,7 @@ export function TermEnrolForm({
     school_name: "",
     medical_notes: "",
     photo_consent: false,
+    injury_ack: false,
   });
 
   const total = perWeekCents * weeksRemaining;
@@ -93,6 +97,18 @@ export function TermEnrolForm({
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!kid.school_name.trim()) {
+      setError("Please enter your child's school name.");
+      return;
+    }
+    if (!kid.photo_consent) {
+      setError("Please tick the photo and marketing consent box.");
+      return;
+    }
+    if (!kid.injury_ack) {
+      setError("Please tick the injury disclaimer to continue.");
+      return;
+    }
     setSubmitting(true);
     setError(null);
     try {
@@ -105,6 +121,7 @@ export function TermEnrolForm({
         body: JSON.stringify({
           program_id: programId,
           ...(plan === "casual" ? { session_ids: Array.from(selected) } : {}),
+          ...(plan === "term" ? { jersey: { add: jersey.add } } : {}),
           parent,
           kid: {
             ...kid,
@@ -231,7 +248,10 @@ export function TermEnrolForm({
             <Field label="School name" value={kid.school_name} onChange={(v) => setKid({ ...kid, school_name: v })} required />
             <TextArea label="Medical notes / allergies" value={kid.medical_notes} onChange={(v) => setKid({ ...kid, medical_notes: v })} placeholder="Optional. Anything coaches should know." />
             <Checkbox checked={kid.photo_consent} onChange={(v) => setKid({ ...kid, photo_consent: v })} label="I consent to photos/videos of my child being used on Obsidian Volleyball Academy social media and website." />
+            <Checkbox checked={kid.injury_ack} onChange={(v) => setKid({ ...kid, injury_ack: v })} label="I understand volleyball involves physical activity and a risk of injury, and I accept responsibility for my child's participation. Any relevant medical conditions are noted above." />
           </Fieldset>
+
+          {plan === "term" && <JerseyAddOn value={jersey} onChange={setJersey} />}
 
           {error && <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded p-3">{error}</div>}
 

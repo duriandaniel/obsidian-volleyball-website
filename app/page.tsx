@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
+import Image from "next/image";
+import Link from "next/link";
 import Hero from "@/components/Hero";
 import HomeSections from "@/components/HomeSections";
 
 export const metadata: Metadata = {
   title: "Junior Volleyball Coaching Sydney | West Ryde & Baulkham Hills | Obsidian Volleyball Academy",
   description:
-    "Premium junior volleyball coaching in Sydney. Friday term programs at Obsidian Volleyball Academy West Ryde. School-holiday camps at Baulkham Hills High School. Ages 8 to 18.",
+    "Quality junior volleyball coaching in Sydney. Friday term programs at Obsidian Volleyball Academy West Ryde. School-holiday camps at Baulkham Hills High School. Ages 8 to 18.",
   keywords: [
     "junior volleyball Sydney",
     "volleyball coaching Sydney",
@@ -70,11 +72,11 @@ const eventSchema = {
   },
   offers: {
     "@type": "Offer",
-    price: "200",
+    price: "250",
     priceCurrency: "AUD",
     availability: "https://schema.org/InStock",
     url: "https://obsidianvolleyball.com/booking",
-    description: "5-day camp package includes a free Obsidian training jersey",
+    description: "5-day camp week pass. Single and half days also available.",
   },
   audience: {
     "@type": "PeopleAudience",
@@ -90,6 +92,38 @@ export default function Home() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }} />
       <Hero />
       <HomeSections />
+
+      {/* Jersey shop band */}
+      <section className="py-20 lg:py-28 bg-[#111] border-t border-white/[0.06]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <div className="relative aspect-[4/3] md:aspect-[3/4] overflow-hidden rounded-lg bg-[#0A0A0A]">
+              <Image
+                src="/images/jersey-detail.jpg"
+                alt="Obsidian Volleyball training jersey"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-cover"
+              />
+            </div>
+            <div>
+              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">OBSIDIAN GEAR</p>
+              <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide mb-5 leading-[0.95]">
+                GET THE JERSEY
+              </h2>
+              <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-md">
+                Our purple squad-colour training jersey, worn by players at every camp and class. $36, sizes XS to XL.
+              </p>
+              <Link
+                href="/shop/jersey"
+                className="inline-block bg-[#5E35A8] text-white font-heading text-xl px-10 py-4 hover:bg-white hover:text-[#5E35A8] transition-all duration-300 tracking-wide glow-purple"
+              >
+                SHOP THE JERSEY
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

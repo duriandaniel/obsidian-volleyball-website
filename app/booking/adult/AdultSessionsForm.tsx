@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { formatCents, formatSpotsLeft } from "@/lib/booking/pricing";
 import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
+import JerseyAddOn, { EMPTY_JERSEY, type JerseyChoice } from "@/components/JerseyAddOn";
 
 type AdultSession = {
   id: string;
@@ -49,6 +50,7 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
   const [level, setLevel] = useState<Level>("");
   const [source, setSource] = useState<Source>("");
   const [consent, setConsent] = useState(false);
+  const [jersey, setJersey] = useState<JerseyChoice>(EMPTY_JERSEY);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -91,6 +93,7 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           session_ids: Array.from(selected),
+          jersey: { add: jersey.add },
           player: { name, email, phone, level, source, marketing_consent: consent },
         }),
       });
@@ -199,6 +202,8 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
                     I consent to Obsidian Volleyball Academy capturing and using photos and video from sessions for marketing and social media. <span className="text-[#7E57C2]">*</span>
                   </span>
                 </label>
+
+                <JerseyAddOn value={jersey} onChange={setJersey} />
 
                 {error && <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded p-3">{error}</div>}
 

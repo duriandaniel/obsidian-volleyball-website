@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   title:
     "Junior Classes | West Ryde Volleyball Sydney | Obsidian Volleyball Academy",
   description:
-    "Premium junior volleyball classes every Friday at Obsidian Volleyball Academy West Ryde. Beginner, intermediate, and advanced sessions for ages 8 to 18. Now launching with 20% off and a free training shirt.",
+    "Quality junior volleyball classes every Friday at Obsidian Volleyball Academy West Ryde. Beginner, intermediate, and advanced sessions for ages 8 to 18. Book a $25 trial class to start.",
   keywords: [
     "junior volleyball West Ryde",
     "junior volleyball classes Sydney",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     title:
       "Junior Classes | West Ryde Volleyball Sydney | Obsidian Volleyball Academy",
     description:
-      "Premium junior volleyball classes every Friday at Obsidian Volleyball Academy West Ryde.",
+      "Quality junior volleyball classes every Friday at Obsidian Volleyball Academy West Ryde.",
     images: ["/images/gallery-spike.jpg"],
     url: "/term-programs",
   },
@@ -103,7 +103,7 @@ const courseSchema = {
   "@type": "Course",
   name: "Junior Classes | Obsidian Volleyball Academy",
   description:
-    "Junior volleyball classes at Obsidian Volleyball Academy West Ryde. Premium coaching every Friday for ages 8 to 18.",
+    "Junior volleyball classes at Obsidian Volleyball Academy West Ryde. Quality coaching every Friday for ages 8 to 18.",
   provider: {
     "@type": "SportsOrganization",
     name: "Obsidian Volleyball Academy",

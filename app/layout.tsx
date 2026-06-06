@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     template: "%s | Obsidian Volleyball Academy",
   },
   description:
-    "Premium junior volleyball academy in Sydney. Term programs at Obsidian Volleyball Academy West Ryde. Holiday camps at Baulkham Hills.",
+    "Quality junior volleyball academy in Sydney. Term programs at Obsidian Volleyball Academy West Ryde. Holiday camps at Baulkham Hills.",
   keywords: [
     "volleyball academy Sydney",
     "junior volleyball Sydney",
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     siteName: "Obsidian Volleyball Academy",
     title: "Obsidian Volleyball Academy | Junior Volleyball Sydney",
     description:
-      "Premium junior volleyball academy in Sydney. Term programs in West Ryde.",
+      "Quality junior volleyball academy in Sydney. Term programs in West Ryde.",
     images: [
       {
         url: "/images/hero.jpg",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Obsidian Volleyball Academy | Junior Volleyball Sydney",
     description:
-      "Premium junior volleyball academy in Sydney. Term programs in West Ryde.",
+      "Quality junior volleyball academy in Sydney. Term programs in West Ryde.",
     images: ["/images/hero.jpg"],
   },
   robots: {
@@ -91,7 +91,7 @@ const localBusinessSchema = {
   "@id": `${SITE_URL}/#localbusiness`,
   name: "Obsidian Volleyball Academy",
   description:
-    "Premium junior volleyball academy in Sydney. Term programs every Friday at Obsidian Volleyball Academy West Ryde, for ages 8 to 18.",
+    "Quality junior volleyball academy in Sydney. Term programs every Friday at Obsidian Volleyball Academy West Ryde, for ages 8 to 18.",
   url: SITE_URL,
   image: `${SITE_URL}/images/hero.jpg`,
   email: "obsidianvolleyball@gmail.com",

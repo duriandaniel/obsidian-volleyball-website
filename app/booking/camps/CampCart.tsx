@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { priceCampCart, formatCents, formatSpotsLeft } from "@/lib/booking/pricing";
+import { priceCampCart, formatCents, formatSpotsLeft, CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
+import JerseyAddOn, { EMPTY_JERSEY, type JerseyChoice } from "@/components/JerseyAddOn";
 import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
 import type { CampSessionView } from "./page";
 
@@ -61,6 +62,7 @@ type KidForm = {
   school_name: string;
   medical_notes: string;
   photo_consent: boolean;
+  injury_ack: boolean;
 };
 
 export function CampCart({ sessions }: { sessions: Session[] }) {
@@ -85,7 +87,10 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
     school_name: "",
     medical_notes: "",
     photo_consent: false,
+    injury_ack: false,
   });
+  // Optional jersey add-on. Opt-in only. Size is chosen on collection.
+  const [jersey, setJersey] = useState<JerseyChoice>(EMPTY_JERSEY);
 
   const pricing = useMemo(() => {
     return priceCampCart(
@@ -95,6 +100,9 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
       }))
     );
   }, [selected]);
+
+  const jerseyCents = jersey.add ? CAMP_JERSEY_CENTS : 0;
+  const grandTotal = pricing.total_cents + jerseyCents;
 
   const toggle = (id: string) => {
     setSelected((prev) => {
@@ -128,6 +136,18 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!kid.school_name.trim()) {
+      setError("Please enter your child's school name.");
+      return;
+    }
+    if (!kid.photo_consent) {
+      setError("Please tick the photo and marketing consent box.");
+      return;
+    }
+    if (!kid.injury_ack) {
+      setError("Please tick the injury disclaimer to continue.");
+      return;
+    }
     setSubmitting(true);
     setError(null);
 
@@ -144,6 +164,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
             session_id,
             is_half_day,
           })),
+          jersey: { add: jersey.add },
           parent,
           kid: {
             ...kid,
@@ -221,7 +242,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                       !sel?.is_half_day ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10"
                     }`}
                   >
-                    Full day · $50
+                    Full day · 9am–1pm
                   </button>
                   <button
                     type="button"
@@ -230,7 +251,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                       sel?.is_half_day ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10"
                     }`}
                   >
-                    Half day · $35
+                    Half day · 9–11am · $45
                   </button>
                 </div>
               )}
@@ -248,24 +269,48 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
           <>
             <div className="space-y-1 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-400">Days</span>
-                <span>{pricing.full_day_equivalents}</span>
+                <span className="text-gray-400">Full days</span>
+                <span>{pricing.full_days}</span>
               </div>
+              {pricing.half_days > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Half days</span>
+                  <span>{pricing.half_days}</span>
+                </div>
+              )}
               <div className="flex justify-between">
                 <span className="text-gray-400">Subtotal</span>
                 <span>{formatCents(pricing.subtotal_cents)}</span>
               </div>
               {pricing.discount_cents > 0 && (
                 <div className="flex justify-between text-[#7E57C2]">
-                  <span>Bundle discount</span>
+                  <span>Bundle saving</span>
                   <span>−{formatCents(pricing.discount_cents)}</span>
+                </div>
+              )}
+              {jersey.add && (
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Jersey</span>
+                  <span>{formatCents(CAMP_JERSEY_CENTS)}</span>
                 </div>
               )}
               <div className="flex justify-between font-heading text-lg pt-2 border-t border-white/10 mt-2">
                 <span>Total</span>
-                <span>{formatCents(pricing.total_cents)}</span>
+                <span>{formatCents(grandTotal)}</span>
               </div>
             </div>
+
+            {pricing.show_five_day_nudge && (
+              <div className="text-xs text-[#7E57C2] bg-[#7E57C2]/10 border border-[#7E57C2]/30 rounded p-2.5 leading-relaxed">
+                Add a 5th day and pay $30 less — the full 5-day pass is $250.
+              </div>
+            )}
+
+            {mode !== "paying" && (
+              <div className="pt-3 border-t border-white/10">
+                <JerseyAddOn value={jersey} onChange={setJersey} />
+              </div>
+            )}
 
             {mode === "browsing" && (
               <>
@@ -326,7 +371,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                       ]}
                     />
                   </Row>
-                  <Field label="School name" value={kid.school_name} onChange={(v) => setKid({ ...kid, school_name: v })} />
+                  <Field label="School name" value={kid.school_name} onChange={(v) => setKid({ ...kid, school_name: v })} required />
                   <TextArea
                     label="Medical notes / allergies"
                     value={kid.medical_notes}
@@ -337,6 +382,11 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                     checked={kid.photo_consent}
                     onChange={(v) => setKid({ ...kid, photo_consent: v })}
                     label="I consent to photos/videos of my child being used on Obsidian Volleyball Academy social media and website."
+                  />
+                  <Checkbox
+                    checked={kid.injury_ack}
+                    onChange={(v) => setKid({ ...kid, injury_ack: v })}
+                    label="I understand volleyball involves physical activity and a risk of injury, and I accept responsibility for my child's participation. Any relevant medical conditions are noted above."
                   />
                 </Fieldset>
 

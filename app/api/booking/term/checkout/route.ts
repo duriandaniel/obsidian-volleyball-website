@@ -3,9 +3,11 @@ import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
 import { isAdultProgram } from "@/lib/booking/audience";
+import { CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
 
 const Body = z.object({
   program_id: z.string().regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i),
+  jersey: z.object({ add: z.boolean().default(false) }).optional(),
   parent: z.object({
     first_name: z.string().min(1).max(100),
     last_name: z.string().min(1).max(100),
@@ -162,6 +164,10 @@ export async function POST(req: NextRequest) {
   const weeks = sessions.length;
   const total = perWeekCents * weeks;
 
+  // Optional jersey add-on (opt-in; size chosen on collection).
+  const jerseyAdd = body.jersey?.add === true;
+  const jerseyCents = jerseyAdd ? CAMP_JERSEY_CENTS : 0;
+
   const reqUrl = new URL(req.url);
   const appUrl = `${reqUrl.protocol}//${reqUrl.host}`;
   const bypass = reqUrl.searchParams.get("x-vercel-protection-bypass");
@@ -185,6 +191,18 @@ export async function POST(req: NextRequest) {
         },
         quantity: 1,
       },
+      ...(jerseyAdd
+        ? [
+            {
+              price_data: {
+                currency: "aud" as const,
+                product_data: { name: "Obsidian training jersey" },
+                unit_amount: CAMP_JERSEY_CENTS,
+              },
+              quantity: 1,
+            },
+          ]
+        : []),
     ],
     customer_email: email,
     return_url: `${appUrl}/booking/term/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
@@ -196,6 +214,8 @@ export async function POST(req: NextRequest) {
       session_ids: JSON.stringify(sessions.map((s) => s.id)),
       per_week_cents: String(perWeekCents),
       weeks: String(weeks),
+      jersey_size: jerseyAdd ? "TBC" : "none",
+      jersey_cents: String(jerseyCents),
     },
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
   });

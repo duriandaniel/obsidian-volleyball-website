@@ -13,7 +13,6 @@ const navLinks = [
   { href: "/holiday-camp", label: "Camps" },
   { href: "/coaches", label: "Coaches" },
   { href: "/faq", label: "FAQ" },
-  { href: "/contact", label: "Contact" },
 ];
 
 export default function Nav() {
@@ -44,7 +43,7 @@ export default function Nav() {
   return (
     <>
       <header
-        className={`fixed top-9 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-10 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled || mobileOpen
             ? "bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/5"
             : "bg-transparent"

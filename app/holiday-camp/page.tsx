@@ -3,13 +3,17 @@ import SectionReveal from "@/components/SectionReveal";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 import Image from "next/image";
 import Link from "next/link";
-import CampLocationPicker from "./CampLocationPicker";
+import CampDetails from "./CampDetails";
 import TrackPixelView from "@/components/TrackPixelView";
+import { getNextCampWindow, formatCampWindow } from "@/lib/booking/camps";
+
+// Re-check for newly published camps periodically (dates come from the DB).
+export const revalidate = 300;
 
 export const metadata: Metadata = {
   title: "Volleyball Holiday Camps | Sydney Junior Volleyball | Obsidian",
   description:
-    "Junior volleyball holiday camps in Sydney for ages 8 to 18 at Baulkham Hills. July 6 to 17, Monday to Friday, 9 AM to 1 PM. Bookings open soon.",
+    "Junior volleyball holiday camps in Sydney for ages 8 to 18 at Baulkham Hills. Held each NSW school holidays, Monday to Friday, 9 AM to 1 PM. Beginner to advanced.",
   keywords: [
     "volleyball holiday camp Sydney",
     "school holiday volleyball Sydney",
@@ -57,15 +61,18 @@ const campSchema = {
   },
   offers: {
     "@type": "Offer",
-    price: "200",
+    price: "250",
     priceCurrency: "AUD",
     availability: "https://schema.org/InStock",
     url: "https://obsidianvolleyball.com/booking/camps",
-    description: "5-day camp package includes a free Obsidian training jersey.",
+    description: "5-day week pass. Single and half days also available. Optional Obsidian training jersey add-on.",
   },
 };
 
-export default function HolidayCampPage() {
+export default async function HolidayCampPage() {
+  const campWindow = await getNextCampWindow();
+  const dateLabel = campWindow ? formatCampWindow(campWindow) : "NSW school holidays";
+
   return (
     <div className="pt-20">
       <TrackPixelView contentName="holiday_camp" contentCategory="camp" />
@@ -83,18 +90,33 @@ export default function HolidayCampPage() {
                   <br />
                   <span className="text-[#7E57C2]">CAMPS</span>
                 </h1>
-                <p className="text-gray-400 text-lg max-w-xl mb-4 leading-relaxed">
-                  Three courts, three levels at Baulkham Hills High School.
-                  <br />
-                  <span className="text-white">July 6 to 17 &middot; Monday to Friday &middot; 9 AM to 1 PM.</span>
+                <p className="text-gray-400 text-lg max-w-xl mb-8 leading-relaxed">
+                  Intensive school-holiday volleyball at Baulkham Hills High School. Three courts,
+                  three levels, all coached by our team.
                 </p>
-                <p className="text-gray-500 text-base max-w-xl mb-10">
-                  Bookings open soon — more information coming.
-                </p>
+                <div className="flex flex-wrap gap-x-10 gap-y-5 mb-10">
+                  <div>
+                    <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-1.5">DATES</p>
+                    <p className="text-white text-base">{dateLabel}</p>
+                  </div>
+                  <div>
+                    <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-1.5">DAYS</p>
+                    <p className="text-white text-base">Monday to Friday</p>
+                  </div>
+                  <div>
+                    <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-1.5">TIME</p>
+                    <p className="text-white text-base">9 AM &ndash; 1 PM</p>
+                  </div>
+                </div>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <span className="bg-white/5 border border-white/15 text-gray-300 font-heading text-xl px-8 py-4 tracking-wide text-center">
-                    BOOKINGS OPEN SOON
-                  </span>
+                  <TrackedBookingLink
+                    tier="general"
+                    location="camp_hero"
+                    href="/booking/camps"
+                    className="bg-[#5E35A8] text-white font-heading text-xl px-8 py-4 hover:bg-white hover:text-[#5E35A8] transition-all duration-300 tracking-wide text-center glow-purple"
+                  >
+                    BOOK NOW
+                  </TrackedBookingLink>
                   <Link
                     href="/contact"
                     className="border border-white/20 text-white font-heading text-xl px-8 py-4 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide text-center"
@@ -120,7 +142,7 @@ export default function HolidayCampPage() {
         </div>
       </section>
 
-      <CampLocationPicker />
+      <CampDetails />
     </div>
   );
 }
