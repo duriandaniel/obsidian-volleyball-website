@@ -3,7 +3,7 @@ import SectionReveal from "@/components/SectionReveal";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 import Image from "next/image";
 import Link from "next/link";
-import CampLocationPicker from "./CampLocationPicker";
+import CampDetails from "./CampDetails";
 import TrackPixelView from "@/components/TrackPixelView";
 
 export const metadata: Metadata = {
@@ -120,7 +120,7 @@ export default function HolidayCampPage() {
         </div>
       </section>
 
-      <CampLocationPicker />
+      <CampDetails />
     </div>
   );
 }

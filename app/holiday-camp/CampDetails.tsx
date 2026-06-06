@@ -1,27 +1,9 @@
-"use client";
-
-import { useRef, useState } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
 import SectionReveal from "@/components/SectionReveal";
 
-type LocationId = "baulkham" | "tba";
-
-interface LocationOption {
-  id: LocationId;
-  label: string;
-  sub: string;
-  available: boolean;
-}
-
-const LOCATIONS: LocationOption[] = [
-  {
-    id: "baulkham",
-    label: "Baulkham Hills",
-    sub: "Sydney",
-    available: true,
-  },
-];
+// Single venue (Baulkham Hills High School), so camp details render directly
+// with no "choose a location" step. Venue link points to our Google Maps pin.
+const VENUE_MAPS_URL = "https://maps.app.goo.gl/c45c2VzRmA5iZVin8";
 
 const LEVELS = [
   {
@@ -62,126 +44,7 @@ const SCHEDULE = [
   { time: "1:00 PM", title: "Dismissal", body: "Players collected from the venue." },
 ];
 
-export default function CampLocationPicker() {
-  const [selected, setSelected] = useState<LocationId | null>(null);
-  const revealRef = useRef<HTMLDivElement | null>(null);
-
-  function handleSelect(id: LocationId) {
-    setSelected(id);
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        revealRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
-    });
-  }
-
-  return (
-    <>
-      {/* Step 1 — Choose a location */}
-      <section className="py-20 lg:py-24 bg-[#0A0A0A]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="mb-10">
-              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">STEP 1</p>
-              <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide leading-[0.95]">
-                CHOOSE A
-                <br />
-                <span className="text-[#7E57C2]">LOCATION</span>
-              </h2>
-            </div>
-          </SectionReveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
-            {LOCATIONS.map((loc) => {
-              const isActive = loc.id === selected;
-              const isDimmed = selected !== null && !isActive;
-              return (
-                <button
-                  key={loc.id}
-                  onClick={() => handleSelect(loc.id)}
-                  className={`group relative text-left p-8 lg:p-10 border-2 transition-all duration-500 overflow-hidden ${
-                    isActive
-                      ? "border-[#7E57C2] bg-[#161020]"
-                      : "border-white/[0.08] bg-[#0F0F0F] hover:border-[#7E57C2]/40 hover:bg-[#141114]"
-                  } ${isDimmed ? "opacity-55 hover:opacity-90" : ""}`}
-                >
-                  <p className="text-[#7E57C2] font-heading text-xs tracking-[0.4em] mb-4 uppercase">
-                    {loc.sub}
-                  </p>
-                  <h3 className="font-heading text-3xl lg:text-5xl text-white tracking-wide mb-6 leading-[0.95]">
-                    {loc.label.toUpperCase()}
-                  </h3>
-                  <span
-                    className={`inline-flex items-center gap-2 font-heading text-sm tracking-[0.2em] uppercase transition-colors duration-300 ${
-                      isActive ? "text-[#7E57C2]" : "text-gray-400 group-hover:text-[#7E57C2]"
-                    }`}
-                  >
-                    <span>{isActive ? "Showing details" : loc.available ? "View camp details" : "View status"}</span>
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      className={`transition-transform duration-300 ${
-                        isActive ? "rotate-90" : "group-hover:translate-x-1"
-                      }`}
-                    >
-                      <path d="M5 12h14M12 5l7 7-7 7" />
-                    </svg>
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-
-          {!selected && (
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="text-center text-gray-600 text-sm tracking-wider mt-12"
-            >
-              Pick a location to see camp details and pricing.
-            </motion.p>
-          )}
-        </div>
-      </section>
-
-      {/* Conditional content */}
-      <div ref={revealRef} className="scroll-mt-32">
-        <AnimatePresence mode="wait">
-          {selected === "baulkham" && (
-            <motion.div
-              key="baulkham"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-            >
-              <BaulkhamContent />
-            </motion.div>
-          )}
-
-          {selected === "tba" && (
-            <motion.div
-              key="tba"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-            >
-              <TbaContent />
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </>
-  );
-}
-
-function BaulkhamContent() {
+export default function CampDetails() {
   return (
     <>
       {/* Programs / Levels */}
@@ -242,7 +105,7 @@ function BaulkhamContent() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-12">
-              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">BAULKHAM HILLS &middot; INVESTMENT</p>
+              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">INVESTMENT</p>
               <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">PRICING</h2>
             </div>
           </SectionReveal>
@@ -296,7 +159,6 @@ function BaulkhamContent() {
               </span>
             </div>
           </div>
-          <p className="text-gray-700 text-xs mt-8 tracking-wider">PRICING SHOWN IS FOR THE BAULKHAM HILLS VENUE.</p>
         </div>
       </section>
 
@@ -334,7 +196,7 @@ function BaulkhamContent() {
                 </p>
               </div>
               <a
-                href="https://www.google.com/maps/place/Obsidian+Volleyball+Academy"
+                href={VENUE_MAPS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-[#7E57C2] text-sm font-medium hover:text-white transition-colors"
@@ -377,41 +239,3 @@ function BaulkhamContent() {
     </>
   );
 }
-
-function TbaContent() {
-  return (
-    <section className="py-24 lg:py-32 bg-[#0A0A0A]">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="border border-[#7E57C2]/30 bg-[#0F0F0F] p-10 lg:p-14">
-          <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-5">COMING SOON</p>
-          <h3 className="font-heading text-3xl lg:text-5xl text-white tracking-wide mb-6 leading-[0.95]">
-            New camp venues being added across Sydney.
-          </h3>
-          <p className="text-gray-400 text-base leading-relaxed mb-4">
-            We&apos;re finalising additional holiday camp locations beyond Baulkham Hills.
-            Pricing and dates per venue will be announced as each one is confirmed.
-          </p>
-          <p className="text-gray-500 text-sm leading-relaxed mb-8">
-            Want to be notified when bookings open at a specific suburb? Drop us a line and
-            we&apos;ll save you a spot when the venue goes live.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4">
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center bg-[#5E35A8] text-white font-heading text-lg px-8 py-3 hover:bg-white transition-all duration-300 tracking-wide glow-purple"
-            >
-              GET NOTIFIED
-            </Link>
-            <a
-              href="mailto:obsidianvolleyball@gmail.com"
-              className="inline-flex items-center justify-center border border-white/20 text-white font-heading text-lg px-8 py-3 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide"
-            >
-              EMAIL US
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
