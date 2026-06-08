@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/email/send";
+import { sendMetaPurchase } from "@/lib/meta/capi";
 import { formatCents } from "@/lib/booking/pricing";
 import type Stripe from "stripe";
 
@@ -271,6 +272,17 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     after: { camp_order_id: order.id, session_count: items.length, total_cents: total, jersey_size: jerseySize },
   });
 
+  // Server-side Purchase to Meta (deduped with the success-page Pixel via session id).
+  await sendMetaPurchase({
+    eventId: session.id,
+    value: total / 100,
+    currency: (session.currency ?? "aud").toUpperCase(),
+    email,
+    phone: session.customer_details?.phone ?? null,
+    sourceUrl: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com"}/booking/camps/success`,
+    contentName: "camp_booking",
+  });
+
   // Fetch session details for the confirmation email
   const sessionIds = items.map((i) => i.session_id);
   const { data: sessionRows } = await sb
@@ -408,6 +420,16 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
     participantId,
     context: "standalone",
     paymentIntentId,
+  });
+
+  await sendMetaPurchase({
+    eventId: session.id,
+    value: total / 100,
+    currency: (session.currency ?? "aud").toUpperCase(),
+    email,
+    phone: session.customer_details?.phone ?? null,
+    sourceUrl: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com"}/booking/adult/success`,
+    contentName: "adult_scrim",
   });
 
   // Session dates + venue for the email (sessions may span programs; use the first).
@@ -730,6 +752,16 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
     paymentIntentId,
   });
 
+  await sendMetaPurchase({
+    eventId: session.id,
+    value: total / 100,
+    currency: (session.currency ?? "aud").toUpperCase(),
+    email,
+    phone: session.customer_details?.phone ?? null,
+    sourceUrl: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com"}/booking/term/success`,
+    contentName: "term_enrolment",
+  });
+
   // Fetch program + venue for the confirmation email
   const { data: program } = await sb
     .from("programs")
@@ -865,5 +897,15 @@ async function handleJerseyCheckoutCompleted(session: Stripe.Checkout.Session) {
     entity_type: "customer",
     entity_id: customerId,
     after: { size, quantity: qty, total_cents: total, context: "standalone" },
+  });
+
+  await sendMetaPurchase({
+    eventId: session.id,
+    value: total / 100,
+    currency: (session.currency ?? "aud").toUpperCase(),
+    email,
+    phone: session.customer_details?.phone ?? null,
+    sourceUrl: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com"}/shop/jersey/success`,
+    contentName: "jersey_purchase",
   });
 }
