@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import PurchasePixel from "@/components/PurchasePixel";
+import { getPurchaseForSession } from "@/lib/meta/purchase";
 
 export const metadata: Metadata = {
   title: "Booking Confirmed | Obsidian Volleyball Academy",
@@ -13,9 +15,13 @@ export default async function AdultSuccessPage({
 }) {
   const sp = await searchParams;
   const sessionId = sp.session_id ?? null;
+  const purchase = await getPurchaseForSession(sessionId);
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white pt-24 pb-16">
+      {purchase && (
+        <PurchasePixel value={purchase.value} currency={purchase.currency} eventId={purchase.eventId} contentName="adult_scrim" />
+      )}
       <div className="max-w-2xl mx-auto px-6 text-center">
         <div className="text-5xl mb-6">✓</div>
         <h1 className="font-heading text-4xl mb-4">You&apos;re booked in.</h1>

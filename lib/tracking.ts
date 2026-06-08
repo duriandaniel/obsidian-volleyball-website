@@ -117,8 +117,7 @@ export function trackContactClick(method: "email" | "instagram" | "phone") {
 
 export function trackConversionComplete() {
   pushDataLayer({ event: "conversion_complete" });
-  // NOTE: no Pixel "Purchase" is fired here. Historically Acuity fired Purchase
-  // from its own confirmation page, so we deliberately skipped it to avoid
-  // double-counting. Now that booking is fully on-site, NO Purchase event is
-  // sent at all. Revisit if Meta Ads needs on-site Purchase conversions.
+  // Pixel "Purchase" is fired on the booking success pages via <PurchasePixel>
+  // (browser) and from the Stripe webhook via the Conversions API, de-duplicated
+  // by the Stripe Checkout Session id. This dataLayer push is for GTM/GA4 only.
 }
