@@ -130,9 +130,14 @@ export default async function CampBookingPage() {
       <div className="max-w-5xl mx-auto px-6">
         <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">HOLIDAY CAMPS</p>
         <h1 className="font-heading text-4xl mb-6">Pick your days</h1>
-        <p className="text-gray-400 mb-8">
-          Select the days you want. Bundle discounts apply automatically.
-        </p>
+        <div className="text-gray-400 mb-8">
+          <p className="mb-3">Pick the days you want, the total updates automatically:</p>
+          <ul className="space-y-1">
+            <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> One day: $70</li>
+            <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Any 5 days: $250</li>
+            <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Each extra day after 5: $40</li>
+          </ul>
+        </div>
         <CampCart sessions={sessions} />
       </div>
     </div>
