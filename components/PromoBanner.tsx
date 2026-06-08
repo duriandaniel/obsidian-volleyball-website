@@ -25,7 +25,7 @@ export default function PromoBanner() {
           >
             ●
           </span>
-          <span>Limited Spots</span>
+          <span>Any 5 Days for $250</span>
           <span
             className="hidden md:inline-block ml-3 lg:ml-4 text-[#D4A4FF] tracking-[0.2em]"
             aria-hidden
