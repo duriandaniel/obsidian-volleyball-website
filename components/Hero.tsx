@@ -20,17 +20,17 @@ interface HeroProps {
 }
 
 const DEFAULTS = {
-  eyebrow: "NOW LAUNCHING · WEST RYDE",
-  titleLine1: "Term",
-  titleLine2: "Programs",
+  eyebrow: "OBSIDIAN VOLLEYBALL ACADEMY · SYDNEY",
+  titleLine1: "Junior Volleyball",
+  titleLine2: "Done Right",
   body:
-    "Quality junior volleyball coaching at Obsidian Volleyball Academy West Ryde. Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open.",
-  primaryHref: "/booking/trial",
-  primaryLabel: "BOOK A TRIAL",
+    "Quality junior volleyball coaching across Sydney — holiday camps and term programs for ages 8 to 18, all skill levels.",
+  primaryHref: "/holiday-camp",
+  primaryLabel: "HOLIDAY CAMPS",
   primaryLocation: "hero" as BookingLocation,
   primaryTier: "general" as BookingTier,
   secondaryHref: "/term-programs",
-  secondaryLabel: "VIEW SCHEDULE",
+  secondaryLabel: "TERM PROGRAMS",
 };
 
 export default function Hero({
