@@ -54,6 +54,9 @@ export type BookingLocation =
   | "baulkham_hills_cta"
   | "home_location_card_west_ryde"
   | "home_location_card_baulkham"
+  | "home_programs_camp"
+  | "home_programs_term"
+  | "home_programs_trial"
   | "adult_social_cta"
   | "adult_advanced_cta"
   | "adult_open_cta";

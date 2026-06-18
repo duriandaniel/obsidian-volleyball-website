@@ -21,10 +21,10 @@ interface HeroProps {
 
 const DEFAULTS = {
   eyebrow: "OBSIDIAN VOLLEYBALL ACADEMY · SYDNEY",
-  titleLine1: "Junior Volleyball",
-  titleLine2: "Done Right",
+  titleLine1: "Where Juniors",
+  titleLine2: "Learn to Win",
   body:
-    "Quality junior volleyball coaching across Sydney — holiday camps and term programs for ages 8 to 18, all skill levels.",
+    "Expert junior volleyball coaching across Sydney. Holiday camps and Friday term programs for ages 8 to 18. Beginners welcome.",
   primaryHref: "/holiday-camp",
   primaryLabel: "HOLIDAY CAMPS",
   primaryLocation: "hero" as BookingLocation,

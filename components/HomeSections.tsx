@@ -180,10 +180,16 @@ export default function HomeSections() {
                   <p className="font-heading text-5xl text-[#7E57C2]">$36</p>
                   <p className="text-gray-600 text-sm">per jersey</p>
                 </div>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-sm mb-8">
                   Available on-site. Multiple sizes available so you can try before you
                   buy.
                 </p>
+                <Link
+                  href="/shop/jersey"
+                  className="inline-block bg-[#5E35A8] text-white font-heading text-xl px-10 py-4 hover:bg-white hover:text-[#5E35A8] transition-all duration-300 tracking-wide glow-purple"
+                >
+                  SHOP THE JERSEY
+                </Link>
               </div>
             </SectionReveal>
             <SectionReveal delay={0.2}>
