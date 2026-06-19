@@ -1,5 +1,6 @@
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 import SectionReveal from "@/components/SectionReveal";
+import TermTabs from "@/components/TermTabs";
 import { weekday, timeRange, type TermProgram } from "@/lib/booking/load";
 
 // Flat, no-click view of every term session. Data comes straight from Supabase
@@ -12,8 +13,6 @@ const LEVEL_COLOR: Record<string, string> = {
   Advanced: "text-red-400 border-red-400/40",
 };
 
-// Always present the class's designed level (Beginner / Intermediate / Advanced),
-// never "Mixed". Prefer the program skill_level; fall back to the title.
 function displayLevel(p: TermProgram): string {
   const sl = (p.skill_level ?? "").toLowerCase();
   if (sl === "beginner" || sl === "intermediate" || sl === "advanced") {
@@ -30,8 +29,6 @@ function levelClass(level: string): string {
   return LEVEL_COLOR[level] ?? "text-gray-300 border-white/20";
 }
 
-// Timetable shows the short venue (suburb), e.g. "West Ryde", not the full
-// "Obsidian Volleyball Academy West Ryde".
 function shortVenue(name: string): string {
   return name.replace(/^Obsidian Volleyball Academy\s*/i, "").trim() || name;
 }
@@ -51,11 +48,104 @@ function PinIcon() {
   );
 }
 
+// The class table (desktop table + mobile cards) for one set of programs.
+function ClassTable({ programs }: { programs: TermProgram[] }) {
+  return (
+    <>
+      {/* Desktop / tablet: table */}
+      <div className="hidden sm:block overflow-hidden border border-white/[0.08]">
+        <table className="w-full text-left border-collapse">
+          <thead>
+            <tr className="bg-white/[0.04] text-gray-400 font-heading text-xs tracking-[0.2em] uppercase">
+              <th className="px-5 py-4 font-normal">Day</th>
+              <th className="px-5 py-4 font-normal">Level</th>
+              <th className="px-5 py-4 font-normal">Time</th>
+              <th className="px-5 py-4 font-normal">Location</th>
+              <th className="px-5 py-4 font-normal text-right">Enrol</th>
+            </tr>
+          </thead>
+          <tbody>
+            {programs.map((p) => {
+              const level = displayLevel(p);
+              return (
+                <tr key={p.id} className="border-t border-white/[0.06] hover:bg-white/[0.02] transition-colors">
+                  <td className="px-5 py-5 text-white font-heading tracking-wide uppercase">
+                    {p.first_session_at ? weekday(p.first_session_at) : "TBA"}
+                  </td>
+                  <td className="px-5 py-5">
+                    <span className={`inline-block border ${levelClass(level)} text-xs font-heading tracking-wide px-3 py-1 rounded-full`}>
+                      {level}
+                    </span>
+                  </td>
+                  <td className="px-5 py-5 text-gray-300 text-sm whitespace-nowrap">
+                    {p.first_session_at ? timeRange(p.first_session_at, p.first_session_ends_at) : "TBA"}
+                  </td>
+                  <td className="px-5 py-5">
+                    <span className="inline-flex items-center gap-1.5 text-white font-heading tracking-wide whitespace-nowrap">
+                      <PinIcon />
+                      {shortVenue(p.venue_name)}
+                    </span>
+                  </td>
+                  <td className="px-5 py-5 text-right whitespace-nowrap">
+                    <TrackedBookingLink
+                      location="term_timetable"
+                      href={`/booking/term/${p.slug}`}
+                      className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-5 py-2.5 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
+                    >
+                      ENROL
+                    </TrackedBookingLink>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Mobile: compact cards */}
+      <div className="sm:hidden space-y-3">
+        {programs.map((p) => {
+          const level = displayLevel(p);
+          return (
+            <div key={p.id} className="border border-white/[0.08] p-4 bg-[#111]">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-white font-heading text-lg tracking-wide uppercase">
+                  {p.first_session_at ? weekday(p.first_session_at) : "TBA"}
+                </span>
+                <span className={`inline-block border ${levelClass(level)} text-xs font-heading tracking-wide px-3 py-1 rounded-full`}>
+                  {level}
+                </span>
+              </div>
+              <p className="text-gray-300 text-sm mb-1">
+                {p.first_session_at ? timeRange(p.first_session_at, p.first_session_ends_at) : "TBA"}
+              </p>
+              <p className="flex items-center gap-1.5 text-white font-heading tracking-wide text-sm mb-4">
+                <PinIcon />
+                {shortVenue(p.venue_name)}
+              </p>
+              <TrackedBookingLink
+                location="term_timetable"
+                href={`/booking/term/${p.slug}`}
+                className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-7 py-2 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
+              >
+                ENROL
+              </TrackedBookingLink>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+}
+
 interface Props {
   programs: TermProgram[];
 }
 
 export default function SessionTable({ programs }: Props) {
+  const terms = Array.from(new Set(programs.map((p) => termLabel(p.season)).filter(Boolean) as string[]))
+    .sort((a, b) => (parseInt(a.replace(/\D/g, "")) || 0) - (parseInt(b.replace(/\D/g, "")) || 0));
+
   return (
     <section id="timetable" className="py-16 lg:py-20 bg-[#0A0A0A] scroll-mt-24 border-t border-white/[0.06]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -65,111 +155,27 @@ export default function SessionTable({ programs }: Props) {
               THE <span className="text-[#7E57C2]">TIMETABLE</span>
             </h2>
             <p className="text-gray-500 text-sm mt-4 max-w-xl">
-              Classes are grouped by ability, not age. Ages 8 to 18.
+              Pick a term, then your class. Players are grouped by ability, not age. Ages 8 to 18.
             </p>
           </div>
         </SectionReveal>
 
-        {programs.length > 0 ? (
-          <>
-            {/* Desktop / tablet: table */}
-            <SectionReveal>
-              <div className="hidden sm:block overflow-hidden border border-white/[0.08]">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="bg-white/[0.04] text-gray-400 font-heading text-xs tracking-[0.2em] uppercase">
-                      <th className="px-5 py-4 font-normal">Day</th>
-                      <th className="px-5 py-4 font-normal">Level</th>
-                      <th className="px-5 py-4 font-normal">Time</th>
-                      <th className="px-5 py-4 font-normal">Location</th>
-                      <th className="px-5 py-4 font-normal text-right">Enrol</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {programs.map((p) => {
-                      const level = displayLevel(p);
-                      return (
-                        <tr key={p.id} className="border-t border-white/[0.06] hover:bg-white/[0.02] transition-colors">
-                          <td className="px-5 py-5">
-                            <span className="block text-white font-heading tracking-wide uppercase">
-                              {p.first_session_at ? weekday(p.first_session_at) : "TBA"}
-                            </span>
-                            {termLabel(p.season) && (
-                              <span className="block text-gray-500 text-[11px] tracking-wide mt-0.5">{termLabel(p.season)}</span>
-                            )}
-                          </td>
-                          <td className="px-5 py-5">
-                            <span className={`inline-block border ${levelClass(level)} text-xs font-heading tracking-wide px-3 py-1 rounded-full`}>
-                              {level}
-                            </span>
-                          </td>
-                          <td className="px-5 py-5 text-gray-300 text-sm whitespace-nowrap">
-                            {p.first_session_at ? timeRange(p.first_session_at, p.first_session_ends_at) : "TBA"}
-                          </td>
-                          <td className="px-5 py-5">
-                            <span className="inline-flex items-center gap-1.5 text-white font-heading tracking-wide whitespace-nowrap">
-                              <PinIcon />
-                              {shortVenue(p.venue_name)}
-                            </span>
-                          </td>
-                          <td className="px-5 py-5 text-right whitespace-nowrap">
-                            <TrackedBookingLink
-                              location="term_timetable"
-                              href={`/booking/term/${p.slug}`}
-                              className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-5 py-2.5 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
-                            >
-                              ENROL
-                            </TrackedBookingLink>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </SectionReveal>
-
-            {/* Mobile: compact cards with a prominent venue and a slim enrol button */}
-            <div className="sm:hidden space-y-3">
-              {programs.map((p) => {
-                const level = displayLevel(p);
-                return (
-                  <div key={p.id} className="border border-white/[0.08] p-4 bg-[#111]">
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-heading text-lg tracking-wide uppercase">
-                        {p.first_session_at ? weekday(p.first_session_at) : "TBA"}
-                        {termLabel(p.season) && (
-                          <span className="ml-2 text-gray-500 text-[11px] font-sans tracking-wide normal-case">{termLabel(p.season)}</span>
-                        )}
-                      </span>
-                      <span className={`inline-block border ${levelClass(level)} text-xs font-heading tracking-wide px-3 py-1 rounded-full`}>
-                        {level}
-                      </span>
-                    </div>
-                    <p className="text-gray-300 text-sm mb-1">
-                      {p.first_session_at ? timeRange(p.first_session_at, p.first_session_ends_at) : "TBA"}
-                    </p>
-                    <p className="flex items-center gap-1.5 text-white font-heading tracking-wide text-sm mb-4">
-                      <PinIcon />
-                      {shortVenue(p.venue_name)}
-                    </p>
-                    <TrackedBookingLink
-                      location="term_timetable"
-                      href={`/booking/term/${p.slug}`}
-                      className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-7 py-2 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
-                    >
-                      ENROL
-                    </TrackedBookingLink>
-                  </div>
-                );
-              })}
-            </div>
-          </>
-        ) : (
+        {programs.length === 0 ? (
           <p className="text-gray-500 text-sm border border-white/[0.08] p-6">
             Enrolments for the upcoming term open soon. Get in touch and we&apos;ll let you know the
             moment classes go live.
           </p>
+        ) : terms.length <= 1 ? (
+          <SectionReveal><ClassTable programs={programs} /></SectionReveal>
+        ) : (
+          <SectionReveal>
+            <TermTabs
+              terms={terms}
+              sections={terms.map((t) => (
+                <ClassTable key={t} programs={programs.filter((p) => termLabel(p.season) === t)} />
+              ))}
+            />
+          </SectionReveal>
         )}
       </div>
     </section>
