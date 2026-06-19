@@ -15,7 +15,7 @@ const faqCategories = [
     faqs: [
       {
         q: "What programs do you offer?",
-        a: "We run holiday camps during school holiday periods and weekly term programs during the school year. Programs cater to juniors aged 8 to 18 across beginner, intermediate, and advanced skill levels.",
+        a: "We run holiday camps during school holiday periods and weekly training during the school year. Programs cater to juniors aged 8 to 18 across beginner, intermediate, and advanced skill levels.",
       },
       {
         q: "How do I book?",
@@ -35,7 +35,7 @@ const faqCategories = [
         a: "Full days are $70 each. The 5-day pass is $250 for any five days across the holiday period, which is our best value and works out cheaper than four single days. Half-day sessions (9 to 11 AM) are $45. You can also add an Obsidian training jersey for $36 at checkout. Pick your days on the booking page and the total updates as you go.",
       },
       {
-        q: "How much are junior classes — term vs casual?",
+        q: "How much is weekly training — term vs casual?",
         a: "Enrol for the full term and it's $36 per class, paid upfront for the remaining weeks of the term — the best value. Prefer to come casually? Drop in to any class for $40. A one-off trial class is $25. Booking the term saves you $4 every class.",
       },
       {
@@ -79,7 +79,7 @@ const faqCategories = [
     faqs: [
       {
         q: "Where do you run programs?",
-        a: "Term programs run every Friday at Obsidian Volleyball Academy West Ryde. Holiday camps run at Baulkham Hills High School during school holiday periods. We're continuing to expand to additional Sydney locations.",
+        a: "Weekly training runs at Obsidian Volleyball Academy West Ryde (Friday evenings) and Obsidian Volleyball Academy Kellyville at Kellyville High School (Tuesday and Wednesday afternoons). Holiday camps run at Baulkham Hills High School during school holiday periods.",
       },
       {
         q: "Are the venues indoor?",
@@ -95,7 +95,7 @@ const faqCategories = [
       },
       {
         q: "What time do sessions start and end?",
-        a: "Holiday camps run 9 AM to 1 PM (full day), with half-day options from 9 to 11 AM. Junior classes run in 1.5-hour Friday evening blocks (4:00 PM and 5:30 PM starts), with adult scrims from 7:00 to 9:00 PM at the same venue.",
+        a: "Weekly training runs in 1.5-hour blocks: West Ryde on Friday evenings (4:00 PM and 5:30 PM starts) and Kellyville on Tuesday and Wednesday afternoons (4:00 PM start). Holiday camps run 9 AM to 1 PM (full day), with half-day options from 9 to 11 AM. Adult scrims run 7:00 to 9:00 PM at West Ryde.",
       },
     ],
   },
