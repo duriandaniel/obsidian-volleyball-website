@@ -5,7 +5,7 @@ import HomeSections from "@/components/HomeSections";
 export const metadata: Metadata = {
   title: "Volleyball Coaching West Ryde | Obsidian Volleyball Academy West Ryde | Obsidian Volleyball Academy",
   description:
-    "Junior volleyball coaching in West Ryde, Sydney. Friday evening term programs at Obsidian Volleyball Academy West Ryde for ages 8 to 18, all skill levels. Book a free trial.",
+    "Junior volleyball coaching in West Ryde, Sydney. Friday evening term programs at Obsidian Volleyball Academy West Ryde for ages 8 to 18, all skill levels. Book a $25 trial class.",
   keywords: [
     "volleyball West Ryde",
     "volleyball coaching West Ryde",

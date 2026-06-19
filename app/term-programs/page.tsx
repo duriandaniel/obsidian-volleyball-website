@@ -130,17 +130,20 @@ export default async function JuniorClassesPage() {
             <div className="flex flex-col sm:flex-row gap-4">
               <TrackedBookingLink
                 location="term_programs_hero"
-                href="/booking/term/junior"
+                tier="general"
+                href="/booking/trial"
                 className="inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-9 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide glow-purple text-center"
               >
-                ENROL NOW
+                BOOK A TRIAL
               </TrackedBookingLink>
-              <Link
-                href="/coaches"
+              <TrackedBookingLink
+                location="term_programs_hero"
+                tier="term_program"
+                href="/booking/term/junior"
                 className="inline-block border border-white/20 text-white font-heading text-xl sm:text-2xl px-9 py-4 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide text-center"
               >
-                MEET THE COACHES
-              </Link>
+                ENROL IN TERM
+              </TrackedBookingLink>
             </div>
           </SectionReveal>
         </div>
@@ -149,24 +152,21 @@ export default async function JuniorClassesPage() {
       {/* Flat timetable — every session, straight from the DB */}
       <SessionTable programs={programs} />
 
-      {/* How enrolment works — the "enrol now, try 2 weeks free, pay only if you
-          stay" model. The enrol flow (/booking/term/[slug]/signup) takes NO
-          payment; Dan sends a Stripe payment link manually after lesson 2. */}
+      {/* How it works — a $25 trial class first, then enrol for the term. */}
       <section className="py-16 lg:py-20 bg-[#0A0A0A] border-t border-white/[0.06]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-10">
-              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">TRY BEFORE YOU PAY</p>
+              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">NEW HERE?</p>
               <h2 className="font-heading text-4xl sm:text-5xl text-white tracking-wide">
-                HOW ENROLMENT <span className="text-[#7E57C2]">WORKS</span>
+                HOW IT <span className="text-[#7E57C2]">WORKS</span>
               </h2>
             </div>
           </SectionReveal>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
             {[
-              { n: "01", h: "Enrol now", b: "Reserve your child's spot. No card, nothing to pay now." },
-              { n: "02", h: "Try two weeks", b: "Come along for your first two lessons, free." },
-              { n: "03", h: "Decide", b: "Love it? Pay for the full term, including the two weeks. Not for you? No charge." },
+              { n: "01", h: "Book a trial", b: "Try a class for $25 and see if it's the right fit." },
+              { n: "02", h: "Enrol for the term", b: "Love it? Enrol and pay for the rest of the term." },
             ].map((s, i) => (
               <SectionReveal key={s.n} delay={i * 0.1}>
                 <div className="h-full border border-white/[0.08] bg-[#111] p-7">
@@ -179,8 +179,8 @@ export default async function JuniorClassesPage() {
           </div>
           <SectionReveal>
             <p className="text-gray-300 text-base leading-relaxed max-w-3xl border-l-2 border-[#7E57C2]/50 pl-5">
-              Enrol now and your first 2 lessons are free to try. Love it? You&apos;ll pay for the full
-              term to keep your spot. Not for you? Just let us know after the 2 weeks, no charge.
+              New to Obsidian? Start with a $25 trial class. If your child loves it, enrol for the
+              rest of the term. Simple.
             </p>
           </SectionReveal>
         </div>

@@ -126,7 +126,7 @@ export default function SessionTable({ programs }: Props) {
                           <td className="px-5 py-5 text-right whitespace-nowrap">
                             <TrackedBookingLink
                               location="term_timetable"
-                              href={`/booking/term/${p.slug}/signup`}
+                              href={`/booking/term/${p.slug}`}
                               className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-5 py-2.5 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
                             >
                               ENROL
@@ -166,7 +166,7 @@ export default function SessionTable({ programs }: Props) {
                     </div>
                     <TrackedBookingLink
                       location="term_timetable"
-                      href={`/booking/term/${p.slug}/signup`}
+                      href={`/booking/term/${p.slug}`}
                       className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-7 py-2 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
                     >
                       ENROL

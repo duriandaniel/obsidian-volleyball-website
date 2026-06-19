@@ -30,13 +30,12 @@ export default async function JuniorClassesPage() {
             <h1 className="font-heading text-3xl tracking-wide mt-4 mb-1 text-center">Pick a class</h1>
             {sub && <p className="text-center text-sm text-gray-500 mb-6">{sub}</p>}
 
-            {/* Try-before-you-pay: picking a class leads to the no-payment signup
-                form. The price shown is the full-term cost paid only if they stay. */}
+            {/* Trial-then-term: pick a class to enrol for the term, or book a
+                $25 trial first from the class page. */}
             <div className="border border-[#7E57C2]/30 bg-[#7E57C2]/[0.06] rounded-xl p-5 mb-8 text-sm leading-relaxed text-gray-300">
-              <p className="font-heading tracking-wide text-white mb-1">Two weeks free to try</p>
-              Enrol with nothing to pay now. Come along for your first two lessons free. If it&apos;s the
-              right fit, you pay for the full term to keep the spot. If it&apos;s not for you, just let us
-              know after the two weeks, no charge.
+              <p className="font-heading tracking-wide text-white mb-1">New here?</p>
+              Book a $25 trial class to try a session first. If your child loves it, enrol for the
+              rest of the term. Pick a class below.
             </div>
 
             <div className="grid gap-3">
@@ -95,7 +94,7 @@ function ClassRow({ program: p }: { program: TermProgram }) {
   }
   return (
     <Link
-      href={`/booking/term/${p.slug}/signup`}
+      href={`/booking/term/${p.slug}`}
       className="block border border-white/10 hover:border-[#7E57C2] rounded-xl transition-colors"
     >
       {inner}
