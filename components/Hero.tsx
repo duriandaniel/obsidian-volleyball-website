@@ -21,10 +21,10 @@ interface HeroProps {
 
 const DEFAULTS = {
   eyebrow: "OBSIDIAN VOLLEYBALL",
-  titleLine1: "Sydney’s Junior",
-  titleLine2: "Volleyball Specialists",
+  titleLine1: "Junior Volleyball",
+  titleLine2: "Specialists",
   body:
-    "Junior Volleyball Training in Sydney.\nWeekly Training and Holiday Camps.\nAges 8 to 18, all levels welcome.",
+    "Weekly Training and Holiday Camps.\nAges 8 to 18.\nAll Levels Welcome.",
   primaryHref: "/holiday-camp",
   primaryLabel: "HOLIDAY CAMPS",
   primaryLocation: "hero" as BookingLocation,
