@@ -3,7 +3,7 @@ import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
 import { isAdultProgram } from "@/lib/booking/audience";
-import { CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
+import { CAMP_JERSEY_CENTS, billableTermWeeks } from "@/lib/booking/pricing";
 
 const Body = z.object({
   program_id: z.string().regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i),
@@ -161,7 +161,10 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const weeks = sessions.length;
+  // Bill only the billable weeks — Kellyville's free June taster sessions are
+  // included with enrolment but not charged (full term = the 10 Term 3 weeks).
+  const { data: venueForPrice } = await sb.from("venues").select("name").eq("id", program.venue_id).maybeSingle();
+  const weeks = billableTermWeeks(venueForPrice?.name, sessions.map((s) => s.starts_at));
   const total = perWeekCents * weeks;
 
   // Optional jersey add-on (opt-in; size chosen on collection).

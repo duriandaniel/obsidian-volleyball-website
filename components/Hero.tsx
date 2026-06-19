@@ -20,11 +20,11 @@ interface HeroProps {
 }
 
 const DEFAULTS = {
-  eyebrow: "OBSIDIAN VOLLEYBALL ACADEMY · SYDNEY",
+  eyebrow: "SYDNEY’S JUNIOR VOLLEYBALL SPECIALISTS",
   titleLine1: "Where Juniors",
   titleLine2: "Learn to Win",
   body:
-    "Expert junior volleyball coaching across Sydney. Holiday camps and Friday term programs for ages 8 to 18. Beginners welcome.",
+    "Junior Volleyball Training in Sydney. Weekly Training and Holiday Camps. Ages 8 to 18, all levels welcome.",
   primaryHref: "/holiday-camp",
   primaryLabel: "HOLIDAY CAMPS",
   primaryLocation: "hero" as BookingLocation,

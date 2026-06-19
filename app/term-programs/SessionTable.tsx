@@ -1,5 +1,3 @@
-import Link from "next/link";
-import Image from "next/image";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 import SectionReveal from "@/components/SectionReveal";
 import { weekday, timeRange, type TermProgram } from "@/lib/booking/load";
@@ -13,29 +11,6 @@ const LEVEL_COLOR: Record<string, string> = {
   Intermediate: "text-yellow-400 border-yellow-400/40",
   Advanced: "text-red-400 border-red-400/40",
 };
-
-// Coach per class. Not in the DB, so mapped by slug here (stable assignments);
-// links through to the coaches page.
-type Coach = { name: string; image: string };
-const COACH_BY_SLUG: Record<string, Coach> = {
-  "fri-beginners-4pm": { name: "Chris", image: "/images/coach-chris-card.png" },
-  "fri-intermediate-4pm": { name: "Kaveesh", image: "/images/coach-kaveesh-card.jpg" },
-  "fri-intermediate-530pm": { name: "Chris", image: "/images/coach-chris-card.png" },
-  "fri-advanced-530pm": { name: "Kaveesh", image: "/images/coach-kaveesh-card.jpg" },
-};
-
-function CoachCell({ slug }: { slug: string }) {
-  const coach = COACH_BY_SLUG[slug];
-  if (!coach) return <span className="text-gray-600 text-sm">Obsidian team</span>;
-  return (
-    <Link href="/coaches" className="inline-flex items-center gap-2 group/coach">
-      <span className="relative w-8 h-8 rounded-full overflow-hidden bg-[#0A0A0A] flex-shrink-0">
-        <Image src={coach.image} alt={`Coach ${coach.name}`} fill className="object-cover" sizes="32px" />
-      </span>
-      <span className="text-gray-300 text-sm group-hover/coach:text-[#7E57C2] transition-colors">{coach.name}</span>
-    </Link>
-  );
-}
 
 // Always present the class's designed level (Beginner / Intermediate / Advanced),
 // never "Mixed". Prefer the program skill_level; fall back to the title.
@@ -100,8 +75,7 @@ export default function SessionTable({ programs }: Props) {
                       <th className="px-5 py-4 font-normal">Day</th>
                       <th className="px-5 py-4 font-normal">Level</th>
                       <th className="px-5 py-4 font-normal">Time</th>
-                      <th className="px-5 py-4 font-normal">Venue</th>
-                      <th className="px-5 py-4 font-normal">Coach</th>
+                      <th className="px-5 py-4 font-normal">Location</th>
                       <th className="px-5 py-4 font-normal text-right">Enrol</th>
                     </tr>
                   </thead>
@@ -110,7 +84,7 @@ export default function SessionTable({ programs }: Props) {
                       const level = displayLevel(p);
                       return (
                         <tr key={p.id} className="border-t border-white/[0.06] hover:bg-white/[0.02] transition-colors">
-                          <td className="px-5 py-5 text-white font-heading tracking-wide">
+                          <td className="px-5 py-5 text-white font-heading tracking-wide uppercase">
                             {p.first_session_at ? weekday(p.first_session_at) : "TBA"}
                           </td>
                           <td className="px-5 py-5">
@@ -121,8 +95,12 @@ export default function SessionTable({ programs }: Props) {
                           <td className="px-5 py-5 text-gray-300 text-sm whitespace-nowrap">
                             {p.first_session_at ? timeRange(p.first_session_at, p.first_session_ends_at) : "TBA"}
                           </td>
-                          <td className="px-5 py-5 text-white text-sm">{shortVenue(p.venue_name)}</td>
-                          <td className="px-5 py-5"><CoachCell slug={p.slug} /></td>
+                          <td className="px-5 py-5">
+                            <span className="inline-flex items-center gap-1.5 text-white font-heading tracking-wide whitespace-nowrap">
+                              <PinIcon />
+                              {shortVenue(p.venue_name)}
+                            </span>
+                          </td>
                           <td className="px-5 py-5 text-right whitespace-nowrap">
                             <TrackedBookingLink
                               location="term_timetable"
@@ -147,7 +125,7 @@ export default function SessionTable({ programs }: Props) {
                 return (
                   <div key={p.id} className="border border-white/[0.08] p-4 bg-[#111]">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-white font-heading text-lg tracking-wide">
+                      <span className="text-white font-heading text-lg tracking-wide uppercase">
                         {p.first_session_at ? weekday(p.first_session_at) : "TBA"}
                       </span>
                       <span className={`inline-block border ${levelClass(level)} text-xs font-heading tracking-wide px-3 py-1 rounded-full`}>
@@ -157,13 +135,10 @@ export default function SessionTable({ programs }: Props) {
                     <p className="text-gray-300 text-sm mb-1">
                       {p.first_session_at ? timeRange(p.first_session_at, p.first_session_ends_at) : "TBA"}
                     </p>
-                    <p className="flex items-center gap-1.5 text-gray-400 text-sm mb-2">
+                    <p className="flex items-center gap-1.5 text-white font-heading tracking-wide text-sm mb-4">
                       <PinIcon />
                       {shortVenue(p.venue_name)}
                     </p>
-                    <div className="mb-4">
-                      <CoachCell slug={p.slug} />
-                    </div>
                     <TrackedBookingLink
                       location="term_timetable"
                       href={`/booking/term/${p.slug}`}

@@ -75,6 +75,17 @@ export function trialPriceCentsForVenue(venueName: string | null | undefined): n
   return TRIAL_PRICE_CENTS;
 }
 
+// Kellyville launch promo: the taster sessions before Term 3 are free, so a
+// full-term Kellyville enrolment is billed only for the Term 3 weeks (10 × $36 =
+// $360), not the bonus June weeks. Other venues bill every remaining session.
+const KELLYVILLE_TERM3_START_MS = Date.parse("2026-07-21T00:00:00+10:00");
+export function billableTermWeeks(venueName: string | null | undefined, sessionStartIsos: string[]): number {
+  if (KELLYVILLE_FREE_TRIAL && /kellyville/i.test(venueName ?? "")) {
+    return sessionStartIsos.filter((iso) => Date.parse(iso) >= KELLYVILLE_TERM3_START_MS).length;
+  }
+  return sessionStartIsos.length;
+}
+
 // Trials are only bookable for a class whose next session is within this many
 // days (keeps trials near-term, not booked weeks ahead).
 export const TRIAL_WINDOW_DAYS = 14;

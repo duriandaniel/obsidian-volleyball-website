@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { isAdultProgram } from "@/lib/booking/audience";
-import { CASUAL_PRICE_CENTS, trialPriceCentsForVenue } from "@/lib/booking/pricing";
+import { CASUAL_PRICE_CENTS, trialPriceCentsForVenue, billableTermWeeks } from "@/lib/booking/pricing";
 import { TermEnrolForm } from "./TermEnrolForm";
 
 export const metadata: Metadata = {
@@ -53,6 +53,8 @@ export default async function TermProgramPage({
 
   const perWeekCents = rule?.term_per_session_cents ?? 0;
   const remainingSessions = sessions ?? [];
+  const billableWeeks = billableTermWeeks(venue?.name, remainingSessions.map((s) => s.starts_at));
+  const freeWeeks = remainingSessions.length - billableWeeks;
 
   // Capacity check on the next upcoming session
   let booked = 0;
@@ -72,9 +74,14 @@ export default async function TermProgramPage({
       <div className="max-w-4xl mx-auto px-6">
         <Link href="/booking/term/junior" className="text-xs text-gray-500 hover:text-white tracking-wider uppercase">← All classes</Link>
         <h1 className="font-heading text-4xl mt-4 mb-2">{program.title}</h1>
-        <div className="text-gray-400 mb-8">
+        <div className="text-gray-400 mb-3">
           {venue ? (venue.address ? `${venue.name}, ${venue.address}` : venue.name) : "Venue TBA"}
         </div>
+        {freeWeeks > 0 && (
+          <div className="inline-block border border-[#7E57C2]/40 bg-[#7E57C2]/[0.08] text-[#7E57C2] text-sm rounded-lg px-4 py-2 mb-8">
+            Your first {freeWeeks} {freeWeeks === 1 ? "week is" : "weeks are"} free — full term is billed for the {billableWeeks} term weeks only.
+          </div>
+        )}
 
         <div className="grid gap-8 md:grid-cols-[1fr_320px]">
           <div>
@@ -129,7 +136,7 @@ export default async function TermProgramPage({
                 programId={program.id}
                 programTitle={program.title}
                 perWeekCents={perWeekCents}
-                weeksRemaining={remainingSessions.length}
+                weeksRemaining={billableWeeks}
                 defaultPlan={defaultPlan}
                 sessions={remainingSessions.map((s) => ({ id: s.id, starts_at: s.starts_at, ends_at: s.ends_at }))}
                 casualPriceCents={CASUAL_PRICE_CENTS}
