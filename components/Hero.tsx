@@ -54,7 +54,7 @@ export default function Hero({
           alt="Obsidian Volleyball Academy training session"
           fill
           priority
-          className="object-cover opacity-75 object-[80%_center] sm:object-[75%_center]"
+          className="object-cover opacity-75 object-[50%_30%] sm:object-[75%_center]"
           sizes="100vw"
           quality={90}
         />
