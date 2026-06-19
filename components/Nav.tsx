@@ -140,6 +140,7 @@ export default function Nav() {
           <div className="mt-6">
             <TrackedBookingLink
               location="nav_mobile"
+              onClick={closeMenu}
               className="bg-[#5E35A8] text-white font-heading text-2xl px-10 py-4 tracking-wide glow-purple block"
             >
               BOOK NOW

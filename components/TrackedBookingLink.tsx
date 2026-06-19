@@ -13,6 +13,11 @@ interface TrackedBookingLinkProps {
    * (/booking). Pass a deep-link (e.g. "/booking/adult") to skip a step.
    */
   href?: string;
+  /**
+   * Optional extra click handler, run alongside booking tracking (e.g. close
+   * the mobile menu before navigating).
+   */
+  onClick?: () => void;
 }
 
 // Default: the new on-site booking funnel.
@@ -24,10 +29,14 @@ export default function TrackedBookingLink({
   className,
   children,
   href,
+  onClick: onClickExtra,
 }: TrackedBookingLinkProps) {
   const target = href || DEFAULT_BOOKING_URL;
   const external = /^https?:\/\//.test(target);
-  const onClick = () => trackBookingClick(tier, location);
+  const onClick = () => {
+    trackBookingClick(tier, location);
+    onClickExtra?.();
+  };
 
   // External (absolute) links open in a new tab; internal links use client-side
   // navigation + prefetch so the booking funnel opens instantly (no full reload).

@@ -57,6 +57,8 @@ export type BookingLocation =
   | "home_programs_camp"
   | "home_programs_term"
   | "home_programs_trial"
+  | "term_timetable"
+  | "kellyville_interest"
   | "adult_social_cta"
   | "adult_advanced_cta"
   | "adult_open_cta";

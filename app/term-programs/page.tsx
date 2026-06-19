@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import SectionReveal from "@/components/SectionReveal";
 import LevelPicker, { type Venue, type LevelInfo } from "./LevelPicker";
+import Timetable from "./Timetable";
 import TrackPixelView from "@/components/TrackPixelView";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 
@@ -131,7 +132,7 @@ export default function JuniorClassesPage() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-6">
-              NOW LAUNCHING &middot; WEST RYDE
+              WEST RYDE &middot; KELLYVILLE
             </p>
             <h1 className="font-heading text-6xl sm:text-8xl text-white tracking-wide mb-6 leading-[0.9]">
               JUNIOR
@@ -141,7 +142,8 @@ export default function JuniorClassesPage() {
             <p className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed mb-8">
               Junior classes for all levels, beginner to advanced. We run multiple courts
               each session with experienced coaches, group players by ability, and coach
-              every player at the right level for them. Term 2 enrolment open.
+              every player at the right level for them. Friday classes at West Ryde now,
+              with new Tuesday and Wednesday sessions launching at Kellyville for Term 3.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <TrackedBookingLink
@@ -162,6 +164,9 @@ export default function JuniorClassesPage() {
           </SectionReveal>
         </div>
       </section>
+
+      {/* Full timetable — the first thing a parent sees, no clicking required */}
+      <Timetable />
 
       {/* Choose your level */}
       <section id="levels" className="py-12 lg:py-16 bg-[#0A0A0A] scroll-mt-24">
