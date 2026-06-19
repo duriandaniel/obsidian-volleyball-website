@@ -149,10 +149,9 @@ export default async function JuniorClassesPage() {
       {/* Flat timetable — every session, straight from the DB */}
       <SessionTable programs={programs} />
 
-      {/* How enrolment works — the two-week try-before-you-pay model.
-          NOTE: copy describes the intended model; the booking flow still
-          charges upfront. The deferred-payment mechanism is a backend TODO and
-          must ship before this goes to production. */}
+      {/* How enrolment works — the "enrol now, try 2 weeks free, pay only if you
+          stay" model. The enrol flow (/booking/term/[slug]/signup) takes NO
+          payment; Dan sends a Stripe payment link manually after lesson 2. */}
       <section className="py-16 lg:py-20 bg-[#0A0A0A] border-t border-white/[0.06]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
@@ -163,11 +162,11 @@ export default async function JuniorClassesPage() {
               </h2>
             </div>
           </SectionReveal>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {[
-              { n: "01", h: "Enrol now", b: "Reserve your child's spot with nothing to pay upfront." },
-              { n: "02", h: "Try two weeks", b: "Come along for the first two weeks and see if it's the right fit." },
-              { n: "03", h: "Decide", b: "Love it? You're set for the term and pay for the full term, including those two weeks. Not for you? You pay nothing." },
+              { n: "01", h: "Enrol now", b: "Reserve your child's spot. No card, nothing to pay now." },
+              { n: "02", h: "Try two weeks", b: "Come along for your first two lessons, free." },
+              { n: "03", h: "Decide", b: "Love it? Pay for the full term, including the two weeks. Not for you? No charge." },
             ].map((s, i) => (
               <SectionReveal key={s.n} delay={i * 0.1}>
                 <div className="h-full border border-white/[0.08] bg-[#111] p-7">
@@ -178,6 +177,12 @@ export default async function JuniorClassesPage() {
               </SectionReveal>
             ))}
           </div>
+          <SectionReveal>
+            <p className="text-gray-300 text-base leading-relaxed max-w-3xl border-l-2 border-[#7E57C2]/50 pl-5">
+              Enrol now and your first 2 lessons are free to try. Love it? You&apos;ll pay for the full
+              term to keep your spot. Not for you? Just let us know after the 2 weeks, no charge.
+            </p>
+          </SectionReveal>
         </div>
       </section>
 

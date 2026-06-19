@@ -55,6 +55,12 @@ function levelClass(level: string): string {
   return LEVEL_COLOR[level] ?? "text-gray-300 border-white/20";
 }
 
+// Timetable shows the short venue (suburb), e.g. "West Ryde", not the full
+// "Obsidian Volleyball Academy West Ryde".
+function shortVenue(name: string): string {
+  return name.replace(/^Obsidian Volleyball Academy\s*/i, "").trim() || name;
+}
+
 function PinIcon() {
   return (
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="flex-shrink-0">
@@ -115,12 +121,12 @@ export default function SessionTable({ programs }: Props) {
                           <td className="px-5 py-5 text-gray-300 text-sm whitespace-nowrap">
                             {p.first_session_at ? timeRange(p.first_session_at, p.first_session_ends_at) : "TBA"}
                           </td>
-                          <td className="px-5 py-5 text-white text-sm">{p.venue_name}</td>
+                          <td className="px-5 py-5 text-white text-sm">{shortVenue(p.venue_name)}</td>
                           <td className="px-5 py-5"><CoachCell slug={p.slug} /></td>
                           <td className="px-5 py-5 text-right whitespace-nowrap">
                             <TrackedBookingLink
                               location="term_timetable"
-                              href={`/booking/term/${p.slug}`}
+                              href={`/booking/term/${p.slug}/signup`}
                               className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-5 py-2.5 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
                             >
                               ENROL
@@ -153,14 +159,14 @@ export default function SessionTable({ programs }: Props) {
                     </p>
                     <p className="flex items-center gap-1.5 text-gray-400 text-sm mb-2">
                       <PinIcon />
-                      {p.venue_name}
+                      {shortVenue(p.venue_name)}
                     </p>
                     <div className="mb-4">
                       <CoachCell slug={p.slug} />
                     </div>
                     <TrackedBookingLink
                       location="term_timetable"
-                      href={`/booking/term/${p.slug}`}
+                      href={`/booking/term/${p.slug}/signup`}
                       className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-7 py-2 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
                     >
                       ENROL
