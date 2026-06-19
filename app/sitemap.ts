@@ -11,11 +11,18 @@ const suburbs = [
   "north-ryde",
   "marsfield",
   "macquarie-park",
+  // Kellyville cluster — term classes
+  "kellyville",
+  "north-kellyville",
+  "beaumont-hills",
+  "rouse-hill",
+  "glenwood",
+  "stanhope-gardens",
+  "kellyville-ridge",
   // Hills cluster — holiday camps
   "baulkham-hills",
   "castle-hill",
   "bella-vista",
-  "kellyville",
   "north-rocks",
   "winston-hills",
   "northmead",
@@ -40,6 +47,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     {
       url: `${baseUrl}/west-ryde`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/kellyville`,
       lastModified: now,
       changeFrequency: "weekly",
       priority: 0.9,

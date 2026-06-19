@@ -1,24 +1,16 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { loadTermPrograms, weekday, timeRange, type TermProgram } from "@/lib/booking/load";
-import { formatSpotsLeft } from "@/lib/booking/pricing";
+import TrackedBookingLink from "@/components/TrackedBookingLink";
+import SectionReveal from "@/components/SectionReveal";
 import TermTabs from "@/components/TermTabs";
+import { weekday, timeRange, type TermProgram } from "@/lib/booking/load";
 
-export const metadata: Metadata = {
-  title: "Weekly Training | Obsidian Volleyball Academy",
-  robots: { index: false, follow: false },
-};
+// Flat, no-click view of every term session. Data comes straight from Supabase
+// (loadTermPrograms) so Dan's DB edits flow through with no code change.
 
-export const revalidate = 30; // ISR: cached + prefetchable; capacity re-checked at checkout (DB trigger)
-
-// Same colourful, mobile-friendly format as the weekly-training timetable.
+// Traffic-light levels: green / yellow / red.
 const LEVEL_COLOR: Record<string, string> = {
   Beginner: "text-green-400 border-green-400/40",
   Intermediate: "text-yellow-400 border-yellow-400/40",
   Advanced: "text-red-400 border-red-400/40",
-};
-const DAY_ORDER: Record<string, number> = {
-  Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6, Sunday: 7,
 };
 
 function displayLevel(p: TermProgram): string {
@@ -32,16 +24,21 @@ function displayLevel(p: TermProgram): string {
   if (t.includes("intermediate")) return "Intermediate";
   return "All levels";
 }
+
 function levelClass(level: string): string {
   return LEVEL_COLOR[level] ?? "text-gray-300 border-white/20";
 }
+
 function shortVenue(name: string): string {
   return name.replace(/^Obsidian Volleyball Academy\s*/i, "").trim() || name;
 }
+
+// "Term 2 2026" -> "Term 2" (terms are separate enrolments).
 function termLabel(season: string | null): string | null {
   const m = (season ?? "").match(/Term\s*\d+/i);
   return m ? m[0].replace(/\s+/g, " ") : null;
 }
+
 function PinIcon() {
   return (
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="flex-shrink-0">
@@ -51,7 +48,8 @@ function PinIcon() {
   );
 }
 
-function PickerTable({ programs }: { programs: TermProgram[] }) {
+// The class table (desktop table + mobile cards) for one set of programs.
+function ClassTable({ programs }: { programs: TermProgram[] }) {
   return (
     <>
       {/* Desktop / tablet: table */}
@@ -60,20 +58,24 @@ function PickerTable({ programs }: { programs: TermProgram[] }) {
           <thead>
             <tr className="bg-white/[0.04] text-gray-400 font-heading text-xs tracking-[0.2em] uppercase">
               <th className="px-5 py-4 font-normal">Day</th>
+              <th className="px-5 py-4 font-normal">Level</th>
               <th className="px-5 py-4 font-normal">Time</th>
               <th className="px-5 py-4 font-normal">Location</th>
-              <th className="px-5 py-4 font-normal">Level</th>
               <th className="px-5 py-4 font-normal text-right">Enrol</th>
             </tr>
           </thead>
           <tbody>
             {programs.map((p) => {
               const level = displayLevel(p);
-              const soldOut = p.booked >= p.capacity;
               return (
                 <tr key={p.id} className="border-t border-white/[0.06] hover:bg-white/[0.02] transition-colors">
                   <td className="px-5 py-5 text-white font-heading tracking-wide uppercase">
                     {p.first_session_at ? weekday(p.first_session_at) : "TBA"}
+                  </td>
+                  <td className="px-5 py-5">
+                    <span className={`inline-block border ${levelClass(level)} text-xs font-heading tracking-wide px-3 py-1 rounded-full`}>
+                      {level}
+                    </span>
                   </td>
                   <td className="px-5 py-5 text-gray-300 text-sm whitespace-nowrap">
                     {p.first_session_at ? timeRange(p.first_session_at, p.first_session_ends_at) : "TBA"}
@@ -84,25 +86,14 @@ function PickerTable({ programs }: { programs: TermProgram[] }) {
                       {shortVenue(p.venue_name)}
                     </span>
                   </td>
-                  <td className="px-5 py-5">
-                    <span className={`inline-block border ${levelClass(level)} text-xs font-heading tracking-wide px-3 py-1 rounded-full`}>
-                      {level}
-                    </span>
-                  </td>
                   <td className="px-5 py-5 text-right whitespace-nowrap">
-                    {soldOut ? (
-                      <span className="text-sm text-gray-500">Sold out</span>
-                    ) : (
-                      <div className="flex flex-col items-end gap-1">
-                        <Link
-                          href={`/booking/term/${p.slug}`}
-                          className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-5 py-2.5 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
-                        >
-                          SELECT
-                        </Link>
-                        <span className="text-xs text-gray-500">{formatSpotsLeft(p.capacity - p.booked)}</span>
-                      </div>
-                    )}
+                    <TrackedBookingLink
+                      location="term_timetable"
+                      href={`/booking/term/${p.slug}`}
+                      className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-5 py-2.5 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
+                    >
+                      ENROL
+                    </TrackedBookingLink>
                   </td>
                 </tr>
               );
@@ -111,11 +102,10 @@ function PickerTable({ programs }: { programs: TermProgram[] }) {
         </table>
       </div>
 
-      {/* Mobile: stacked cards */}
+      {/* Mobile: compact cards */}
       <div className="sm:hidden space-y-3">
         {programs.map((p) => {
           const level = displayLevel(p);
-          const soldOut = p.booked >= p.capacity;
           return (
             <div key={p.id} className="border border-white/[0.08] p-4 bg-[#111]">
               <div className="flex items-center justify-between mb-2">
@@ -133,19 +123,13 @@ function PickerTable({ programs }: { programs: TermProgram[] }) {
                 <PinIcon />
                 {shortVenue(p.venue_name)}
               </p>
-              {soldOut ? (
-                <span className="text-sm text-gray-500">Sold out</span>
-              ) : (
-                <div className="flex items-center justify-between gap-3">
-                  <span className="text-xs text-gray-500">{formatSpotsLeft(p.capacity - p.booked)}</span>
-                  <Link
-                    href={`/booking/term/${p.slug}`}
-                    className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-6 py-2 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
-                  >
-                    SELECT
-                  </Link>
-                </div>
-              )}
+              <TrackedBookingLink
+                location="term_timetable"
+                href={`/booking/term/${p.slug}`}
+                className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-7 py-2 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
+              >
+                ENROL
+              </TrackedBookingLink>
             </div>
           );
         })}
@@ -154,44 +138,46 @@ function PickerTable({ programs }: { programs: TermProgram[] }) {
   );
 }
 
-export default async function JuniorClassesPage() {
-  const all = (await loadTermPrograms())
-    .filter((p) => !p.is_adult && p.weeks_remaining > 0)
-    .sort((a, b) => {
-      const da = a.first_session_at ? DAY_ORDER[weekday(a.first_session_at)] ?? 99 : 99;
-      const db = b.first_session_at ? DAY_ORDER[weekday(b.first_session_at)] ?? 99 : 99;
-      if (da !== db) return da - db;
-      return (a.first_session_at ?? "").localeCompare(b.first_session_at ?? "");
-    });
+interface Props {
+  programs: TermProgram[];
+}
 
-  const terms = Array.from(new Set(all.map((p) => termLabel(p.season)).filter(Boolean) as string[]))
+export default function SessionTable({ programs }: Props) {
+  const terms = Array.from(new Set(programs.map((p) => termLabel(p.season)).filter(Boolean) as string[]))
     .sort((a, b) => (parseInt(a.replace(/\D/g, "")) || 0) - (parseInt(b.replace(/\D/g, "")) || 0));
 
   return (
-    <div className="min-h-screen bg-[#0A0A0A] text-white pt-24 pb-16">
-      <div className="max-w-3xl mx-auto px-6">
-        <Link href="/booking" className="text-xs text-gray-500 hover:text-white tracking-wider uppercase">← Back</Link>
-        <h1 className="font-heading text-3xl md:text-4xl tracking-wide mt-4 mb-2">Pick a class</h1>
-        <p className="text-sm text-gray-400 mb-8 max-w-lg">
-          Pick a term, then the class to enrol in. Players are grouped by ability, not age. Ages 8 to 18.
-        </p>
-
-        {all.length === 0 ? (
-          <div className="border border-white/10 rounded-lg p-10 text-center text-gray-400">
-            No weekly classes are open right now. Follow{" "}
-            <a href="https://instagram.com/obsidianvolleyball" className="text-[#7E57C2]">@obsidianvolleyball</a>.
+    <section id="timetable" className="py-16 lg:py-20 bg-[#0A0A0A] scroll-mt-24 border-t border-white/[0.06]">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <SectionReveal>
+          <div className="mb-10">
+            <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide">
+              THE <span className="text-[#7E57C2]">TIMETABLE</span>
+            </h2>
+            <p className="text-gray-500 text-sm mt-4 max-w-xl">
+              Pick a term, then your class. Players are grouped by ability, not age. Ages 8 to 18.
+            </p>
           </div>
+        </SectionReveal>
+
+        {programs.length === 0 ? (
+          <p className="text-gray-500 text-sm border border-white/[0.08] p-6">
+            Enrolments for the upcoming term open soon. Get in touch and we&apos;ll let you know the
+            moment classes go live.
+          </p>
         ) : terms.length <= 1 ? (
-          <PickerTable programs={all} />
+          <SectionReveal><ClassTable programs={programs} /></SectionReveal>
         ) : (
-          <TermTabs
-            terms={terms}
-            sections={terms.map((t) => (
-              <PickerTable key={t} programs={all.filter((p) => termLabel(p.season) === t)} />
-            ))}
-          />
+          <SectionReveal>
+            <TermTabs
+              terms={terms}
+              sections={terms.map((t) => (
+                <ClassTable key={t} programs={programs.filter((p) => termLabel(p.season) === t)} />
+              ))}
+            />
+          </SectionReveal>
         )}
       </div>
-    </div>
+    </section>
   );
 }

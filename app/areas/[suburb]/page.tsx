@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import SectionReveal from "@/components/SectionReveal";
 import Link from "next/link";
 
-type Venue = "bennelong" | "bhhs";
+type Venue = "bennelong" | "kellyville" | "bhhs";
 
 interface Suburb {
   slug: string;
@@ -30,6 +30,22 @@ const BENNELONG = {
   hubLabel: "West Ryde venue details",
 };
 
+const KELLYVILLE = {
+  id: "kellyville" as const,
+  name: "Obsidian Volleyball Academy Kellyville",
+  city: "Kellyville",
+  mapQuery: "Kellyville+High+School",
+  mapTitle: "Kellyville High School",
+  programLabel: "Term classes Tuesday & Wednesday",
+  programDetail:
+    "Junior term classes at Kellyville High School, cnr York Road & Queensbury Avenue. Tuesday (beginner) and Wednesday (intermediate), 4:00 to 5:30 PM.",
+  ctaHref: "/term-programs",
+  ctaLabel: "VIEW SCHEDULE",
+  cardCta: "Junior volleyball classes near {name}",
+  hubHref: "/kellyville",
+  hubLabel: "Kellyville venue details",
+};
+
 const BHHS = {
   id: "bhhs" as const,
   name: "Baulkham Hills High School",
@@ -46,7 +62,7 @@ const BHHS = {
   hubLabel: "Baulkham Hills venue details",
 };
 
-const VENUES = { bennelong: BENNELONG, bhhs: BHHS } as const;
+const VENUES = { bennelong: BENNELONG, kellyville: KELLYVILLE, bhhs: BHHS } as const;
 
 const suburbs: Suburb[] = [
   // Ryde cluster — term programs at Bennelong
@@ -154,18 +170,67 @@ const suburbs: Suburb[] = [
       "The camp itself splits players across three courts by ability so a Bella Vista eight-year-old who's never touched a volleyball gets a totally different session to a Bella Vista fifteen-year-old who's already in their school's senior team. Coaches with state or premier-league playing backgrounds, current Working With Children Checks, small ratios, structured progression each day. Bring shoes, water, and snacks — we'll handle the rest.",
     ],
   },
+  // Kellyville cluster — term classes at Obsidian Volleyball Academy Kellyville
   {
     slug: "kellyville",
     name: "Kellyville",
-    venue: "bhhs",
-    drive: "12 minutes",
+    venue: "kellyville",
+    drive: "On your doorstep",
     description:
-      "Twelve minutes from Kellyville to Baulkham Hills High School via Windsor Road.",
+      "Term classes run right here in Kellyville, at Kellyville High School on the corner of York Road and Queensbury Avenue.",
     body: [
-      "Kellyville families head south down Windsor Road to reach Baulkham Hills High School — around twelve minutes door-to-door, less during holiday periods when commuter traffic drops off. It's a noticeably easier run than driving into Castle Towers or further afield for sport. Free parking at the school gate, drop-off at 9 AM, pick-up at 1 PM, and the kids are coached properly in between.",
-      "Junior volleyball is still emerging in Kellyville — most local kids hit the sport at high school and stick with it, but there are limited places to train outside of the school competition season. Obsidian's holiday camps are designed for exactly that gap. The five-day Monday-to-Friday block gives players enough volume to actually improve, not just maintain. Beginners are welcome and get their own court; nobody gets thrown into a senior session and left to drown.",
-      "We run camps every NSW public school holiday period. Most Kellyville families book the full five-day pack because the per-day rate works out cheapest and the included Obsidian training jersey is genuinely good (Mt Sportswear HK make them). Single-day and half-day options exist if your schedule won't allow the full week. Multiple kids from the same family welcome — let us know at booking and we'll keep them grouped.",
+      "Kellyville is the home of Obsidian's weekly junior volleyball program in the Hills. Term classes run at Kellyville High School, on the corner of York Road and Queensbury Avenue — a venue most local families already know, with indoor courts and parking right at the gate. For Kellyville families, it's about as convenient as junior sport gets: a short trip down the road, twice a week, with coaching pitched at your child's level.",
+      "Classes run Tuesday (beginner) and Wednesday (intermediate), 4:00 to 5:30 PM, for juniors aged 8 to 18. We group players by ability rather than age, so a Kellyville eight-year-old picking up a volleyball for the first time and a teenager already playing school competition both get a session that suits them. Coaches all hold current Working With Children Checks and most have played at NSWCHS, state, or premier-league level — they're not gap-year casuals.",
+      "Junior volleyball is still emerging in Kellyville, and there are limited places to train outside of the school competition season. Obsidian's term classes are built for exactly that gap: structured, weekly coaching with the same team and a clear progression across the term. Complete beginners are genuinely welcome. Bring volleyball-suitable shoes and a water bottle, and we'll take care of the rest.",
     ],
+  },
+  {
+    slug: "north-kellyville",
+    name: "North Kellyville",
+    venue: "kellyville",
+    drive: "5 minutes",
+    description:
+      "A quick run south from North Kellyville to Kellyville High School for our Tuesday and Wednesday term classes.",
+  },
+  {
+    slug: "beaumont-hills",
+    name: "Beaumont Hills",
+    venue: "kellyville",
+    drive: "6 minutes",
+    description:
+      "Beaumont Hills families are a short drive from Obsidian Volleyball Academy Kellyville at Kellyville High School.",
+  },
+  {
+    slug: "rouse-hill",
+    name: "Rouse Hill",
+    venue: "kellyville",
+    drive: "8 minutes",
+    description:
+      "An easy trip from Rouse Hill down to our Kellyville term classes at Kellyville High School.",
+  },
+  {
+    slug: "glenwood",
+    name: "Glenwood",
+    venue: "kellyville",
+    drive: "9 minutes",
+    description:
+      "A short drive from Glenwood to Obsidian Volleyball Academy Kellyville for weekly junior coaching.",
+  },
+  {
+    slug: "stanhope-gardens",
+    name: "Stanhope Gardens",
+    venue: "kellyville",
+    drive: "9 minutes",
+    description:
+      "Stanhope Gardens families travel a short distance to Kellyville High School for quality term coaching.",
+  },
+  {
+    slug: "kellyville-ridge",
+    name: "Kellyville Ridge",
+    venue: "kellyville",
+    drive: "10 minutes",
+    description:
+      "A quick run from Kellyville Ridge to Obsidian Volleyball Academy Kellyville at Kellyville High School.",
   },
   {
     slug: "north-rocks",
@@ -217,13 +282,15 @@ export function generateMetadata({ params }: { params: Promise<{ suburb: string 
     const data = suburbs.find((s) => s.slug === suburb);
     if (!data) return { title: "Area Not Found" };
     const isCamp = data.venue === "bhhs";
+    const venue = VENUES[data.venue];
+    const termSchedule = data.venue === "kellyville" ? "Tuesday and Wednesday" : "Friday";
     return {
       title: `Volleyball Coaching ${data.name} | ${
         isCamp ? "Junior Camps" : "Junior Classes"
       } | Obsidian Volleyball Academy`,
       description: isCamp
         ? `Junior volleyball holiday camps for ${data.name} families. School-holiday programs at Baulkham Hills High School for ages 8 to 18. ${data.drive} away.`
-        : `Junior volleyball coaching for ${data.name} families. Friday term programs at Obsidian Volleyball Academy West Ryde, for ages 8 to 18. ${data.drive} away. Book now.`,
+        : `Junior volleyball coaching for ${data.name} families. ${termSchedule} term classes at ${venue.name}, for ages 8 to 18. ${data.drive} away. Book now.`,
       keywords: [
         `volleyball ${data.name.toLowerCase()}`,
         `junior volleyball ${data.name.toLowerCase()}`,
@@ -238,7 +305,7 @@ export function generateMetadata({ params }: { params: Promise<{ suburb: string 
         title: `Volleyball Coaching in ${data.name}`,
         description: isCamp
           ? `Junior volleyball camps ${data.drive} from ${data.name}. Baulkham Hills High School.`
-          : `Junior volleyball ${data.drive} from ${data.name}. Obsidian Volleyball Academy West Ryde.`,
+          : `Junior volleyball ${data.drive} from ${data.name}. ${venue.name}.`,
         url: `/areas/${data.slug}`,
         images: ["/images/hero.jpg"],
       },
@@ -260,6 +327,8 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
 
   const venue = VENUES[data.venue];
   const isCamp = data.venue === "bhhs";
+  const isKellyville = data.venue === "kellyville";
+  const termSchedule = isKellyville ? "Tuesday and Wednesday" : "every Friday";
   const otherSuburbs = suburbs
     .filter((s) => s.slug !== suburb && s.venue === data.venue)
     .slice(0, 4);
@@ -299,7 +368,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
         },
         {
           title: "FLEXIBLE BOOKING",
-          desc: "Five-day week pass (best value), single day, or half-day options to fit the family schedule.",
+          desc: "Five-day pass for any five days across the holidays (best value), single day, or half-day options to fit the family schedule.",
         },
         {
           title: `${data.drive.toUpperCase()} AWAY`,
@@ -308,8 +377,10 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
       ]
     : [
         {
-          title: "TERM PROGRAMS",
-          desc: "Four 90-minute classes every Friday at Obsidian Volleyball Academy West Ryde. Beginner, intermediate, advanced.",
+          title: isKellyville ? "TERM CLASSES" : "TERM PROGRAMS",
+          desc: isKellyville
+            ? "Junior term classes at Obsidian Volleyball Academy Kellyville. Tuesday (beginner) and Wednesday (intermediate), 4:00 to 5:30 PM."
+            : "Four 90-minute classes every Friday at Obsidian Volleyball Academy West Ryde. Beginner, intermediate, advanced.",
         },
         {
           title: "ALL SKILL LEVELS",
@@ -321,7 +392,9 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
         },
         {
           title: "INDOOR VENUE",
-          desc: "Two indoor courts at Obsidian Volleyball Academy West Ryde. Climate-controlled, ample parking, sessions run rain or shine.",
+          desc: isKellyville
+            ? "Indoor courts at Kellyville High School, cnr York Road & Queensbury Avenue. Ample parking, sessions run rain or shine."
+            : "Two indoor courts at Obsidian Volleyball Academy West Ryde. Climate-controlled, ample parking, sessions run rain or shine.",
         },
         {
           title: "QUALITY COACHING",
@@ -354,7 +427,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
             <p className="text-gray-400 text-lg max-w-2xl leading-relaxed mb-10">
               {data.description} {isCamp
                 ? `Obsidian Volleyball Academy runs school-holiday camps at Baulkham Hills High School for juniors aged 8 to 18, from complete beginners to advanced players.`
-                : `Obsidian Volleyball Academy runs term programs every Friday at Obsidian Volleyball Academy West Ryde, for juniors aged 8 to 18, from complete beginners to advanced players.`}
+                : `Obsidian Volleyball Academy runs term classes ${termSchedule} at ${venue.name}, for juniors aged 8 to 18, from complete beginners to advanced players.`}
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link

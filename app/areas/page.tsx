@@ -6,10 +6,11 @@ import TrackedBookingLink from "@/components/TrackedBookingLink";
 export const metadata: Metadata = {
   title: "Service Areas | Junior Volleyball Sydney | Obsidian Volleyball Academy",
   description:
-    "Obsidian Volleyball Academy runs term programs in West Ryde and holiday camps in Baulkham Hills. Find your suburb and see how close you are.",
+    "Obsidian Volleyball Academy runs term programs in West Ryde, term classes in Kellyville, and holiday camps in Baulkham Hills. Find your suburb and see how close you are.",
   keywords: [
     "junior volleyball Sydney",
     "volleyball coaching West Ryde",
+    "volleyball coaching Kellyville",
     "volleyball coaching Baulkham Hills",
     "volleyball academy near me Sydney",
   ],
@@ -28,6 +29,16 @@ const rydeCluster = [
   { slug: "macquarie-park", name: "Macquarie Park", drive: "10 min" },
 ];
 
+const kellyvilleCluster = [
+  { slug: "kellyville", name: "Kellyville", drive: "On site" },
+  { slug: "north-kellyville", name: "North Kellyville", drive: "5 min" },
+  { slug: "beaumont-hills", name: "Beaumont Hills", drive: "6 min" },
+  { slug: "rouse-hill", name: "Rouse Hill", drive: "8 min" },
+  { slug: "glenwood", name: "Glenwood", drive: "9 min" },
+  { slug: "stanhope-gardens", name: "Stanhope Gardens", drive: "9 min" },
+  { slug: "kellyville-ridge", name: "Kellyville Ridge", drive: "10 min" },
+];
+
 const hillsCluster = [
   { slug: "baulkham-hills", name: "Baulkham Hills", drive: "On site" },
   { slug: "castle-hill", name: "Castle Hill", drive: "8 min" },
@@ -35,7 +46,6 @@ const hillsCluster = [
   { slug: "winston-hills", name: "Winston Hills", drive: "8 min" },
   { slug: "bella-vista", name: "Bella Vista", drive: "10 min" },
   { slug: "northmead", name: "Northmead", drive: "10 min" },
-  { slug: "kellyville", name: "Kellyville", drive: "12 min" },
 ];
 
 const breadcrumbSchema = {
@@ -118,8 +128,9 @@ export default function AreasIndexPage() {
             </h1>
             <p className="text-gray-400 text-lg max-w-2xl leading-relaxed">
               Obsidian Volleyball Academy runs Friday term programs at Obsidian Volleyball Academy West Ryde,
-              West Ryde, and school-holiday camps at Baulkham Hills High School. Find your
-              suburb and pick the venue closest to you.
+              Tuesday and Wednesday term classes at Obsidian Volleyball Academy Kellyville, and
+              school-holiday camps at Baulkham Hills High School. Find your suburb and pick the
+              venue closest to you.
             </p>
           </SectionReveal>
         </div>
@@ -131,6 +142,14 @@ export default function AreasIndexPage() {
         venueLine="Friday evening classes at Obsidian Volleyball Academy West Ryde."
         venueLink={{ href: "/west-ryde", label: "West Ryde venue" }}
         areas={rydeCluster}
+      />
+
+      <Cluster
+        badge="KELLYVILLE &middot; TERM CLASSES"
+        title="THE HILLS"
+        venueLine="Tuesday and Wednesday classes at Obsidian Volleyball Academy Kellyville, Kellyville High School."
+        venueLink={{ href: "/kellyville", label: "Kellyville venue" }}
+        areas={kellyvilleCluster}
       />
 
       <Cluster

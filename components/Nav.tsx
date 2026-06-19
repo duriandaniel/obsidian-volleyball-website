@@ -8,9 +8,9 @@ import TrackedBookingLink from "./TrackedBookingLink";
 
 const navLinks = [
   { href: "/", label: "Home" },
-  { href: "/term-programs", label: "Junior Classes" },
-  { href: "/adult-sessions", label: "Adult Sessions" },
-  { href: "/holiday-camp", label: "Camps" },
+  { href: "/term-programs", label: "Weekly Training" },
+  { href: "/holiday-camp", label: "Holiday Camps" },
+  { href: "/adult-sessions", label: "Adults" },
   { href: "/coaches", label: "Coaches" },
   { href: "/faq", label: "FAQ" },
 ];
@@ -140,6 +140,7 @@ export default function Nav() {
           <div className="mt-6">
             <TrackedBookingLink
               location="nav_mobile"
+              onClick={closeMenu}
               className="bg-[#5E35A8] text-white font-heading text-2xl px-10 py-4 tracking-wide glow-purple block"
             >
               BOOK NOW

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { isAdultProgram } from "@/lib/booking/audience";
-import { CASUAL_PRICE_CENTS } from "@/lib/booking/pricing";
+import { CASUAL_PRICE_CENTS, trialPriceCentsForVenue, billableTermWeeks } from "@/lib/booking/pricing";
 import { TermEnrolForm } from "./TermEnrolForm";
 
 export const metadata: Metadata = {
@@ -53,6 +53,7 @@ export default async function TermProgramPage({
 
   const perWeekCents = rule?.term_per_session_cents ?? 0;
   const remainingSessions = sessions ?? [];
+  const billableWeeks = billableTermWeeks(venue?.name, remainingSessions.map((s) => s.starts_at));
 
   // Capacity check on the next upcoming session
   let booked = 0;
@@ -129,10 +130,11 @@ export default async function TermProgramPage({
                 programId={program.id}
                 programTitle={program.title}
                 perWeekCents={perWeekCents}
-                weeksRemaining={remainingSessions.length}
+                weeksRemaining={billableWeeks}
                 defaultPlan={defaultPlan}
                 sessions={remainingSessions.map((s) => ({ id: s.id, starts_at: s.starts_at, ends_at: s.ends_at }))}
                 casualPriceCents={CASUAL_PRICE_CENTS}
+                trialPriceCents={trialPriceCentsForVenue(venue?.name)}
               />
             )}
           </div>

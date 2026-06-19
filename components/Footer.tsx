@@ -23,7 +23,6 @@ export default function Footer() {
             </div>
             <p className="text-gray-500 text-sm leading-relaxed max-w-sm mb-6">
               Quality junior volleyball academy across Sydney.
-              Established 2025.
             </p>
             <div className="space-y-3">
               <a
@@ -58,8 +57,8 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 { href: "/", label: "Home" },
-                { href: "/term-programs", label: "Junior Classes" },
-                { href: "/adult-sessions", label: "Adult Sessions" },
+                { href: "/term-programs", label: "Weekly Training" },
+                { href: "/adult-sessions", label: "Adults" },
                 { href: "/holiday-camp", label: "Holiday Camps" },
                 { href: "/coaches", label: "Coaches" },
                 { href: "/shop/jersey", label: "Jersey" },
@@ -82,7 +81,9 @@ export default function Footer() {
             <h3 className="font-heading text-base text-gray-400 mb-4 tracking-[0.2em]">VENUES</h3>
             <ul className="not-italic text-gray-600 text-sm space-y-2 mb-6">
               <li className="text-gray-400">Obsidian Volleyball Academy West Ryde</li>
-              <li>West Ryde, NSW (term programs)</li>
+              <li>West Ryde, NSW (weekly training)</li>
+              <li className="pt-2 text-gray-400">Obsidian Volleyball Academy Kellyville</li>
+              <li>Kellyville, NSW (weekly training)</li>
               <li className="pt-2 text-gray-400">Baulkham Hills High School</li>
               <li>Baulkham Hills, NSW (holiday camps)</li>
             </ul>

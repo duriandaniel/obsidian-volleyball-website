@@ -13,6 +13,7 @@ export const dynamic = "force-dynamic";
 // correct across venues — only venues we have a map for get a link.
 const VENUE_MAPS: { match: RegExp; url: string }[] = [
   { match: /west ryde/i, url: "https://maps.app.goo.gl/eByotpKjs2mcs4AL8" },
+  { match: /kellyville/i, url: "https://www.google.com/maps/search/?api=1&query=Kellyville+High+School" },
 ];
 function venueHtml(name: string): string {
   const m = VENUE_MAPS.find((v) => v.match.test(name));

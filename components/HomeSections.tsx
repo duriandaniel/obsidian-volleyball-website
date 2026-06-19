@@ -14,7 +14,7 @@ const FEATURED_REELS = [
 const faqs = [
   {
     q: "Where do you run programs?",
-    a: "Term programs at Obsidian Volleyball Academy West Ryde, every Friday. Holiday camps at Baulkham Hills High School.",
+    a: "Term programs at Obsidian Volleyball Academy West Ryde every Friday, and at Obsidian Volleyball Academy Kellyville on Tuesdays and Wednesdays. Holiday camps at Baulkham Hills High School.",
   },
   {
     q: "What age groups do you cater for?",
@@ -84,9 +84,9 @@ export default function HomeSections() {
                   <span className="text-[#7E57C2]">OBSIDIAN</span>
                 </h2>
                 <p className="text-gray-400 leading-relaxed">
-                  Founded in 2025 to bring quality junior volleyball coaching to Sydney families.
-                  Now launching term programs at Obsidian Volleyball Academy West Ryde, with holiday
-                  camps at Baulkham Hills High School.
+                  Quality junior volleyball coaching for Sydney families. Weekly training at Obsidian
+                  Volleyball Academy West Ryde and Kellyville, plus holiday camps at Baulkham Hills
+                  High School. Beginner to advanced, ages 8 to 18.
                 </p>
               </div>
             </SectionReveal>
@@ -180,10 +180,16 @@ export default function HomeSections() {
                   <p className="font-heading text-5xl text-[#7E57C2]">$36</p>
                   <p className="text-gray-600 text-sm">per jersey</p>
                 </div>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 text-sm mb-8">
                   Available on-site. Multiple sizes available so you can try before you
                   buy.
                 </p>
+                <Link
+                  href="/shop/jersey"
+                  className="inline-block bg-[#5E35A8] text-white font-heading text-xl px-10 py-4 hover:bg-white hover:text-[#5E35A8] transition-all duration-300 tracking-wide glow-purple"
+                >
+                  SHOP THE JERSEY
+                </Link>
               </div>
             </SectionReveal>
             <SectionReveal delay={0.2}>
@@ -238,6 +244,30 @@ export default function HomeSections() {
                   </a>
                 </div>
 
+                {/* Obsidian Volleyball Academy Kellyville - Kellyville (term classes) */}
+                <div className="border-t border-white/[0.06] pt-8">
+                  <p className="text-gray-500 text-[10px] font-heading tracking-[0.3em] uppercase mb-2">
+                    Term classes &middot; Kellyville
+                  </p>
+                  <h3 className="font-heading text-2xl text-[#7E57C2] mb-3 tracking-wide">OBSIDIAN VOLLEYBALL ACADEMY</h3>
+                  <address className="not-italic space-y-1 text-gray-300 text-sm">
+                    <p className="text-white text-base">Obsidian Volleyball Academy Kellyville</p>
+                    <p>Kellyville High School, cnr York Road &amp; Queensbury Avenue</p>
+                    <p>Kellyville, NSW 2155</p>
+                  </address>
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Kellyville+High+School"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-[#7E57C2] text-xs font-medium hover:text-white transition-colors mt-3"
+                  >
+                    Directions
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M7 17L17 7M17 7H7M17 7v10" />
+                    </svg>
+                  </a>
+                </div>
+
                 {/* Baulkham Hills High School (holiday camps) */}
                 <div className="border-t border-white/[0.06] pt-8">
                   <p className="text-gray-500 text-[10px] font-heading tracking-[0.3em] uppercase mb-2">
@@ -264,7 +294,7 @@ export default function HomeSections() {
 
                 <div className="border-t border-white/[0.06] pt-6">
                   <p className="text-gray-500 text-xs leading-relaxed">
-                    Indoor courts at both venues. Plenty of parking. Sessions run rain or shine.
+                    Indoor courts at every venue. Plenty of parking. Sessions run rain or shine.
                   </p>
                 </div>
               </div>

@@ -20,17 +20,17 @@ interface HeroProps {
 }
 
 const DEFAULTS = {
-  eyebrow: "NOW LAUNCHING · WEST RYDE",
-  titleLine1: "Term",
-  titleLine2: "Programs",
+  eyebrow: "OBSIDIAN VOLLEYBALL",
+  titleLine1: "Junior Volleyball",
+  titleLine2: "Specialists",
   body:
-    "Quality junior volleyball coaching at Obsidian Volleyball Academy West Ryde. Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open.",
-  primaryHref: "/booking/trial",
-  primaryLabel: "BOOK A TRIAL",
+    "Weekly Training and Holiday Camps.\nAges 8 to 18.\nAll Levels Welcome.",
+  primaryHref: "/holiday-camp",
+  primaryLabel: "HOLIDAY CAMPS",
   primaryLocation: "hero" as BookingLocation,
   primaryTier: "general" as BookingTier,
   secondaryHref: "/term-programs",
-  secondaryLabel: "VIEW SCHEDULE",
+  secondaryLabel: "WEEKLY TRAINING",
 };
 
 export default function Hero({
@@ -54,7 +54,7 @@ export default function Hero({
           alt="Obsidian Volleyball Academy training session"
           fill
           priority
-          className="object-cover opacity-75 object-[80%_center] sm:object-[75%_center]"
+          className="object-cover opacity-75 object-[50%_30%] sm:object-[75%_center]"
           sizes="100vw"
           quality={90}
         />
@@ -101,7 +101,7 @@ export default function Hero({
           </motion.div>
 
           <motion.h1
-            className="font-heading text-[clamp(3.5rem,12vw,10rem)] leading-[0.9] text-white tracking-wide mb-8"
+            className="font-heading text-[clamp(2.75rem,8.5vw,6.5rem)] leading-[0.95] text-white tracking-wide mb-8"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}
@@ -111,14 +111,25 @@ export default function Hero({
             <span className="text-[#7E57C2]">{titleLine2}</span>
           </motion.h1>
 
-          <motion.p
-            className="text-gray-400 text-lg sm:text-xl max-w-lg mb-10 leading-relaxed"
+          <motion.div
+            className="max-w-lg mb-10 space-y-1"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            {body}
-          </motion.p>
+            {body.split("\n").map((line, i) => (
+              <p
+                key={i}
+                className={
+                  i === 0
+                    ? "text-white text-xl sm:text-2xl font-heading tracking-wide leading-snug"
+                    : "text-gray-400 text-base sm:text-lg leading-relaxed"
+                }
+              >
+                {line}
+              </p>
+            ))}
+          </motion.div>
 
           <motion.div
             className="flex flex-col sm:flex-row gap-4"

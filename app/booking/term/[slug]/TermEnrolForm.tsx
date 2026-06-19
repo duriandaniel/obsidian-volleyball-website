@@ -55,6 +55,7 @@ export function TermEnrolForm({
   defaultPlan = "term",
   sessions = [],
   casualPriceCents,
+  trialPriceCents = TRIAL_PRICE_CENTS,
 }: {
   programId: string;
   programTitle: string;
@@ -63,6 +64,7 @@ export function TermEnrolForm({
   defaultPlan?: "term" | "trial" | "casual";
   sessions?: SessionLite[];
   casualPriceCents: number;
+  trialPriceCents?: number;
 }) {
   const trialLocked = defaultPlan === "trial";
   const [open, setOpen] = useState(false);
@@ -133,7 +135,13 @@ export function TermEnrolForm({
         }),
       });
       const json = await res.json();
-      if (!res.ok || !json.client_secret) throw new Error(json.error ?? "Checkout failed");
+      if (!res.ok) throw new Error(json.error ?? "Checkout failed");
+      // Free trial: no payment — server confirmed it and sent us straight to success.
+      if (json.free && json.redirect_url) {
+        window.location.href = json.redirect_url;
+        return;
+      }
+      if (!json.client_secret) throw new Error(json.error ?? "Checkout failed");
       setClientSecret(json.client_secret);
       setSubmitting(false);
     } catch (err) {
@@ -162,7 +170,7 @@ export function TermEnrolForm({
         {plan === "trial" && (
           <>
             <div className="text-xs text-gray-500 mb-1">Trial class</div>
-            <div className="font-heading text-3xl text-[#7E57C2]">{formatCents(TRIAL_PRICE_CENTS)}</div>
+            <div className="font-heading text-3xl text-[#7E57C2]">{trialPriceCents === 0 ? "Free" : formatCents(trialPriceCents)}</div>
             <div className="text-xs text-gray-500">Try a single junior class. Limit one trial per player.</div>
           </>
         )}
