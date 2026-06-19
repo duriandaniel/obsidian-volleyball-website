@@ -20,9 +20,9 @@ interface HeroProps {
 }
 
 const DEFAULTS = {
-  eyebrow: "SYDNEY’S JUNIOR VOLLEYBALL SPECIALISTS",
-  titleLine1: "Obsidian",
-  titleLine2: "Volleyball",
+  eyebrow: "OBSIDIAN VOLLEYBALL",
+  titleLine1: "Sydney’s Junior",
+  titleLine2: "Volleyball Specialists",
   body:
     "Junior Volleyball Training in Sydney.\nWeekly Training and Holiday Camps.\nAges 8 to 18, all levels welcome.",
   primaryHref: "/holiday-camp",
@@ -101,7 +101,7 @@ export default function Hero({
           </motion.div>
 
           <motion.h1
-            className="font-heading text-[clamp(3.5rem,12vw,10rem)] leading-[0.9] text-white tracking-wide mb-8"
+            className="font-heading text-[clamp(2.75rem,8.5vw,6.5rem)] leading-[0.95] text-white tracking-wide mb-8"
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.1, ease: "easeOut" }}

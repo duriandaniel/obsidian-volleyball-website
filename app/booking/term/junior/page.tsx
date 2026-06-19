@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { loadTermPrograms, weekday, timeRange, type TermProgram } from "@/lib/booking/load";
-import { formatCents } from "@/lib/booking/pricing";
+import { formatSpotsLeft } from "@/lib/booking/pricing";
 
 export const metadata: Metadata = {
   title: "Weekly Training | Obsidian Volleyball Academy",
@@ -78,10 +78,9 @@ export default async function JuniorClassesPage() {
                 <thead>
                   <tr className="bg-white/[0.04] text-gray-400 font-heading text-xs tracking-[0.2em] uppercase">
                     <th className="px-5 py-4 font-normal">Day</th>
-                    <th className="px-5 py-4 font-normal">Level</th>
                     <th className="px-5 py-4 font-normal">Time</th>
                     <th className="px-5 py-4 font-normal">Location</th>
-                    <th className="px-5 py-4 font-normal">Per week</th>
+                    <th className="px-5 py-4 font-normal">Level</th>
                     <th className="px-5 py-4 font-normal text-right">Enrol</th>
                   </tr>
                 </thead>
@@ -94,11 +93,6 @@ export default async function JuniorClassesPage() {
                         <td className="px-5 py-5 text-white font-heading tracking-wide uppercase">
                           {p.first_session_at ? weekday(p.first_session_at) : "TBA"}
                         </td>
-                        <td className="px-5 py-5">
-                          <span className={`inline-block border ${levelClass(level)} text-xs font-heading tracking-wide px-3 py-1 rounded-full`}>
-                            {level}
-                          </span>
-                        </td>
                         <td className="px-5 py-5 text-gray-300 text-sm whitespace-nowrap">
                           {p.first_session_at ? timeRange(p.first_session_at, p.first_session_ends_at) : "TBA"}
                         </td>
@@ -108,17 +102,24 @@ export default async function JuniorClassesPage() {
                             {shortVenue(p.venue_name)}
                           </span>
                         </td>
-                        <td className="px-5 py-5 text-gray-300 text-sm whitespace-nowrap">{formatCents(p.per_week_cents)}</td>
+                        <td className="px-5 py-5">
+                          <span className={`inline-block border ${levelClass(level)} text-xs font-heading tracking-wide px-3 py-1 rounded-full`}>
+                            {level}
+                          </span>
+                        </td>
                         <td className="px-5 py-5 text-right whitespace-nowrap">
                           {soldOut ? (
                             <span className="text-sm text-gray-500">Sold out</span>
                           ) : (
-                            <Link
-                              href={`/booking/term/${p.slug}`}
-                              className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-5 py-2.5 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
-                            >
-                              SELECT
-                            </Link>
+                            <div className="flex flex-col items-end gap-1">
+                              <Link
+                                href={`/booking/term/${p.slug}`}
+                                className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-5 py-2.5 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
+                              >
+                                SELECT
+                              </Link>
+                              <span className="text-xs text-gray-500">{formatSpotsLeft(p.capacity - p.booked)}</span>
+                            </div>
                           )}
                         </td>
                       </tr>
@@ -154,7 +155,7 @@ export default async function JuniorClassesPage() {
                       <span className="text-sm text-gray-500">Sold out</span>
                     ) : (
                       <div className="flex items-center justify-between gap-3">
-                        <span className="text-xs text-gray-500">{formatCents(p.per_week_cents)}/week</span>
+                        <span className="text-xs text-gray-500">{formatSpotsLeft(p.capacity - p.booked)}</span>
                         <Link
                           href={`/booking/term/${p.slug}`}
                           className="inline-block text-center bg-[#5E35A8] text-white font-heading text-sm px-6 py-2 hover:bg-[#7E57C2] transition-colors duration-300 tracking-wide"
