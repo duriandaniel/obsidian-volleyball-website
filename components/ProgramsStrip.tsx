@@ -24,8 +24,8 @@ const PROGRAMS: ProgramCard[] = [
     tier: "5_day_pack",
   },
   {
-    eyebrow: "WEEKLY CLASSES",
-    title: "Term Programs",
+    eyebrow: "DURING THE TERM",
+    title: "Weekly Training",
     blurb: "Weekly coaching at West Ryde and Kellyville, grouped by ability. Beginner, intermediate and advanced.",
     image: "/images/gallery-coaching.jpg",
     href: "/term-programs",

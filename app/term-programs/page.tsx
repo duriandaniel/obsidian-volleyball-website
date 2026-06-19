@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import SectionReveal from "@/components/SectionReveal";
 import SessionTable from "./SessionTable";
+import CoachCard from "@/components/CoachCard";
 import TrackPixelView from "@/components/TrackPixelView";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 import { loadTermPrograms, weekday } from "@/lib/booking/load";
@@ -15,13 +17,12 @@ const DAY_ORDER: Record<string, number> = {
   Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6, Sunday: 7,
 };
 
-const TRIAL_URL = "/booking/trial";
 const WEST_RYDE_MAPS = "https://maps.app.goo.gl/eByotpKjs2mcs4AL8";
 const KELLYVILLE_MAPS = "https://www.google.com/maps/search/?api=1&query=Kellyville+High+School";
 
 export const metadata: Metadata = {
   title:
-    "Junior Classes | West Ryde & Kellyville Volleyball Sydney | Obsidian Volleyball Academy",
+    "Weekly Training | West Ryde & Kellyville Volleyball Sydney | Obsidian Volleyball Academy",
   description:
     "Junior volleyball classes across Sydney at Obsidian Volleyball Academy West Ryde and Kellyville. Beginner, intermediate, and advanced sessions for ages 8 to 18, grouped by ability. Book a trial to start.",
   keywords: [
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
   alternates: { canonical: "/term-programs" },
   openGraph: {
     title:
-      "Junior Classes | West Ryde & Kellyville Volleyball Sydney | Obsidian Volleyball Academy",
+      "Weekly Training | West Ryde & Kellyville Volleyball Sydney | Obsidian Volleyball Academy",
     description:
       "Junior volleyball classes across Sydney at Obsidian Volleyball Academy West Ryde and Kellyville.",
     images: ["/images/gallery-spike.jpg"],
@@ -76,7 +77,7 @@ const HOW_WE_RUN = [
 const courseSchema = {
   "@context": "https://schema.org",
   "@type": "Course",
-  name: "Junior Classes | Obsidian Volleyball Academy",
+  name: "Weekly Training | Obsidian Volleyball Academy",
   description:
     "Junior volleyball classes at Obsidian Volleyball Academy West Ryde and Kellyville. Quality coaching for ages 8 to 18, grouped by ability.",
   provider: {
@@ -118,28 +119,28 @@ export default async function JuniorClassesPage() {
               WEST RYDE &middot; KELLYVILLE
             </p>
             <h1 className="font-heading text-6xl sm:text-8xl text-white tracking-wide mb-6 leading-[0.9]">
-              JUNIOR
+              WEEKLY
               <br />
-              <span className="text-[#7E57C2]">CLASSES</span>
+              <span className="text-[#7E57C2]">TRAINING</span>
             </h1>
             <p className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed mb-8">
               Junior volleyball for every level, beginner to advanced. We group players by ability
               and coach each one at the right level, across two Sydney venues.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href="#timetable"
-                className="inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-9 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide glow-purple text-center"
-              >
-                SEE THE TIMETABLE
-              </a>
               <TrackedBookingLink
                 location="term_programs_hero"
-                href={TRIAL_URL}
+                href="/booking/term/junior"
+                className="inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-9 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide glow-purple text-center"
+              >
+                ENROL NOW
+              </TrackedBookingLink>
+              <Link
+                href="/coaches"
                 className="inline-block border border-white/20 text-white font-heading text-xl sm:text-2xl px-9 py-4 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide text-center"
               >
-                BOOK A TRIAL
-              </TrackedBookingLink>
+                MEET THE COACHES
+              </Link>
             </div>
           </SectionReveal>
         </div>
@@ -148,6 +149,39 @@ export default async function JuniorClassesPage() {
       {/* Flat timetable — every session, straight from the DB */}
       <SessionTable programs={programs} />
 
+      {/* How enrolment works — the two-week try-before-you-pay model.
+          NOTE: copy describes the intended model; the booking flow still
+          charges upfront. The deferred-payment mechanism is a backend TODO and
+          must ship before this goes to production. */}
+      <section className="py-16 lg:py-20 bg-[#0A0A0A] border-t border-white/[0.06]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <div className="mb-10">
+              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">TRY BEFORE YOU PAY</p>
+              <h2 className="font-heading text-4xl sm:text-5xl text-white tracking-wide">
+                HOW ENROLMENT <span className="text-[#7E57C2]">WORKS</span>
+              </h2>
+            </div>
+          </SectionReveal>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { n: "01", h: "Enrol now", b: "Reserve your child's spot with nothing to pay upfront." },
+              { n: "02", h: "Try two weeks", b: "Come along for the first two weeks and see if it's the right fit." },
+              { n: "03", h: "Decide", b: "Love it? You're set for the term and pay for the full term, including those two weeks. Not for you? You pay nothing." },
+            ].map((s, i) => (
+              <SectionReveal key={s.n} delay={i * 0.1}>
+                <div className="h-full border border-white/[0.08] bg-[#111] p-7">
+                  <p className="font-heading text-3xl text-[#7E57C2] mb-3">{s.n}</p>
+                  <h3 className="font-heading text-xl text-white tracking-wide mb-2">{s.h}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">{s.b}</p>
+                </div>
+              </SectionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TODO(dan): rework this 'how we run sessions' section — Dan to give feedback on copy/angle. */}
       {/* How we run sessions */}
       <section className="py-20 lg:py-28 bg-[#111]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -227,8 +261,64 @@ export default async function JuniorClassesPage() {
         </div>
       </section>
 
+      {/* Coaches + philosophy */}
+      <section className="py-20 lg:py-28 bg-[#111] border-t border-white/[0.06]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-12">
+              <div className="max-w-2xl">
+                <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">WHO COACHES YOUR CHILD</p>
+                <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide mb-5">
+                  OUR <span className="text-[#7E57C2]">COACHES</span>
+                </h2>
+                <p className="text-gray-400 text-base leading-relaxed">
+                  Every session is led by coaches who still play at premier-league and representative
+                  level. They are here to develop players and people: strong fundamentals, a love of
+                  the game, and the confidence to compete.
+                </p>
+              </div>
+              <Link
+                href="/coaches"
+                className="shrink-0 inline-flex items-center gap-2 text-[#7E57C2] hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors"
+              >
+                Meet the full team
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </Link>
+            </div>
+          </SectionReveal>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+            <CoachCard
+              name="Chris"
+              role="Coach"
+              bio="Plays in Sydney's Men's Premier Volleyball League. Passes years of senior-level experience straight to the next generation."
+              qualifications={["Men's Premier Volleyball League", "Sydney North Gold & MVP"]}
+              image="/images/coach-chris-card.png"
+              index={0}
+            />
+            <CoachCard
+              name="Kaveesh"
+              role="Coach"
+              bio="Years of representative volleyball with a passion for coaching juniors. Energy and technical knowledge make sessions fun and effective."
+              qualifications={["16s NSWCHS State Team", "2022 18s SVL Champions"]}
+              image="/images/coach-kaveesh-card.jpg"
+              index={1}
+            />
+            <CoachCard
+              name="Melinda"
+              role="Coach"
+              bio="Years of competitive volleyball experience and a deep commitment to junior development. Currently plays in the Sydney Women's Premier League."
+              qualifications={["NSWCHS Opens Champion", "NSW & SW Blues Award"]}
+              image="/images/coach-melinda-card.jpg"
+              index={2}
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Our venues */}
-      <section className="py-20 lg:py-28 bg-[#111]">
+      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-12">

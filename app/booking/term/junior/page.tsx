@@ -4,7 +4,7 @@ import { loadTermPrograms, weekday, timeRange, type TermProgram } from "@/lib/bo
 import { formatCents, formatSpotsLeft } from "@/lib/booking/pricing";
 
 export const metadata: Metadata = {
-  title: "Junior Classes | Obsidian Volleyball Academy",
+  title: "Weekly Training | Obsidian Volleyball Academy",
   robots: { index: false, follow: false },
 };
 
@@ -28,7 +28,19 @@ export default async function JuniorClassesPage() {
         ) : (
           <>
             <h1 className="font-heading text-3xl tracking-wide mt-4 mb-1 text-center">Pick a class</h1>
-            {sub && <p className="text-center text-sm text-gray-500 mb-8">{sub}</p>}
+            {sub && <p className="text-center text-sm text-gray-500 mb-6">{sub}</p>}
+
+            {/* Try-before-you-pay policy explainer.
+                TODO(dan): the booking still charges upfront — the deferred-payment
+                mechanism (pay after the 2-week window) is a backend change that
+                must land before this goes to production. */}
+            <div className="border border-[#7E57C2]/30 bg-[#7E57C2]/[0.06] rounded-xl p-5 mb-8 text-sm leading-relaxed text-gray-300">
+              <p className="font-heading tracking-wide text-white mb-1">Two weeks to try</p>
+              Enrol now and come along for your first two weeks. If it&apos;s the right fit, you&apos;re
+              set for the term and pay for the full term, including those two weeks. If it&apos;s not for
+              you, that&apos;s completely fine and you pay nothing.
+            </div>
+
             <div className="grid gap-3">
               {all.map((p) => (
                 <ClassRow key={p.id} program={p} />
@@ -96,7 +108,7 @@ function ClassRow({ program: p }: { program: TermProgram }) {
 function Empty() {
   return (
     <div className="border border-white/10 rounded-lg p-10 text-center text-gray-400 mt-4">
-      No junior classes are open right now. Follow{" "}
+      No weekly classes are open right now. Follow{" "}
       <a href="https://instagram.com/obsidianvolleyball" className="text-[#7E57C2]">@obsidianvolleyball</a>.
     </div>
   );

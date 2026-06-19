@@ -1,3 +1,5 @@
+import Link from "next/link";
+import Image from "next/image";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 import SectionReveal from "@/components/SectionReveal";
 import { weekday, timeRange, type TermProgram } from "@/lib/booking/load";
@@ -5,11 +7,35 @@ import { weekday, timeRange, type TermProgram } from "@/lib/booking/load";
 // Flat, no-click view of every term session. Data comes straight from Supabase
 // (loadTermPrograms) so Dan's DB edits flow through with no code change.
 
+// Traffic-light levels: green / yellow / red.
 const LEVEL_COLOR: Record<string, string> = {
-  Beginner: "text-emerald-400 border-emerald-400/30",
-  Intermediate: "text-[#7E57C2] border-[#7E57C2]/40",
-  Advanced: "text-amber-400 border-amber-400/30",
+  Beginner: "text-green-400 border-green-400/40",
+  Intermediate: "text-yellow-400 border-yellow-400/40",
+  Advanced: "text-red-400 border-red-400/40",
 };
+
+// Coach per class. Not in the DB, so mapped by slug here (stable assignments);
+// links through to the coaches page.
+type Coach = { name: string; image: string };
+const COACH_BY_SLUG: Record<string, Coach> = {
+  "fri-beginners-4pm": { name: "Chris", image: "/images/coach-chris-card.png" },
+  "fri-intermediate-4pm": { name: "Kaveesh", image: "/images/coach-kaveesh-card.jpg" },
+  "fri-intermediate-530pm": { name: "Chris", image: "/images/coach-chris-card.png" },
+  "fri-advanced-530pm": { name: "Kaveesh", image: "/images/coach-kaveesh-card.jpg" },
+};
+
+function CoachCell({ slug }: { slug: string }) {
+  const coach = COACH_BY_SLUG[slug];
+  if (!coach) return <span className="text-gray-600 text-sm">Obsidian team</span>;
+  return (
+    <Link href="/coaches" className="inline-flex items-center gap-2 group/coach">
+      <span className="relative w-8 h-8 rounded-full overflow-hidden bg-[#0A0A0A] flex-shrink-0">
+        <Image src={coach.image} alt={`Coach ${coach.name}`} fill className="object-cover" sizes="32px" />
+      </span>
+      <span className="text-gray-300 text-sm group-hover/coach:text-[#7E57C2] transition-colors">{coach.name}</span>
+    </Link>
+  );
+}
 
 // Always present the class's designed level (Beginner / Intermediate / Advanced),
 // never "Mixed". Prefer the program skill_level; fall back to the title.
@@ -48,7 +74,6 @@ export default function SessionTable({ programs }: Props) {
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionReveal>
           <div className="mb-10">
-            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">EVERY SESSION, AT A GLANCE</p>
             <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide">
               THE <span className="text-[#7E57C2]">TIMETABLE</span>
             </h2>
@@ -70,6 +95,7 @@ export default function SessionTable({ programs }: Props) {
                       <th className="px-5 py-4 font-normal">Level</th>
                       <th className="px-5 py-4 font-normal">Time</th>
                       <th className="px-5 py-4 font-normal">Venue</th>
+                      <th className="px-5 py-4 font-normal">Coach</th>
                       <th className="px-5 py-4 font-normal text-right">Enrol</th>
                     </tr>
                   </thead>
@@ -90,6 +116,7 @@ export default function SessionTable({ programs }: Props) {
                             {p.first_session_at ? timeRange(p.first_session_at, p.first_session_ends_at) : "TBA"}
                           </td>
                           <td className="px-5 py-5 text-white text-sm">{p.venue_name}</td>
+                          <td className="px-5 py-5"><CoachCell slug={p.slug} /></td>
                           <td className="px-5 py-5 text-right whitespace-nowrap">
                             <TrackedBookingLink
                               location="term_timetable"
@@ -124,10 +151,13 @@ export default function SessionTable({ programs }: Props) {
                     <p className="text-gray-300 text-sm mb-1">
                       {p.first_session_at ? timeRange(p.first_session_at, p.first_session_ends_at) : "TBA"}
                     </p>
-                    <p className="flex items-center gap-1.5 text-gray-400 text-sm mb-4">
+                    <p className="flex items-center gap-1.5 text-gray-400 text-sm mb-2">
                       <PinIcon />
                       {p.venue_name}
                     </p>
+                    <div className="mb-4">
+                      <CoachCell slug={p.slug} />
+                    </div>
                     <TrackedBookingLink
                       location="term_timetable"
                       href={`/booking/term/${p.slug}`}

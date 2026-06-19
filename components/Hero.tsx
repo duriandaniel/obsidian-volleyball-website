@@ -30,7 +30,7 @@ const DEFAULTS = {
   primaryLocation: "hero" as BookingLocation,
   primaryTier: "general" as BookingTier,
   secondaryHref: "/term-programs",
-  secondaryLabel: "TERM PROGRAMS",
+  secondaryLabel: "WEEKLY TRAINING",
 };
 
 export default function Hero({
