@@ -23,7 +23,6 @@ export default function Footer() {
             </div>
             <p className="text-gray-500 text-sm leading-relaxed max-w-sm mb-6">
               Quality junior volleyball academy across Sydney.
-              Established 2025.
             </p>
             <div className="space-y-3">
               <a

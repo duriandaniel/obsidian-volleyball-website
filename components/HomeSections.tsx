@@ -84,9 +84,9 @@ export default function HomeSections() {
                   <span className="text-[#7E57C2]">OBSIDIAN</span>
                 </h2>
                 <p className="text-gray-400 leading-relaxed">
-                  Founded in 2025 to bring quality junior volleyball coaching to Sydney families.
-                  Now launching term programs at Obsidian Volleyball Academy West Ryde, with holiday
-                  camps at Baulkham Hills High School.
+                  Quality junior volleyball coaching for Sydney families. Weekly training at Obsidian
+                  Volleyball Academy West Ryde and Kellyville, plus holiday camps at Baulkham Hills
+                  High School. Beginner to advanced, ages 8 to 18.
                 </p>
               </div>
             </SectionReveal>

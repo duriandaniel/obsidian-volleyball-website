@@ -19,6 +19,7 @@ const DAY_ORDER: Record<string, number> = {
 
 const WEST_RYDE_MAPS = "https://maps.app.goo.gl/eByotpKjs2mcs4AL8";
 const KELLYVILLE_MAPS = "https://www.google.com/maps/search/?api=1&query=Kellyville+High+School";
+const MAP_FILTER = "invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2)";
 
 export const metadata: Metadata = {
   title:
@@ -68,7 +69,7 @@ const LEVELS = [
 ];
 
 const HOW_WE_RUN = [
-  "Multiple courts running every session, so players are grouped by ability and coached at the right level.",
+  "Players are grouped by ability, so everyone is coached and challenged at the right level.",
   "Small coaching ratios with experienced coaches who play at premier-league and representative level.",
   "A structured term curriculum that builds skills week on week, not random drills.",
   "Every session blends technical work with real game play, because kids learn fastest by playing.",
@@ -104,17 +105,31 @@ export default async function JuniorClassesPage() {
     });
 
   return (
-    <div className="pt-20">
+    <div>
       <TrackPixelView contentName="junior_classes" contentCategory="program" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseSchema) }}
       />
 
-      {/* Hero */}
-      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
+      {/* Hero — picture background */}
+      <section className="relative min-h-[70vh] flex items-center overflow-hidden bg-[#0A0A0A]">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/gallery-game.jpg"
+            alt="Junior volleyball training at Obsidian Volleyball Academy"
+            fill
+            priority
+            className="object-cover opacity-60 object-[60%_center]"
+            sizes="100vw"
+            quality={80}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/85 via-45% to-transparent to-85%" />
+          <div className="absolute top-0 left-0 right-0 h-24 bg-gradient-to-b from-[#0A0A0A] to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0A0A0A] to-transparent" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-32 pb-20">
+          <div className="max-w-2xl">
             <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-6">
               WEST RYDE &middot; KELLYVILLE
             </p>
@@ -123,9 +138,9 @@ export default async function JuniorClassesPage() {
               <br />
               <span className="text-[#7E57C2]">TRAINING</span>
             </h1>
-            <p className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed mb-8">
+            <p className="text-gray-300 text-sm sm:text-base max-w-xl leading-relaxed mb-8">
               Junior volleyball for every level, beginner to advanced. We group players by ability
-              and coach each one at the right level, across two Sydney venues.
+              and coach each one at the right level, across Sydney.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <TrackedBookingLink
@@ -145,88 +160,12 @@ export default async function JuniorClassesPage() {
                 ENROL IN TERM
               </TrackedBookingLink>
             </div>
-          </SectionReveal>
-        </div>
-      </section>
-
-      {/* Flat timetable — every session, straight from the DB */}
-      <SessionTable programs={programs} />
-
-      {/* How it works — a $25 trial class first, then enrol for the term. */}
-      <section className="py-16 lg:py-20 bg-[#0A0A0A] border-t border-white/[0.06]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <div className="mb-10">
-              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">NEW HERE?</p>
-              <h2 className="font-heading text-4xl sm:text-5xl text-white tracking-wide">
-                HOW IT <span className="text-[#7E57C2]">WORKS</span>
-              </h2>
-            </div>
-          </SectionReveal>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            {[
-              { n: "01", h: "Book a trial", b: "Try a class for $25 and see if it's the right fit." },
-              { n: "02", h: "Enrol for the term", b: "Love it? Enrol and pay for the rest of the term." },
-            ].map((s, i) => (
-              <SectionReveal key={s.n} delay={i * 0.1}>
-                <div className="h-full border border-white/[0.08] bg-[#111] p-7">
-                  <p className="font-heading text-3xl text-[#7E57C2] mb-3">{s.n}</p>
-                  <h3 className="font-heading text-xl text-white tracking-wide mb-2">{s.h}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{s.b}</p>
-                </div>
-              </SectionReveal>
-            ))}
-          </div>
-          <SectionReveal>
-            <p className="text-gray-300 text-base leading-relaxed max-w-3xl border-l-2 border-[#7E57C2]/50 pl-5">
-              New to Obsidian? Start with a $25 trial class. If your child loves it, enrol for the
-              rest of the term. Simple.
-            </p>
-          </SectionReveal>
-        </div>
-      </section>
-
-      {/* TODO(dan): rework this 'how we run sessions' section — Dan to give feedback on copy/angle. */}
-      {/* How we run sessions */}
-      <section className="py-20 lg:py-28 bg-[#111]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16 items-center">
-            <SectionReveal>
-              <div className="aspect-[4/3] relative overflow-hidden border border-white/[0.08]">
-                <Image
-                  src="/images/gallery-coaching.jpg"
-                  alt="Coaches running a junior volleyball session at Obsidian Volleyball Academy"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  quality={85}
-                />
-              </div>
-            </SectionReveal>
-            <SectionReveal delay={0.15}>
-              <div>
-                <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">HOW WE RUN SESSIONS</p>
-                <h2 className="font-heading text-3xl lg:text-5xl text-white tracking-wide leading-[0.95] mb-6">
-                  COACHED AT THE
-                  <br />
-                  <span className="text-[#7E57C2]">RIGHT LEVEL</span>
-                </h2>
-                <ul className="space-y-4">
-                  {HOW_WE_RUN.map((point, i) => (
-                    <li key={i} className="flex gap-3 text-gray-400 text-base leading-relaxed">
-                      <span className="text-[#7E57C2] font-heading flex-shrink-0 mt-0.5">+</span>
-                      <span>{point}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </SectionReveal>
           </div>
         </div>
       </section>
 
-      {/* Curriculum / levels */}
-      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
+      {/* 1. Three levels (curriculum) */}
+      <section className="py-20 lg:py-28 bg-[#0A0A0A] border-t border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-12">
@@ -266,7 +205,82 @@ export default async function JuniorClassesPage() {
         </div>
       </section>
 
-      {/* Coaches + philosophy */}
+      {/* 2. Coached at the right level */}
+      <section className="py-20 lg:py-28 bg-[#111]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16 items-center">
+            <SectionReveal>
+              <div className="aspect-[4/3] relative overflow-hidden border border-white/[0.08]">
+                <Image
+                  src="/images/gallery-coaching.jpg"
+                  alt="Coaches running a junior volleyball session at Obsidian Volleyball Academy"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  quality={85}
+                />
+              </div>
+            </SectionReveal>
+            <SectionReveal delay={0.15}>
+              <div>
+                <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">HOW WE COACH</p>
+                <h2 className="font-heading text-3xl lg:text-5xl text-white tracking-wide leading-[0.95] mb-6">
+                  COACHED AT THE
+                  <br />
+                  <span className="text-[#7E57C2]">RIGHT LEVEL</span>
+                </h2>
+                <ul className="space-y-4">
+                  {HOW_WE_RUN.map((point, i) => (
+                    <li key={i} className="flex gap-3 text-gray-400 text-base leading-relaxed">
+                      <span className="text-[#7E57C2] font-heading flex-shrink-0 mt-0.5">+</span>
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </SectionReveal>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. How it works — a $25 trial class first, then enrol for the term. */}
+      <section className="py-16 lg:py-20 bg-[#0A0A0A] border-t border-white/[0.06]">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <div className="mb-10">
+              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">NEW HERE?</p>
+              <h2 className="font-heading text-4xl sm:text-5xl text-white tracking-wide">
+                HOW IT <span className="text-[#7E57C2]">WORKS</span>
+              </h2>
+            </div>
+          </SectionReveal>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            {[
+              { n: "01", h: "Book a trial", b: "Try a class for $25 and see if it's the right fit." },
+              { n: "02", h: "Enrol for the term", b: "Love it? Enrol and pay for the rest of the term." },
+            ].map((s, i) => (
+              <SectionReveal key={s.n} delay={i * 0.1}>
+                <div className="h-full border border-white/[0.08] bg-[#111] p-7">
+                  <p className="font-heading text-3xl text-[#7E57C2] mb-3">{s.n}</p>
+                  <h3 className="font-heading text-xl text-white tracking-wide mb-2">{s.h}</h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">{s.b}</p>
+                </div>
+              </SectionReveal>
+            ))}
+          </div>
+          <SectionReveal>
+            <p className="text-gray-300 text-base leading-relaxed max-w-3xl border-l-2 border-[#7E57C2]/50 pl-5">
+              New to Obsidian? Start with a $25 trial class. If your child loves it, enrol for the
+              rest of the term. Simple.
+            </p>
+          </SectionReveal>
+        </div>
+      </section>
+
+      {/* 4. Flat timetable — every session, straight from the DB */}
+      <SessionTable programs={programs} />
+
+      {/* 5. Coaches + philosophy */}
       <section className="py-20 lg:py-28 bg-[#111] border-t border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
@@ -322,75 +336,73 @@ export default async function JuniorClassesPage() {
         </div>
       </section>
 
-      {/* Our venues */}
+      {/* 6. Locations — Google Maps, no photos */}
       <section className="py-20 lg:py-28 bg-[#0A0A0A]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <div className="mb-12">
-              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">WHERE WE PLAY</p>
+              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">WHERE WE TRAIN</p>
               <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide">
-                TWO <span className="text-[#7E57C2]">VENUES</span>
+                OUR <span className="text-[#7E57C2]">LOCATIONS</span>
               </h2>
             </div>
           </SectionReveal>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
             {/* West Ryde */}
             <SectionReveal>
-              <a href={WEST_RYDE_MAPS} target="_blank" rel="noopener noreferrer" className="block group h-full">
-                <div className="h-full border border-white/[0.08] bg-[#0A0A0A] overflow-hidden flex flex-col">
-                  <div className="aspect-[16/9] relative overflow-hidden">
-                    <Image
-                      src="/images/venue-west-ryde.jpg"
-                      alt="Obsidian Volleyball Academy West Ryde indoor courts"
-                      fill
-                      className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      quality={85}
-                    />
-                  </div>
-                  <div className="p-6 flex-grow">
-                    <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] uppercase mb-2">Term classes</p>
-                    <h3 className="font-heading text-2xl text-white tracking-wide mb-2">Obsidian Volleyball Academy West Ryde</h3>
-                    <p className="text-gray-500 text-sm mb-4">West Ryde, NSW. Indoor courts, climate controlled, plenty of parking.</p>
-                    <span className="inline-flex items-center gap-2 text-[#7E57C2] group-hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                        <circle cx="12" cy="10" r="3" />
-                      </svg>
-                      View on Google Maps
-                    </span>
-                  </div>
+              <div className="h-full border border-white/[0.08] bg-[#111] overflow-hidden flex flex-col">
+                <div className="aspect-[16/9] bg-[#0A0A0A]">
+                  <iframe
+                    src="https://www.google.com/maps?q=Obsidian+Volleyball+Academy+West+Ryde&output=embed"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0, filter: MAP_FILTER }}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Obsidian Volleyball Academy West Ryde location"
+                  />
                 </div>
-              </a>
+                <div className="p-6 flex-grow">
+                  <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] uppercase mb-2">Term classes</p>
+                  <h3 className="font-heading text-2xl text-white tracking-wide mb-2">Obsidian Volleyball Academy West Ryde</h3>
+                  <p className="text-gray-500 text-sm mb-4">West Ryde, NSW. Indoor courts, climate controlled, plenty of parking.</p>
+                  <a href={WEST_RYDE_MAPS} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[#7E57C2] hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    View on Google Maps
+                  </a>
+                </div>
+              </div>
             </SectionReveal>
             {/* Kellyville */}
             <SectionReveal delay={0.15}>
-              <a href={KELLYVILLE_MAPS} target="_blank" rel="noopener noreferrer" className="block group h-full">
-                <div className="h-full border border-[#7E57C2]/30 bg-[#0A0A0A] overflow-hidden flex flex-col">
-                  <div className="aspect-[16/9] relative overflow-hidden">
-                    <Image
-                      src="/images/gallery-game.jpg"
-                      alt="Junior volleyball coaching, launching at Obsidian Volleyball Academy Kellyville"
-                      fill
-                      className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      quality={85}
-                    />
-                  </div>
-                  <div className="p-6 flex-grow">
-                    <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] uppercase mb-2">Term classes</p>
-                    <h3 className="font-heading text-2xl text-white tracking-wide mb-2">Obsidian Volleyball Academy Kellyville</h3>
-                    <p className="text-gray-500 text-sm mb-4">Kellyville High School, cnr York Road &amp; Queensbury Avenue, Kellyville NSW 2155.</p>
-                    <span className="inline-flex items-center gap-2 text-[#7E57C2] group-hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                        <circle cx="12" cy="10" r="3" />
-                      </svg>
-                      View on Google Maps
-                    </span>
-                  </div>
+              <div className="h-full border border-white/[0.08] bg-[#111] overflow-hidden flex flex-col">
+                <div className="aspect-[16/9] bg-[#0A0A0A]">
+                  <iframe
+                    src="https://www.google.com/maps?q=Kellyville+High+School&output=embed"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0, filter: MAP_FILTER }}
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Obsidian Volleyball Academy Kellyville location"
+                  />
                 </div>
-              </a>
+                <div className="p-6 flex-grow">
+                  <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] uppercase mb-2">Term classes</p>
+                  <h3 className="font-heading text-2xl text-white tracking-wide mb-2">Obsidian Volleyball Academy Kellyville</h3>
+                  <p className="text-gray-500 text-sm mb-4">Kellyville High School, cnr York Road &amp; Queensbury Avenue, Kellyville NSW 2155.</p>
+                  <a href={KELLYVILLE_MAPS} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-[#7E57C2] hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    View on Google Maps
+                  </a>
+                </div>
+              </div>
             </SectionReveal>
           </div>
         </div>
