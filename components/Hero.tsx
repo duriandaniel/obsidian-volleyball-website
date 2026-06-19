@@ -21,10 +21,10 @@ interface HeroProps {
 
 const DEFAULTS = {
   eyebrow: "SYDNEY’S JUNIOR VOLLEYBALL SPECIALISTS",
-  titleLine1: "Where Juniors",
-  titleLine2: "Learn to Win",
+  titleLine1: "Obsidian",
+  titleLine2: "Volleyball",
   body:
-    "Junior Volleyball Training in Sydney. Weekly Training and Holiday Camps. Ages 8 to 18, all levels welcome.",
+    "Junior Volleyball Training in Sydney.\nWeekly Training and Holiday Camps.\nAges 8 to 18, all levels welcome.",
   primaryHref: "/holiday-camp",
   primaryLabel: "HOLIDAY CAMPS",
   primaryLocation: "hero" as BookingLocation,
@@ -111,14 +111,25 @@ export default function Hero({
             <span className="text-[#7E57C2]">{titleLine2}</span>
           </motion.h1>
 
-          <motion.p
-            className="text-gray-400 text-lg sm:text-xl max-w-lg mb-10 leading-relaxed"
+          <motion.div
+            className="max-w-lg mb-10 space-y-1"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            {body}
-          </motion.p>
+            {body.split("\n").map((line, i) => (
+              <p
+                key={i}
+                className={
+                  i === 0
+                    ? "text-white text-xl sm:text-2xl font-heading tracking-wide leading-snug"
+                    : "text-gray-400 text-base sm:text-lg leading-relaxed"
+                }
+              >
+                {line}
+              </p>
+            ))}
+          </motion.div>
 
           <motion.div
             className="flex flex-col sm:flex-row gap-4"
