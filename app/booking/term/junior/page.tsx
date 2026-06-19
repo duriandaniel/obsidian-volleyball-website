@@ -37,6 +37,10 @@ function levelClass(level: string): string {
 function shortVenue(name: string): string {
   return name.replace(/^Obsidian Volleyball Academy\s*/i, "").trim() || name;
 }
+function termLabel(season: string | null): string | null {
+  const m = (season ?? "").match(/Term\s*\d+/i);
+  return m ? m[0].replace(/\s+/g, " ") : null;
+}
 function PinIcon() {
   return (
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="flex-shrink-0">
@@ -48,7 +52,7 @@ function PinIcon() {
 
 export default async function JuniorClassesPage() {
   const all = (await loadTermPrograms())
-    .filter((p) => !p.is_adult)
+    .filter((p) => !p.is_adult && p.weeks_remaining > 0)
     .sort((a, b) => {
       const da = a.first_session_at ? DAY_ORDER[weekday(a.first_session_at)] ?? 99 : 99;
       const db = b.first_session_at ? DAY_ORDER[weekday(b.first_session_at)] ?? 99 : 99;
@@ -90,8 +94,13 @@ export default async function JuniorClassesPage() {
                     const soldOut = p.booked >= p.capacity;
                     return (
                       <tr key={p.id} className="border-t border-white/[0.06] hover:bg-white/[0.02] transition-colors">
-                        <td className="px-5 py-5 text-white font-heading tracking-wide uppercase">
-                          {p.first_session_at ? weekday(p.first_session_at) : "TBA"}
+                        <td className="px-5 py-5">
+                          <span className="block text-white font-heading tracking-wide uppercase">
+                            {p.first_session_at ? weekday(p.first_session_at) : "TBA"}
+                          </span>
+                          {termLabel(p.season) && (
+                            <span className="block text-gray-500 text-[11px] tracking-wide mt-0.5">{termLabel(p.season)}</span>
+                          )}
                         </td>
                         <td className="px-5 py-5 text-gray-300 text-sm whitespace-nowrap">
                           {p.first_session_at ? timeRange(p.first_session_at, p.first_session_ends_at) : "TBA"}
@@ -139,6 +148,9 @@ export default async function JuniorClassesPage() {
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-white font-heading text-lg tracking-wide uppercase">
                         {p.first_session_at ? weekday(p.first_session_at) : "TBA"}
+                        {termLabel(p.season) && (
+                          <span className="ml-2 text-gray-500 text-[11px] font-sans tracking-wide normal-case">{termLabel(p.season)}</span>
+                        )}
                       </span>
                       <span className={`inline-block border ${levelClass(level)} text-xs font-heading tracking-wide px-3 py-1 rounded-full`}>
                         {level}

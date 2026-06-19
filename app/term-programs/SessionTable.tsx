@@ -36,6 +36,12 @@ function shortVenue(name: string): string {
   return name.replace(/^Obsidian Volleyball Academy\s*/i, "").trim() || name;
 }
 
+// "Term 2 2026" -> "Term 2" (terms are separate enrolments).
+function termLabel(season: string | null): string | null {
+  const m = (season ?? "").match(/Term\s*\d+/i);
+  return m ? m[0].replace(/\s+/g, " ") : null;
+}
+
 function PinIcon() {
   return (
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="flex-shrink-0">
@@ -84,8 +90,13 @@ export default function SessionTable({ programs }: Props) {
                       const level = displayLevel(p);
                       return (
                         <tr key={p.id} className="border-t border-white/[0.06] hover:bg-white/[0.02] transition-colors">
-                          <td className="px-5 py-5 text-white font-heading tracking-wide uppercase">
-                            {p.first_session_at ? weekday(p.first_session_at) : "TBA"}
+                          <td className="px-5 py-5">
+                            <span className="block text-white font-heading tracking-wide uppercase">
+                              {p.first_session_at ? weekday(p.first_session_at) : "TBA"}
+                            </span>
+                            {termLabel(p.season) && (
+                              <span className="block text-gray-500 text-[11px] tracking-wide mt-0.5">{termLabel(p.season)}</span>
+                            )}
                           </td>
                           <td className="px-5 py-5">
                             <span className={`inline-block border ${levelClass(level)} text-xs font-heading tracking-wide px-3 py-1 rounded-full`}>
@@ -127,6 +138,9 @@ export default function SessionTable({ programs }: Props) {
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-white font-heading text-lg tracking-wide uppercase">
                         {p.first_session_at ? weekday(p.first_session_at) : "TBA"}
+                        {termLabel(p.season) && (
+                          <span className="ml-2 text-gray-500 text-[11px] font-sans tracking-wide normal-case">{termLabel(p.season)}</span>
+                        )}
                       </span>
                       <span className={`inline-block border ${levelClass(level)} text-xs font-heading tracking-wide px-3 py-1 rounded-full`}>
                         {level}

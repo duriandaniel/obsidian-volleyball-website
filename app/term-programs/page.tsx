@@ -96,7 +96,7 @@ const courseSchema = {
 
 export default async function JuniorClassesPage() {
   const programs = (await loadTermPrograms())
-    .filter((p) => !p.is_adult)
+    .filter((p) => !p.is_adult && p.weeks_remaining > 0)
     .sort((a, b) => {
       const da = a.first_session_at ? DAY_ORDER[weekday(a.first_session_at)] ?? 99 : 99;
       const db = b.first_session_at ? DAY_ORDER[weekday(b.first_session_at)] ?? 99 : 99;
