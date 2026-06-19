@@ -64,6 +64,17 @@ export function priceCampCart(cart: CampCartItem[]): CampPricingResult {
 // enrolment if the athlete joins. Adjust here to change the trial price.
 export const TRIAL_PRICE_CENTS = 2500;
 
+// Launch promo: Kellyville trials are FREE while this is true; West Ryde stays
+// paid. Set to false to end the promo and charge the standard price everywhere.
+export const KELLYVILLE_FREE_TRIAL = true;
+
+// Trial price for a class, by its venue name. Free ($0) for Kellyville during
+// the launch promo. Single source of truth for both the trial list and checkout.
+export function trialPriceCentsForVenue(venueName: string | null | undefined): number {
+  if (KELLYVILLE_FREE_TRIAL && /kellyville/i.test(venueName ?? "")) return 0;
+  return TRIAL_PRICE_CENTS;
+}
+
 // Trials are only bookable for a class whose next session is within this many
 // days (keeps trials near-term, not booked weeks ahead).
 export const TRIAL_WINDOW_DAYS = 14;

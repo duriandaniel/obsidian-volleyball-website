@@ -83,6 +83,8 @@ export default function Footer() {
             <ul className="not-italic text-gray-600 text-sm space-y-2 mb-6">
               <li className="text-gray-400">Obsidian Volleyball Academy West Ryde</li>
               <li>West Ryde, NSW (term programs)</li>
+              <li className="pt-2 text-gray-400">Obsidian Volleyball Academy Kellyville</li>
+              <li>Kellyville, NSW (term classes)</li>
               <li className="pt-2 text-gray-400">Baulkham Hills High School</li>
               <li>Baulkham Hills, NSW (holiday camps)</li>
             </ul>

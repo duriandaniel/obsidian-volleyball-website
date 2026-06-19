@@ -14,7 +14,7 @@ const FEATURED_REELS = [
 const faqs = [
   {
     q: "Where do you run programs?",
-    a: "Term programs at Obsidian Volleyball Academy West Ryde, every Friday. Holiday camps at Baulkham Hills High School.",
+    a: "Term programs at Obsidian Volleyball Academy West Ryde every Friday, and at Obsidian Volleyball Academy Kellyville on Tuesdays and Wednesdays. Holiday camps at Baulkham Hills High School.",
   },
   {
     q: "What age groups do you cater for?",
@@ -244,6 +244,30 @@ export default function HomeSections() {
                   </a>
                 </div>
 
+                {/* Obsidian Volleyball Academy Kellyville - Kellyville (term classes) */}
+                <div className="border-t border-white/[0.06] pt-8">
+                  <p className="text-gray-500 text-[10px] font-heading tracking-[0.3em] uppercase mb-2">
+                    Term classes &middot; Kellyville
+                  </p>
+                  <h3 className="font-heading text-2xl text-[#7E57C2] mb-3 tracking-wide">OBSIDIAN VOLLEYBALL ACADEMY</h3>
+                  <address className="not-italic space-y-1 text-gray-300 text-sm">
+                    <p className="text-white text-base">Obsidian Volleyball Academy Kellyville</p>
+                    <p>Kellyville High School, cnr York Road &amp; Queensbury Avenue</p>
+                    <p>Kellyville, NSW 2155</p>
+                  </address>
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Kellyville+High+School"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-[#7E57C2] text-xs font-medium hover:text-white transition-colors mt-3"
+                  >
+                    Directions
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M7 17L17 7M17 7H7M17 7v10" />
+                    </svg>
+                  </a>
+                </div>
+
                 {/* Baulkham Hills High School (holiday camps) */}
                 <div className="border-t border-white/[0.06] pt-8">
                   <p className="text-gray-500 text-[10px] font-heading tracking-[0.3em] uppercase mb-2">
@@ -270,7 +294,7 @@ export default function HomeSections() {
 
                 <div className="border-t border-white/[0.06] pt-6">
                   <p className="text-gray-500 text-xs leading-relaxed">
-                    Indoor courts at both venues. Plenty of parking. Sessions run rain or shine.
+                    Indoor courts at every venue. Plenty of parking. Sessions run rain or shine.
                   </p>
                 </div>
               </div>

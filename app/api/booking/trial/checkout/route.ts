@@ -3,7 +3,8 @@ import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
 import { isAdultProgram } from "@/lib/booking/audience";
-import { TRIAL_PRICE_CENTS, TRIAL_WINDOW_DAYS } from "@/lib/booking/pricing";
+import { TRIAL_PRICE_CENTS, TRIAL_WINDOW_DAYS, trialPriceCentsForVenue } from "@/lib/booking/pricing";
+import { sendEmail } from "@/lib/email/send";
 
 // Paid trial class: books the next upcoming session of a junior class at the
 // trial price. A one-off paid trial — not credited toward term. One trial per
@@ -161,6 +162,64 @@ export async function POST(req: NextRequest) {
   const bypassQS = bypass
     ? `&x-vercel-protection-bypass=${encodeURIComponent(bypass)}&x-vercel-set-bypass-cookie=true`
     : "";
+
+  // Price depends on venue: Kellyville trials are free during the launch promo.
+  const { data: venue } = await sb.from("venues").select("name, address").eq("id", program.venue_id).maybeSingle();
+  const venueName = venue ? (venue.address ? `${venue.name}, ${venue.address}` : venue.name) : "Obsidian Volleyball Academy";
+  const priceCents = trialPriceCentsForVenue(venue?.name);
+
+  // FREE trial: no Stripe. Confirm the booking directly, email the parent, and
+  // tell the client to go straight to the success page.
+  if (priceCents === 0) {
+    const { count: dup } = await sb
+      .from("bookings")
+      .select("id", { count: "exact", head: true })
+      .eq("session_id", trialSession.id)
+      .eq("participant_id", participantId)
+      .is("deleted_at", null);
+    if (!dup) {
+      const { error: bErr } = await sb.from("bookings").insert({
+        session_id: trialSession.id,
+        participant_id: participantId,
+        customer_id: customerId,
+        source: "trial",
+        status: "confirmed",
+        paid_amount_cents: 0,
+        paid_at: new Date().toISOString(),
+      });
+      if (bErr) return NextResponse.json({ error: "Could not confirm your free trial" }, { status: 500 });
+      await sb.from("audit_log").insert({
+        actor_role: "system",
+        action: "trial.create",
+        entity_type: "program",
+        entity_id: program.id,
+        after: { program_id: program.id, session_id: trialSession.id, total_cents: 0, free: true },
+      });
+    }
+    try {
+      const fmtDay = (iso: string) => new Date(iso).toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long", timeZone: "Australia/Sydney" });
+      const fmtTime = (iso: string) => new Date(iso).toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit", timeZone: "Australia/Sydney" });
+      const when = `${fmtDay(trialSession.starts_at)} · ${fmtTime(trialSession.starts_at)}`;
+      await sendEmail({
+        to: email,
+        subject: `Free trial booked: ${program.title}`,
+        template: "trial_free_confirmation",
+        html: `<div style="font-family:-apple-system,BlinkMacSystemFont,sans-serif;max-width:560px;margin:0 auto;padding:24px;">
+          <h2 style="color:#7E57C2;margin-bottom:8px;">Trial booked.</h2>
+          <p>Hi ${body.parent.first_name},</p>
+          <p>Your free trial class is booked.</p>
+          <p style="background:#f6f3ff;padding:12px 16px;border-radius:6px;"><strong>${program.title}</strong><br>${when}<br>${venueName}</p>
+          <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
+          <p style="font-size:13px;color:#666;">Want to join for the term afterwards? Just reply to this email.</p>
+          <p>See you on court!<br>Obsidian Volleyball Academy</p>
+        </div>`,
+        text: `Trial booked.\n\nYour free trial class is booked.\n\n${program.title}\n${when}\n${venueName}\n\nWear suitable indoor court shoes.\n\nObsidian Volleyball Academy`,
+      });
+    } catch {
+      // best-effort; booking already confirmed
+    }
+    return NextResponse.json({ free: true, redirect_url: `${appUrl}/booking/term/success?free=1${bypassQS}` });
+  }
 
   const checkout = await stripe().checkout.sessions.create({
     mode: "payment",
