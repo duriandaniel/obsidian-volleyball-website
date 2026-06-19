@@ -85,7 +85,7 @@ export default function WestRydePage() {
         eyebrow="OBSIDIAN VOLLEYBALL ACADEMY · WEST RYDE"
         titleLine1="West"
         titleLine2="Ryde"
-        body="Quality junior volleyball coaching at Obsidian Volleyball Academy West Ryde. Friday evenings, two indoor courts, expert coaches. Term 2 enrolment open."
+        body="Quality junior volleyball coaching at Obsidian Volleyball Academy West Ryde. Friday evening classes, indoor courts, expert coaches. Beginner to advanced, ages 8 to 18."
         primaryLocation="west_ryde_hero"
       />
       <HomeSections />

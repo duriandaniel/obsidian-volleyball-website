@@ -84,7 +84,7 @@ export default function KellyvillePage() {
         eyebrow="OBSIDIAN VOLLEYBALL ACADEMY · KELLYVILLE"
         titleLine1="Kelly"
         titleLine2="ville"
-        body="Quality junior volleyball coaching at Obsidian Volleyball Academy Kellyville. Tuesday and Wednesday afternoons at Kellyville High School, expert coaches. Term 2 enrolment open."
+        body="Quality junior volleyball coaching at Obsidian Volleyball Academy Kellyville. Tuesday and Wednesday afternoons at Kellyville High School, expert coaches. Beginner to advanced, ages 8 to 18."
         primaryLocation="kellyville_hero"
       />
       <HomeSections />
