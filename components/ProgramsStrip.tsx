@@ -47,7 +47,7 @@ export default function ProgramsStrip() {
       />
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionReveal>
-          <div className="text-center mb-12 lg:mb-16">
+          <div className="mb-12 lg:mb-16">
             <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">
               CHOOSE YOUR PROGRAM
             </p>
