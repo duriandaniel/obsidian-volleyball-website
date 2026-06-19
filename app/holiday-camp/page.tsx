@@ -66,7 +66,7 @@ const campSchema = {
     priceCurrency: "AUD",
     availability: "https://schema.org/InStock",
     url: "https://obsidianvolleyball.com/booking/camps",
-    description: "5-day week pass. Single and half days also available. Optional Obsidian training jersey add-on.",
+    description: "5-day pass: any five days across the holiday period. Single and half days also available. Optional Obsidian training jersey add-on.",
   },
 };
 

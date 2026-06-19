@@ -75,7 +75,7 @@ const eventSchema = {
     priceCurrency: "AUD",
     availability: "https://schema.org/InStock",
     url: "https://obsidianvolleyball.com/booking",
-    description: "5-day camp week pass. Single and half days also available.",
+    description: "5-day pass: book any five days across the holiday period. Single and half days also available.",
   },
   audience: {
     "@type": "PeopleAudience",

@@ -26,9 +26,9 @@ const PROGRAMS: ProgramCard[] = [
   {
     eyebrow: "SCHOOL HOLIDAYS",
     title: "Holiday Camps",
-    blurb: "Intensive multi-day camps at Baulkham Hills. Single days, half days, or the full week.",
+    blurb: "Intensive camps at Baulkham Hills. Book single days, half days, or any five days across the holidays.",
     price: "$250",
-    priceNote: "5-day week",
+    priceNote: "5-day pass",
     href: "/holiday-camp",
     cta: "VIEW CAMPS",
     location: "home_programs_camp",

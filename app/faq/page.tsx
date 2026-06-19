@@ -32,7 +32,7 @@ const faqCategories = [
     faqs: [
       {
         q: "How much do holiday camps cost?",
-        a: "Full days are $70 each. The 5-day week pass is $250, which is our best value and works out cheaper than four single days. Half-day sessions (9 to 11 AM) are $45. You can also add an Obsidian training jersey for $36 at checkout. Pick your days on the booking page and the total updates as you go.",
+        a: "Full days are $70 each. The 5-day pass is $250 for any five days across the holiday period, which is our best value and works out cheaper than four single days. Half-day sessions (9 to 11 AM) are $45. You can also add an Obsidian training jersey for $36 at checkout. Pick your days on the booking page and the total updates as you go.",
       },
       {
         q: "How much are junior classes — term vs casual?",

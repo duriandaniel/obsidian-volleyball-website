@@ -164,7 +164,7 @@ const suburbs: Suburb[] = [
     body: [
       "Kellyville families head south down Windsor Road to reach Baulkham Hills High School — around twelve minutes door-to-door, less during holiday periods when commuter traffic drops off. It's a noticeably easier run than driving into Castle Towers or further afield for sport. Free parking at the school gate, drop-off at 9 AM, pick-up at 1 PM, and the kids are coached properly in between.",
       "Junior volleyball is still emerging in Kellyville — most local kids hit the sport at high school and stick with it, but there are limited places to train outside of the school competition season. Obsidian's holiday camps are designed for exactly that gap. The five-day Monday-to-Friday block gives players enough volume to actually improve, not just maintain. Beginners are welcome and get their own court; nobody gets thrown into a senior session and left to drown.",
-      "We run camps every NSW public school holiday period. Most Kellyville families book the full five-day pack because the per-day rate works out cheapest and the included Obsidian training jersey is genuinely good (Mt Sportswear HK make them). Single-day and half-day options exist if your schedule won't allow the full week. Multiple kids from the same family welcome — let us know at booking and we'll keep them grouped.",
+      "We run camps every NSW public school holiday period. Most Kellyville families book the five-day pass (any five days across the holiday period) because the per-day rate works out cheapest and the included Obsidian training jersey is genuinely good (Mt Sportswear HK make them). Single-day and half-day options exist if five days won't fit your schedule. Multiple kids from the same family welcome — let us know at booking and we'll keep them grouped.",
     ],
   },
   {
@@ -299,7 +299,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
         },
         {
           title: "FLEXIBLE BOOKING",
-          desc: "Five-day week pass (best value), single day, or half-day options to fit the family schedule.",
+          desc: "Five-day pass for any five days across the holidays (best value), single day, or half-day options to fit the family schedule.",
         },
         {
           title: `${data.drive.toUpperCase()} AWAY`,

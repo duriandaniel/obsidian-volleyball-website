@@ -186,19 +186,19 @@ export default function CampDetails() {
               </TrackedBookingLink>
             </div>
 
-            {/* 5-Day Week Pass */}
+            {/* 5-Day Pass */}
             <div className="border-2 border-[#7E57C2]/40 p-8 lg:p-12 hover:border-[#7E57C2] transition-all duration-500 relative">
               <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                 <span className="bg-[#5E35A8] text-white font-heading text-xs tracking-[0.2em] px-4 py-1.5">BEST VALUE</span>
               </div>
-              <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-6 mt-2">5-DAY WEEK PASS</p>
+              <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-6 mt-2">5-DAY PASS</p>
               <p className="font-heading text-7xl text-white mb-2">$250</p>
-              <p className="text-gray-600 text-sm mb-6">The full week</p>
+              <p className="text-gray-600 text-sm mb-6">Any five days</p>
               <ul className="space-y-3 text-gray-400 text-sm mb-8">
-                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> All 5 days in a camp week</li>
+                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Any 5 days across the holiday period</li>
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 9 AM &ndash; 1 PM daily</li>
                 <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Costs less than four single days</li>
-                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Best value for the full week</li>
+                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Best per-day value</li>
               </ul>
               <TrackedBookingLink
                 tier="5_day_pack"
