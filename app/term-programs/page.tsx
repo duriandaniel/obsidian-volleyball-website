@@ -1,102 +1,71 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import SectionReveal from "@/components/SectionReveal";
-import LevelPicker, { type Venue, type LevelInfo } from "./LevelPicker";
-import Timetable from "./Timetable";
+import SessionTable from "./SessionTable";
 import TrackPixelView from "@/components/TrackPixelView";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
+import { loadTermPrograms } from "@/lib/booking/load";
+
+// Term sessions, dates and prices come live from Supabase (loadTermPrograms),
+// so this renders at request time with the runtime env that holds the secret.
+export const dynamic = "force-dynamic";
 
 const TRIAL_URL = "/booking/trial";
-const MAPS_URL = "https://maps.app.goo.gl/eByotpKjs2mcs4AL8";
+const WEST_RYDE_MAPS = "https://maps.app.goo.gl/eByotpKjs2mcs4AL8";
+const KELLYVILLE_MAPS = "https://www.google.com/maps/search/?api=1&query=Kellyville+High+School";
 
 export const metadata: Metadata = {
   title:
-    "Junior Classes | West Ryde Volleyball Sydney | Obsidian Volleyball Academy",
+    "Junior Classes | West Ryde & Kellyville Volleyball Sydney | Obsidian Volleyball Academy",
   description:
-    "Quality junior volleyball classes every Friday at Obsidian Volleyball Academy West Ryde. Beginner, intermediate, and advanced sessions for ages 8 to 18. Book a $25 trial class to start.",
+    "Junior volleyball classes across Sydney at Obsidian Volleyball Academy West Ryde and Kellyville. Beginner, intermediate, and advanced sessions for ages 8 to 18, grouped by ability. Book a trial to start.",
   keywords: [
     "junior volleyball West Ryde",
+    "junior volleyball Kellyville",
     "junior volleyball classes Sydney",
     "volleyball lessons West Ryde",
+    "volleyball lessons Kellyville",
     "junior volleyball coaching Sydney",
     "kids volleyball Sydney",
-    "Obsidian Volleyball Academy West Ryde",
   ],
   alternates: { canonical: "/term-programs" },
   openGraph: {
     title:
-      "Junior Classes | West Ryde Volleyball Sydney | Obsidian Volleyball Academy",
+      "Junior Classes | West Ryde & Kellyville Volleyball Sydney | Obsidian Volleyball Academy",
     description:
-      "Quality junior volleyball classes every Friday at Obsidian Volleyball Academy West Ryde.",
+      "Junior volleyball classes across Sydney at Obsidian Volleyball Academy West Ryde and Kellyville.",
     images: ["/images/gallery-spike.jpg"],
     url: "/term-programs",
   },
 };
 
-const CHRIS = {
-  name: "Chris",
-  slug: "chris",
-  image: "/images/coach-chris-card.png",
-};
-const KAVEESH = {
-  name: "Kaveesh",
-  slug: "kaveesh",
-  image: "/images/coach-kaveesh-card.jpg",
-};
-
-// On-site enrol pages, one per class. Each opens the class with full-term and
-// 1-week-trial options.
-const ENROL = {
-  beg_4pm: "/booking/term/fri-beginners-4pm",
-  int_4pm: "/booking/term/fri-intermediate-4pm",
-  int_530pm: "/booking/term/fri-intermediate-530pm",
-  adv_530pm: "/booking/term/fri-advanced-530pm",
-};
-
-const VENUES: Venue[] = [
-  {
-    id: "bennelong",
-    name: "Obsidian Volleyball Academy West Ryde",
-    suburb: "West Ryde",
-    day: "Friday",
-    slots: [
-      {
-        time: "4:00 – 5:30 PM",
-        courts: [
-          { level: "Beginner", coach: CHRIS, enrolHref: ENROL.beg_4pm },
-          { level: "Intermediate", coach: KAVEESH, enrolHref: ENROL.int_4pm },
-        ],
-      },
-      {
-        time: "5:30 – 7:00 PM",
-        courts: [
-          { level: "Intermediate", coach: CHRIS, enrolHref: ENROL.int_530pm },
-          { level: "Advanced", coach: KAVEESH, enrolHref: ENROL.adv_530pm },
-        ],
-      },
-    ],
-  },
-];
-
-const LEVELS: LevelInfo[] = [
+// Curriculum levels (static reference content, shown as info cards).
+const LEVELS = [
   {
     level: "Beginner",
     description:
-      "We teach you everything: passing, setting, serving, and the fundamentals of the game.",
+      "Brand new to volleyball. We teach the fundamentals from scratch: passing, setting, serving, and how the game is played.",
     image: "/images/gallery-coaching.jpg",
   },
   {
     level: "Intermediate",
     description:
-      "Comfortable with the basics. Working on positional play, rotations, and team systems.",
+      "Comfortable with the basics. We build positional play, rotations, serve-receive, and team systems so players can read the game.",
     image: "/images/gallery-game.jpg",
   },
   {
     level: "Advanced",
     description:
-      "Plays organised competitive volleyball, e.g. YSVL. Higher tempo, full-court play, tactics, and skill polish.",
+      "Plays organised competitive volleyball (e.g. YSVL). Higher tempo, full-court play, tactics, and skill polish for the next level.",
     image: "/images/gallery-spike.jpg",
   },
+];
+
+const HOW_WE_RUN = [
+  "Multiple courts running every session, so players are grouped by ability and coached at the right level.",
+  "Small coaching ratios with experienced coaches who play at premier-league and representative level.",
+  "A structured term curriculum that builds skills week on week, not random drills.",
+  "Every session blends technical work with real game play, because kids learn fastest by playing.",
 ];
 
 const courseSchema = {
@@ -104,7 +73,7 @@ const courseSchema = {
   "@type": "Course",
   name: "Junior Classes | Obsidian Volleyball Academy",
   description:
-    "Junior volleyball classes at Obsidian Volleyball Academy West Ryde. Quality coaching every Friday for ages 8 to 18.",
+    "Junior volleyball classes at Obsidian Volleyball Academy West Ryde and Kellyville. Quality coaching for ages 8 to 18, grouped by ability.",
   provider: {
     "@type": "SportsOrganization",
     name: "Obsidian Volleyball Academy",
@@ -118,7 +87,9 @@ const courseSchema = {
   },
 };
 
-export default function JuniorClassesPage() {
+export default async function JuniorClassesPage() {
+  const programs = (await loadTermPrograms()).filter((p) => !p.is_adult);
+
   return (
     <div className="pt-20">
       <TrackPixelView contentName="junior_classes" contentCategory="program" />
@@ -140,19 +111,18 @@ export default function JuniorClassesPage() {
               <span className="text-[#7E57C2]">CLASSES</span>
             </h1>
             <p className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed mb-8">
-              Junior classes for all levels, beginner to advanced. We run multiple courts
-              each session with experienced coaches, group players by ability, and coach
-              every player at the right level for them. Friday classes at West Ryde now,
-              with new Tuesday and Wednesday sessions launching at Kellyville for Term 3.
+              Junior volleyball for every level, beginner to advanced. We run multiple courts each
+              session, group players by ability, and coach every player at the right level. Friday
+              classes at West Ryde now, with new Tuesday and Wednesday sessions launching at
+              Kellyville for Term 3.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <TrackedBookingLink
-                location="term_programs_hero"
-                href="/booking/term/junior"
+              <a
+                href="#timetable"
                 className="inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-9 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide glow-purple text-center"
               >
-                ENROL IN A CLASS
-              </TrackedBookingLink>
+                SEE THE TIMETABLE
+              </a>
               <TrackedBookingLink
                 location="term_programs_hero"
                 href={TRIAL_URL}
@@ -165,72 +135,164 @@ export default function JuniorClassesPage() {
         </div>
       </section>
 
-      {/* Full timetable — the first thing a parent sees, no clicking required */}
-      <Timetable />
+      {/* Flat timetable — every session, straight from the DB */}
+      <SessionTable programs={programs} />
 
-      {/* Choose your level */}
-      <section id="levels" className="py-12 lg:py-16 bg-[#0A0A0A] scroll-mt-24">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <LevelPicker
-            levels={LEVELS}
-            venues={VENUES}
-          />
-        </div>
-      </section>
-
-      {/* Venue showcase */}
+      {/* How we run sessions */}
       <section className="py-20 lg:py-28 bg-[#111]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-8 lg:gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-12 lg:gap-16 items-center">
             <SectionReveal>
-              <a href={MAPS_URL} target="_blank" rel="noopener noreferrer" className="block group">
-                <div className="aspect-[4/3] relative overflow-hidden border border-white/[0.08]">
-                  <Image
-                    src="/images/venue-west-ryde.jpg"
-                    alt="Obsidian Volleyball Academy West Ryde indoor courts"
-                    fill
-                    className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
-                    sizes="(max-width: 1024px) 100vw, 55vw"
-                    quality={85}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A]/60 via-transparent to-transparent" />
-                </div>
-              </a>
+              <div className="aspect-[4/3] relative overflow-hidden border border-white/[0.08]">
+                <Image
+                  src="/images/gallery-coaching.jpg"
+                  alt="Coaches running a junior volleyball session at Obsidian Volleyball Academy"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  quality={85}
+                />
+              </div>
             </SectionReveal>
             <SectionReveal delay={0.15}>
               <div>
-                <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">THE VENUE</p>
+                <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">HOW WE RUN SESSIONS</p>
                 <h2 className="font-heading text-3xl lg:text-5xl text-white tracking-wide leading-[0.95] mb-6">
-                  OBSIDIAN VOLLEYBALL
+                  COACHED AT THE
                   <br />
-                  <span className="text-[#7E57C2]">ACADEMY WEST RYDE</span>
+                  <span className="text-[#7E57C2]">RIGHT LEVEL</span>
                 </h2>
-                <p className="text-gray-400 text-base leading-relaxed mb-4">
-                  State-of-the-art indoor volleyball courts in West Ryde,
-                  climate-controlled, plenty of parking. Sessions run rain or shine,
-                  every Friday during the school term.
-                </p>
-                <p className="text-gray-500 text-sm mb-4">
-                  Obsidian Volleyball Academy &middot; West Ryde, NSW
-                </p>
-                <a
-                  href={MAPS_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-[#7E57C2] hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                  <span>View on Google Maps</span>
-                </a>
+                <ul className="space-y-4">
+                  {HOW_WE_RUN.map((point, i) => (
+                    <li key={i} className="flex gap-3 text-gray-400 text-base leading-relaxed">
+                      <span className="text-[#7E57C2] font-heading flex-shrink-0 mt-0.5">+</span>
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </SectionReveal>
           </div>
         </div>
       </section>
 
+      {/* Curriculum / levels */}
+      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <div className="mb-12">
+              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">OUR CURRICULUM</p>
+              <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide">
+                THREE <span className="text-[#7E57C2]">LEVELS</span>
+              </h2>
+              <p className="text-gray-500 text-sm mt-4 max-w-xl">
+                We group players by ability, not age, so every child is challenged and supported.
+                Players move up as they are ready.
+              </p>
+            </div>
+          </SectionReveal>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            {LEVELS.map((lvl, i) => (
+              <SectionReveal key={lvl.level} delay={i * 0.1}>
+                <div className="h-full flex flex-col border border-white/[0.08] bg-[#111] overflow-hidden">
+                  <div className="aspect-[16/10] relative overflow-hidden">
+                    <Image
+                      src={lvl.image}
+                      alt={`${lvl.level} junior volleyball at Obsidian Volleyball Academy`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 33vw"
+                      quality={80}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent" />
+                  </div>
+                  <div className="p-6 flex-grow">
+                    <h3 className="font-heading text-2xl text-[#7E57C2] tracking-wide mb-3">{lvl.level}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed">{lvl.description}</p>
+                  </div>
+                </div>
+              </SectionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Our venues */}
+      <section className="py-20 lg:py-28 bg-[#111]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <div className="mb-12">
+              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">WHERE WE PLAY</p>
+              <h2 className="font-heading text-4xl sm:text-5xl lg:text-6xl text-white tracking-wide">
+                TWO <span className="text-[#7E57C2]">VENUES</span>
+              </h2>
+            </div>
+          </SectionReveal>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10">
+            {/* West Ryde */}
+            <SectionReveal>
+              <a href={WEST_RYDE_MAPS} target="_blank" rel="noopener noreferrer" className="block group h-full">
+                <div className="h-full border border-white/[0.08] bg-[#0A0A0A] overflow-hidden flex flex-col">
+                  <div className="aspect-[16/9] relative overflow-hidden">
+                    <Image
+                      src="/images/venue-west-ryde.jpg"
+                      alt="Obsidian Volleyball Academy West Ryde indoor courts"
+                      fill
+                      className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      quality={85}
+                    />
+                  </div>
+                  <div className="p-6 flex-grow">
+                    <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] uppercase mb-2">Friday term classes</p>
+                    <h3 className="font-heading text-2xl text-white tracking-wide mb-2">Obsidian Volleyball Academy West Ryde</h3>
+                    <p className="text-gray-500 text-sm mb-4">West Ryde, NSW. Indoor courts, climate controlled, plenty of parking.</p>
+                    <span className="inline-flex items-center gap-2 text-[#7E57C2] group-hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                      View on Google Maps
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </SectionReveal>
+            {/* Kellyville */}
+            <SectionReveal delay={0.15}>
+              <a href={KELLYVILLE_MAPS} target="_blank" rel="noopener noreferrer" className="block group h-full">
+                <div className="h-full border border-[#7E57C2]/30 bg-[#0A0A0A] overflow-hidden flex flex-col">
+                  <div className="aspect-[16/9] relative overflow-hidden">
+                    <Image
+                      src="/images/gallery-game.jpg"
+                      alt="Junior volleyball coaching, launching at Obsidian Volleyball Academy Kellyville"
+                      fill
+                      className="object-cover group-hover:scale-[1.02] transition-transform duration-500"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                      quality={85}
+                    />
+                    <div className="absolute top-3 left-3 bg-[#5E35A8] text-white font-heading text-[10px] tracking-[0.2em] px-3 py-1.5">
+                      LAUNCHING TERM 3
+                    </div>
+                  </div>
+                  <div className="p-6 flex-grow">
+                    <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] uppercase mb-2">Tuesday &amp; Wednesday term classes</p>
+                    <h3 className="font-heading text-2xl text-white tracking-wide mb-2">Obsidian Volleyball Academy Kellyville</h3>
+                    <p className="text-gray-500 text-sm mb-4">Kellyville High School, cnr York Road &amp; Queensbury Avenue, Kellyville NSW 2155.</p>
+                    <span className="inline-flex items-center gap-2 text-[#7E57C2] group-hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                      View on Google Maps
+                    </span>
+                  </div>
+                </div>
+              </a>
+            </SectionReveal>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
