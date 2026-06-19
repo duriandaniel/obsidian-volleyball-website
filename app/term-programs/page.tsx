@@ -4,11 +4,16 @@ import SectionReveal from "@/components/SectionReveal";
 import SessionTable from "./SessionTable";
 import TrackPixelView from "@/components/TrackPixelView";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
-import { loadTermPrograms } from "@/lib/booking/load";
+import { loadTermPrograms, weekday } from "@/lib/booking/load";
 
 // Term sessions, dates and prices come live from Supabase (loadTermPrograms),
 // so this renders at request time with the runtime env that holds the secret.
 export const dynamic = "force-dynamic";
+
+// Timetable order: earlier in the week first (Mon -> Sun), then by start time.
+const DAY_ORDER: Record<string, number> = {
+  Monday: 1, Tuesday: 2, Wednesday: 3, Thursday: 4, Friday: 5, Saturday: 6, Sunday: 7,
+};
 
 const TRIAL_URL = "/booking/trial";
 const WEST_RYDE_MAPS = "https://maps.app.goo.gl/eByotpKjs2mcs4AL8";
@@ -88,7 +93,14 @@ const courseSchema = {
 };
 
 export default async function JuniorClassesPage() {
-  const programs = (await loadTermPrograms()).filter((p) => !p.is_adult);
+  const programs = (await loadTermPrograms())
+    .filter((p) => !p.is_adult)
+    .sort((a, b) => {
+      const da = a.first_session_at ? DAY_ORDER[weekday(a.first_session_at)] ?? 99 : 99;
+      const db = b.first_session_at ? DAY_ORDER[weekday(b.first_session_at)] ?? 99 : 99;
+      if (da !== db) return da - db;
+      return (a.first_session_at ?? "").localeCompare(b.first_session_at ?? "");
+    });
 
   return (
     <div className="pt-20">
@@ -111,10 +123,8 @@ export default async function JuniorClassesPage() {
               <span className="text-[#7E57C2]">CLASSES</span>
             </h1>
             <p className="text-gray-400 text-sm sm:text-base max-w-xl leading-relaxed mb-8">
-              Junior volleyball for every level, beginner to advanced. We run multiple courts each
-              session, group players by ability, and coach every player at the right level. Friday
-              classes at West Ryde now, with new Tuesday and Wednesday sessions launching at
-              Kellyville for Term 3.
+              Junior volleyball for every level, beginner to advanced. We group players by ability
+              and coach each one at the right level, across two Sydney venues.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <a
@@ -244,7 +254,7 @@ export default async function JuniorClassesPage() {
                     />
                   </div>
                   <div className="p-6 flex-grow">
-                    <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] uppercase mb-2">Friday term classes</p>
+                    <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] uppercase mb-2">Term classes</p>
                     <h3 className="font-heading text-2xl text-white tracking-wide mb-2">Obsidian Volleyball Academy West Ryde</h3>
                     <p className="text-gray-500 text-sm mb-4">West Ryde, NSW. Indoor courts, climate controlled, plenty of parking.</p>
                     <span className="inline-flex items-center gap-2 text-[#7E57C2] group-hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors">
@@ -271,12 +281,9 @@ export default async function JuniorClassesPage() {
                       sizes="(max-width: 1024px) 100vw, 50vw"
                       quality={85}
                     />
-                    <div className="absolute top-3 left-3 bg-[#5E35A8] text-white font-heading text-[10px] tracking-[0.2em] px-3 py-1.5">
-                      LAUNCHING TERM 3
-                    </div>
                   </div>
                   <div className="p-6 flex-grow">
-                    <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] uppercase mb-2">Tuesday &amp; Wednesday term classes</p>
+                    <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] uppercase mb-2">Term classes</p>
                     <h3 className="font-heading text-2xl text-white tracking-wide mb-2">Obsidian Volleyball Academy Kellyville</h3>
                     <p className="text-gray-500 text-sm mb-4">Kellyville High School, cnr York Road &amp; Queensbury Avenue, Kellyville NSW 2155.</p>
                     <span className="inline-flex items-center gap-2 text-[#7E57C2] group-hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors">
