@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
 import { isAdultProgram } from "@/lib/booking/audience";
 import { CAMP_JERSEY_CENTS, billableTermWeeks } from "@/lib/booking/pricing";
+import { packChunked } from "@/lib/booking/metadata";
 
 const Body = z.object({
   program_id: z.string().regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i),
@@ -178,50 +179,60 @@ export async function POST(req: NextRequest) {
     ? `&x-vercel-protection-bypass=${encodeURIComponent(bypass)}&x-vercel-set-bypass-cookie=true`
     : "";
 
-  const checkout = await stripe().checkout.sessions.create({
-    mode: "payment",
-    ui_mode: "embedded_page",
-    payment_method_types: ["card"],
-    allow_promotion_codes: true, // parents can enter a discount code at checkout
-    line_items: [
-      {
-        price_data: {
-          currency: "aud",
-          product_data: {
-            name: `${program.title} · ${weeks} week${weeks === 1 ? "" : "s"}`,
-          },
-          unit_amount: total,
-        },
-        quantity: 1,
-      },
-      ...(jerseyAdd
-        ? [
-            {
-              price_data: {
-                currency: "aud" as const,
-                product_data: { name: "Obsidian training jersey" },
-                unit_amount: CAMP_JERSEY_CENTS,
-              },
-              quantity: 1,
+  const checkout = await stripe()
+    .checkout.sessions.create({
+      mode: "payment",
+      ui_mode: "embedded_page",
+      payment_method_types: ["card"],
+      allow_promotion_codes: true, // parents can enter a discount code at checkout
+      line_items: [
+        {
+          price_data: {
+            currency: "aud",
+            product_data: {
+              name: `${program.title} · ${weeks} week${weeks === 1 ? "" : "s"}`,
             },
-          ]
-        : []),
-    ],
-    customer_email: email,
-    return_url: `${appUrl}/booking/term/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
-    metadata: {
-      booking_type: "term",
-      program_id: program.id,
-      customer_id: customerId,
-      participant_id: participantId,
-      session_ids: JSON.stringify(sessions.map((s) => s.id)),
-      per_week_cents: String(perWeekCents),
-      weeks: String(weeks),
-      jersey_size: jerseyAdd ? "TBC" : "none",
-      jersey_cents: String(jerseyCents),
-    },
-    expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
-  });
+            unit_amount: total,
+          },
+          quantity: 1,
+        },
+        ...(jerseyAdd
+          ? [
+              {
+                price_data: {
+                  currency: "aud" as const,
+                  product_data: { name: "Obsidian training jersey" },
+                  unit_amount: CAMP_JERSEY_CENTS,
+                },
+                quantity: 1,
+              },
+            ]
+          : []),
+      ],
+      customer_email: email,
+      return_url: `${appUrl}/booking/term/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
+      metadata: {
+        booking_type: "term",
+        program_id: program.id,
+        customer_id: customerId,
+        participant_id: participantId,
+        // Chunked so a long term's session list can't exceed Stripe's 500-char
+        // metadata limit. See lib/booking/metadata.ts.
+        ...packChunked("session_ids", sessions.map((s) => s.id).join(",")),
+        per_week_cents: String(perWeekCents),
+        weeks: String(weeks),
+        jersey_size: jerseyAdd ? "TBC" : "none",
+        jersey_cents: String(jerseyCents),
+      },
+      expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
+    })
+    .catch((err) => {
+      console.error("term checkout: stripe session create failed", err);
+      return null;
+    });
+  if (!checkout) {
+    return NextResponse.json({ error: "Could not start payment. Please try again." }, { status: 502 });
+  }
 
   return NextResponse.json({ client_secret: checkout.client_secret, session_id: checkout.id });
 }

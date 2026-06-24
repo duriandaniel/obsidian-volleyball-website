@@ -3,6 +3,7 @@ import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
 import { priceCampCart, CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
+import { packChunked } from "@/lib/booking/metadata";
 
 const Body = z.object({
   items: z.array(z.object({ session_id: z.string().uuid(), is_half_day: z.boolean() })).min(1).max(20),
@@ -183,60 +184,70 @@ export async function POST(req: NextRequest) {
     ? `&x-vercel-protection-bypass=${encodeURIComponent(bypass)}&x-vercel-set-bypass-cookie=true`
     : "";
 
-  const checkout = await stripe().checkout.sessions.create({
-    mode: "payment",
-    ui_mode: "embedded_page",
-    payment_method_types: ["card"],
-    allow_promotion_codes: true, // parents can enter a discount code at checkout
-    line_items: [
-      {
-        price_data: {
-          currency: "aud",
-          product_data: {
-            name: `Obsidian Volleyball Camp · ${dayLabel}`,
-            description: sessions
-              .map((s) =>
-                new Date(s.starts_at).toLocaleDateString("en-AU", {
-                  weekday: "short",
-                  day: "numeric",
-                  month: "short",
-                  timeZone: "Australia/Sydney",
-                })
-              )
-              .join(", "),
-          },
-          unit_amount: pricing.total_cents,
-        },
-        quantity: 1,
-      },
-      ...(jerseyAdd
-        ? [
-            {
-              price_data: {
-                currency: "aud" as const,
-                product_data: { name: "Obsidian training jersey" },
-                unit_amount: CAMP_JERSEY_CENTS,
-              },
-              quantity: 1,
+  let checkout;
+  try {
+    checkout = await stripe().checkout.sessions.create({
+      mode: "payment",
+      ui_mode: "embedded_page",
+      payment_method_types: ["card"],
+      allow_promotion_codes: true, // parents can enter a discount code at checkout
+      line_items: [
+        {
+          price_data: {
+            currency: "aud",
+            product_data: {
+              name: `Obsidian Volleyball Camp · ${dayLabel}`,
+              description: sessions
+                .map((s) =>
+                  new Date(s.starts_at).toLocaleDateString("en-AU", {
+                    weekday: "short",
+                    day: "numeric",
+                    month: "short",
+                    timeZone: "Australia/Sydney",
+                  })
+                )
+                .join(", "),
             },
-          ]
-        : []),
-    ],
-    customer_email: email,
-    return_url: `${appUrl}/booking/camps/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
-    metadata: {
-      booking_type: "camp",
-      customer_id: customerId,
-      participant_id: participantId,
-      items: JSON.stringify(body.items),
-      subtotal_cents: String(pricing.subtotal_cents),
-      discount_cents: String(pricing.discount_cents),
-      camp_total_cents: String(pricing.total_cents),
-      jersey_cents: String(jerseyCents),
-      jersey_size: jerseyAdd ? "TBC" : "none",
-    },
-    expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
-  });
+            unit_amount: pricing.total_cents,
+          },
+          quantity: 1,
+        },
+        ...(jerseyAdd
+          ? [
+              {
+                price_data: {
+                  currency: "aud" as const,
+                  product_data: { name: "Obsidian training jersey" },
+                  unit_amount: CAMP_JERSEY_CENTS,
+                },
+                quantity: 1,
+              },
+            ]
+          : []),
+      ],
+      customer_email: email,
+      return_url: `${appUrl}/booking/camps/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
+      metadata: {
+        booking_type: "camp",
+        customer_id: customerId,
+        participant_id: participantId,
+        // Session list can exceed Stripe's 500-char-per-value metadata limit for
+        // a multi-week cart, so chunk it. half_days is a per-item 0/1 bitstring
+        // aligned to session_ids order (1 = half day). See lib/booking/metadata.ts.
+        ...packChunked("session_ids", body.items.map((i) => i.session_id).join(",")),
+        half_days: body.items.map((i) => (i.is_half_day ? "1" : "0")).join(""),
+        subtotal_cents: String(pricing.subtotal_cents),
+        discount_cents: String(pricing.discount_cents),
+        camp_total_cents: String(pricing.total_cents),
+        jersey_cents: String(jerseyCents),
+        jersey_size: jerseyAdd ? "TBC" : "none",
+      },
+      expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
+    });
+  } catch (err) {
+    console.error("camp checkout: stripe session create failed", err);
+    return NextResponse.json({ error: "Could not start payment. Please try again." }, { status: 502 });
+  }
 
   return NextResponse.json({ client_secret: checkout.client_secret, session_id: checkout.id });
 }

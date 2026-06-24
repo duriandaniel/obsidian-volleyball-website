@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/email/send";
 import { sendMetaPurchase } from "@/lib/meta/capi";
 import { formatCents } from "@/lib/booking/pricing";
+import { readChunked } from "@/lib/booking/metadata";
 import type Stripe from "stripe";
 
 // Stripe webhook needs the raw body to verify the signature.
@@ -131,11 +132,21 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     return;
   }
 
-  const itemsJson = session.metadata?.items;
-  if (!itemsJson) {
-    throw new Error("Camp checkout session missing items metadata");
+  // Session list moved from a single `items` JSON value (which overflowed
+  // Stripe's 500-char metadata limit for big carts) to chunked `session_ids` +
+  // a `half_days` bitstring. Read the legacy shape too for any in-flight session.
+  let items: { session_id: string; is_half_day: boolean }[];
+  const legacyItems = session.metadata?.items;
+  if (legacyItems) {
+    items = JSON.parse(legacyItems);
+  } else {
+    const ids = readChunked(session.metadata, "session_ids").split(",").filter(Boolean);
+    const halfDays = session.metadata?.half_days ?? "";
+    items = ids.map((session_id, i) => ({ session_id, is_half_day: halfDays[i] === "1" }));
   }
-  const items: { session_id: string; is_half_day: boolean }[] = JSON.parse(itemsJson);
+  if (items.length === 0) {
+    throw new Error("Camp checkout session missing session_ids metadata");
+  }
 
   const email = session.customer_details?.email ?? session.customer_email;
   if (!email) throw new Error("Checkout missing customer email");
@@ -357,7 +368,7 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
   const sb = supabaseAdmin();
   const customerId = session.metadata?.customer_id;
   const participantId = session.metadata?.participant_id;
-  const sessionIdsRaw = session.metadata?.session_ids;
+  const sessionIdsRaw = readChunked(session.metadata, "session_ids");
   const perSessionCents = parseInt(session.metadata?.per_session_cents ?? "0", 10);
   const level = session.metadata?.level ?? null;
   const email = session.customer_details?.email ?? session.customer_email;
@@ -579,7 +590,7 @@ async function handleCasualCheckoutCompleted(session: Stripe.Checkout.Session) {
   const customerId = session.metadata?.customer_id;
   const participantId = session.metadata?.participant_id;
   const programId = session.metadata?.program_id;
-  const sessionIdsRaw = session.metadata?.session_ids;
+  const sessionIdsRaw = readChunked(session.metadata, "session_ids");
   const perCents = parseInt(session.metadata?.per_session_cents ?? "0", 10);
   const email = session.customer_details?.email ?? session.customer_email;
   if (!customerId || !participantId || !sessionIdsRaw || !email) throw new Error("Casual checkout missing metadata");
@@ -681,7 +692,13 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
   if (!customerId || !participantId || !programId || !sessionIdsJson || !email) {
     throw new Error("Term checkout missing required metadata");
   }
-  const sessionIds: string[] = JSON.parse(sessionIdsJson);
+  // session_ids may be chunked across numbered keys (long terms exceed Stripe's
+  // 500-char metadata limit). Legacy sessions stored a JSON array; new ones store
+  // a comma-joined list — handle both.
+  const sessionIdsRaw = readChunked(session.metadata, "session_ids");
+  const sessionIds: string[] = sessionIdsRaw.startsWith("[")
+    ? JSON.parse(sessionIdsRaw)
+    : sessionIdsRaw.split(",").filter(Boolean);
   const total = session.amount_total ?? perWeekCents * weeks;
   const paymentIntentId =
     typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id ?? null;
