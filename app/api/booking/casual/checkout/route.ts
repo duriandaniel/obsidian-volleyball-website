@@ -4,6 +4,7 @@ import { supabaseAdmin } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
 import { isAdultProgram } from "@/lib/booking/audience";
 import { CASUAL_PRICE_CENTS } from "@/lib/booking/pricing";
+import { packChunked } from "@/lib/booking/metadata";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -131,36 +132,45 @@ export async function POST(req: NextRequest) {
   const bypass = reqUrl.searchParams.get("x-vercel-protection-bypass");
   const bypassQS = bypass ? `&x-vercel-protection-bypass=${encodeURIComponent(bypass)}&x-vercel-set-bypass-cookie=true` : "";
 
-  const checkout = await stripe().checkout.sessions.create({
-    mode: "payment",
-    ui_mode: "embedded_page",
-    payment_method_types: ["card"],
-    allow_promotion_codes: true, // parents can enter a discount code at checkout
-    line_items: [
-      {
-        price_data: {
-          currency: "aud",
-          product_data: {
-            name: `${program.title} · ${count} casual class${count === 1 ? "" : "es"}`,
-            description: sessions.map((s) => new Date(s.starts_at).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short", timeZone: "Australia/Sydney" })).join(", "),
+  const checkout = await stripe()
+    .checkout.sessions.create({
+      mode: "payment",
+      ui_mode: "embedded_page",
+      payment_method_types: ["card"],
+      allow_promotion_codes: true, // parents can enter a discount code at checkout
+      line_items: [
+        {
+          price_data: {
+            currency: "aud",
+            product_data: {
+              name: `${program.title} · ${count} casual class${count === 1 ? "" : "es"}`,
+              description: sessions.map((s) => new Date(s.starts_at).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short", timeZone: "Australia/Sydney" })).join(", "),
+            },
+            unit_amount: CASUAL_PRICE_CENTS,
           },
-          unit_amount: CASUAL_PRICE_CENTS,
+          quantity: count,
         },
-        quantity: count,
+      ],
+      customer_email: email,
+      return_url: `${appUrl}/booking/term/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
+      metadata: {
+        booking_type: "casual",
+        program_id: program.id,
+        customer_id: customerId,
+        participant_id: participantId,
+        // Chunked to stay under Stripe's 500-char metadata limit. See lib/booking/metadata.ts.
+        ...packChunked("session_ids", sessions.map((s) => s.id).join(",")),
+        per_session_cents: String(CASUAL_PRICE_CENTS),
       },
-    ],
-    customer_email: email,
-    return_url: `${appUrl}/booking/term/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
-    metadata: {
-      booking_type: "casual",
-      program_id: program.id,
-      customer_id: customerId,
-      participant_id: participantId,
-      session_ids: sessions.map((s) => s.id).join(","),
-      per_session_cents: String(CASUAL_PRICE_CENTS),
-    },
-    expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
-  });
+      expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
+    })
+    .catch((err) => {
+      console.error("casual checkout: stripe session create failed", err);
+      return null;
+    });
+  if (!checkout) {
+    return NextResponse.json({ error: "Could not start payment. Please try again." }, { status: 502 });
+  }
 
   return NextResponse.json({ client_secret: checkout.client_secret, session_id: checkout.id });
 }
