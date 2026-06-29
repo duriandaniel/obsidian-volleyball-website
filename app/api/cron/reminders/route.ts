@@ -8,6 +8,14 @@ import { sendEmail } from "@/lib/email/send";
 export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
+  // Reminder emails are disabled. The daily cron is removed from vercel.json,
+  // and this flag also neutralizes the manual ?secret= path so nothing can be
+  // sent. Set REMINDERS_ENABLED=true to turn them back on. Confirmation emails
+  // are unaffected.
+  if (process.env.REMINDERS_ENABLED !== "true") {
+    return NextResponse.json({ ok: true, disabled: true, sent: 0 });
+  }
+
   // Vercel cron requests come with a special header. In dev / preview, allow
   // a manual ?secret= invocation for testing.
   const isCron = req.headers.get("user-agent")?.includes("vercel") || req.headers.get("x-vercel-cron") === "1";
