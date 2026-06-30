@@ -73,7 +73,7 @@ export async function loadAdultSessions(): Promise<AdultSession[]> {
     sb.from("pricing_rules").select("id, term_per_session_cents").in("id", ruleIds),
     sb
       .from("sessions")
-      .select("id, program_id, starts_at, ends_at")
+      .select("id, program_id, starts_at, ends_at, capacity_override")
       .in(
         "program_id",
         adultPrograms.map((p) => p.id)
@@ -106,7 +106,13 @@ export async function loadAdultSessions(): Promise<AdultSession[]> {
       starts_at: s.starts_at,
       ends_at: s.ends_at,
       venue_name: venueById.get(p.venue_id) ?? "Venue TBA",
-      spots_left: Math.max(0, p.default_capacity - (bookedBySession.get(s.id) ?? 0)),
+      // Effective capacity must match the DB trigger / checkout:
+      // coalesce(capacity_override, default_capacity).
+      spots_left: Math.max(
+        0,
+        ((s as { capacity_override: number | null }).capacity_override ?? p.default_capacity) -
+          (bookedBySession.get(s.id) ?? 0)
+      ),
       price_cents: ruleById.get(p.pricing_rule_id ?? "") ?? 0,
     };
   });
