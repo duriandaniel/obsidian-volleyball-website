@@ -412,7 +412,26 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
     paid_at: paidAt,
   }));
   const { error: bErr } = await sb.from("bookings").insert(bookingsToInsert);
-  if (bErr) throw bErr;
+  if (bErr) {
+    // A failed insert here means money was taken but the customer is enrolled
+    // nowhere. Record it loudly (audit_log + Sentry via console.error) so a
+    // stranded payment is caught immediately instead of weeks later, then
+    // rethrow so the webhook 500s and Stripe retries.
+    console.error("dropin booking insert failed — payment may be stranded", {
+      paymentIntentId,
+      sessionIds,
+      customerId,
+      message: bErr.message,
+    });
+    await sb.from("audit_log").insert({
+      actor_role: "system",
+      action: "dropin.booking_failed",
+      entity_type: "customer",
+      entity_id: customerId,
+      after: { paymentIntentId, sessionIds, error: bErr.message },
+    });
+    throw bErr;
+  }
 
   const total = session.amount_total ?? perSessionCents * sessionIds.length;
   // Level taxonomy (beginner / social_player / svl_player) has no structured column
