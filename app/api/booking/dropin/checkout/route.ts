@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
   // multiple adult programs (Tue/Wed/Fri) in a single booking.
   const { data: sessions } = await sb
     .from("sessions")
-    .select("id, starts_at, status, program_id, programs:program_id(id, type, status, age_min, default_capacity, pricing_rule_id)")
+    .select("id, starts_at, status, program_id, capacity_override, programs:program_id(id, type, status, age_min, default_capacity, pricing_rule_id)")
     .in("id", body.session_ids)
     .order("starts_at");
   if (!sessions || sessions.length !== body.session_ids.length) {
@@ -82,7 +82,12 @@ export async function POST(req: NextRequest) {
   for (const b of existingBookings ?? []) counts.set(b.session_id, (counts.get(b.session_id) ?? 0) + 1);
   for (const s of sessions) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const cap = (s.programs as any).default_capacity;
+    const sess = s as any;
+    // Must match the DB trigger check_session_capacity, which uses
+    // coalesce(capacity_override, default_capacity). Reading only
+    // default_capacity here let people pay into a session the DB then
+    // rejected on insert — stranding the payment with no booking.
+    const cap = sess.capacity_override ?? sess.programs.default_capacity;
     if ((counts.get(s.id) ?? 0) >= cap) {
       return NextResponse.json({ error: "One of the selected nights is full" }, { status: 409 });
     }
