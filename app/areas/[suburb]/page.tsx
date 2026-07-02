@@ -273,8 +273,24 @@ const suburbs: Suburb[] = [
   },
 ];
 
+// Only these suburb pages carry unique, substantial content. The thinner
+// suburbs were removed and 301-redirect to their venue hub (see next.config).
+const PUBLISHED_SLUGS = new Set([
+  "baulkham-hills",
+  "castle-hill",
+  "bella-vista",
+  "kellyville",
+  "north-rocks",
+  "winston-hills",
+  "northmead",
+]);
+
+// Any slug not in generateStaticParams 404s (the removed ones are redirected
+// upstream in next.config, so they never reach here).
+export const dynamicParams = false;
+
 export function generateStaticParams() {
-  return suburbs.map((s) => ({ suburb: s.slug }));
+  return suburbs.filter((s) => PUBLISHED_SLUGS.has(s.slug)).map((s) => ({ suburb: s.slug }));
 }
 
 export function generateMetadata({ params }: { params: Promise<{ suburb: string }> }): Promise<Metadata> {
@@ -287,10 +303,10 @@ export function generateMetadata({ params }: { params: Promise<{ suburb: string 
     return {
       title: `Volleyball Coaching ${data.name} | ${
         isCamp ? "Junior Camps" : "Junior Classes"
-      } | Obsidian Volleyball Academy`,
+      }`,
       description: isCamp
-        ? `Junior volleyball holiday camps for ${data.name} families. School-holiday programs at Baulkham Hills High School for ages 8 to 18. ${data.drive} away.`
-        : `Junior volleyball coaching for ${data.name} families. ${termSchedule} term classes at ${venue.name}, for ages 8 to 18. ${data.drive} away. Book now.`,
+        ? `Junior volleyball holiday camps for ${data.name} families. School-holiday programs at Baulkham Hills High School for ages 8 to 18. ${data.drive === "On your doorstep" ? "On your doorstep" : `${data.drive} away`}.`
+        : `Junior volleyball coaching for ${data.name} families. ${termSchedule} term classes at ${venue.name}, for ages 8 to 18. ${data.drive === "On your doorstep" ? "On your doorstep" : `${data.drive} away`}. Book now.`,
       keywords: [
         `volleyball ${data.name.toLowerCase()}`,
         `junior volleyball ${data.name.toLowerCase()}`,
@@ -307,7 +323,7 @@ export function generateMetadata({ params }: { params: Promise<{ suburb: string 
           ? `Junior volleyball camps ${data.drive} from ${data.name}. Baulkham Hills High School.`
           : `Junior volleyball ${data.drive} from ${data.name}. ${venue.name}.`,
         url: `/areas/${data.slug}`,
-        images: ["/images/hero.jpg"],
+        images: ["/images/og-default.jpg"],
       },
     };
   });
@@ -330,7 +346,7 @@ export default async function SuburbPage({ params }: { params: Promise<{ suburb:
   const isKellyville = data.venue === "kellyville";
   const termSchedule = isKellyville ? "Tuesday and Wednesday" : "every Friday";
   const otherSuburbs = suburbs
-    .filter((s) => s.slug !== suburb && s.venue === data.venue)
+    .filter((s) => s.slug !== suburb && s.venue === data.venue && PUBLISHED_SLUGS.has(s.slug))
     .slice(0, 4);
 
   const breadcrumbSchema = {

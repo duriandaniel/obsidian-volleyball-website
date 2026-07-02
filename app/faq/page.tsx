@@ -3,7 +3,7 @@ import SectionReveal from "@/components/SectionReveal";
 import CopyEmail from "@/components/CopyEmail";
 
 export const metadata: Metadata = {
-  title: "FAQ | Obsidian Volleyball Academy Sydney",
+  title: "FAQ",
   description:
     "Frequently asked questions about Obsidian Volleyball Academy. Programs, pricing, venues across Sydney, age groups, the competitive pathway, and more.",
   alternates: { canonical: "/faq" },
