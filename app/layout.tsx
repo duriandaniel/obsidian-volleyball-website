@@ -44,7 +44,7 @@ export const metadata: Metadata = {
       "Quality junior volleyball academy in Sydney. Term programs in West Ryde.",
     images: [
       {
-        url: "/images/hero.jpg",
+        url: "/images/og-default.jpg",
         width: 1200,
         height: 630,
         alt: "Obsidian Volleyball Academy: Junior Volleyball in Sydney",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     title: "Obsidian Volleyball Academy | Junior Volleyball Sydney",
     description:
       "Quality junior volleyball academy in Sydney. Term programs in West Ryde.",
-    images: ["/images/hero.jpg"],
+    images: ["/images/og-default.jpg"],
   },
   robots: {
     index: true,
@@ -91,7 +91,7 @@ const localBusinessSchema = {
   "@id": `${SITE_URL}/#localbusiness`,
   name: "Obsidian Volleyball Academy",
   description:
-    "Quality junior volleyball academy in Sydney. Term programs every Friday at Obsidian Volleyball Academy West Ryde, for ages 8 to 18.",
+    "Quality junior volleyball academy in Sydney. Term classes at West Ryde (Fridays) and Kellyville (Tuesdays & Wednesdays), adult social scrims at West Ryde, and school-holiday camps at Baulkham Hills. Ages 8 to 18.",
   url: SITE_URL,
   image: `${SITE_URL}/images/hero.jpg`,
   email: "obsidianvolleyball@gmail.com",
@@ -128,11 +128,17 @@ const localBusinessSchema = {
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-      opens: "09:00",
-      closes: "13:00",
-      validFrom: "2025-01-01",
-      description: "School holiday camps run weekdays during NSW school holidays.",
+      dayOfWeek: ["Friday"],
+      opens: "16:00",
+      closes: "21:00",
+      description: "West Ryde: junior term classes from 4:00 PM and adult social scrims 7:00–9:00 PM.",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Tuesday", "Wednesday"],
+      opens: "19:00",
+      closes: "21:00",
+      description: "West Ryde: adult social scrims 7:00–9:00 PM.",
     },
   ],
 };
@@ -143,7 +149,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${bebasNeue.variable} ${dmSans.variable}`}>
+    <html lang="en-AU" className={`${bebasNeue.variable} ${dmSans.variable}`}>
       <head>
         <GoogleTagManagerScript />
         <MetaPixelScript />

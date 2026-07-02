@@ -3,7 +3,7 @@ import Hero from "@/components/Hero";
 import HomeSections from "@/components/HomeSections";
 
 export const metadata: Metadata = {
-  title: "Volleyball Coaching Kellyville | Obsidian Volleyball Academy Kellyville | Obsidian Volleyball Academy",
+  title: "Volleyball Coaching Kellyville",
   description:
     "Junior volleyball coaching in Kellyville, Sydney. Tuesday and Wednesday term classes at Obsidian Volleyball Academy Kellyville for ages 8 to 18, all skill levels. Book a $25 trial class.",
   keywords: [

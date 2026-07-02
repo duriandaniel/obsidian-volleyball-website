@@ -5,7 +5,7 @@ import TrackPixelView from "@/components/TrackPixelView";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 
 export const metadata: Metadata = {
-  title: "Adult Sessions | Open Volleyball Scrims | West Ryde Sydney | Obsidian",
+  title: "Adult Volleyball Scrims West Ryde",
   description:
     "Adult open volleyball scrims Tuesday, Wednesday and Friday 7 to 9 PM at Obsidian Volleyball Academy West Ryde. Drop in any night, all skill levels, $20 per night.",
   keywords: [
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     title: "Adult Sessions | Open Volleyball Scrims | West Ryde Sydney",
     description:
       "Adult open volleyball scrims Tuesday, Wednesday and Friday 7 to 9 PM at Obsidian Volleyball Academy West Ryde. Drop in, all skill levels welcome.",
-    images: ["/images/bennelong-courtyard.png"],
+    images: ["/images/og-adult.jpg"],
     url: "/adult-sessions",
   },
 };

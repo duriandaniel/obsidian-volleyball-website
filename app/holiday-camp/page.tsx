@@ -12,7 +12,7 @@ import { getNextCampWindow, formatCampWindow } from "@/lib/booking/camps";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Volleyball Holiday Camps | Sydney Junior Volleyball | Obsidian",
+  title: "Volleyball Holiday Camps Sydney",
   description:
     "Junior volleyball holiday camps in Sydney for ages 8 to 18 at Baulkham Hills. Held each NSW school holidays, Monday to Friday, 9 AM to 1 PM. Beginner to advanced.",
   keywords: [

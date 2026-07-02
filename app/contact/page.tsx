@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import SectionReveal from "@/components/SectionReveal";
 
 export const metadata: Metadata = {
-  title: "Contact | Obsidian Volleyball Academy Sydney",
+  title: "Contact",
   description:
-    "Get in touch with Obsidian Volleyball Academy. Term programs in West Ryde, holiday camps in Baulkham Hills. Email or Instagram.",
+    "Get in touch with Obsidian Volleyball Academy. Term classes in West Ryde and Kellyville, holiday camps in Baulkham Hills. Email or Instagram.",
   alternates: { canonical: "/contact" },
 };
 

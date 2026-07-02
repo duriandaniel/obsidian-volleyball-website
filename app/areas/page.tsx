@@ -3,8 +3,20 @@ import Link from "next/link";
 import SectionReveal from "@/components/SectionReveal";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 
+// Suburbs that still have their own page. Removed (thin) suburbs link to the
+// venue hub instead, so the tiles stay useful and there are no dead links.
+const PUBLISHED_SLUGS = new Set([
+  "baulkham-hills",
+  "castle-hill",
+  "bella-vista",
+  "kellyville",
+  "north-rocks",
+  "winston-hills",
+  "northmead",
+]);
+
 export const metadata: Metadata = {
-  title: "Service Areas | Junior Volleyball Sydney | Obsidian Volleyball Academy",
+  title: "Service Areas | Junior Volleyball Sydney",
   description:
     "Obsidian Volleyball Academy runs term programs in West Ryde, term classes in Kellyville, and holiday camps in Baulkham Hills. Find your suburb and see how close you are.",
   keywords: [
@@ -63,9 +75,10 @@ interface ClusterProps {
   venueLine: string;
   venueLink: { href: string; label: string };
   areas: { slug: string; name: string; drive: string }[];
+  hubHref: string;
 }
 
-function Cluster({ badge, title, venueLine, venueLink, areas }: ClusterProps) {
+function Cluster({ badge, title, venueLine, venueLink, areas, hubHref }: ClusterProps) {
   return (
     <section className="py-20 lg:py-28 bg-[#0A0A0A] border-t border-white/[0.04] first:border-t-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -90,7 +103,7 @@ function Cluster({ badge, title, venueLine, venueLink, areas }: ClusterProps) {
           {areas.map((area, i) => (
             <SectionReveal key={area.slug} delay={i * 0.04}>
               <Link
-                href={`/areas/${area.slug}`}
+                href={PUBLISHED_SLUGS.has(area.slug) ? `/areas/${area.slug}` : hubHref}
                 className="block bg-[#0A0A0A] p-8 lg:p-10 group hover:bg-[#141114] transition-colors duration-500 h-full"
               >
                 <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-3">
@@ -142,6 +155,7 @@ export default function AreasIndexPage() {
         venueLine="Friday evening classes at Obsidian Volleyball Academy West Ryde."
         venueLink={{ href: "/west-ryde", label: "West Ryde venue" }}
         areas={rydeCluster}
+        hubHref="/west-ryde"
       />
 
       <Cluster
@@ -150,6 +164,7 @@ export default function AreasIndexPage() {
         venueLine="Tuesday and Wednesday classes at Obsidian Volleyball Academy Kellyville, Kellyville High School."
         venueLink={{ href: "/kellyville", label: "Kellyville venue" }}
         areas={kellyvilleCluster}
+        hubHref="/kellyville"
       />
 
       <Cluster
@@ -158,6 +173,7 @@ export default function AreasIndexPage() {
         venueLine="School-holiday camps at Baulkham Hills High School, Windsor Road."
         venueLink={{ href: "/baulkham-hills", label: "Baulkham Hills venue" }}
         areas={hillsCluster}
+        hubHref="/baulkham-hills"
       />
 
       {/* CTA */}

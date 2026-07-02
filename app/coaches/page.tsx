@@ -3,7 +3,7 @@ import CoachCard from "@/components/CoachCard";
 import SectionReveal from "@/components/SectionReveal";
 
 export const metadata: Metadata = {
-  title: "Volleyball Coaches | Junior Volleyball Sydney",
+  title: "Volleyball Coaches Sydney",
   description:
     "Meet the Obsidian coaching team. Experienced players coaching juniors across Sydney.",
   keywords: [

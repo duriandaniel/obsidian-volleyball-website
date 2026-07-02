@@ -3,7 +3,7 @@ import Hero from "@/components/Hero";
 import HomeSections from "@/components/HomeSections";
 
 export const metadata: Metadata = {
-  title: "Volleyball Coaching Baulkham Hills | Holiday Camps | Obsidian Volleyball Academy",
+  title: "Volleyball Camps Baulkham Hills",
   description:
     "Junior volleyball holiday camps in Baulkham Hills, Sydney. School-holiday programs at Baulkham Hills High School for ages 8 to 18, all skill levels. Book now.",
   keywords: [

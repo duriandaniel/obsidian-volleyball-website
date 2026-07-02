@@ -4,9 +4,9 @@ import ProgramsStrip from "@/components/ProgramsStrip";
 import HomeSections from "@/components/HomeSections";
 
 export const metadata: Metadata = {
-  title: "Junior Volleyball Coaching Sydney | West Ryde & Baulkham Hills | Obsidian Volleyball Academy",
+  title: "Junior Volleyball Coaching Sydney | West Ryde & Kellyville",
   description:
-    "Quality junior volleyball coaching in Sydney. Friday term programs at Obsidian Volleyball Academy West Ryde. School-holiday camps at Baulkham Hills High School. Ages 8 to 18.",
+    "Quality junior volleyball coaching in Sydney. Term classes at Obsidian Volleyball Academy West Ryde (Fridays) and Kellyville (Tue & Wed), plus school-holiday camps at Baulkham Hills. Ages 8 to 18.",
   keywords: [
     "junior volleyball Sydney",
     "volleyball coaching Sydney",
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 const faqs = [
   {
     q: "Where do you run programs?",
-    a: "Term programs at Obsidian Volleyball Academy West Ryde, every Friday. Holiday camps at Baulkham Hills High School.",
+    a: "Term classes at Obsidian Volleyball Academy West Ryde (Fridays) and Kellyville (Tuesdays and Wednesdays). Holiday camps at Baulkham Hills High School.",
   },
   {
     q: "What age groups do you cater for?",

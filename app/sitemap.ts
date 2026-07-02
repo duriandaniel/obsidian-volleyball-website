@@ -1,25 +1,9 @@
 import type { MetadataRoute } from "next";
 
+// Only suburb pages with unique content are indexed. Thinner suburbs were
+// removed and 301-redirect to their venue hub (see next.config redirects).
 const suburbs = [
-  // Ryde cluster — term programs
-  "ryde",
-  "eastwood",
-  "meadowbank",
-  "denistone",
-  "top-ryde",
-  "putney",
-  "north-ryde",
-  "marsfield",
-  "macquarie-park",
-  // Kellyville cluster — term classes
   "kellyville",
-  "north-kellyville",
-  "beaumont-hills",
-  "rouse-hill",
-  "glenwood",
-  "stanhope-gardens",
-  "kellyville-ridge",
-  // Hills cluster — holiday camps
   "baulkham-hills",
   "castle-hill",
   "bella-vista",

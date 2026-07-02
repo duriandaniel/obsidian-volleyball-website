@@ -3,7 +3,7 @@ import Image from "next/image";
 import JerseyShop from "./JerseyShop";
 
 export const metadata: Metadata = {
-  title: "Obsidian Training Jersey | Obsidian Volleyball Academy",
+  title: "Obsidian Training Jersey",
   description:
     "Get the official Obsidian Volleyball Academy training jersey. Worn by our players at camps and classes. $36, sizes XS to XL.",
   alternates: { canonical: "/shop/jersey" },

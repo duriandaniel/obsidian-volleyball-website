@@ -22,8 +22,7 @@ const KELLYVILLE_MAPS = "https://www.google.com/maps/search/?api=1&query=Kellyvi
 const MAP_FILTER = "invert(90%) hue-rotate(180deg) brightness(0.7) contrast(1.2)";
 
 export const metadata: Metadata = {
-  title:
-    "Weekly Training | West Ryde & Kellyville Volleyball Sydney | Obsidian Volleyball Academy",
+  title: "Weekly Training | West Ryde & Kellyville",
   description:
     "Junior volleyball classes across Sydney at Obsidian Volleyball Academy West Ryde and Kellyville. Beginner, intermediate, and advanced sessions for ages 8 to 18, grouped by ability. Book a trial to start.",
   keywords: [
