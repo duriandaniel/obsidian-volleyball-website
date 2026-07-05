@@ -879,7 +879,9 @@ async function handleJerseyCheckoutCompleted(session: Stripe.Checkout.Session) {
     .maybeSingle();
   if (existing) return;
 
-  // Defensive: make sure a customer exists (the checkout route normally sets it).
+  // The minimal shop form collects only a mobile; Stripe collects the email at
+  // payment, so the customer is created here from session details + metadata.
+  const phone = session.metadata?.jersey_phone || null;
   if (!customerId && email) {
     const { data: c } = await sb.from("customers").select("id").eq("email", email.toLowerCase()).is("deleted_at", null).maybeSingle();
     customerId = c?.id ?? null;
@@ -888,7 +890,7 @@ async function handleJerseyCheckoutCompleted(session: Stripe.Checkout.Session) {
       const [first, ...rest] = name.split(" ");
       const { data: created, error } = await sb
         .from("customers")
-        .insert({ email: email.toLowerCase(), first_name: first || null, last_name: rest.join(" ") || null })
+        .insert({ email: email.toLowerCase(), first_name: first || null, last_name: rest.join(" ") || null, phone })
         .select("id")
         .single();
       if (error) throw error;
@@ -898,7 +900,10 @@ async function handleJerseyCheckoutCompleted(session: Stripe.Checkout.Session) {
   if (!customerId) throw new Error("Jersey checkout missing customer");
 
   const stripeCustomerId = typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
-  if (stripeCustomerId) await sb.from("customers").update({ stripe_customer_id: stripeCustomerId }).eq("id", customerId);
+  const customerUpdates: Record<string, string> = {};
+  if (stripeCustomerId) customerUpdates.stripe_customer_id = stripeCustomerId;
+  if (phone) customerUpdates.phone = phone;
+  if (Object.keys(customerUpdates).length) await sb.from("customers").update(customerUpdates).eq("id", customerId);
 
   const paymentIntentId =
     typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id ?? null;

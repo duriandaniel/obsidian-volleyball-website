@@ -34,15 +34,9 @@ export default function JerseyShopPage() {
               <h1 className="font-heading text-5xl lg:text-6xl text-white tracking-wide mb-6 leading-[0.95]">
                 TRAINING JERSEY
               </h1>
-              <p className="text-gray-400 text-lg leading-relaxed mb-6 max-w-md">
-                The official Obsidian Volleyball Academy training jersey, in our purple gradient squad colours.
-                Worn by our players at camps and classes.
+              <p className="text-gray-400 text-lg leading-relaxed mb-8 max-w-md">
+                $36 · choose your size when you collect it.
               </p>
-              <ul className="text-gray-400 text-base space-y-2 mb-8">
-                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Breathable training fabric</li>
-                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Sizes XS to XL — try on for fit when you collect</li>
-                <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> $36 each</li>
-              </ul>
 
               <JerseyShop />
             </div>
