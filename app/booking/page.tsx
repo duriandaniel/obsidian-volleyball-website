@@ -22,6 +22,14 @@ export default function BookingHomePage() {
           <BookingBox href="/booking/adult" eyebrow="ADULTS" label="Social Scrim" />
         </div>
 
+        <Link
+          href="/shop/jersey"
+          className="mt-5 flex items-center justify-center gap-4 text-center bg-white/[0.04] border border-white/10 hover:border-[#7E57C2]/50 rounded-xl py-8 px-5"
+        >
+          <span className="text-[#7E57C2] font-heading text-lg sm:text-xl tracking-[0.25em]">SHOP</span>
+          <span className="font-heading text-2xl leading-tight">Buy Jersey</span>
+        </Link>
+
       </div>
     </div>
   );
