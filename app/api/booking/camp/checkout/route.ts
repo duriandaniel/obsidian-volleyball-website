@@ -7,7 +7,8 @@ import { packChunked } from "@/lib/booking/metadata";
 
 const Body = z.object({
   items: z.array(z.object({ session_id: z.string().uuid(), is_half_day: z.boolean() })).min(1).max(20),
-  // Optional jersey add-on. Opt-in only; size is chosen on collection.
+  // Jersey add-on (pre-added in the camp cart UI; removable). Size is chosen
+  // on collection. Absent/false means the buyer removed it.
   jersey: z.object({ add: z.boolean().default(false) }).optional(),
   parent: z.object({
     first_name: z.string().min(1).max(100),
@@ -80,7 +81,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Total must be positive" }, { status: 400 });
   }
 
-  // Optional jersey add-on (opt-in only; size chosen on collection).
+  // Jersey add-on (size chosen on collection).
   const jerseyAdd = body.jersey?.add === true;
   const jerseyCents = jerseyAdd ? CAMP_JERSEY_CENTS : 0;
 

@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { priceCampCart, formatCents, formatSpotsLeft, CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
-import JerseyAddOn, { EMPTY_JERSEY, type JerseyChoice } from "@/components/JerseyAddOn";
+import JerseyAddOn, { type JerseyChoice } from "@/components/JerseyAddOn";
 import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
 import type { CampSessionView } from "./page";
 
@@ -89,8 +89,9 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
     photo_consent: false,
     injury_ack: false,
   });
-  // Optional jersey add-on. Opt-in only. Size is chosen on collection.
-  const [jersey, setJersey] = useState<JerseyChoice>(EMPTY_JERSEY);
+  // Jersey add-on. Opt-OUT for camps: pre-added, tap to remove if they already
+  // have one. Size is chosen on collection.
+  const [jersey, setJersey] = useState<JerseyChoice>({ add: true });
 
   const pricing = useMemo(() => {
     return priceCampCart(
