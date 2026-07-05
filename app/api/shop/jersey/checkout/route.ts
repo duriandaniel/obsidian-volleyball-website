@@ -3,12 +3,12 @@ import { z } from "zod";
 import { stripe } from "@/lib/stripe/server";
 import { CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
 
-// Minimal on-the-spot purchase: one jersey, child's name + mobile. Stripe's
-// payment form collects the buyer's email; the webhook creates the customer
-// from it, attaches the mobile, and links the jersey to a participant row for
-// the child so fulfilment knows who it's for.
+// Minimal on-the-spot purchase: one jersey, child's name + email. The email is
+// pinned on the Stripe session so the webhook keys the customer record off it
+// (matching any existing booking) and links the jersey to a participant row
+// for the child so fulfilment knows who it's for.
 const Body = z.object({
-  phone: z.string().min(5).max(40),
+  email: z.string().email(),
   child_name: z.string().min(1).max(120),
 });
 
@@ -43,13 +43,13 @@ export async function POST(req: NextRequest) {
         quantity: 1,
       },
     ],
+    customer_email: body.email.toLowerCase(),
     return_url: `${appUrl}/shop/jersey/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
     metadata: {
       booking_type: "jersey",
       jersey_size: "TBC",
       jersey_qty: "1",
       jersey_cents: String(CAMP_JERSEY_CENTS),
-      jersey_phone: body.phone,
       jersey_child_name: body.child_name.trim(),
     },
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
