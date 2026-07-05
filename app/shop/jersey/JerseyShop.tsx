@@ -8,6 +8,7 @@ import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
 // One jersey, $36, mobile number only — Stripe collects the email at payment
 // and the webhook creates the customer from it.
 export default function JerseyShop() {
+  const [childName, setChildName] = useState("");
   const [phone, setPhone] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -23,7 +24,7 @@ export default function JerseyShop() {
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone }),
+        body: JSON.stringify({ phone, child_name: childName }),
       });
       const json = await res.json();
       if (!res.ok || !json.client_secret) throw new Error(json.error ?? "Checkout failed");
@@ -53,6 +54,19 @@ export default function JerseyShop() {
         <div className="font-heading text-xs tracking-[0.3em] text-[#7E57C2]">OBSIDIAN JERSEY</div>
         <div className="font-heading text-2xl text-white">{formatCents(CAMP_JERSEY_CENTS)}</div>
       </div>
+
+      <label className="block">
+        <span className="block text-xs text-gray-500 mb-1">
+          Child&apos;s name<span className="text-[#7E57C2]">*</span>
+        </span>
+        <input
+          type="text"
+          value={childName}
+          onChange={(e) => setChildName(e.target.value)}
+          required
+          className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2]"
+        />
+      </label>
 
       <label className="block">
         <span className="block text-xs text-gray-500 mb-1">

@@ -866,7 +866,7 @@ async function handleJerseyCheckoutCompleted(session: Stripe.Checkout.Session) {
   const sb = supabaseAdmin();
   const email = session.customer_details?.email ?? session.customer_email;
   let customerId = session.metadata?.customer_id ?? null;
-  const participantId = session.metadata?.participant_id ?? null;
+  let participantId = session.metadata?.participant_id ?? null;
   const size = session.metadata?.jersey_size && session.metadata.jersey_size !== "none" ? session.metadata.jersey_size : null;
   const qty = parseInt(session.metadata?.jersey_qty ?? "1", 10) || 1;
   if (!size) throw new Error("Jersey checkout missing size");
@@ -879,8 +879,9 @@ async function handleJerseyCheckoutCompleted(session: Stripe.Checkout.Session) {
     .maybeSingle();
   if (existing) return;
 
-  // The minimal shop form collects only a mobile; Stripe collects the email at
-  // payment, so the customer is created here from session details + metadata.
+  // The minimal shop form collects only a child name + mobile; Stripe collects
+  // the email at payment, so the customer is created here from session details
+  // + metadata.
   const phone = session.metadata?.jersey_phone || null;
   if (!customerId && email) {
     const { data: c } = await sb.from("customers").select("id").eq("email", email.toLowerCase()).is("deleted_at", null).maybeSingle();
@@ -904,6 +905,41 @@ async function handleJerseyCheckoutCompleted(session: Stripe.Checkout.Session) {
   if (stripeCustomerId) customerUpdates.stripe_customer_id = stripeCustomerId;
   if (phone) customerUpdates.phone = phone;
   if (Object.keys(customerUpdates).length) await sb.from("customers").update(customerUpdates).eq("id", customerId);
+
+  // Link the jersey to the child it's for. The shop form sends the child's
+  // name; reuse the customer's existing participant if the name matches (same
+  // family buying after a camp booking), otherwise create one. Best-effort: a
+  // failure here must not lose the order itself.
+  const childName = session.metadata?.jersey_child_name?.trim();
+  if (!participantId && childName) {
+    try {
+      const [childFirst, ...childRest] = childName.split(/\s+/);
+      const childLast = childRest.join(" ");
+      const { data: kids } = await sb
+        .from("participants")
+        .select("id, first_name, last_name")
+        .eq("customer_id", customerId)
+        .is("deleted_at", null);
+      const match = (kids ?? []).find(
+        (k) =>
+          `${k.first_name} ${k.last_name}`.trim().toLowerCase() === childName.toLowerCase() ||
+          (!childLast && k.first_name.trim().toLowerCase() === childFirst.toLowerCase())
+      );
+      if (match) {
+        participantId = match.id;
+      } else {
+        const { data: created, error } = await sb
+          .from("participants")
+          .insert({ customer_id: customerId, first_name: childFirst, last_name: childLast })
+          .select("id")
+          .single();
+        if (error) throw error;
+        participantId = created.id;
+      }
+    } catch (err) {
+      console.warn("jersey participant link skipped:", err instanceof Error ? err.message : err);
+    }
+  }
 
   const paymentIntentId =
     typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id ?? null;
