@@ -57,7 +57,7 @@ export default function JerseyShop() {
 
       <label className="block">
         <span className="block text-xs text-gray-500 mb-1">
-          Child&apos;s name<span className="text-[#7E57C2]">*</span>
+          Child Full Name<span className="text-[#7E57C2]">*</span>
         </span>
         <input
           type="text"
