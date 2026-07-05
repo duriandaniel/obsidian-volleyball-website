@@ -56,6 +56,8 @@ const nextConfig: NextConfig = {
       },
       ...toWestRyde.map((s) => ({ source: `/areas/${s}`, destination: "/west-ryde", permanent: true })),
       ...toKellyville.map((s) => ({ source: `/areas/${s}`, destination: "/kellyville", permanent: true })),
+      // Short URL told to parents at camp for on-the-spot jersey purchase.
+      { source: "/jersey", destination: "/shop/jersey", permanent: false },
     ];
   },
 };

@@ -5,9 +5,10 @@ import { formatCents, CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
 export type JerseyChoice = { add: boolean };
 export const EMPTY_JERSEY: JerseyChoice = { add: false };
 
-// Optional jersey add-on used at every checkout (camp / term / adult). Renders as
-// an "add an item" button (like adding another day), not a small checkbox. Size
-// is NOT chosen here — players try it on and pick their size when they collect it.
+// Jersey add-on used at every checkout (camp / term / adult). Renders as an
+// "add an item" button (like adding another day), not a small checkbox. Camps
+// pre-add it (opt-out); term and adult start with it off (opt-in). Size is NOT
+// chosen here — players try it on and pick their size when they collect it.
 export default function JerseyAddOn({
   value,
   onChange,
@@ -25,9 +26,13 @@ export default function JerseyAddOn({
       }`}
     >
       <div>
-        <div className="font-heading text-base tracking-wide text-white">Add Obsidian jersey</div>
+        <div className="font-heading text-base tracking-wide text-white">
+          {value.add ? "Obsidian jersey" : "Add Obsidian jersey"}
+        </div>
         <div className="text-xs text-gray-400 mt-1 leading-relaxed">
-          Not needed if you already have one. Choose your size when you collect it.
+          {value.add
+            ? "Choose your size when you collect it. Already have one? Tap to remove."
+            : "Not needed if you already have one. Choose your size when you collect it."}
         </div>
       </div>
       <div className="flex flex-col items-end gap-1 flex-shrink-0">
@@ -35,7 +40,7 @@ export default function JerseyAddOn({
         <span
           className={`text-[11px] font-heading tracking-[0.15em] ${value.add ? "text-[#7E57C2]" : "text-gray-500"}`}
         >
-          {value.add ? "ADDED ✓" : "ADD"}
+          {value.add ? "ADDED ✓ · REMOVE" : "ADD"}
         </span>
       </div>
     </button>

@@ -1,16 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { supabaseAdmin } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
 import { CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
 
+// Minimal on-the-spot purchase: one jersey, child's name + mobile. Stripe's
+// payment form collects the buyer's email; the webhook creates the customer
+// from it, attaches the mobile, and links the jersey to a participant row for
+// the child so fulfilment knows who it's for.
 const Body = z.object({
-  quantity: z.number().int().min(1).max(10).default(1),
-  buyer: z.object({
-    name: z.string().min(1).max(120),
-    email: z.string().email(),
-    phone: z.string().max(40).optional().nullable(),
-  }),
+  phone: z.string().min(5).max(40),
+  child_name: z.string().min(1).max(120),
 });
 
 export async function POST(req: NextRequest) {
@@ -20,29 +19,6 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     const msg = err instanceof z.ZodError ? err.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ") : "Invalid";
     return NextResponse.json({ error: `Invalid request: ${msg}` }, { status: 400 });
-  }
-
-  const sb = supabaseAdmin();
-  const qty = body.quantity ?? 1;
-  const totalCents = CAMP_JERSEY_CENTS * qty; // authoritative price, server-side
-
-  // Upsert the buyer as a customer.
-  const email = body.buyer.email.toLowerCase();
-  const parts = body.buyer.name.trim().split(/\s+/);
-  const firstName = parts[0];
-  const lastName = parts.slice(1).join(" ");
-  let customerId: string;
-  {
-    const { data: existing } = await sb.from("customers").select("id").eq("email", email).is("deleted_at", null).maybeSingle();
-    const fields = { first_name: firstName, last_name: lastName, phone: body.buyer.phone || null };
-    if (existing) {
-      customerId = existing.id;
-      await sb.from("customers").update(fields).eq("id", customerId);
-    } else {
-      const { data: created, error: cErr } = await sb.from("customers").insert({ email, ...fields }).select("id").single();
-      if (cErr) return NextResponse.json({ error: "Could not save your details" }, { status: 500 });
-      customerId = created.id;
-    }
   }
 
   const reqUrl = new URL(req.url);
@@ -64,17 +40,17 @@ export async function POST(req: NextRequest) {
           product_data: { name: "Obsidian training jersey" },
           unit_amount: CAMP_JERSEY_CENTS,
         },
-        quantity: qty,
+        quantity: 1,
       },
     ],
-    customer_email: email,
     return_url: `${appUrl}/shop/jersey/success?session_id={CHECKOUT_SESSION_ID}${bypassQS}`,
     metadata: {
       booking_type: "jersey",
-      customer_id: customerId,
       jersey_size: "TBC",
-      jersey_qty: String(qty),
-      jersey_cents: String(totalCents),
+      jersey_qty: "1",
+      jersey_cents: String(CAMP_JERSEY_CENTS),
+      jersey_phone: body.phone,
+      jersey_child_name: body.child_name.trim(),
     },
     expires_at: Math.floor(Date.now() / 1000) + 30 * 60,
   });
