@@ -5,7 +5,7 @@ import { sendEmail } from "@/lib/email/send";
 import { sendMetaPurchase } from "@/lib/meta/capi";
 import { formatCents, priceCampFullDays, CAMP_HALF_DAY_CENTS } from "@/lib/booking/pricing";
 import { readChunked } from "@/lib/booking/metadata";
-import { addToWaitlist, isOnWaitlist, markWaitlistConverted } from "@/lib/booking/waitlist";
+import { addToWaitlist, escHtml, isOnWaitlist, markWaitlistConverted } from "@/lib/booking/waitlist";
 import type Stripe from "stripe";
 
 // Stripe webhook needs the raw body to verify the signature.
@@ -217,7 +217,7 @@ async function handleCapacityRaceLoss(
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
           <h2 style="color: #7E57C2; margin-bottom: 8px;">We're really sorry.</h2>
-          <p>Hi${firstName ? " " + firstName : ""},</p>
+          <p>Hi${firstName ? " " + escHtml(firstName) : ""},</p>
           <p>The last spot was snapped up moments before your payment went through, so we couldn't complete your booking. The good news: ${moneyHtml}.</p>
           <p>${waitlistLine} Spots are first-come, first-served, so if you get that email, book quickly.</p>
           <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
@@ -389,6 +389,10 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     .maybeSingle();
   if (existingOrder) {
     if (existingOrder.status === "paid") await ensureCaptured(paymentIntentId);
+    // Cancelled = a lost capacity race. releasePayment may have thrown after
+    // the order was voided (Stripe blip); it's idempotent, so re-run it on
+    // every redelivery to guarantee the money is actually released.
+    else if (existingOrder.status === "cancelled" && paymentIntentId) await releasePayment(paymentIntentId);
     return;
   }
 
@@ -1068,6 +1072,9 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
     .maybeSingle();
   if (existingEnrolment) {
     if (existingEnrolment.status === "active") await ensureCaptured(paymentIntentId);
+    // Cancelled = a lost capacity race; re-run the idempotent release so a
+    // throw between void-enrolment and release can't strand the auth.
+    else if (existingEnrolment.status === "cancelled" && paymentIntentId) await releasePayment(paymentIntentId);
     return;
   }
 
@@ -1117,8 +1124,9 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
   if (bErr) {
     if (isCapacityError(bErr)) {
       // Lost the last-spot race: void the enrolment, release the (uncaptured)
-      // payment, apologise, keep them on the waitlist. Waitlist entry goes on
-      // the next upcoming class only — one row per family, not one per week.
+      // payment, apologise, keep them on the waitlist. One waitlist row per
+      // remaining class, so they stay notifiable for the whole term (rows on
+      // passed sessions are ignored by the notify query).
       await sb
         .from("enrolments")
         .update({ status: "cancelled", cancelled_at: new Date().toISOString() })
@@ -1130,7 +1138,6 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
         phone: session.customer_details?.phone ?? null,
         kidName: await participantName(sb, participantId),
         sessionIds,
-        waitlistSessionIds: sessionIds.slice(0, 1),
         bookingType: "term",
         errMessage: bErr.message,
       });

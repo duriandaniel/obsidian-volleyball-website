@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/email/send";
-import { addToWaitlist, describeSession, waitlistFmtDay, waitlistFmtTime } from "@/lib/booking/waitlist";
+import { addToWaitlist, describeSession, escHtml, waitlistFmtDay, waitlistFmtTime } from "@/lib/booking/waitlist";
 
 // Join the waitlist for a sold-out session. Generic across session types
 // (camp days, term classes, trials, adult scrims) — the UI decides where the
@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
   // Session must exist, be scheduled, and still be in the future.
   const { data: session } = await sb
     .from("sessions")
-    .select("id, starts_at, status")
+    .select("id, starts_at, status, capacity_override, program:programs(id, type, default_capacity), bookings(id, status)")
     .eq("id", body.session_id)
     .is("deleted_at", null)
     .maybeSingle();
@@ -40,10 +40,39 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "This session has already started" }, { status: 400 });
   }
 
+  // Only sold-out sessions accept waitlist joins — same capacity coalesce as
+  // the DB trigger. Blocks abuse (flooding the table / a victim's inbox via
+  // this public endpoint) on everything except genuinely full sessions, and
+  // catches stale UI where a spot freed up since the page rendered.
+  const program = Array.isArray(session.program) ? session.program[0] : session.program;
+  const capacity = session.capacity_override ?? program?.default_capacity ?? null;
+  const confirmed = (session.bookings ?? []).filter((b: { status: string }) => b.status === "confirmed").length;
+  if (capacity == null || confirmed < capacity) {
+    return NextResponse.json(
+      { error: "Good news — this session has spots available. Book it instead of joining the waitlist." },
+      { status: 409 }
+    );
+  }
+
+  // A term waitlist means "any spot for the rest of the term", not just the
+  // next class — one row per remaining session, so the family stays
+  // notifiable after this week's class has passed.
+  let sessionIds = [body.session_id];
+  if (program?.type === "term") {
+    const { data: future } = await sb
+      .from("sessions")
+      .select("id")
+      .eq("program_id", program.id)
+      .eq("status", "scheduled")
+      .is("deleted_at", null)
+      .gt("starts_at", new Date().toISOString());
+    if (future?.length) sessionIds = future.map((s) => s.id);
+  }
+
   let added: boolean;
   try {
     added = await addToWaitlist(sb, {
-      sessionIds: [body.session_id],
+      sessionIds,
       customerName: body.customer_name.trim(),
       kidName: body.kid_name?.trim() || null,
       email: body.email,
@@ -82,8 +111,8 @@ export async function POST(req: NextRequest) {
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
           <h2 style="color: #7E57C2; margin-bottom: 8px;">You're on the waitlist.</h2>
-          <p>Hi ${firstName},</p>
-          <p>You've joined the waitlist${forPlayer} for this sold-out session:</p>
+          <p>Hi ${escHtml(firstName)},</p>
+          <p>You've joined the waitlist${escHtml(forPlayer)} for this sold-out session:</p>
           <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">
             <strong>${title}</strong><br>${when}${info ? `<br>${info.venueName}` : ""}
           </p>

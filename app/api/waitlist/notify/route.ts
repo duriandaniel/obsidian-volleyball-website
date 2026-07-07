@@ -1,3 +1,4 @@
+import { timingSafeEqual } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
@@ -31,7 +32,9 @@ export async function POST(req: NextRequest) {
   if (!secret) {
     return NextResponse.json({ error: "Waitlist notify not configured" }, { status: 503 });
   }
-  if (req.headers.get("authorization") !== `Bearer ${secret}`) {
+  const given = Buffer.from(req.headers.get("authorization") ?? "");
+  const expected = Buffer.from(`Bearer ${secret}`);
+  if (given.length !== expected.length || !timingSafeEqual(given, expected)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

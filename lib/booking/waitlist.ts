@@ -15,6 +15,13 @@ export const WAITLIST_NOTIFY_LIMIT = 5;
 
 const APP_URL = () => process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com";
 
+// Escape user-supplied text before interpolating into email HTML. The join
+// endpoint is public and recipient addresses are unverified, so names are
+// attacker-controlled — unescaped they're a phishing vector (arbitrary HTML
+// delivered from our legitimate sending domain).
+export const escHtml = (s: string) =>
+  s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
+
 const fmtDay = (iso: string) =>
   new Date(iso).toLocaleDateString("en-AU", {
     weekday: "long",
@@ -99,9 +106,39 @@ export async function addToWaitlist(
       email,
       phone: args.phone || null,
     });
-    // 23505 = unique_violation: already actively waitlisted for this session.
-    if (!error) added = true;
-    else if (error.code !== "23505") throw error;
+    if (!error) {
+      added = true;
+      continue;
+    }
+    // 23505 = unique_violation: a non-deleted row already exists. The unique
+    // index only excludes deleted_at, so the blocker may be a CONVERTED row
+    // (booked earlier, later cancelled/refunded, now genuinely rejoining) —
+    // that row is invisible to every notify query, so revive it at the back
+    // of the queue instead of silently dropping the rejoin.
+    if (error.code !== "23505") throw error;
+    const { data: existing } = await sb
+      .from("waitlist")
+      .select("id, converted_booking_id")
+      .eq("session_id", sessionId)
+      .eq("email", email)
+      .is("deleted_at", null)
+      .maybeSingle();
+    if (existing?.converted_booking_id) {
+      const { error: uErr } = await sb
+        .from("waitlist")
+        .update({
+          converted_booking_id: null,
+          notified_at: null,
+          created_at: new Date().toISOString(), // back of the queue
+          customer_name: args.customerName,
+          kid_name: args.kidName || null,
+          phone: args.phone || null,
+        })
+        .eq("id", existing.id);
+      if (uErr) throw uErr;
+      added = true;
+    }
+    // else: already actively waitlisted — idempotent no-op.
   }
   return added;
 }
@@ -171,8 +208,8 @@ export async function notifyWaitlistOpenings(
           html: `
             <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
               <h2 style="color: #7E57C2; margin-bottom: 8px;">A spot just opened up.</h2>
-              <p>Hi ${firstName},</p>
-              <p>Good news — a spot${forKid} has just opened up in a session you're waitlisted for:</p>
+              <p>Hi ${escHtml(firstName)},</p>
+              <p>Good news — a spot${escHtml(forKid)} has just opened up in a session you're waitlisted for:</p>
               <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">
                 <strong>${s.programTitle}</strong><br>${when}<br>${s.venueName}
               </p>
