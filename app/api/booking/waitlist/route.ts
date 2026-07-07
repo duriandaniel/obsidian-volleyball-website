@@ -71,12 +71,43 @@ export async function POST(req: NextRequest) {
     after: { customer_name: body.customer_name, kid_name: body.kid_name ?? null, email: body.email.toLowerCase() },
   });
 
-  // Tell Dan someone joined. Best-effort — the row is already saved, and
-  // sendEmail logs the attempt (success or failure) to email_log.
+  // Two emails, both best-effort — the row is already saved, and sendEmail
+  // logs each attempt (success or failure) to email_log.
+  //  1. Confirmation to the person who joined (explicitly NOT a booking)
+  //  2. Heads-up to Dan (admin-only wording lives here, never in #1)
+  const info = await describeSession(sb, body.session_id);
+  const when = info ? `${waitlistFmtDay(info.starts_at)} · ${waitlistFmtTime(info.starts_at)}` : body.session_id;
+  const title = info?.programTitle ?? "Unknown program";
+  const firstName = body.customer_name.trim().split(" ")[0];
+  const forPlayer = body.kid_name ? ` for ${body.kid_name.trim().split(" ")[0]}` : "";
+
   try {
-    const info = await describeSession(sb, body.session_id);
-    const when = info ? `${waitlistFmtDay(info.starts_at)} · ${waitlistFmtTime(info.starts_at)}` : body.session_id;
-    const title = info?.programTitle ?? "Unknown program";
+    await sendEmail({
+      to: body.email.toLowerCase(),
+      subject: `You're on the waitlist: ${title}`,
+      template: "waitlist_joined_user",
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
+          <h2 style="color: #7E57C2; margin-bottom: 8px;">You're on the waitlist.</h2>
+          <p>Hi ${firstName},</p>
+          <p>You've joined the waitlist${forPlayer} for this sold-out session:</p>
+          <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">
+            <strong>${title}</strong><br>${when}${info ? `<br>${info.venueName}` : ""}
+          </p>
+          <p><strong>This is not a booking</strong> — no spot is reserved and no payment has been taken.</p>
+          <p>If a spot opens up, we'll email you with a booking link. We email everyone on the
+          waitlist at the same time and spots are first-come, first-served — so book quickly
+          when that email arrives.</p>
+          <p>See you on court!<br>Obsidian Volleyball Academy</p>
+        </div>
+      `,
+      text: `Hi ${firstName},\n\nYou've joined the waitlist${forPlayer} for this sold-out session:\n\n${title}\n${when}${info ? `\n${info.venueName}` : ""}\n\nThis is not a booking — no spot is reserved and no payment has been taken.\n\nIf a spot opens up, we'll email you with a booking link. We email everyone on the waitlist at the same time and spots are first-come, first-served — so book quickly when that email arrives.\n\nSee you on court!\nObsidian Volleyball Academy`,
+    });
+  } catch (err) {
+    console.error("waitlist user confirmation failed", err);
+  }
+
+  try {
     await sendEmail({
       to: OWNER_EMAIL,
       subject: `Waitlist: ${body.customer_name.trim()}${body.kid_name ? ` (${body.kid_name.trim()})` : ""} — ${title}`,

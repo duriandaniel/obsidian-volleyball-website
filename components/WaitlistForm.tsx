@@ -54,8 +54,9 @@ export default function WaitlistForm({
   if (done) {
     return (
       <div className="text-left text-xs text-[#7E57C2] bg-[#7E57C2]/10 border border-[#7E57C2]/30 rounded p-3 leading-relaxed max-w-xs">
-        <span className="font-semibold">You&apos;re on the list!</span> If a spot opens we&apos;ll email the
-        waitlist — spots are first-come, first-served, so book quickly.
+        <span className="font-semibold">You&apos;re on the waitlist.</span> This is <span className="font-semibold">not a booking</span> and
+        no payment has been taken. If a spot opens we&apos;ll email you — spots are first-come,
+        first-served, so book quickly when you get the email.
       </div>
     );
   }
@@ -83,7 +84,7 @@ export default function WaitlistForm({
       <input
         type="text"
         required
-        placeholder="Parent name"
+        placeholder={kidField ? "Parent name" : "Your name"}
         value={form.customer_name}
         onChange={(e) => setForm({ ...form, customer_name: e.target.value })}
         className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#7E57C2] transition-colors"
