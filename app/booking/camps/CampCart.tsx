@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { priceCampCart, formatCents, formatSpotsLeft, CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
 import JerseyAddOn, { type JerseyChoice } from "@/components/JerseyAddOn";
+import WaitlistForm from "@/components/WaitlistForm";
 import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
 import type { CampSessionView } from "./page";
 
@@ -206,7 +207,7 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                 isSelected
                   ? "border-[#7E57C2] bg-[#7E57C2]/5"
                   : soldOut
-                  ? "border-white/5 opacity-50"
+                  ? "border-white/5"
                   : "border-white/10 hover:border-white/30"
               } ${disabled ? "opacity-70" : ""}`}
             >
@@ -221,18 +222,22 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                     {formatSpotsLeft(remaining)}
                   </div>
                 </div>
-                <button
-                  type="button"
-                  disabled={soldOut || disabled}
-                  onClick={() => toggle(s.id)}
-                  className={`px-4 py-2 rounded font-heading text-xs tracking-[0.2em] transition-colors ${
-                    isSelected
-                      ? "bg-[#7E57C2] text-white"
-                      : "bg-white/5 hover:bg-white/10 text-white"
-                  } ${soldOut || disabled ? "cursor-not-allowed" : ""}`}
-                >
-                  {isSelected ? "REMOVE" : "ADD"}
-                </button>
+                {soldOut ? (
+                  <WaitlistForm sessionId={s.id} align="right" showSoldOutLabel={false} />
+                ) : (
+                  <button
+                    type="button"
+                    disabled={disabled}
+                    onClick={() => toggle(s.id)}
+                    className={`px-4 py-2 rounded font-heading text-xs tracking-[0.2em] transition-colors ${
+                      isSelected
+                        ? "bg-[#7E57C2] text-white"
+                        : "bg-white/5 hover:bg-white/10 text-white"
+                    } ${disabled ? "cursor-not-allowed" : ""}`}
+                  >
+                    {isSelected ? "REMOVE" : "ADD"}
+                  </button>
+                )}
               </div>
               {isSelected && !disabled && (
                 <div className="mt-3 pt-3 border-t border-white/10 flex gap-3 text-xs">

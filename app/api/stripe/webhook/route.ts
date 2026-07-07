@@ -3,12 +3,15 @@ import { stripe } from "@/lib/stripe/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/email/send";
 import { sendMetaPurchase } from "@/lib/meta/capi";
-import { formatCents } from "@/lib/booking/pricing";
+import { formatCents, priceCampFullDays, CAMP_HALF_DAY_CENTS } from "@/lib/booking/pricing";
 import { readChunked } from "@/lib/booking/metadata";
+import { addToWaitlist, escHtml, isOnWaitlist, markWaitlistConverted } from "@/lib/booking/waitlist";
 import type Stripe from "stripe";
 
 // Stripe webhook needs the raw body to verify the signature.
 export const dynamic = "force-dynamic";
+// Headroom for the slower paths (Stripe capture/cancel round-trips + SMTP).
+export const maxDuration = 60;
 
 // Per-venue Google Maps links. Venue name comes from the DB, so this stays
 // correct across venues — only venues we have a map for get a link.
@@ -66,6 +69,168 @@ async function recordJerseyOrder(
     paid_at: new Date().toISOString(),
   });
   if (error) console.warn("jersey_orders insert skipped:", error.message);
+}
+
+// ============================================================
+// Manual-capture payment helpers
+// Booking checkouts authorize the card (capture_method: manual); money only
+// moves once the booking rows insert cleanly past the DB capacity trigger.
+// ============================================================
+
+// True if a bookings insert failed on the capacity trigger — i.e. the last
+// spot was taken by a concurrent booking between checkout start and webhook
+// delivery (waitlist notifications go to several parents at once, so this
+// race is expected, not exceptional).
+function isCapacityError(err: { code?: string; message?: string } | null): boolean {
+  return !!err && (err.code === "23514" || /at capacity/i.test(err.message ?? ""));
+}
+
+// Capture an authorized payment. Idempotent: no-op if already captured (or if
+// the checkout predates manual capture and auto-captured, or the auth was
+// cancelled). Called on every success AND idempotency-early-return path, so a
+// webhook retry after a failed capture still captures.
+async function ensureCaptured(paymentIntentId: string | null) {
+  if (!paymentIntentId) return;
+  const pi = await stripe().paymentIntents.retrieve(paymentIntentId);
+  if (pi.status === "requires_capture") {
+    await stripe().paymentIntents.capture(paymentIntentId);
+  }
+}
+
+// True if the auth was already released (event re-delivered after a lost
+// capacity race). Booking types without their own idempotency row (dropin,
+// casual, trial) must check this before inserting — capacity may have freed up
+// since, and inserting would confirm a booking nobody paid for.
+async function paymentAlreadyReleased(paymentIntentId: string | null): Promise<boolean> {
+  if (!paymentIntentId) return false;
+  const pi = await stripe().paymentIntents.retrieve(paymentIntentId);
+  return pi.status === "canceled";
+}
+
+// Race lost: release the money. Cancel the auth if uncaptured (the card is
+// never charged); fall back to a full refund for legacy auto-capture checkout
+// sessions still in flight at deploy time.
+async function releasePayment(paymentIntentId: string): Promise<"released" | "refunded"> {
+  const pi = await stripe().paymentIntents.retrieve(paymentIntentId);
+  if (pi.status === "requires_capture") {
+    await stripe().paymentIntents.cancel(paymentIntentId, { cancellation_reason: "abandoned" });
+    return "released";
+  }
+  if (pi.status === "succeeded") {
+    await stripe().refunds.create({ payment_intent: paymentIntentId });
+    return "refunded";
+  }
+  return "released"; // already canceled / nothing captured — nothing to release
+}
+
+// Kid's name for the waitlist row (nice for the dashboard); best-effort.
+async function participantName(
+  sb: ReturnType<typeof supabaseAdmin>,
+  participantId: string | null | undefined
+): Promise<string | null> {
+  if (!participantId) return null;
+  const { data } = await sb
+    .from("participants")
+    .select("first_name, last_name")
+    .eq("id", participantId)
+    .maybeSingle();
+  const name = data ? `${data.first_name} ${data.last_name}`.trim() : null;
+  return name && !name.includes("(pending)") ? name : null;
+}
+
+// The payment lost the capacity race: release the money, keep (or put) them on
+// the waitlist, log it, and send the apology email. Never throws for email
+// failures — the money release is the part that must not be lost, and it
+// happens first (a throw there 500s the webhook so Stripe retries the release).
+async function handleCapacityRaceLoss(
+  sb: ReturnType<typeof supabaseAdmin>,
+  opts: {
+    paymentIntentId: string | null;
+    email: string | null;
+    name: string;
+    phone: string | null;
+    kidName?: string | null;
+    sessionIds: string[]; // sessions in the failed booking (for the waitlist check)
+    waitlistSessionIds?: string[]; // sessions to add them to if not already listed (defaults to sessionIds)
+    bookingType: string;
+    errMessage: string;
+  }
+) {
+  let release: "released" | "refunded" | "none" = "none";
+  if (opts.paymentIntentId) {
+    release = await releasePayment(opts.paymentIntentId); // throws → Stripe retries
+  }
+
+  // Keep them first in line: if they weren't already waitlisted, add them now.
+  let wasOnWaitlist = false;
+  if (opts.email) {
+    try {
+      wasOnWaitlist = await isOnWaitlist(sb, opts.email, opts.sessionIds);
+      if (!wasOnWaitlist) {
+        await addToWaitlist(sb, {
+          sessionIds: opts.waitlistSessionIds ?? opts.sessionIds,
+          customerName: opts.name || opts.email,
+          kidName: opts.kidName ?? null,
+          email: opts.email,
+          phone: opts.phone,
+        });
+      }
+    } catch (err) {
+      console.error("capacity race: waitlist upsert failed", err);
+    }
+  }
+
+  await sb.from("audit_log").insert({
+    actor_role: "system",
+    action: "booking.capacity_race_lost",
+    entity_type: "payment_intent",
+    entity_id: null,
+    after: {
+      payment_intent_id: opts.paymentIntentId,
+      booking_type: opts.bookingType,
+      session_ids: opts.sessionIds,
+      email: opts.email,
+      payment: release,
+      was_on_waitlist: wasOnWaitlist,
+      error: opts.errMessage,
+    },
+  });
+
+  if (!opts.email) return;
+  const firstName = (opts.name || "").split(" ")[0];
+  const moneyHtml =
+    release === "refunded"
+      ? "you've been <strong>refunded in full</strong> — the money will be back on your card within a few business days"
+      : "your card was <strong>not charged</strong> — the pending authorisation will drop off your statement within a day or two";
+  const moneyText =
+    release === "refunded"
+      ? "you've been refunded in full — the money will be back on your card within a few business days"
+      : "your card was NOT charged — the pending authorisation will drop off your statement within a day or two";
+  const waitlistLine = wasOnWaitlist
+    ? "You're still at the top of the waitlist, so you'll be first to hear if another spot opens."
+    : "We've put you on the waitlist, so you'll be first to hear if another spot opens.";
+  try {
+    await sendEmail({
+      to: opts.email,
+      subject: "That last spot was snapped up — you haven't been charged",
+      template: "booking_capacity_apology",
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
+          <h2 style="color: #7E57C2; margin-bottom: 8px;">We're really sorry.</h2>
+          <p>Hi${firstName ? " " + escHtml(firstName) : ""},</p>
+          <p>The last spot was snapped up moments before your payment went through, so we couldn't complete your booking. The good news: ${moneyHtml}.</p>
+          <p>${waitlistLine} Spots are first-come, first-served, so if you get that email, book quickly.</p>
+          <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
+            Questions? Just reply to this email and we'll sort it out.
+          </p>
+          <p>Obsidian Volleyball Academy</p>
+        </div>
+      `,
+      text: `We're really sorry.\n\nThe last spot was snapped up moments before your payment went through, so we couldn't complete your booking. The good news: ${moneyText}.\n\n${waitlistLine} Spots are first-come, first-served, so if you get that email, book quickly.\n\nQuestions? Just reply to this email.\n\nObsidian Volleyball Academy`,
+    });
+  } catch (err) {
+    console.error("capacity race: apology email failed", err);
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -209,13 +374,27 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     }
   }
 
-  // Idempotency: if we've already processed this Stripe session, do nothing.
+  const paymentIntentId =
+    typeof session.payment_intent === "string"
+      ? session.payment_intent
+      : session.payment_intent?.id ?? null;
+
+  // Idempotency: if we've already processed this Stripe session, just make
+  // sure the authorized payment was captured (a retry may land here after the
+  // bookings inserted but before capture completed).
   const { data: existingOrder } = await sb
     .from("camp_orders")
-    .select("id")
+    .select("id, status")
     .eq("stripe_checkout_session_id", session.id)
     .maybeSingle();
-  if (existingOrder) return;
+  if (existingOrder) {
+    if (existingOrder.status === "paid") await ensureCaptured(paymentIntentId);
+    // Cancelled = a lost capacity race. releasePayment may have thrown after
+    // the order was voided (Stripe blip); it's idempotent, so re-run it on
+    // every redelivery to guarantee the money is actually released.
+    else if (existingOrder.status === "cancelled" && paymentIntentId) await releasePayment(paymentIntentId);
+    return;
+  }
 
   // Create camp_order
   const total = session.amount_total ?? 0; // includes jersey add-on, reflects any promo discount
@@ -226,10 +405,6 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       : null;
   // Camp-only portion (exclude the jersey) for the per-booking amount.
   const campPortion = Math.max(0, total - jerseyCents);
-  const paymentIntentId =
-    typeof session.payment_intent === "string"
-      ? session.payment_intent
-      : session.payment_intent?.id ?? null;
 
   const { data: order, error: oErr } = await sb
     .from("camp_orders")
@@ -257,24 +432,67 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     paymentIntentId,
   });
 
-  // Create one booking per session
-  const bookingsToInsert = items.map((item) => ({
-    session_id: item.session_id,
-    participant_id: participantId,
-    customer_id: customerId,
-    source: "camp" as const,
-    camp_order_id: order.id,
-    status: "confirmed" as const,
-    paid_amount_cents: items.length ? Math.floor(campPortion / items.length) : campPortion,
-    stripe_payment_intent_id: paymentIntentId,
-    paid_at: new Date().toISOString(),
-  }));
+  // Create one booking per session. paid_amount_cents is allocated per day by
+  // what each day actually costs — half days at the flat half-day rate, full
+  // days sharing the ladder price — scaled so the rows sum exactly to the camp
+  // portion paid (promo codes shrink it proportionally). The old flat average
+  // blended half and full days together, which made per-day revenue wrong and
+  // erased the half-day signal from the amounts.
+  const fullCount = items.filter((i) => !i.is_half_day).length;
+  const fullDayEach = fullCount ? priceCampFullDays(fullCount) / fullCount : 0;
+  const weights = items.map((i) => (i.is_half_day ? CAMP_HALF_DAY_CENTS : fullDayEach));
+  const weightSum = weights.reduce((a, b) => a + b, 0);
+  let allocated = 0;
+  const bookingsToInsert = items.map((item, i) => {
+    const cents =
+      i === items.length - 1
+        ? campPortion - allocated // last row absorbs rounding so the sum is exact
+        : Math.floor(weightSum ? (campPortion * weights[i]) / weightSum : campPortion / items.length);
+    allocated += cents;
+    return {
+      session_id: item.session_id,
+      participant_id: participantId,
+      customer_id: customerId,
+      source: "camp" as const,
+      camp_order_id: order.id,
+      status: "confirmed" as const,
+      is_half_day: item.is_half_day,
+      paid_amount_cents: cents,
+      stripe_payment_intent_id: paymentIntentId,
+      paid_at: new Date().toISOString(),
+    };
+  });
 
-  const { error: bErr } = await sb.from("bookings").insert(bookingsToInsert);
+  const { data: insertedBookings, error: bErr } = await sb
+    .from("bookings")
+    .insert(bookingsToInsert)
+    .select("id, session_id");
   if (bErr) {
-    // Capacity violation will throw here — log and rethrow
+    if (isCapacityError(bErr)) {
+      // Lost the last-spot race. The card was only authorized, not captured:
+      // release it, void the order, apologise, keep them on the waitlist.
+      await sb
+        .from("camp_orders")
+        .update({ status: "cancelled", cancelled_at: new Date().toISOString() })
+        .eq("id", order.id);
+      await handleCapacityRaceLoss(sb, {
+        paymentIntentId,
+        email,
+        name,
+        phone: session.customer_details?.phone ?? null,
+        kidName: await participantName(sb, participantId),
+        sessionIds: items.map((i) => i.session_id),
+        bookingType: "camp",
+        errMessage: bErr.message,
+      });
+      return;
+    }
     throw bErr;
   }
+
+  // Bookings are in — NOW take the money.
+  await ensureCaptured(paymentIntentId);
+  await markWaitlistConverted(sb, email, insertedBookings ?? []);
 
   await sb.from("audit_log").insert({
     actor_role: "system",
@@ -353,14 +571,14 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
         ${whatsappHtml(WHATSAPP_PARENTS_URL, "parents")}
         <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
-          Questions or need to change your booking? Just reply to this email and we'll sort it out. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
+          Need to change a day? Reschedules with 7+ days notice, subject to availability — just reply to this email. Our camps sell out, so no change-of-mind refunds, but if we can fill your spot from the waitlist we'll refund you. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
         </p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
     text: `You're booked in.\n\nThanks for booking ${programTitle}.\n\nDays: ${(sessionRows ?? [])
       .map((s) => new Date(s.starts_at).toLocaleDateString("en-AU", { dateStyle: "full", timeZone: "Australia/Sydney" }))
-      .join(", ")}\n\nVenue: ${venueName}\nTime: 9:00 AM – 1:00 PM${jerseySize ? `\nJersey: Obsidian training jersey (choose your size on collection)` : ""}\nTotal paid: ${formatCents(total)}\n\nQuestions or changes? Just reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
+      .join(", ")}\n\nVenue: ${venueName}\nTime: 9:00 AM – 1:00 PM${jerseySize ? `\nJersey: Obsidian training jersey (choose your size on collection)` : ""}\nTotal paid: ${formatCents(total)}\n\nNeed to change a day? Reschedules with 7+ days notice, subject to availability — just reply to this email. No change-of-mind refunds, but if we can fill your spot from the waitlist we'll refund you. Full policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
   });
 }
 
@@ -381,15 +599,20 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
   const paymentIntentId =
     typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id ?? null;
 
-  // Idempotency: skip if we've already created bookings for this payment.
+  // Idempotency: if bookings already exist for this payment, just make sure
+  // the authorized payment was captured, then stop.
   if (paymentIntentId) {
     const { count } = await sb
       .from("bookings")
       .select("id", { count: "exact", head: true })
       .eq("stripe_payment_intent_id", paymentIntentId)
       .is("deleted_at", null);
-    if (count && count > 0) return;
+    if (count && count > 0) {
+      await ensureCaptured(paymentIntentId);
+      return;
+    }
   }
+  if (await paymentAlreadyReleased(paymentIntentId)) return; // re-delivered after a lost race
 
   const stripeCustomerId =
     typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
@@ -411,12 +634,30 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
     stripe_payment_intent_id: paymentIntentId,
     paid_at: paidAt,
   }));
-  const { error: bErr } = await sb.from("bookings").insert(bookingsToInsert);
+  const { data: insertedBookings, error: bErr } = await sb
+    .from("bookings")
+    .insert(bookingsToInsert)
+    .select("id, session_id");
   if (bErr) {
-    // A failed insert here means money was taken but the customer is enrolled
-    // nowhere. Record it loudly (audit_log + Sentry via console.error) so a
-    // stranded payment is caught immediately instead of weeks later, then
-    // rethrow so the webhook 500s and Stripe retries.
+    if (isCapacityError(bErr)) {
+      // Lost the last-spot race: release the (uncaptured) payment, apologise,
+      // keep them on the waitlist. No money moved.
+      await handleCapacityRaceLoss(sb, {
+        paymentIntentId,
+        email,
+        name: session.customer_details?.name ?? "",
+        phone: session.customer_details?.phone ?? null,
+        kidName: null, // adults play themselves
+        sessionIds,
+        bookingType: "dropin",
+        errMessage: bErr.message,
+      });
+      return;
+    }
+    // Any other failed insert means the payment is authorized but the customer
+    // is enrolled nowhere. Record it loudly (audit_log + Sentry via
+    // console.error) so it's caught immediately, then rethrow so the webhook
+    // 500s and Stripe retries.
     console.error("dropin booking insert failed — payment may be stranded", {
       paymentIntentId,
       sessionIds,
@@ -432,6 +673,10 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
     });
     throw bErr;
   }
+
+  // Bookings are in — NOW take the money.
+  await ensureCaptured(paymentIntentId);
+  if (email) await markWaitlistConverted(sb, email, insertedBookings ?? []);
 
   const total = session.amount_total ?? perSessionCents * sessionIds.length;
   // Level taxonomy (beginner / social_player / svl_player) has no structured column
@@ -528,15 +773,19 @@ async function handleTrialCheckoutCompleted(session: Stripe.Checkout.Session) {
   const paymentIntentId =
     typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id ?? null;
 
-  // Idempotency
+  // Idempotency: booking already exists → just make sure payment is captured.
   if (paymentIntentId) {
     const { count } = await sb
       .from("bookings")
       .select("id", { count: "exact", head: true })
       .eq("stripe_payment_intent_id", paymentIntentId)
       .is("deleted_at", null);
-    if (count && count > 0) return;
+    if (count && count > 0) {
+      await ensureCaptured(paymentIntentId);
+      return;
+    }
   }
+  if (await paymentAlreadyReleased(paymentIntentId)) return; // re-delivered after a lost race
 
   const stripeCustomerId =
     typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
@@ -545,17 +794,39 @@ async function handleTrialCheckoutCompleted(session: Stripe.Checkout.Session) {
   }
 
   const total = session.amount_total ?? 0;
-  const { error: bErr } = await sb.from("bookings").insert({
-    session_id: sessionId,
-    participant_id: participantId,
-    customer_id: customerId,
-    source: "trial" as const,
-    status: "confirmed" as const,
-    paid_amount_cents: total,
-    stripe_payment_intent_id: paymentIntentId,
-    paid_at: new Date().toISOString(),
-  });
-  if (bErr) throw bErr;
+  const { data: insertedBookings, error: bErr } = await sb
+    .from("bookings")
+    .insert({
+      session_id: sessionId,
+      participant_id: participantId,
+      customer_id: customerId,
+      source: "trial" as const,
+      status: "confirmed" as const,
+      paid_amount_cents: total,
+      stripe_payment_intent_id: paymentIntentId,
+      paid_at: new Date().toISOString(),
+    })
+    .select("id, session_id");
+  if (bErr) {
+    if (isCapacityError(bErr)) {
+      await handleCapacityRaceLoss(sb, {
+        paymentIntentId,
+        email,
+        name: session.customer_details?.name ?? "",
+        phone: session.customer_details?.phone ?? null,
+        kidName: await participantName(sb, participantId),
+        sessionIds: [sessionId],
+        bookingType: "trial",
+        errMessage: bErr.message,
+      });
+      return;
+    }
+    throw bErr;
+  }
+
+  // Booking is in — NOW take the money.
+  await ensureCaptured(paymentIntentId);
+  await markWaitlistConverted(sb, email, insertedBookings ?? []);
 
   await sb.from("audit_log").insert({
     actor_role: "system",
@@ -618,8 +889,12 @@ async function handleCasualCheckoutCompleted(session: Stripe.Checkout.Session) {
 
   if (paymentIntentId) {
     const { count } = await sb.from("bookings").select("id", { count: "exact", head: true }).eq("stripe_payment_intent_id", paymentIntentId).is("deleted_at", null);
-    if (count && count > 0) return;
+    if (count && count > 0) {
+      await ensureCaptured(paymentIntentId);
+      return;
+    }
   }
+  if (await paymentAlreadyReleased(paymentIntentId)) return; // re-delivered after a lost race
   const stripeCustomerId = typeof session.customer === "string" ? session.customer : session.customer?.id ?? null;
   if (stripeCustomerId) await sb.from("customers").update({ stripe_customer_id: stripeCustomerId }).eq("id", customerId);
 
@@ -631,8 +906,27 @@ async function handleCasualCheckoutCompleted(session: Stripe.Checkout.Session) {
     source: "term" as const, status: "confirmed" as const,
     paid_amount_cents: perCents, stripe_payment_intent_id: paymentIntentId, paid_at: paidAt,
   }));
-  const { error: bErr } = await sb.from("bookings").insert(rows);
-  if (bErr) throw bErr;
+  const { data: insertedBookings, error: bErr } = await sb.from("bookings").insert(rows).select("id, session_id");
+  if (bErr) {
+    if (isCapacityError(bErr)) {
+      await handleCapacityRaceLoss(sb, {
+        paymentIntentId,
+        email,
+        name: session.customer_details?.name ?? "",
+        phone: session.customer_details?.phone ?? null,
+        kidName: await participantName(sb, participantId),
+        sessionIds,
+        bookingType: "casual",
+        errMessage: bErr.message,
+      });
+      return;
+    }
+    throw bErr;
+  }
+
+  // Bookings are in — NOW take the money.
+  await ensureCaptured(paymentIntentId);
+  await markWaitlistConverted(sb, email, insertedBookings ?? []);
 
   const total = session.amount_total ?? perCents * sessionIds.length;
   await sb.from("audit_log").insert({ actor_role: "system", action: "casual.create", entity_type: "program", entity_id: programId, after: { classes: sessionIds.length, total_cents: total } });
@@ -689,13 +983,60 @@ async function handleRefund(charge: Stripe.Charge) {
     .update({ refund_status: "issued", refund_amount_cents: charge.amount_refunded })
     .eq("stripe_payment_intent_id", paymentIntentId);
 
+  // A FULL refund frees the seats: the capacity trigger only counts
+  // confirmed/pending bookings, so setting status='cancelled' is what actually
+  // reopens the spot on the booking pages. Partial refunds keep bookings
+  // intact — cancelling all rows on the payment would give away seats that are
+  // still paid for (e.g. one day of a multi-day camp refunded ad-hoc); handle
+  // those per-booking in the dashboard.
+  let freedSessionIds: string[] = [];
+  if (charge.refunded) {
+    const { data: cancellable } = await sb
+      .from("bookings")
+      .select("id, session_id")
+      .eq("stripe_payment_intent_id", paymentIntentId)
+      .in("status", ["confirmed", "pending"])
+      .is("deleted_at", null);
+    if (cancellable?.length) {
+      await sb
+        .from("bookings")
+        .update({
+          status: "cancelled",
+          cancelled_at: new Date().toISOString(),
+          cancelled_by: "system",
+          cancellation_reason: "Payment refunded in full (Stripe charge.refunded)",
+        })
+        .in(
+          "id",
+          cancellable.map((b) => b.id)
+        );
+      freedSessionIds = Array.from(new Set(cancellable.map((b) => b.session_id)));
+    }
+    // A fully-refunded term enrolment is over too.
+    await sb
+      .from("enrolments")
+      .update({ status: "cancelled", cancelled_at: new Date().toISOString() })
+      .eq("stripe_payment_intent_id", paymentIntentId)
+      .neq("status", "cancelled");
+  }
+
   await sb.from("audit_log").insert({
     actor_role: "system",
     action: "refund.processed",
     entity_type: "payment_intent",
     entity_id: null,
-    after: { payment_intent_id: paymentIntentId, refunded_cents: charge.amount_refunded },
+    after: {
+      payment_intent_id: paymentIntentId,
+      refunded_cents: charge.amount_refunded,
+      fully_refunded: charge.refunded,
+      bookings_cancelled: freedSessionIds.length > 0,
+      freed_session_ids: freedSessionIds,
+    },
   });
+
+  // Waitlist notification is deliberately NOT automatic here. Cancelling from
+  // the dashboard (with or without a refund) is where the admin is prompted
+  // "email the waitlist?"; the dashboard then calls POST /api/waitlist/notify.
 }
 
 async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
@@ -722,13 +1063,20 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
   const paymentIntentId =
     typeof session.payment_intent === "string" ? session.payment_intent : session.payment_intent?.id ?? null;
 
-  // Idempotency: skip if we've already processed this Stripe session
+  // Idempotency: if we've already processed this Stripe session, just make
+  // sure the authorized payment was captured, then stop.
   const { data: existingEnrolment } = await sb
     .from("enrolments")
-    .select("id")
+    .select("id, status")
     .eq("stripe_checkout_session_id", session.id)
     .maybeSingle();
-  if (existingEnrolment) return;
+  if (existingEnrolment) {
+    if (existingEnrolment.status === "active") await ensureCaptured(paymentIntentId);
+    // Cancelled = a lost capacity race; re-run the idempotent release so a
+    // throw between void-enrolment and release can't strand the auth.
+    else if (existingEnrolment.status === "cancelled" && paymentIntentId) await releasePayment(paymentIntentId);
+    return;
+  }
 
   // Attach Stripe customer id
   const stripeCustomerId =
@@ -769,8 +1117,38 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
     stripe_payment_intent_id: paymentIntentId,
     paid_at: new Date().toISOString(),
   }));
-  const { error: bErr } = await sb.from("bookings").insert(bookingsToInsert);
-  if (bErr) throw bErr;
+  const { data: insertedBookings, error: bErr } = await sb
+    .from("bookings")
+    .insert(bookingsToInsert)
+    .select("id, session_id");
+  if (bErr) {
+    if (isCapacityError(bErr)) {
+      // Lost the last-spot race: void the enrolment, release the (uncaptured)
+      // payment, apologise, keep them on the waitlist. One waitlist row per
+      // remaining class, so they stay notifiable for the whole term (rows on
+      // passed sessions are ignored by the notify query).
+      await sb
+        .from("enrolments")
+        .update({ status: "cancelled", cancelled_at: new Date().toISOString() })
+        .eq("id", enrolment.id);
+      await handleCapacityRaceLoss(sb, {
+        paymentIntentId,
+        email,
+        name: session.customer_details?.name ?? "",
+        phone: session.customer_details?.phone ?? null,
+        kidName: await participantName(sb, participantId),
+        sessionIds,
+        bookingType: "term",
+        errMessage: bErr.message,
+      });
+      return;
+    }
+    throw bErr;
+  }
+
+  // Bookings are in — NOW take the money.
+  await ensureCaptured(paymentIntentId);
+  await markWaitlistConverted(sb, email, insertedBookings ?? []);
 
   await sb.from("audit_log").insert({
     actor_role: "system",

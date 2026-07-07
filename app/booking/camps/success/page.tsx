@@ -26,7 +26,7 @@ export default async function CampSuccessPage({
         <div className="text-5xl mb-6">✓</div>
         <h1 className="font-heading text-4xl mb-4">You&apos;re in.</h1>
         <p className="text-gray-400 mb-8">
-          Payment received. A confirmation email is on its way to your inbox.
+          Payment approved. We&apos;re confirming your spot now — your confirmation email is on its way.
         </p>
 
         {sessionId && (

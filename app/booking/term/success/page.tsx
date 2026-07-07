@@ -28,7 +28,7 @@ export default async function TermSuccessPage({
         <p className="text-gray-400 mb-8">
           {isFreeTrial
             ? "Your free trial class is booked. A confirmation email with the details is on its way."
-            : "Payment received. A confirmation email with all your class dates is on its way."}
+            : "Payment approved. We're confirming your spot now — a confirmation email with all your class dates is on its way."}
         </p>
         {sp.session_id && <p className="text-xs text-gray-600 mb-8">Stripe ref: {sp.session_id}</p>}
         <div className="border border-white/10 rounded-lg p-6 text-left text-sm text-gray-400 mb-8">

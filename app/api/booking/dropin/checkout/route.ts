@@ -163,6 +163,10 @@ export async function POST(req: NextRequest) {
       mode: "payment",
       ui_mode: "embedded_page",
       payment_method_types: ["card"],
+      // Authorize now, capture in the webhook only after the booking rows insert
+      // cleanly. If the last spot is lost in a race, the auth is cancelled and
+      // the card is never charged (no refund wait, no lost Stripe fees).
+      payment_intent_data: { capture_method: "manual" },
       allow_promotion_codes: true, // adults can enter a coupon at checkout
       line_items: [
         {

@@ -108,7 +108,7 @@ const faqCategories = [
       },
       {
         q: "What is your refund and reschedule policy?",
-        a: "Adult social sessions are non-refundable and non-reschedulable. For junior sessions, refunds and reschedules are handled case by case — email us at obsidianvolleyball@gmail.com and we'll do our best to help.",
+        a: "Our camps and classes sell out, and kids on the waitlist miss out when booked spots go unused — so our policy is designed to be fair to everyone. Need to reschedule? With 7 or more days notice we'll move your booking to another day or class, subject to availability — just message us. We don't offer change-of-mind refunds, but if we can fill your spot from the waitlist, we'll refund you. If your child is sick or injured, message us — we'll always try to be helpful. And if we ever have to cancel a day, you get a full refund. Adult social sessions are non-refundable and non-reschedulable.",
       },
     ],
   },
