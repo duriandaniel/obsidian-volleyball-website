@@ -3,7 +3,7 @@ import { stripe } from "@/lib/stripe/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/email/send";
 import { sendMetaPurchase } from "@/lib/meta/capi";
-import { formatCents } from "@/lib/booking/pricing";
+import { formatCents, priceCampFullDays, CAMP_HALF_DAY_CENTS } from "@/lib/booking/pricing";
 import { readChunked } from "@/lib/booking/metadata";
 import type Stripe from "stripe";
 
@@ -257,18 +257,36 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     paymentIntentId,
   });
 
-  // Create one booking per session
-  const bookingsToInsert = items.map((item) => ({
-    session_id: item.session_id,
-    participant_id: participantId,
-    customer_id: customerId,
-    source: "camp" as const,
-    camp_order_id: order.id,
-    status: "confirmed" as const,
-    paid_amount_cents: items.length ? Math.floor(campPortion / items.length) : campPortion,
-    stripe_payment_intent_id: paymentIntentId,
-    paid_at: new Date().toISOString(),
-  }));
+  // Create one booking per session. paid_amount_cents is allocated per day by
+  // what each day actually costs — half days at the flat half-day rate, full
+  // days sharing the ladder price — scaled so the rows sum exactly to the camp
+  // portion paid (promo codes shrink it proportionally). The old flat average
+  // blended half and full days together, which made per-day revenue wrong and
+  // erased the half-day signal from the amounts.
+  const fullCount = items.filter((i) => !i.is_half_day).length;
+  const fullDayEach = fullCount ? priceCampFullDays(fullCount) / fullCount : 0;
+  const weights = items.map((i) => (i.is_half_day ? CAMP_HALF_DAY_CENTS : fullDayEach));
+  const weightSum = weights.reduce((a, b) => a + b, 0);
+  let allocated = 0;
+  const bookingsToInsert = items.map((item, i) => {
+    const cents =
+      i === items.length - 1
+        ? campPortion - allocated // last row absorbs rounding so the sum is exact
+        : Math.floor(weightSum ? (campPortion * weights[i]) / weightSum : campPortion / items.length);
+    allocated += cents;
+    return {
+      session_id: item.session_id,
+      participant_id: participantId,
+      customer_id: customerId,
+      source: "camp" as const,
+      camp_order_id: order.id,
+      status: "confirmed" as const,
+      is_half_day: item.is_half_day,
+      paid_amount_cents: cents,
+      stripe_payment_intent_id: paymentIntentId,
+      paid_at: new Date().toISOString(),
+    };
+  });
 
   const { error: bErr } = await sb.from("bookings").insert(bookingsToInsert);
   if (bErr) {
