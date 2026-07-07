@@ -89,14 +89,14 @@ export async function POST(req: NextRequest) {
           </p>
           <p>
             <strong>Parent:</strong> ${body.customer_name.trim()}<br>
-            ${body.kid_name ? `<strong>Kid:</strong> ${body.kid_name.trim()}<br>` : ""}
+            ${body.kid_name ? `<strong>Player:</strong> ${body.kid_name.trim()}<br>` : ""}
             <strong>Email:</strong> ${body.email.toLowerCase()}<br>
             <strong>Phone:</strong> ${body.phone.trim()}
           </p>
-          <p style="font-size: 13px; color: #666;">If a spot opens, the top 5 on the waitlist are emailed automatically.</p>
+          <p style="font-size: 13px; color: #666;">When you cancel a booking in the dashboard, you'll be asked whether to email the waitlist.</p>
         </div>
       `,
-      text: `New waitlist entry\n\n${title}\n${when}\n\nParent: ${body.customer_name.trim()}${body.kid_name ? `\nKid: ${body.kid_name.trim()}` : ""}\nEmail: ${body.email.toLowerCase()}\nPhone: ${body.phone.trim()}`,
+      text: `New waitlist entry\n\n${title}\n${when}\n\nParent: ${body.customer_name.trim()}${body.kid_name ? `\nPlayer: ${body.kid_name.trim()}` : ""}\nEmail: ${body.email.toLowerCase()}\nPhone: ${body.phone.trim()}`,
     });
   } catch (err) {
     console.error("waitlist admin notify failed", err);

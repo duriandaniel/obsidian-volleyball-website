@@ -5,18 +5,12 @@ import { sendEmail } from "@/lib/email/send";
 import { sendMetaPurchase } from "@/lib/meta/capi";
 import { formatCents, priceCampFullDays, CAMP_HALF_DAY_CENTS } from "@/lib/booking/pricing";
 import { readChunked } from "@/lib/booking/metadata";
-import {
-  addToWaitlist,
-  isOnWaitlist,
-  markWaitlistConverted,
-  notifyWaitlistOpenings,
-} from "@/lib/booking/waitlist";
+import { addToWaitlist, isOnWaitlist, markWaitlistConverted } from "@/lib/booking/waitlist";
 import type Stripe from "stripe";
 
 // Stripe webhook needs the raw body to verify the signature.
 export const dynamic = "force-dynamic";
-// A full refund can fan out waitlist emails (sessions × 5 recipients over
-// SMTP); don't let the default function timeout cut that short.
+// Headroom for the slower paths (Stripe capture/cancel round-trips + SMTP).
 export const maxDuration = 60;
 
 // Per-venue Google Maps links. Venue name comes from the DB, so this stays
@@ -1036,11 +1030,9 @@ async function handleRefund(charge: Stripe.Charge) {
     },
   });
 
-  // Freed spots → email the top 5 on the waitlist for each affected upcoming
-  // session (first-come first-served; helper stamps notified_at + audit_log).
-  if (freedSessionIds.length) {
-    await notifyWaitlistOpenings(sb, freedSessionIds, "refund");
-  }
+  // Waitlist notification is deliberately NOT automatic here. Cancelling from
+  // the dashboard (with or without a refund) is where the admin is prompted
+  // "email the waitlist?"; the dashboard then calls POST /api/waitlist/notify.
 }
 
 async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {

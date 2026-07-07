@@ -121,16 +121,25 @@ export async function isOnWaitlist(sb: Sb, email: string, sessionIds: string[]):
   return (count ?? 0) > 0;
 }
 
-// A spot opened up (cancellation/refund): email the top N active waitlist rows
-// per session, oldest first, and stamp notified_at. People can be re-notified
-// on later openings — spots are strictly first-come first-served.
-// Best-effort: one bad email must not block the rest (or the webhook).
-export async function notifyWaitlistOpenings(sb: Sb, sessionIds: string[], reason: string): Promise<void> {
+// A spot opened up (admin cancelled a booking, with or without a refund):
+// email the top N active waitlist rows per session, oldest first, and stamp
+// notified_at. People can be re-notified on later openings — spots are
+// strictly first-come first-served.
+//
+// NOT called automatically — the admin is prompted in the dashboard and this
+// runs via POST /api/waitlist/notify. Returns a per-session summary for the
+// dashboard to display. Best-effort: one bad email must not block the rest.
+export async function notifyWaitlistOpenings(
+  sb: Sb,
+  sessionIds: string[],
+  reason: string
+): Promise<{ session_id: string; program: string; starts_at: string; notified: number }[]> {
+  const summary: { session_id: string; program: string; starts_at: string; notified: number }[] = [];
   const infoById = await loadSessionInfo(sb, Array.from(new Set(sessionIds)));
   const nowIso = new Date().toISOString();
   // Only sessions still in the future are worth queueing for.
   const openings = Array.from(infoById.values()).filter((s) => s.starts_at > nowIso);
-  if (openings.length === 0) return;
+  if (openings.length === 0) return summary;
 
   const notifiedEmails = new Set<string>(); // one email per person per event, even across sessions
   for (const s of openings) {
@@ -142,7 +151,10 @@ export async function notifyWaitlistOpenings(sb: Sb, sessionIds: string[], reaso
       .is("converted_booking_id", null)
       .order("created_at", { ascending: true })
       .limit(WAITLIST_NOTIFY_LIMIT);
-    if (!rows?.length) continue;
+    if (!rows?.length) {
+      summary.push({ session_id: s.id, program: s.programTitle, starts_at: s.starts_at, notified: 0 });
+      continue;
+    }
 
     const when = `${fmtDay(s.starts_at)} · ${fmtTime(s.starts_at)} – ${fmtTime(s.ends_at)}`;
     const notifiedIds: string[] = [];
@@ -189,7 +201,9 @@ export async function notifyWaitlistOpenings(sb: Sb, sessionIds: string[], reaso
         after: { reason, notified: notifiedIds.length, program: s.programTitle, starts_at: s.starts_at },
       });
     }
+    summary.push({ session_id: s.id, program: s.programTitle, starts_at: s.starts_at, notified: notifiedIds.length });
   }
+  return summary;
 }
 
 // After a successful booking, mark any matching active waitlist rows converted

@@ -92,7 +92,7 @@ export default function WaitlistForm({
         <input
           type="text"
           required
-          placeholder="Kid's name"
+          placeholder="Player's name"
           value={form.kid_name}
           onChange={(e) => setForm({ ...form, kid_name: e.target.value })}
           className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#7E57C2] transition-colors"
