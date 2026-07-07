@@ -214,11 +214,11 @@ export async function notifyWaitlistOpenings(
                 <strong>${s.programTitle}</strong><br>${when}<br>${s.venueName}
               </p>
               <p><a href="${s.bookUrl}" style="display:inline-block;background:#7E57C2;color:#fff;text-decoration:none;padding:12px 24px;border-radius:6px;font-weight:600;">Book the spot</a></p>
-              <p style="font-size: 13px; color: #666;">We email everyone on the waitlist at the same time and spots are first-come, first-served — so book quickly. If it's gone by the time you get there, you'll stay on the waitlist for the next opening.</p>
+              <p style="font-size: 13px; color: #666;">The first five families on the waitlist are emailed at the same time and spots are first-come, first-served — so book quickly. If it's gone by the time you get there, you'll stay on the waitlist for the next opening.</p>
               <p>See you on court!<br>Obsidian Volleyball Academy</p>
             </div>
           `,
-          text: `A spot just opened up${forKid}.\n\n${s.programTitle}\n${when}\n${s.venueName}\n\nBook it here: ${s.bookUrl}\n\nWe email everyone on the waitlist at the same time and spots are first-come, first-served — so book quickly. If it's gone, you'll stay on the waitlist for the next opening.\n\nObsidian Volleyball Academy`,
+          text: `A spot just opened up${forKid}.\n\n${s.programTitle}\n${when}\n${s.venueName}\n\nBook it here: ${s.bookUrl}\n\nThe first five families on the waitlist are emailed at the same time and spots are first-come, first-served — so book quickly. If it's gone, you'll stay on the waitlist for the next opening.\n\nObsidian Volleyball Academy`,
         });
       } catch (err) {
         // sendEmail already logged the failure to email_log; keep going.

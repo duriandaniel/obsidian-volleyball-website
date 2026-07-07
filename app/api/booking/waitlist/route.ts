@@ -117,13 +117,13 @@ export async function POST(req: NextRequest) {
             <strong>${title}</strong><br>${when}${info ? `<br>${info.venueName}` : ""}
           </p>
           <p><strong>This is not a booking</strong> — no spot is reserved and no payment has been taken.</p>
-          <p>If a spot opens up, we'll email you with a booking link. We email everyone on the
-          waitlist at the same time and spots are first-come, first-served — so book quickly
-          when that email arrives.</p>
+          <p>If a spot opens up, the next five families on the waitlist are emailed a booking
+          link at the same time. Spots are first-come, first-served — so book quickly when
+          that email arrives.</p>
           <p>See you on court!<br>Obsidian Volleyball Academy</p>
         </div>
       `,
-      text: `Hi ${firstName},\n\nYou've joined the waitlist${forPlayer} for this sold-out session:\n\n${title}\n${when}${info ? `\n${info.venueName}` : ""}\n\nThis is not a booking — no spot is reserved and no payment has been taken.\n\nIf a spot opens up, we'll email you with a booking link. We email everyone on the waitlist at the same time and spots are first-come, first-served — so book quickly when that email arrives.\n\nSee you on court!\nObsidian Volleyball Academy`,
+      text: `Hi ${firstName},\n\nYou've joined the waitlist${forPlayer} for this sold-out session:\n\n${title}\n${when}${info ? `\n${info.venueName}` : ""}\n\nThis is not a booking — no spot is reserved and no payment has been taken.\n\nIf a spot opens up, the next five families on the waitlist are emailed a booking link at the same time. Spots are first-come, first-served — so book quickly when that email arrives.\n\nSee you on court!\nObsidian Volleyball Academy`,
     });
   } catch (err) {
     console.error("waitlist user confirmation failed", err);
