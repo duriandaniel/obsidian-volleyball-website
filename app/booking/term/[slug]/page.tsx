@@ -5,6 +5,7 @@ import { supabaseAdmin } from "@/lib/supabase/server";
 import { isAdultProgram } from "@/lib/booking/audience";
 import { CASUAL_PRICE_CENTS, trialPriceCentsForVenue, billableTermWeeks } from "@/lib/booking/pricing";
 import { TermEnrolForm } from "./TermEnrolForm";
+import WaitlistForm from "@/components/WaitlistForm";
 
 export const metadata: Metadata = {
   title: "Enrol | Obsidian Volleyball Academy",
@@ -119,11 +120,14 @@ export default async function TermProgramPage({
 
           <div className="md:sticky md:top-24 self-start">
             {soldOut ? (
-              <div className="border border-white/10 rounded-lg p-6 text-center">
-                <div className="font-heading text-lg mb-2">Sold out</div>
-                <div className="text-sm text-gray-400">
-                  Email <a href="mailto:obsidianvolleyball@gmail.com" className="text-[#7E57C2]">obsidianvolleyball@gmail.com</a> to be put on a waiting list.
+              <div className="border border-white/10 rounded-lg p-6">
+                <div className="font-heading text-lg mb-1">Sold out</div>
+                <div className="text-sm text-gray-400 mb-4">
+                  Join the waitlist and we&apos;ll email you the moment a spot opens.
                 </div>
+                {remainingSessions[0] && (
+                  <WaitlistForm sessionId={remainingSessions[0].id} showSoldOutLabel={false} />
+                )}
               </div>
             ) : (
               <TermEnrolForm

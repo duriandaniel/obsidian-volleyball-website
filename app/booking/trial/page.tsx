@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { loadTermPrograms, weekday, timeRange, type TermProgram } from "@/lib/booking/load";
 import { formatCents, formatSpotsLeft, trialPriceCentsForVenue, TRIAL_WINDOW_DAYS } from "@/lib/booking/pricing";
+import WaitlistForm from "@/components/WaitlistForm";
 
 export const metadata: Metadata = {
   title: "Trial Class | Obsidian Volleyball Academy",
@@ -112,9 +113,15 @@ export default async function TrialPage() {
                             {shortVenue(p.venue_name)}
                           </span>
                         </td>
-                        <td className="px-5 py-5 text-right whitespace-nowrap">
+                        <td className="px-5 py-5 text-right">
                           {soldOut ? (
-                            <span className="text-sm text-gray-500">Sold out</span>
+                            p.first_session_id ? (
+                              <div className="flex justify-end">
+                                <WaitlistForm sessionId={p.first_session_id} align="right" />
+                              </div>
+                            ) : (
+                              <span className="text-sm text-gray-500">Sold out</span>
+                            )
                           ) : (
                             <Link
                               href={`/booking/term/${p.slug}?plan=trial`}
@@ -155,7 +162,11 @@ export default async function TrialPage() {
                       {shortVenue(p.venue_name)}
                     </p>
                     {soldOut ? (
-                      <span className="text-sm text-gray-500">Sold out</span>
+                      p.first_session_id ? (
+                        <WaitlistForm sessionId={p.first_session_id} />
+                      ) : (
+                        <span className="text-sm text-gray-500">Sold out</span>
+                      )
                     ) : (
                       <div className="flex items-center justify-between gap-3">
                         <span className="text-xs text-gray-500">{formatSpotsLeft(p.capacity - p.booked)}</span>

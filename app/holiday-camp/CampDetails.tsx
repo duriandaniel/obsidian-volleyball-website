@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import SectionReveal from "@/components/SectionReveal";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 
@@ -232,6 +233,13 @@ export default function CampDetails() {
           </div>
           <p className="text-gray-600 text-xs mt-8 tracking-wider">
             ADD AN OBSIDIAN TRAINING JERSEY FOR $36 AT CHECKOUT &middot; OPTIONAL
+          </p>
+          <p className="text-gray-500 text-sm mt-4">
+            Our camps sell out — reschedules with 7+ days notice (subject to availability), and if we
+            can fill your spot from the waitlist we&apos;ll refund you.{" "}
+            <Link href="/faq" className="text-[#7E57C2] hover:underline">
+              Full refund &amp; reschedule policy
+            </Link>
           </p>
         </div>
       </section>

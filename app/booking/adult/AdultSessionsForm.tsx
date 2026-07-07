@@ -4,6 +4,7 @@ import { useState } from "react";
 import { formatCents, formatSpotsLeft } from "@/lib/booking/pricing";
 import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
 import JerseyAddOn, { EMPTY_JERSEY, type JerseyChoice } from "@/components/JerseyAddOn";
+import WaitlistForm from "@/components/WaitlistForm";
 
 type AdultSession = {
   id: string;
@@ -122,7 +123,7 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
                 isSelected
                   ? "border-[#7E57C2] bg-[#7E57C2]/5"
                   : soldOut
-                  ? "border-white/5 opacity-50"
+                  ? "border-white/5"
                   : "border-white/10 hover:border-white/30"
               } ${locked ? "opacity-70" : ""}`}
             >
@@ -136,16 +137,20 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
                     {formatCents(s.price_cents)} · {formatSpotsLeft(s.spots_left)}
                   </div>
                 </div>
-                <button
-                  type="button"
-                  disabled={soldOut || locked}
-                  onClick={() => toggle(s.id)}
-                  className={`px-4 py-2 rounded font-heading text-xs tracking-[0.2em] transition-colors ${
-                    isSelected ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10 text-white"
-                  } ${soldOut || locked ? "cursor-not-allowed" : ""}`}
-                >
-                  {isSelected ? "REMOVE" : "ADD"}
-                </button>
+                {soldOut ? (
+                  <WaitlistForm sessionId={s.id} kidField={false} align="right" showSoldOutLabel={false} />
+                ) : (
+                  <button
+                    type="button"
+                    disabled={locked}
+                    onClick={() => toggle(s.id)}
+                    className={`px-4 py-2 rounded font-heading text-xs tracking-[0.2em] transition-colors ${
+                      isSelected ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10 text-white"
+                    } ${locked ? "cursor-not-allowed" : ""}`}
+                  >
+                    {isSelected ? "REMOVE" : "ADD"}
+                  </button>
+                )}
               </div>
             </div>
           );

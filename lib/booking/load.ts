@@ -15,6 +15,7 @@ export type TermProgram = {
   venue_name: string;
   per_week_cents: number;
   weeks_remaining: number;
+  first_session_id: string | null;
   first_session_at: string | null;
   first_session_ends_at: string | null;
   last_session_at: string | null;
@@ -187,6 +188,7 @@ export async function loadTermPrograms(): Promise<TermProgram[]> {
         venue_name: venueById.get(p.venue_id) ?? "Venue TBA",
         per_week_cents: ruleById.get(p.pricing_rule_id ?? "") ?? 0,
         weeks_remaining: mySessions.length,
+        first_session_id: first?.id ?? null,
         first_session_at: first?.starts_at ?? null,
         first_session_ends_at: first?.ends_at ?? null,
         last_session_at: last?.ends_at ?? null,
