@@ -54,3 +54,16 @@ This version has breaking changes — APIs, conventions, and file structure may 
 - Reels: `public/reels/{publicId}.mp4` + `{publicId}.jpg` (poster). Rendered via `<ReelPlayer publicId={...} />` — the `publicId` is just the filename stem
 - Images: `public/images/*.jpg|png` referenced directly in `<Image src="/images/..." />`
 - New reel workflow: transcode source to 720x1280 H.264 (`ffmpeg -vf scale=720:1280 -c:v libx264 -crf 26 -preset medium -c:a aac -b:a 96k -movflags +faststart`) before dropping in `public/reels/`. Generate a poster JPG of frame 0 with the same filename stem.
+
+# Waitlist system (cross-repo feature)
+
+- This repo owns the waitlist: `waitlist` table (`supabase/migrations/0004_waitlist.sql`),
+  join flow (`WaitlistForm` + `POST /api/booking/waitlist`), queue logic
+  (`lib/booking/waitlist.ts`), and the notify endpoint `POST /api/waitlist/notify`
+  (Bearer `WAITLIST_NOTIFY_SECRET`) that emails the top 5 waiting families.
+- The ADMIN half (browse queues, post-cancel "email top 5?" prompt) lives in the dash
+  repo: `~/git/obsidian-dashboard-clone` — see its AGENTS.md. The dash calls the notify
+  endpoint server-to-server; nothing is ever emailed automatically.
+- `WAITLIST_NOTIFY_SECRET` must match across the website and both dash Vercel projects.
+- Refunds processed directly in Stripe do NOT trigger waitlist emails by design —
+  admin uses the dash Waitlist tab's per-session "Email top 5" button instead.
