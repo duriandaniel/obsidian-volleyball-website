@@ -2,13 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/email/send";
-import {
-  addToWaitlist,
-  describeSession,
-  OWNER_EMAIL,
-  waitlistFmtDay,
-  waitlistFmtTime,
-} from "@/lib/booking/waitlist";
+import { addToWaitlist, describeSession, waitlistFmtDay, waitlistFmtTime } from "@/lib/booking/waitlist";
 
 // Join the waitlist for a sold-out session. Generic across session types
 // (camp days, term classes, trials, adult scrims) — the UI decides where the
@@ -71,10 +65,9 @@ export async function POST(req: NextRequest) {
     after: { customer_name: body.customer_name, kid_name: body.kid_name ?? null, email: body.email.toLowerCase() },
   });
 
-  // Two emails, both best-effort — the row is already saved, and sendEmail
-  // logs each attempt (success or failure) to email_log.
-  //  1. Confirmation to the person who joined (explicitly NOT a booking)
-  //  2. Heads-up to Dan (admin-only wording lives here, never in #1)
+  // Confirmation email to the person who joined (explicitly NOT a booking).
+  // Best-effort — the row is already saved, and sendEmail logs the attempt to
+  // email_log. No admin email on purpose: the dashboard shows waitlist rows.
   const info = await describeSession(sb, body.session_id);
   const when = info ? `${waitlistFmtDay(info.starts_at)} · ${waitlistFmtTime(info.starts_at)}` : body.session_id;
   const title = info?.programTitle ?? "Unknown program";
@@ -105,32 +98,6 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     console.error("waitlist user confirmation failed", err);
-  }
-
-  try {
-    await sendEmail({
-      to: OWNER_EMAIL,
-      subject: `Waitlist: ${body.customer_name.trim()}${body.kid_name ? ` (${body.kid_name.trim()})` : ""} — ${title}`,
-      template: "waitlist_joined_admin",
-      html: `
-        <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
-          <h2 style="color: #7E57C2; margin-bottom: 8px;">New waitlist entry</h2>
-          <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">
-            <strong>${title}</strong><br>${when}${info ? `<br>${info.venueName}` : ""}
-          </p>
-          <p>
-            <strong>Parent:</strong> ${body.customer_name.trim()}<br>
-            ${body.kid_name ? `<strong>Player:</strong> ${body.kid_name.trim()}<br>` : ""}
-            <strong>Email:</strong> ${body.email.toLowerCase()}<br>
-            <strong>Phone:</strong> ${body.phone.trim()}
-          </p>
-          <p style="font-size: 13px; color: #666;">When you cancel a booking in the dashboard, you'll be asked whether to email the waitlist.</p>
-        </div>
-      `,
-      text: `New waitlist entry\n\n${title}\n${when}\n\nParent: ${body.customer_name.trim()}${body.kid_name ? `\nPlayer: ${body.kid_name.trim()}` : ""}\nEmail: ${body.email.toLowerCase()}\nPhone: ${body.phone.trim()}`,
-    });
-  } catch (err) {
-    console.error("waitlist admin notify failed", err);
   }
 
   return NextResponse.json({ ok: true });

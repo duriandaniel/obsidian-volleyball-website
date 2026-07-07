@@ -13,8 +13,6 @@ type Sb = ReturnType<typeof supabaseAdmin>;
 // purpose — first-come first-served maximises the chance the spot refills.
 export const WAITLIST_NOTIFY_LIMIT = 5;
 
-export const OWNER_EMAIL = "obsidianvolleyball@gmail.com";
-
 const APP_URL = () => process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com";
 
 const fmtDay = (iso: string) =>
@@ -228,7 +226,7 @@ export async function markWaitlistConverted(
   }
 }
 
-// Session context for the join-notification email to the owner.
+// Session context for the join-confirmation email to the joiner.
 export async function describeSession(sb: Sb, sessionId: string): Promise<SessionInfo | null> {
   const info = await loadSessionInfo(sb, [sessionId]);
   return info.get(sessionId) ?? null;
