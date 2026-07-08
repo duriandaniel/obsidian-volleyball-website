@@ -66,7 +66,8 @@ export const TRIAL_PRICE_CENTS = 2500;
 
 // Launch promo: Kellyville trials are FREE while this is true; West Ryde stays
 // paid. Set to false to end the promo and charge the standard price everywhere.
-export const KELLYVILLE_FREE_TRIAL = true;
+// Ended for Term 3 (Jul 2026): trials are $25 at every venue.
+export const KELLYVILLE_FREE_TRIAL = false;
 
 // Trial price for a class, by its venue name. Free ($0) for Kellyville during
 // the launch promo. Single source of truth for both the trial list and checkout.
@@ -75,20 +76,24 @@ export function trialPriceCentsForVenue(venueName: string | null | undefined): n
   return TRIAL_PRICE_CENTS;
 }
 
-// Kellyville launch promo: the taster sessions before Term 3 are free, so a
-// full-term Kellyville enrolment is billed only for the Term 3 weeks (10 × $36 =
-// $360), not the bonus June weeks. Other venues bill every remaining session.
+// Kellyville launch promo: the taster sessions before Term 3 were advertised
+// as free, so a full-term Kellyville enrolment is billed only for the Term 3
+// weeks (10 × $36 = $360), never the bonus June/July weeks — independent of
+// the trial-price promo above (ending paid trials must not retroactively
+// charge for tasters). Other venues bill every remaining session. After
+// 21 Jul 2026 the carve-out is moot (all remaining sessions are billable).
 const KELLYVILLE_TERM3_START_MS = Date.parse("2026-07-21T00:00:00+10:00");
 export function billableTermWeeks(venueName: string | null | undefined, sessionStartIsos: string[]): number {
-  if (KELLYVILLE_FREE_TRIAL && /kellyville/i.test(venueName ?? "")) {
+  if (/kellyville/i.test(venueName ?? "")) {
     return sessionStartIsos.filter((iso) => Date.parse(iso) >= KELLYVILLE_TERM3_START_MS).length;
   }
   return sessionStartIsos.length;
 }
 
 // Trials are only bookable for a class whose next session is within this many
-// days (keeps trials near-term, not booked weeks ahead).
-export const TRIAL_WINDOW_DAYS = 14;
+// days (keeps trials near-term, not booked weeks ahead). Widened 14 → 21 for
+// the Term 3 launch so West Ryde (first session 24 Jul) opens with Kellyville.
+export const TRIAL_WINDOW_DAYS = 21;
 
 // Casual / drop-in rate for a single junior class (vs $36/week on the full term).
 // Term is marketed as the saving, never casual as a surcharge.
