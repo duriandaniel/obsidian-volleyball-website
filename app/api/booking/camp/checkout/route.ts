@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { stripe } from "@/lib/stripe/server";
-import { priceCampCart, CAMP_JERSEY_CENTS } from "@/lib/booking/pricing";
+import { priceCampCart, CAMP_JERSEY_CENTS, isAfternoonProgramSlug } from "@/lib/booking/pricing";
 import { packChunked } from "@/lib/booking/metadata";
 
 const Body = z.object({
@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
   const sessionIds = body.items.map((i) => i.session_id);
   const { data: sessions } = await sb
     .from("sessions")
-    .select("id, starts_at, status, program_id, capacity_override, programs:program_id(id,title,type,default_capacity)")
+    .select("id, starts_at, status, program_id, capacity_override, programs:program_id(id,title,slug,type,default_capacity)")
     .in("id", sessionIds);
   if (!sessions || sessions.length !== sessionIds.length) {
     return NextResponse.json({ error: "One or more sessions not found" }, { status: 400 });
@@ -57,6 +57,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: `Session ${s.id} is not a camp session` }, { status: 400 });
     }
   }
+
+  // Classify afternoon classes server-side from the session's program slug —
+  // never trusted from the client. Afternoon classes have no half-day variant,
+  // so any client-sent half-day flag is overridden to false for them.
+  const afternoonBySession = new Map(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    sessions.map((s) => [s.id, isAfternoonProgramSlug((s.programs as any)?.slug)])
+  );
+  const items = body.items.map((i) => {
+    const isAfternoon = afternoonBySession.get(i.session_id) ?? false;
+    return { session_id: i.session_id, is_half_day: isAfternoon ? false : i.is_half_day, is_afternoon: isAfternoon };
+  });
 
   // Capacity check (compare current confirmed/pending count to capacity)
   const { data: existingBookings } = await sb
@@ -76,7 +88,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Authoritative price: always recomputed server-side, never trusted from the client.
-  const pricing = priceCampCart(body.items);
+  const pricing = priceCampCart(items);
   if (pricing.total_cents <= 0) {
     return NextResponse.json({ error: "Total must be positive" }, { status: 400 });
   }
@@ -89,6 +101,9 @@ export async function POST(req: NextRequest) {
     [
       pricing.full_days > 0 ? `${pricing.full_days} full day${pricing.full_days === 1 ? "" : "s"}` : "",
       pricing.half_days > 0 ? `${pricing.half_days} half day${pricing.half_days === 1 ? "" : "s"}` : "",
+      pricing.afternoon_days > 0
+        ? `${pricing.afternoon_days} afternoon class${pricing.afternoon_days === 1 ? "" : "es"}`
+        : "",
     ]
       .filter(Boolean)
       .join(" + ") || "camp";
@@ -237,10 +252,12 @@ export async function POST(req: NextRequest) {
         customer_id: customerId,
         participant_id: participantId,
         // Session list can exceed Stripe's 500-char-per-value metadata limit for
-        // a multi-week cart, so chunk it. half_days is a per-item 0/1 bitstring
-        // aligned to session_ids order (1 = half day). See lib/booking/metadata.ts.
-        ...packChunked("session_ids", body.items.map((i) => i.session_id).join(",")),
-        half_days: body.items.map((i) => (i.is_half_day ? "1" : "0")).join(""),
+        // a multi-week cart, so chunk it. half_days / afternoons are per-item 0/1
+        // bitstrings aligned to session_ids order (1 = half day / afternoon
+        // class). See lib/booking/metadata.ts.
+        ...packChunked("session_ids", items.map((i) => i.session_id).join(",")),
+        half_days: items.map((i) => (i.is_half_day ? "1" : "0")).join(""),
+        afternoons: items.map((i) => (i.is_afternoon ? "1" : "0")).join(""),
         subtotal_cents: String(pricing.subtotal_cents),
         discount_cents: String(pricing.discount_cents),
         camp_total_cents: String(pricing.total_cents),

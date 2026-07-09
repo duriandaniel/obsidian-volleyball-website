@@ -231,6 +231,33 @@ export default function CampDetails() {
               </TrackedBookingLink>
             </div>
           </div>
+          {/* Afternoon classes — separate product from the morning camp */}
+          <div className="mt-6 border border-[#7E57C2]/30 bg-[#7E57C2]/[0.06] p-8 lg:p-10">
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-center">
+              <div>
+                <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-3">
+                  NEW &middot; AFTERNOON CLASSES
+                </p>
+                <p className="text-white text-2xl font-heading tracking-wide mb-3">
+                  $36 per class <span className="text-gray-500 text-lg">&middot; all 5 afternoons $130</span>
+                </p>
+                <ul className="space-y-2 text-gray-400 text-sm">
+                  <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> 1:30 &ndash; 3:30 PM &middot; second week of the holidays</li>
+                  <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Two hours of focused coaching &amp; game play</li>
+                  <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Same venue, same coaches, grouped by level</li>
+                  <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Combine with morning camp days for a full day</li>
+                </ul>
+              </div>
+              <TrackedBookingLink
+                tier="afternoon_class"
+                location="pricing_afternoon"
+                href={CAMP_BOOKING_URL}
+                className="block border border-[#7E57C2] text-white font-heading text-lg px-8 py-3 tracking-wide text-center hover:bg-[#5E35A8] transition-all duration-300"
+              >
+                BOOK NOW
+              </TrackedBookingLink>
+            </div>
+          </div>
           <p className="text-gray-600 text-xs mt-8 tracking-wider">
             ADD AN OBSIDIAN TRAINING JERSEY FOR $36 AT CHECKOUT &middot; OPTIONAL
           </p>

@@ -11,20 +11,38 @@ export const CAMP_EXTRA_DAY_CENTS = 4000; // each full day beyond 5
 export const CAMP_HALF_DAY_CENTS = 4500; // flat, per half day (9–11am)
 export const CAMP_JERSEY_CENTS = 3600; // optional jersey add-on
 
+// ── Afternoon holiday classes (1:30–3:30pm) ───────────────────────────
+// A separate product from the morning camp: own per-day price and own
+// 5-day pass. Afternoon days NEVER count toward the morning-camp ladder
+// (and vice versa). No half-day variant — the class is already 2 hours.
+export const CLASS_AFTERNOON_CENTS = 3600; // per afternoon class
+export const CLASS_AFTERNOON_FIVE_PASS_CENTS = 13000; // all 5 afternoons (~28% off $180 rack)
+
+// A session is an "afternoon class" when its program slug says so. Single
+// source of truth used by the booking page (display) and checkout (pricing) —
+// name future afternoon programs with "afternoon" in the slug.
+export function isAfternoonProgramSlug(slug: string | null | undefined): boolean {
+  return /afternoon/i.test(slug ?? "");
+}
+
 export type CampCartItem = {
   session_id: string;
   is_half_day: boolean;
+  is_afternoon?: boolean; // derived server-side from the session's program, never trusted from the client
 };
 
 export type CampPricingResult = {
   full_days: number;
   half_days: number;
+  afternoon_days: number;
   full_day_cents: number; // ladder price for the full days
   half_day_cents: number; // flat half-day price total
+  afternoon_cents: number; // ladder price for the afternoon classes
   subtotal_cents: number; // rack rate (full days at per-day) — used to show the bundle saving
-  discount_cents: number; // saving from the 5+ day bundle
-  total_cents: number; // full + half, EXCLUDES the optional jersey
+  discount_cents: number; // saving from the 5+ day bundles (camp + afternoon)
+  total_cents: number; // full + half + afternoon, EXCLUDES the optional jersey
   show_five_day_nudge: boolean; // exactly 4 full days: a 5-day pass is cheaper
+  show_afternoon_five_nudge: boolean; // exactly 4 afternoons: the 5-afternoon pass is cheaper
 };
 
 // Ladder price for n full days. 1=70, 2=140, 3=210, 4=280, 5=250,
@@ -36,27 +54,43 @@ export function priceCampFullDays(n: number): number {
   return CAMP_FIVE_DAY_PASS_CENTS + CAMP_EXTRA_DAY_CENTS * (n - 5);
 }
 
+// Ladder price for n afternoon classes. 1=36, 2=72, 3=108, 4=144, 5=130
+// (intentional cliff: 4 afternoons > the 5-afternoon pass). Beyond 5 (a
+// future two-week block) each extra afternoon is at the flat rate.
+export function priceAfternoonClasses(n: number): number {
+  if (n <= 0) return 0;
+  if (n <= 4) return CLASS_AFTERNOON_CENTS * n;
+  if (n === 5) return CLASS_AFTERNOON_FIVE_PASS_CENTS;
+  return CLASS_AFTERNOON_FIVE_PASS_CENTS + CLASS_AFTERNOON_CENTS * (n - 5);
+}
+
 export function priceCampCart(cart: CampCartItem[]): CampPricingResult {
-  const fullDays = cart.reduce((n, i) => n + (i.is_half_day ? 0 : 1), 0);
-  const halfDays = cart.reduce((n, i) => n + (i.is_half_day ? 1 : 0), 0);
+  const fullDays = cart.reduce((n, i) => n + (!i.is_afternoon && !i.is_half_day ? 1 : 0), 0);
+  const halfDays = cart.reduce((n, i) => n + (!i.is_afternoon && i.is_half_day ? 1 : 0), 0);
+  const afternoonDays = cart.reduce((n, i) => n + (i.is_afternoon ? 1 : 0), 0);
 
   const fullDayCents = priceCampFullDays(fullDays);
   const halfDayCents = CAMP_HALF_DAY_CENTS * halfDays;
+  const afternoonCents = priceAfternoonClasses(afternoonDays);
 
-  // Rack rate: every full day at the flat per-day price (no bundle), plus
-  // half days. Difference vs the ladder is the bundle saving we surface.
-  const subtotal = CAMP_FULL_DAY_CENTS * fullDays + halfDayCents;
-  const total = fullDayCents + halfDayCents;
+  // Rack rate: every full day / afternoon at its flat per-day price (no
+  // bundle), plus half days. Difference vs the ladders is the bundle saving.
+  const subtotal =
+    CAMP_FULL_DAY_CENTS * fullDays + halfDayCents + CLASS_AFTERNOON_CENTS * afternoonDays;
+  const total = fullDayCents + halfDayCents + afternoonCents;
 
   return {
     full_days: fullDays,
     half_days: halfDays,
+    afternoon_days: afternoonDays,
     full_day_cents: fullDayCents,
     half_day_cents: halfDayCents,
+    afternoon_cents: afternoonCents,
     subtotal_cents: subtotal,
     discount_cents: Math.max(0, subtotal - total),
     total_cents: total,
     show_five_day_nudge: fullDays === 4,
+    show_afternoon_five_nudge: afternoonDays === 4,
   };
 }
 
