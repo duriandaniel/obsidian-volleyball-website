@@ -18,14 +18,14 @@ export default function PromoBanner() {
     >
       <div className="max-w-7xl mx-auto px-4 py-1.5 text-center">
         <p className="text-sm sm:text-base font-heading text-white tracking-[0.2em] uppercase">
-          <span>Holiday Camp Bookings Open</span>
+          <span>New Afternoon Holiday Sessions</span>
           <span
             className="text-[#D4A4FF] mx-2 sm:mx-3 inline-block align-middle text-[8px]"
             aria-hidden
           >
             ●
           </span>
-          <span>Any 5 Days for $250</span>
+          <span>1:30&ndash;3:30 PM &middot; $36</span>
           <span
             className="hidden md:inline-block ml-3 lg:ml-4 text-[#D4A4FF] tracking-[0.2em]"
             aria-hidden
