@@ -105,6 +105,9 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Obsidian Volleyball Academy
           </p>
           <div className="flex items-center gap-4 text-gray-700 text-xs">
+            <Link href="/refund-policy" className="hover:text-[#7E57C2] transition-colors">
+              Refund Policy
+            </Link>
             <Link href="/privacy" className="hover:text-[#7E57C2] transition-colors">
               Privacy Policy
             </Link>

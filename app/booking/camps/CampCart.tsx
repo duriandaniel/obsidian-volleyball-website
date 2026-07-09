@@ -454,7 +454,10 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                   </button>
                 </div>
                 <div className="text-xs text-gray-500">
-                  Payment processed by Stripe on this page. We never see your card details.
+                  Payment processed by Stripe on this page. We never see your card details.{" "}
+                  <a href="/refund-policy" target="_blank" className="text-[#7E57C2] hover:underline">
+                    Cancellation &amp; refund policy
+                  </a>
                 </div>
               </form>
             )}
