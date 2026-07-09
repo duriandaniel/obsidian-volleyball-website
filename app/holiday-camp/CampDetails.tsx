@@ -268,10 +268,10 @@ export default function CampDetails() {
             ADD AN OBSIDIAN TRAINING JERSEY FOR $36 AT CHECKOUT &middot; OPTIONAL
           </p>
           <p className="text-gray-500 text-sm mt-4">
-            Our camps sell out — reschedules with 7+ days notice (subject to availability), and if we
-            can fill your spot from the waitlist we&apos;ll refund you.{" "}
-            <Link href="/faq" className="text-[#7E57C2] hover:underline">
-              Full refund &amp; reschedule policy
+            Plans change — cancel 7+ days before camp for a full refund or credit, 3–6 days before
+            for a credit, and illness or injury is always credited with a doctor&apos;s certificate.{" "}
+            <Link href="/refund-policy" className="text-[#7E57C2] hover:underline">
+              Full cancellation &amp; refund policy
             </Link>
           </p>
         </div>

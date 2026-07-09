@@ -272,7 +272,12 @@ export function TermEnrolForm({
             </button>
           </div>
           <div className="text-xs text-gray-500">
-            Payment processed by Stripe on this page. We never see your card details. {programTitle} is non-refundable by default; significant circumstances handled case-by-case via email.
+            Payment processed by Stripe on this page. We never see your card details. Cancel before
+            the term starts for a refund or credit; once it&apos;s underway, missed weeks get make-ups
+            where space allows.{" "}
+            <a href="/refund-policy" target="_blank" className="text-[#7E57C2] hover:underline">
+              Cancellation &amp; refund policy
+            </a>
           </div>
         </form>
       )}

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import SectionReveal from "@/components/SectionReveal";
 import CopyEmail from "@/components/CopyEmail";
 
@@ -108,7 +109,9 @@ const faqCategories = [
       },
       {
         q: "What is your refund and reschedule policy?",
-        a: "Our camps and classes sell out, and kids on the waitlist miss out when booked spots go unused — so our policy is designed to be fair to everyone. Need to reschedule? With 7 or more days notice we'll move your booking to another day or class, subject to availability — just message us. We don't offer change-of-mind refunds, but if we can fill your spot from the waitlist, we'll refund you. If your child is sick or injured, message us — we'll always try to be helpful. And if we ever have to cancel a day, you get a full refund. Adult social sessions are non-refundable and non-reschedulable.",
+        a: "In short: cancel a camp 7+ days before it starts for a full refund or credit, 3–6 days before for a credit, and inside 3 days there's no refund (unless we can fill your spot from the waitlist). Term programs are refundable before the term starts; once it's underway, missed weeks get make-ups where space allows rather than refunds. Illness or injury with a doctor's certificate is always credited, even same-day. Adult social sessions are non-refundable. The full policy, in plain English, is on our Cancellation & Refund Policy page at obsidianvolleyball.com/refund-policy.",
+        href: "/refund-policy",
+        linkLabel: "Read the full cancellation & refund policy",
       },
     ],
   },
@@ -180,7 +183,17 @@ export default function FAQPage() {
                           +
                         </span>
                       </summary>
-                      <div className="pb-5 -mt-1 text-gray-400 text-base leading-relaxed max-w-2xl">{faq.a}</div>
+                      <div className="pb-5 -mt-1 text-gray-400 text-base leading-relaxed max-w-2xl">
+                        {faq.a}
+                        {"href" in faq && faq.href && (
+                          <>
+                            {" "}
+                            <Link href={faq.href} className="text-[#7E57C2] hover:underline">
+                              {faq.linkLabel ?? "Read more"}
+                            </Link>
+                          </>
+                        )}
+                      </div>
                     </details>
                   ))}
                 </div>

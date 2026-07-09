@@ -593,14 +593,14 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
         ${whatsappHtml(WHATSAPP_PARENTS_URL, "parents")}
         <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
-          Need to change a day? Reschedules with 7+ days notice, subject to availability — just reply to this email. Our camps sell out, so no change-of-mind refunds, but if we can fill your spot from the waitlist we'll refund you. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
+          Plans change? Just reply to this email. Cancel 7+ days before camp for a full refund or credit, 3–6 days before for a credit — and illness or injury is always credited with a doctor's certificate. See our <a href="${appUrl}/refund-policy" style="color:#7E57C2;">cancellation and refund policy</a>.
         </p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
     text: `You're booked in.\n\nThanks for booking ${programTitle}.\n\nDays:\n${(sessionRows ?? [])
       .map(fmtDay)
-      .join("\n")}\n\nVenue: ${venueName}${jerseySize ? `\nJersey: Obsidian training jersey (choose your size on collection)` : ""}\nTotal paid: ${formatCents(total)}\n\nNeed to change a day? Reschedules with 7+ days notice, subject to availability — just reply to this email. No change-of-mind refunds, but if we can fill your spot from the waitlist we'll refund you. Full policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
+      .join("\n")}\n\nVenue: ${venueName}${jerseySize ? `\nJersey: Obsidian training jersey (choose your size on collection)` : ""}\nTotal paid: ${formatCents(total)}\n\nPlans change? Just reply to this email. Cancel 7+ days before camp for a full refund or credit, 3-6 days before for a credit — and illness or injury is always credited with a doctor's certificate. Full policy: ${appUrl}/refund-policy\n\nObsidian Volleyball Academy`,
   });
 }
 
@@ -771,14 +771,14 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Wear suitable indoor court shoes. See you on court.</p>
         ${whatsappHtml(WHATSAPP_ADULTS_URL, "adults")}
         <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
-          Adult social nights are non-refundable and non-reschedulable. Questions? Just reply to this email. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
+          Adult social nights are non-refundable and non-reschedulable. Questions? Just reply to this email. See our <a href="${appUrl}/refund-policy" style="color:#7E57C2;">cancellation and refund policy</a>.
         </p>
         <p>Obsidian Volleyball Academy</p>
       </div>
     `,
     text: `You're booked in.\n\nThanks for booking the Adult Social Scrim.\n\nNights:\n${(sessionRows ?? [])
       .map((s) => `${fmtDay(s.starts_at)} ${fmtTime(s.starts_at)} - ${fmtTime(s.ends_at)}`)
-      .join("\n")}\n\nVenue: ${venueName}\nTotal paid: ${formatCents(total)}\n\nAdult social nights are non-refundable and non-reschedulable. Questions? Reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
+      .join("\n")}\n\nVenue: ${venueName}\nTotal paid: ${formatCents(total)}\n\nAdult social nights are non-refundable and non-reschedulable. Questions? Reply to this email. Cancellation and refund policy: ${appUrl}/refund-policy\n\nObsidian Volleyball Academy`,
   });
 }
 
@@ -889,7 +889,7 @@ async function handleTrialCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p><strong>Venue:</strong> ${venueHtml(venueName)}</p>
         <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
         ${whatsappHtml(WHATSAPP_PARENTS_URL, "parents")}
-        <p style="font-size: 13px; color: #666;">Limit one trial per player. Want to join for the term afterwards? Just reply to this email or book from our website. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.</p>
+        <p style="font-size: 13px; color: #666;">Limit one trial per player. Want to join for the term afterwards? Just reply to this email or book from our website. See our <a href="${appUrl}/refund-policy" style="color:#7E57C2;">cancellation and refund policy</a>.</p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
@@ -981,12 +981,12 @@ async function handleCasualCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
         ${whatsappHtml(WHATSAPP_PARENTS_URL, "parents")}
         <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
-          Coming regularly? Enrol for the term and pay $36/class instead of $40. Questions? Just reply to this email. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
+          Coming regularly? Enrol for the term and pay $36/class instead of $40. Questions? Just reply to this email. See our <a href="${appUrl}/refund-policy" style="color:#7E57C2;">cancellation and refund policy</a>.
         </p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
-    text: `You're booked in.\n\nThanks for booking ${program?.title ?? "a casual class"}.\n\n${(srows ?? []).map((s) => `${fDay(s.starts_at)} ${fTime(s.starts_at)} - ${fTime(s.ends_at)}`).join("\n")}\n\nVenue: ${venueName}\nTotal paid: ${formatCents(total)} (casual)\n\nComing regularly? Enrol for the term and pay $36/class instead of $40.\nRefund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
+    text: `You're booked in.\n\nThanks for booking ${program?.title ?? "a casual class"}.\n\n${(srows ?? []).map((s) => `${fDay(s.starts_at)} ${fTime(s.starts_at)} - ${fTime(s.ends_at)}`).join("\n")}\n\nVenue: ${venueName}\nTotal paid: ${formatCents(total)} (casual)\n\nComing regularly? Enrol for the term and pay $36/class instead of $40.\nCancellation and refund policy: ${appUrl}/refund-policy\n\nObsidian Volleyball Academy`,
   });
 }
 
@@ -1251,12 +1251,12 @@ async function handleTermCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Wear suitable indoor court shoes and your Obsidian Volleyball training jersey. We provide all volleyball gear.</p>
         ${whatsappHtml(WHATSAPP_PARENTS_URL, "parents")}
         <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
-          Questions or need to change something? Just reply to this email and we'll help. See our <a href="${appUrl}/faq" style="color:#7E57C2;">refund and reschedule policy</a>.
+          Questions or need to change something? Just reply to this email and we'll help. See our <a href="${appUrl}/refund-policy" style="color:#7E57C2;">cancellation and refund policy</a>.
         </p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
-    text: `You're enrolled in ${program?.title ?? "the term program"}.\n\nClasses this term: ${(sessionRows ?? []).length}${classTime ? `\nTime: ${classTime}` : ""}\nVenue: ${venueName}\nTotal paid: $${(total / 100).toFixed(2)}\n\nQuestions or changes? Just reply to this email. Refund and reschedule policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
+    text: `You're enrolled in ${program?.title ?? "the term program"}.\n\nClasses this term: ${(sessionRows ?? []).length}${classTime ? `\nTime: ${classTime}` : ""}\nVenue: ${venueName}\nTotal paid: $${(total / 100).toFixed(2)}\n\nQuestions or changes? Just reply to this email. Cancellation and refund policy: ${appUrl}/refund-policy\n\nObsidian Volleyball Academy`,
   });
 }
 
