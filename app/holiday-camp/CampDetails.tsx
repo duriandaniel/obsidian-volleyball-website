@@ -268,8 +268,9 @@ export default function CampDetails() {
             ADD AN OBSIDIAN TRAINING JERSEY FOR $36 AT CHECKOUT &middot; OPTIONAL
           </p>
           <p className="text-gray-500 text-sm mt-4">
-            Plans change — cancel 7+ days before camp for a full refund or credit, 3–6 days before
-            for a credit, and illness or injury is always credited with a doctor&apos;s certificate.{" "}
+            Plans change — cancel 7+ days before camp for a full refund, 3–6 days before and
+            we&apos;ll move you to another day free, and illness or injury is always refunded with a
+            doctor&apos;s certificate.{" "}
             <Link href="/refund-policy" className="text-[#7E57C2] hover:underline">
               Full cancellation &amp; refund policy
             </Link>

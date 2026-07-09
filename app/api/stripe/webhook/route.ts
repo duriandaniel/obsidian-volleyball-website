@@ -593,14 +593,14 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
         ${whatsappHtml(WHATSAPP_PARENTS_URL, "parents")}
         <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
-          Plans change? Just reply to this email. Cancel 7+ days before camp for a full refund or credit, 3–6 days before for a credit — and illness or injury is always credited with a doctor's certificate. See our <a href="${appUrl}/refund-policy" style="color:#7E57C2;">cancellation and refund policy</a>.
+          Plans change? Just reply to this email. Cancel 7+ days before camp for a full refund, 3–6 days before and we'll move you to another day free — and illness or injury is always refunded with a doctor's certificate. See our <a href="${appUrl}/refund-policy" style="color:#7E57C2;">cancellation and refund policy</a>.
         </p>
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
     text: `You're booked in.\n\nThanks for booking ${programTitle}.\n\nDays:\n${(sessionRows ?? [])
       .map(fmtDay)
-      .join("\n")}\n\nVenue: ${venueName}${jerseySize ? `\nJersey: Obsidian training jersey (choose your size on collection)` : ""}\nTotal paid: ${formatCents(total)}\n\nPlans change? Just reply to this email. Cancel 7+ days before camp for a full refund or credit, 3-6 days before for a credit — and illness or injury is always credited with a doctor's certificate. Full policy: ${appUrl}/refund-policy\n\nObsidian Volleyball Academy`,
+      .join("\n")}\n\nVenue: ${venueName}${jerseySize ? `\nJersey: Obsidian training jersey (choose your size on collection)` : ""}\nTotal paid: ${formatCents(total)}\n\nPlans change? Just reply to this email. Cancel 7+ days before camp for a full refund, 3-6 days before and we'll move you to another day free — and illness or injury is always refunded with a doctor's certificate. Full policy: ${appUrl}/refund-policy\n\nObsidian Volleyball Academy`,
   });
 }
 

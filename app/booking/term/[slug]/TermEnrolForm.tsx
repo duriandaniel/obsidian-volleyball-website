@@ -273,7 +273,7 @@ export function TermEnrolForm({
           </div>
           <div className="text-xs text-gray-500">
             Payment processed by Stripe on this page. We never see your card details. Cancel before
-            the term starts for a refund or credit; once it&apos;s underway, missed weeks get make-ups
+            the term starts for a full refund; once it&apos;s underway, missed weeks get make-ups
             where space allows.{" "}
             <a href="/refund-policy" target="_blank" className="text-[#7E57C2] hover:underline">
               Cancellation &amp; refund policy

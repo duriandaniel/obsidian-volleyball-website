@@ -4,17 +4,19 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Cancellation & Refund Policy",
   description:
-    "How cancellations, refunds, and credits work for Obsidian Volleyball Academy holiday camps and term programs.",
+    "How cancellations, refunds, and date transfers work for Obsidian Volleyball Academy holiday camps and term programs.",
   alternates: { canonical: "/refund-policy" },
 };
 
 // The single source of truth for our cancellation rules, replacing the old
 // "case by case" wording. Warm but firm: the "why" (capped spots, rostered
 // coaches, waitlisted families) is stated up front so the rules read as fair.
+// Deliberately NO credit system — refunds where we can, free date transfers
+// as the middle ground, so there's no credit ledger to maintain.
 const CAMP_TIERS = [
-  { when: "7 or more days before your first camp day", what: "Full refund, or a credit — your choice" },
-  { when: "3 to 6 days before", what: "Credit (valid 12 months) — no cash refund" },
-  { when: "Less than 3 days, same-day, or no-show", what: "No refund or credit" },
+  { when: "7 or more days before your first camp day", what: "Full refund" },
+  { when: "3 to 6 days before", what: "No refund — but we'll move you to another available camp day, free" },
+  { when: "Less than 3 days, same-day, or no-show", what: "No refund or transfer" },
 ];
 
 export default function RefundPolicyPage() {
@@ -55,7 +57,6 @@ export default function RefundPolicyPage() {
                   </div>
                 ))}
               </div>
-              <p className="mb-3">Credits can be put toward any future Obsidian camp or program.</p>
               <p className="mb-3">
                 One extra out, even at late notice: if you cancel inside 3 days and we&apos;re able to fill
                 your child&apos;s spot from the waitlist, we&apos;ll refund you — no one loses out that way.
@@ -76,15 +77,8 @@ export default function RefundPolicyPage() {
                 <li className="flex gap-3">
                   <span className="text-[#7E57C2] flex-shrink-0">+</span>
                   <span>
-                    <strong className="text-white">Cancelling before the term starts (7+ days notice):</strong>{" "}
-                    full refund or credit — your choice.
-                  </span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-[#7E57C2] flex-shrink-0">+</span>
-                  <span>
-                    <strong className="text-white">Cancelling before the term starts (less than 7 days):</strong>{" "}
-                    credit, valid 12 months.
+                    <strong className="text-white">Cancelling before the term starts:</strong> full refund,
+                    any time up to your child&apos;s first session of the term.
                   </span>
                 </li>
                 <li className="flex gap-3">
@@ -115,9 +109,8 @@ export default function RefundPolicyPage() {
               <p className="mb-3">Kids get sick and injuries happen — we&apos;ll always look after you here.</p>
               <p>
                 If your child can&apos;t attend, or can&apos;t continue, because of illness or injury,
-                we&apos;ll give you a credit for the unused days or sessions (pro-rata for a part-completed
-                term or camp) on receipt of a doctor&apos;s certificate. This applies at any time — including
-                same-day.
+                we&apos;ll refund the unused days or sessions (pro-rata for a part-completed term or camp)
+                on receipt of a doctor&apos;s certificate. This applies at any time — including same-day.
               </p>
             </div>
 
@@ -153,8 +146,8 @@ export default function RefundPolicyPage() {
                 <li>The reason (attach a doctor&apos;s certificate for medical cancellations)</li>
               </ol>
               <p>
-                We&apos;ll confirm within 2 business days. Refunds go back to the card you paid with; credits
-                are recorded against your family and applied at your next booking.
+                We&apos;ll confirm within 2 business days. Refunds go back to the card you paid with, usually
+                within a few business days.
               </p>
             </div>
 
