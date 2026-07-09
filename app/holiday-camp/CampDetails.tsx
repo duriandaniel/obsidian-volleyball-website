@@ -62,6 +62,12 @@ const SCHEDULE = [
   { time: "11:00 AM", title: "Break", body: "20-minute break. Snacks, water, rest." },
   { time: "11:20 AM", title: "Serving, spiking, game play", body: "Serving and attacking work, then game play. Cool-down at the end." },
   { time: "1:00 PM", title: "Dismissal", body: "Players collected from the venue." },
+  {
+    time: "1:30 PM",
+    title: "Afternoon class (second week)",
+    body: "Separate two-hour afternoon class — book on its own or add it to a camp day for a full day of volleyball.",
+  },
+  { time: "3:30 PM", title: "Afternoon pick-up", body: "Afternoon class players collected from the venue." },
 ];
 
 const WHAT_TO_BRING = [

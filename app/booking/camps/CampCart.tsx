@@ -221,11 +221,21 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <div className="text-xs text-gray-500 mb-1">{s.programs.season ?? s.programs.title}</div>
-                  <div className="font-heading text-lg">{formatDate(s.starts_at)}</div>
-                  <div className="text-sm text-gray-400">
-                    {formatTime(s.starts_at)} – {formatTime(s.ends_at)} · {s.programs.venues.name}
+                  <div className="text-xs text-gray-500 mb-1 flex items-center gap-2 flex-wrap">
+                    <span>{s.programs.season ?? s.programs.title}</span>
+                    {s.programs.is_afternoon && (
+                      <span className="bg-[#7E57C2]/15 text-[#7E57C2] border border-[#7E57C2]/40 rounded px-1.5 py-0.5 font-heading text-[10px] tracking-[0.15em]">
+                        AFTERNOON · $36
+                      </span>
+                    )}
                   </div>
+                  <div className="font-heading text-lg">{formatDate(s.starts_at)}</div>
+                  {/* Time is the only thing separating a $70 camp day from a $36
+                      afternoon class on the same date — keep it headline-sized. */}
+                  <div className="font-heading text-base text-white mt-0.5">
+                    {formatTime(s.starts_at)} – {formatTime(s.ends_at)}
+                  </div>
+                  <div className="text-sm text-gray-400">{s.programs.venues.name}</div>
                   <div className="text-xs text-gray-500 mt-1">
                     {formatSpotsLeft(remaining)}
                   </div>
