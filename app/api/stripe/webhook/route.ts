@@ -3,7 +3,7 @@ import { stripe } from "@/lib/stripe/server";
 import { supabaseAdmin } from "@/lib/supabase/server";
 import { sendEmail } from "@/lib/email/send";
 import { sendMetaPurchase } from "@/lib/meta/capi";
-import { formatCents, priceCampFullDays, CAMP_HALF_DAY_CENTS } from "@/lib/booking/pricing";
+import { formatCents, priceCampFullDays, priceAfternoonClasses, CAMP_HALF_DAY_CENTS } from "@/lib/booking/pricing";
 import { readChunked } from "@/lib/booking/metadata";
 import { addToWaitlist, escHtml, isOnWaitlist, markWaitlistConverted } from "@/lib/booking/waitlist";
 import type Stripe from "stripe";
@@ -299,15 +299,24 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
 
   // Session list moved from a single `items` JSON value (which overflowed
   // Stripe's 500-char metadata limit for big carts) to chunked `session_ids` +
-  // a `half_days` bitstring. Read the legacy shape too for any in-flight session.
-  let items: { session_id: string; is_half_day: boolean }[];
+  // `half_days` / `afternoons` bitstrings. Read the legacy shapes too for any
+  // in-flight session (missing `afternoons` just means no afternoon classes).
+  let items: { session_id: string; is_half_day: boolean; is_afternoon: boolean }[];
   const legacyItems = session.metadata?.items;
   if (legacyItems) {
-    items = JSON.parse(legacyItems);
+    items = (JSON.parse(legacyItems) as { session_id: string; is_half_day: boolean }[]).map((i) => ({
+      ...i,
+      is_afternoon: false,
+    }));
   } else {
     const ids = readChunked(session.metadata, "session_ids").split(",").filter(Boolean);
     const halfDays = session.metadata?.half_days ?? "";
-    items = ids.map((session_id, i) => ({ session_id, is_half_day: halfDays[i] === "1" }));
+    const afternoons = session.metadata?.afternoons ?? "";
+    items = ids.map((session_id, i) => ({
+      session_id,
+      is_half_day: halfDays[i] === "1",
+      is_afternoon: afternoons[i] === "1",
+    }));
   }
   if (items.length === 0) {
     throw new Error("Camp checkout session missing session_ids metadata");
@@ -438,9 +447,13 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   // portion paid (promo codes shrink it proportionally). The old flat average
   // blended half and full days together, which made per-day revenue wrong and
   // erased the half-day signal from the amounts.
-  const fullCount = items.filter((i) => !i.is_half_day).length;
+  const fullCount = items.filter((i) => !i.is_afternoon && !i.is_half_day).length;
   const fullDayEach = fullCount ? priceCampFullDays(fullCount) / fullCount : 0;
-  const weights = items.map((i) => (i.is_half_day ? CAMP_HALF_DAY_CENTS : fullDayEach));
+  const afternoonCount = items.filter((i) => i.is_afternoon).length;
+  const afternoonEach = afternoonCount ? priceAfternoonClasses(afternoonCount) / afternoonCount : 0;
+  const weights = items.map((i) =>
+    i.is_afternoon ? afternoonEach : i.is_half_day ? CAMP_HALF_DAY_CENTS : fullDayEach
+  );
   const weightSum = weights.reduce((a, b) => a + b, 0);
   let allocated = 0;
   const bookingsToInsert = items.map((item, i) => {
@@ -518,7 +531,8 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   const { data: sessionRows } = await sb
     .from("sessions")
     .select("starts_at, ends_at, program_id")
-    .in("id", sessionIds);
+    .in("id", sessionIds)
+    .order("starts_at", { ascending: true });
 
   const programId = sessionRows?.[0]?.program_id;
   let venueName = "Baulkham Hills High School";
@@ -540,16 +554,25 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     }
   }
 
-  const dayList = (sessionRows ?? [])
-    .map((s) =>
-      new Date(s.starts_at).toLocaleDateString("en-AU", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
+  // Each line carries its own time range — carts can now mix morning camp
+  // days (9am–1pm) and afternoon classes (1:30–3:30pm), so a single
+  // hardcoded "Time:" row would be wrong.
+  const fmtDay = (s: { starts_at: string; ends_at: string }) => {
+    const date = new Date(s.starts_at).toLocaleDateString("en-AU", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      timeZone: "Australia/Sydney",
+    });
+    const time = (iso: string) =>
+      new Date(iso).toLocaleTimeString("en-AU", {
+        hour: "numeric",
+        minute: "2-digit",
         timeZone: "Australia/Sydney",
-      })
-    )
-    .join("<br>");
+      });
+    return `${date} · ${time(s.starts_at)} – ${time(s.ends_at)}`;
+  };
+  const dayList = (sessionRows ?? []).map(fmtDay).join("<br>");
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com";
 
@@ -565,7 +588,6 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Thanks for booking ${programTitle}. Here are your days:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${dayList}</p>
         <p><strong>Venue:</strong> ${venueHtml(venueName)}<br>
-           <strong>Time:</strong> 9:00 AM – 1:00 PM<br>
            ${jerseySize ? `<strong>Jersey:</strong> Obsidian training jersey (choose your size on collection)<br>` : ""}
            <strong>Total paid:</strong> ${formatCents(total)}</p>
         <p>Wear suitable indoor court shoes. We provide all volleyball gear.</p>
@@ -576,9 +598,9 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>See you on court!<br>Obsidian Volleyball Academy</p>
       </div>
     `,
-    text: `You're booked in.\n\nThanks for booking ${programTitle}.\n\nDays: ${(sessionRows ?? [])
-      .map((s) => new Date(s.starts_at).toLocaleDateString("en-AU", { dateStyle: "full", timeZone: "Australia/Sydney" }))
-      .join(", ")}\n\nVenue: ${venueName}\nTime: 9:00 AM – 1:00 PM${jerseySize ? `\nJersey: Obsidian training jersey (choose your size on collection)` : ""}\nTotal paid: ${formatCents(total)}\n\nNeed to change a day? Reschedules with 7+ days notice, subject to availability — just reply to this email. No change-of-mind refunds, but if we can fill your spot from the waitlist we'll refund you. Full policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
+    text: `You're booked in.\n\nThanks for booking ${programTitle}.\n\nDays:\n${(sessionRows ?? [])
+      .map(fmtDay)
+      .join("\n")}\n\nVenue: ${venueName}${jerseySize ? `\nJersey: Obsidian training jersey (choose your size on collection)` : ""}\nTotal paid: ${formatCents(total)}\n\nNeed to change a day? Reschedules with 7+ days notice, subject to availability — just reply to this email. No change-of-mind refunds, but if we can fill your spot from the waitlist we'll refund you. Full policy: ${appUrl}/faq\n\nObsidian Volleyball Academy`,
   });
 }
 

@@ -130,6 +130,10 @@ export default function HolidayCampPage() {
                 <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-1.5">TIME</p>
                 <p className="text-white text-base">9 AM &ndash; 1 PM</p>
               </div>
+              <div>
+                <p className="text-[#7E57C2] font-heading text-xs tracking-[0.3em] mb-1.5">AFTERNOON CLASSES</p>
+                <p className="text-white text-base">1:30 &ndash; 3:30 PM &middot; second week</p>
+              </div>
             </div>
             <div className="flex flex-col sm:flex-row gap-4">
               <TrackedBookingLink

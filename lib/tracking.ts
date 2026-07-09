@@ -29,7 +29,7 @@ declare global {
   }
 }
 
-export type BookingTier = "single_day" | "5_day_pack" | "half_day" | "term_program" | "general";
+export type BookingTier = "single_day" | "5_day_pack" | "half_day" | "afternoon_class" | "term_program" | "general";
 export type BookingLocation =
   | "hero"
   | "nav"
@@ -39,6 +39,7 @@ export type BookingLocation =
   | "pricing_single"
   | "pricing_package"
   | "pricing_half"
+  | "pricing_afternoon"
   | "camp_hero"
   | "camp_cta"
   | "coaches_cta"

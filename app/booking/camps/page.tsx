@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { supabaseAdmin } from "@/lib/supabase/server";
+import { isAfternoonProgramSlug } from "@/lib/booking/pricing";
 import { CampCart } from "./CampCart";
 
 export const metadata: Metadata = {
@@ -25,6 +26,7 @@ export type CampSessionView = {
     season: string | null;
     default_capacity: number;
     skill_level: string | null;
+    is_afternoon: boolean; // afternoon holiday class (1:30–3:30pm) vs morning camp
     venues: { name: string };
   };
 };
@@ -40,12 +42,15 @@ async function loadCampSessions(): Promise<CampSessionView[]> {
   }
   const now = new Date().toISOString();
 
-  // First, find published camp programs
+  // First, find published camp programs. On preview/staging deploys
+  // (PREVIEW_DRAFT_PROGRAMS=1, set in Vercel's Preview env only) drafts are
+  // shown too, so new programs can be reviewed before they go live on prod.
+  const statuses = process.env.PREVIEW_DRAFT_PROGRAMS === "1" ? ["published", "draft"] : ["published"];
   const { data: programs, error: pErr } = await sb
     .from("programs")
-    .select("id, title, season, default_capacity, skill_level, type, venue_id")
+    .select("id, title, slug, season, default_capacity, skill_level, type, venue_id")
     .eq("type", "camp")
-    .eq("status", "published")
+    .in("status", statuses)
     .is("deleted_at", null);
   if (pErr || !programs || programs.length === 0) return [];
 
@@ -95,6 +100,7 @@ async function loadCampSessions(): Promise<CampSessionView[]> {
         season: program.season,
         default_capacity: program.default_capacity,
         skill_level: program.skill_level,
+        is_afternoon: isAfternoonProgramSlug(program.slug),
         venues: { name: venueById.get(program.venue_id) ?? "Venue TBA" },
       },
     };
@@ -133,9 +139,9 @@ export default async function CampBookingPage() {
         <div className="text-gray-400 mb-8">
           <p className="mb-3">Pick the days you want, the total updates automatically:</p>
           <ul className="space-y-1">
-            <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> One day: $70</li>
-            <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Any 5 days: $250</li>
-            <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Each extra day after 5: $40</li>
+            <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Camp day (9am–1pm): $70 · any 5 days $250 · each extra day $40</li>
+            <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Half day (9–11am): $45</li>
+            <li className="flex items-center gap-2"><span className="text-[#7E57C2]">+</span> Afternoon class (1:30–3:30pm): $36 · all 5 afternoons $130</li>
           </ul>
         </div>
         <CampCart sessions={sessions} />

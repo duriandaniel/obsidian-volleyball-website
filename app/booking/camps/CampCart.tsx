@@ -94,14 +94,22 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
   // have one. Size is chosen on collection.
   const [jersey, setJersey] = useState<JerseyChoice>({ add: true });
 
+  // Afternoon classes (1:30–3:30pm) are a separate product from the morning
+  // camp: flat $36/class with their own 5-afternoon pass, no half-day option.
+  const afternoonById = useMemo(
+    () => new Map(sessions.map((s) => [s.id, s.programs.is_afternoon])),
+    [sessions]
+  );
+
   const pricing = useMemo(() => {
     return priceCampCart(
       Array.from(selected.entries()).map(([session_id, { is_half_day }]) => ({
         session_id,
         is_half_day,
+        is_afternoon: afternoonById.get(session_id) ?? false,
       }))
     );
-  }, [selected]);
+  }, [selected, afternoonById]);
 
   const jerseyCents = jersey.add ? CAMP_JERSEY_CENTS : 0;
   const grandTotal = pricing.total_cents + jerseyCents;
@@ -213,11 +221,21 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
             >
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <div className="text-xs text-gray-500 mb-1">{s.programs.season ?? s.programs.title}</div>
-                  <div className="font-heading text-lg">{formatDate(s.starts_at)}</div>
-                  <div className="text-sm text-gray-400">
-                    {formatTime(s.starts_at)} – {formatTime(s.ends_at)} · {s.programs.venues.name}
+                  <div className="text-xs text-gray-500 mb-1 flex items-center gap-2 flex-wrap">
+                    <span>{s.programs.season ?? s.programs.title}</span>
+                    {s.programs.is_afternoon && (
+                      <span className="bg-[#7E57C2]/15 text-[#7E57C2] border border-[#7E57C2]/40 rounded px-1.5 py-0.5 font-heading text-[10px] tracking-[0.15em]">
+                        AFTERNOON · $36
+                      </span>
+                    )}
                   </div>
+                  <div className="font-heading text-lg">{formatDate(s.starts_at)}</div>
+                  {/* Time is the only thing separating a $70 camp day from a $36
+                      afternoon class on the same date — keep it headline-sized. */}
+                  <div className="font-heading text-base text-white mt-0.5">
+                    {formatTime(s.starts_at)} – {formatTime(s.ends_at)}
+                  </div>
+                  <div className="text-sm text-gray-400">{s.programs.venues.name}</div>
                   <div className="text-xs text-gray-500 mt-1">
                     {formatSpotsLeft(remaining)}
                   </div>
@@ -240,26 +258,32 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
                 )}
               </div>
               {isSelected && !disabled && (
-                <div className="mt-3 pt-3 border-t border-white/10 flex gap-3 text-xs">
-                  <button
-                    type="button"
-                    onClick={() => setHalfDay(s.id, false)}
-                    className={`px-3 py-1.5 rounded ${
-                      !sel?.is_half_day ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10"
-                    }`}
-                  >
-                    Full day · 9am–1pm
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setHalfDay(s.id, true)}
-                    className={`px-3 py-1.5 rounded ${
-                      sel?.is_half_day ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10"
-                    }`}
-                  >
-                    Half day · 9–11am · $45
-                  </button>
-                </div>
+                s.programs.is_afternoon ? (
+                  <div className="mt-3 pt-3 border-t border-white/10 text-xs text-gray-400">
+                    Afternoon class · 1:30–3:30pm · $36
+                  </div>
+                ) : (
+                  <div className="mt-3 pt-3 border-t border-white/10 flex gap-3 text-xs">
+                    <button
+                      type="button"
+                      onClick={() => setHalfDay(s.id, false)}
+                      className={`px-3 py-1.5 rounded ${
+                        !sel?.is_half_day ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10"
+                      }`}
+                    >
+                      Full day · 9am–1pm
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setHalfDay(s.id, true)}
+                      className={`px-3 py-1.5 rounded ${
+                        sel?.is_half_day ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10"
+                      }`}
+                    >
+                      Half day · 9–11am · $45
+                    </button>
+                  </div>
+                )
               )}
             </div>
           );
@@ -274,14 +298,22 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
         ) : (
           <>
             <div className="space-y-1 text-sm">
-              <div className="flex justify-between">
-                <span className="text-gray-400">Full days</span>
-                <span>{pricing.full_days}</span>
-              </div>
+              {(pricing.full_days > 0 || pricing.afternoon_days === 0) && (
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Full days</span>
+                  <span>{pricing.full_days}</span>
+                </div>
+              )}
               {pricing.half_days > 0 && (
                 <div className="flex justify-between">
                   <span className="text-gray-400">Half days</span>
                   <span>{pricing.half_days}</span>
+                </div>
+              )}
+              {pricing.afternoon_days > 0 && (
+                <div className="flex justify-between">
+                  <span className="text-gray-400">Afternoon classes</span>
+                  <span>{pricing.afternoon_days}</span>
                 </div>
               )}
               <div className="flex justify-between">
@@ -309,6 +341,12 @@ export function CampCart({ sessions }: { sessions: Session[] }) {
             {pricing.show_five_day_nudge && (
               <div className="text-xs text-[#7E57C2] bg-[#7E57C2]/10 border border-[#7E57C2]/30 rounded p-2.5 leading-relaxed">
                 Add a 5th day and pay $30 less — the full 5-day pass is $250.
+              </div>
+            )}
+
+            {pricing.show_afternoon_five_nudge && (
+              <div className="text-xs text-[#7E57C2] bg-[#7E57C2]/10 border border-[#7E57C2]/30 rounded p-2.5 leading-relaxed">
+                Add the 5th afternoon and pay $14 less — all 5 afternoons are $130.
               </div>
             )}
 
