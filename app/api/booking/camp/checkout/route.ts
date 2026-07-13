@@ -39,17 +39,19 @@ export async function POST(req: NextRequest) {
 
   const sb = supabaseAdmin();
 
-  // Validate sessions exist + are camp + not full + scheduled
+  // Validate sessions exist + are camp + not full + scheduled + not yet ended
+  const now = new Date().toISOString();
   const sessionIds = body.items.map((i) => i.session_id);
   const { data: sessions } = await sb
     .from("sessions")
-    .select("id, starts_at, status, program_id, capacity_override, programs:program_id(id,title,slug,type,default_capacity)")
+    .select("id, starts_at, ends_at, status, program_id, capacity_override, programs:program_id(id,title,slug,type,default_capacity)")
     .in("id", sessionIds);
   if (!sessions || sessions.length !== sessionIds.length) {
     return NextResponse.json({ error: "One or more sessions not found" }, { status: 400 });
   }
   for (const s of sessions) {
-    if (s.status !== "scheduled") {
+    // Bookable until the camp day ENDS. Null-safe: fall back to the start time.
+    if (s.status !== "scheduled" || (s.ends_at ?? s.starts_at) < now) {
       return NextResponse.json({ error: `Session ${s.id} is not bookable` }, { status: 400 });
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -54,14 +54,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Trials are for junior classes only" }, { status: 400 });
   }
 
-  // Next upcoming session = the trial session.
+  // Next session that hasn't finished yet = the trial session (a class still in
+  // progress is bookable until it ends).
   const nowIso = new Date().toISOString();
   const { data: sessions } = await sb
     .from("sessions")
     .select("id, starts_at")
     .eq("program_id", program.id)
     .eq("status", "scheduled")
-    .gte("starts_at", nowIso)
+    .gte("ends_at", nowIso)
     .is("deleted_at", null)
     .order("starts_at")
     .limit(1);

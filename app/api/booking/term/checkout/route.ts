@@ -59,13 +59,15 @@ export async function POST(req: NextRequest) {
   const perWeekCents = rule?.term_per_session_cents ?? 0;
   if (perWeekCents <= 0) return NextResponse.json({ error: "Program has no price configured" }, { status: 400 });
 
+  // Count a class as remaining until it ENDS — a class running right now is
+  // still joinable and still billable in the pro-rata weeks-remaining total.
   const nowIso = new Date().toISOString();
   const { data: sessions } = await sb
     .from("sessions")
     .select("id, starts_at")
     .eq("program_id", program.id)
     .eq("status", "scheduled")
-    .gte("starts_at", nowIso)
+    .gte("ends_at", nowIso)
     .is("deleted_at", null)
     .order("starts_at");
   if (!sessions || sessions.length === 0) {

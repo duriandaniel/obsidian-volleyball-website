@@ -47,7 +47,9 @@ export default async function TermProgramPage({
       .select("id, starts_at, ends_at")
       .eq("program_id", program.id)
       .eq("status", "scheduled")
-      .gte("starts_at", new Date().toISOString())
+      // Bookable until the class ends, so a class running right now is still
+      // offered (and still counts toward the pro-rata weeks-remaining price).
+      .gte("ends_at", new Date().toISOString())
       .is("deleted_at", null)
       .order("starts_at"),
   ]);

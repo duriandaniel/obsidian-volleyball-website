@@ -66,7 +66,8 @@ async function loadCampSessions(): Promise<CampSessionView[]> {
     .select("id, starts_at, ends_at, program_id, capacity_override, status")
     .in("program_id", programIds)
     .eq("status", "scheduled")
-    .gte("starts_at", now)
+    // Bookable until the camp day ends, so a day in progress still shows.
+    .gte("ends_at", now)
     .is("deleted_at", null)
     .order("starts_at", { ascending: true });
   if (sErr || !sessions || sessions.length === 0) return [];

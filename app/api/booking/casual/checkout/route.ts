@@ -56,7 +56,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Casual booking is for junior classes; adults use the social scrim flow" }, { status: 400 });
   }
 
-  // Validate chosen sessions belong to this program, scheduled, in the future.
+  // Validate chosen sessions belong to this program, scheduled, and not yet
+  // finished — a class is bookable until it ENDS, not just until it starts.
   const now = new Date().toISOString();
   const { data: sessions } = await sb
     .from("sessions")
@@ -64,7 +65,7 @@ export async function POST(req: NextRequest) {
     .eq("program_id", program.id)
     .in("id", body.session_ids)
     .eq("status", "scheduled")
-    .gte("starts_at", now)
+    .gte("ends_at", now)
     .is("deleted_at", null)
     .order("starts_at");
   if (!sessions || sessions.length !== body.session_ids.length) {
