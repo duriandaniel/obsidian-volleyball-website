@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
   // multiple adult programs (Tue/Wed/Fri) in a single booking.
   const { data: sessions } = await sb
     .from("sessions")
-    .select("id, starts_at, status, program_id, capacity_override, programs:program_id(id, type, status, age_min, default_capacity, pricing_rule_id)")
+    .select("id, starts_at, ends_at, status, program_id, capacity_override, programs:program_id(id, type, status, age_min, default_capacity, pricing_rule_id)")
     .in("id", body.session_ids)
     .order("starts_at");
   if (!sessions || sessions.length !== body.session_ids.length) {
@@ -49,7 +49,9 @@ export async function POST(req: NextRequest) {
   for (const s of sessions) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const prog = s.programs as any;
-    if (s.status !== "scheduled" || s.starts_at < now) {
+    // Bookable until the night ENDS, not just until it starts. Null-safe: a
+    // session with no end time falls back to its start.
+    if (s.status !== "scheduled" || (s.ends_at ?? s.starts_at) < now) {
       return NextResponse.json({ error: "One of the selected nights is no longer bookable" }, { status: 400 });
     }
     if (!prog || prog.type !== "term" || prog.status !== "published" || !isAdultProgram(prog)) {

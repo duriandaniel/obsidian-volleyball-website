@@ -172,8 +172,9 @@ export async function notifyWaitlistOpenings(
   const summary: { session_id: string; program: string; starts_at: string; notified: number }[] = [];
   const infoById = await loadSessionInfo(sb, Array.from(new Set(sessionIds)));
   const nowIso = new Date().toISOString();
-  // Only sessions still in the future are worth queueing for.
-  const openings = Array.from(infoById.values()).filter((s) => s.starts_at > nowIso);
+  // Only sessions that haven't ended yet are worth queueing for (a class stays
+  // bookable until it ends).
+  const openings = Array.from(infoById.values()).filter((s) => (s.ends_at ?? s.starts_at) > nowIso);
   if (openings.length === 0) return summary;
 
   const notifiedEmails = new Set<string>(); // one email per person per event, even across sessions

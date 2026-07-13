@@ -26,18 +26,19 @@ export async function POST(req: NextRequest) {
 
   const sb = supabaseAdmin();
 
-  // Session must exist, be scheduled, and still be in the future.
+  // Session must exist, be scheduled, and not yet be finished (matches the
+  // booking window — a class is still joinable until it ends).
   const { data: session } = await sb
     .from("sessions")
-    .select("id, starts_at, status, capacity_override, program:programs(id, type, default_capacity), bookings(id, status)")
+    .select("id, starts_at, ends_at, status, capacity_override, program:programs(id, type, default_capacity), bookings(id, status)")
     .eq("id", body.session_id)
     .is("deleted_at", null)
     .maybeSingle();
   if (!session || session.status !== "scheduled") {
     return NextResponse.json({ error: "Session not found" }, { status: 404 });
   }
-  if (session.starts_at <= new Date().toISOString()) {
-    return NextResponse.json({ error: "This session has already started" }, { status: 400 });
+  if ((session.ends_at ?? session.starts_at) <= new Date().toISOString()) {
+    return NextResponse.json({ error: "This session has already ended" }, { status: 400 });
   }
 
   // Only sold-out sessions accept waitlist joins — same capacity coalesce as

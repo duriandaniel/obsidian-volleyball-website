@@ -30,7 +30,8 @@ export async function getNextCampWindow(): Promise<CampWindow | null> {
     .select("starts_at")
     .in("program_id", ids)
     .eq("status", "scheduled")
-    .gte("starts_at", now)
+    // A camp day still in progress counts as upcoming (bookable until it ends).
+    .gte("ends_at", now)
     .is("deleted_at", null)
     .order("starts_at", { ascending: true });
   if (!sessions || sessions.length === 0) return null;

@@ -80,7 +80,9 @@ export async function loadAdultSessions(): Promise<AdultSession[]> {
         adultPrograms.map((p) => p.id)
       )
       .eq("status", "scheduled")
-      .gte("starts_at", now)
+      // Bookable until the class ENDS, not just until it starts — a night still
+      // in progress stays on the list so latecomers can pay and join.
+      .gte("ends_at", now)
       .is("deleted_at", null)
       .order("starts_at"),
   ]);
@@ -151,7 +153,9 @@ export async function loadTermPrograms(): Promise<TermProgram[]> {
         programs.map((p) => p.id)
       )
       .eq("status", "scheduled")
-      .gte("starts_at", now)
+      // Bookable until the class ENDS (see loadAdultSessions). Keeps an
+      // in-progress class in the list and in the pro-rata week count.
+      .gte("ends_at", now)
       .is("deleted_at", null)
       .order("starts_at"),
   ]);
