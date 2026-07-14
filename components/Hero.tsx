@@ -147,7 +147,7 @@ export default function Hero({
           <motion.div
             className={
               actions
-                ? "flex flex-col gap-4 w-full max-w-md"
+                ? "flex flex-col gap-4 items-start"
                 : "flex flex-col sm:flex-row gap-4"
             }
             initial={{ opacity: 0, y: 20 }}
@@ -161,7 +161,7 @@ export default function Hero({
                   location={a.location}
                   tier={a.tier ?? "general"}
                   href={a.href}
-                  className={`w-full bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-8 sm:px-10 py-5 sm:py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide text-center ${
+                  className={`inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-8 sm:px-10 py-5 sm:py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide text-center ${
                     a.variant === "solidGlow" ? "glow-purple" : ""
                   }`}
                 >

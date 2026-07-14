@@ -92,7 +92,7 @@ export default function Home() {
       <Hero
         actions={[
           {
-            label: "BOOK WEEKLY SESSION",
+            label: "BOOK TERM CLASS",
             href: "/booking/term/junior",
             location: "hero",
             tier: "term_program",
