@@ -4,6 +4,7 @@ import CoachCard from "@/components/CoachCard";
 import Gallery from "@/components/Gallery";
 import ReelPlayer from "@/components/ReelPlayer";
 import SectionReveal from "@/components/SectionReveal";
+import Testimonials from "@/components/Testimonials";
 
 const FEATURED_REELS = [
   "Ethan_Beginner_Setting_Hand_Position_pdsrrv",
@@ -108,6 +109,9 @@ export default function HomeSections() {
 
       {/* Gallery */}
       <Gallery />
+
+      {/* Parent reviews — social proof right before meeting the team */}
+      <Testimonials />
 
       {/* Coaches */}
       <section id="coaches" className="py-24 lg:py-32 bg-[#111]">

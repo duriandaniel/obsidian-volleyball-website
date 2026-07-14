@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Hero from "@/components/Hero";
 import ProgramsStrip from "@/components/ProgramsStrip";
 import HomeSections from "@/components/HomeSections";
-import Testimonials from "@/components/Testimonials";
 
 export const metadata: Metadata = {
   title: "Junior Volleyball Coaching Sydney | West Ryde & Kellyville",
@@ -110,7 +109,6 @@ export default function Home() {
       />
       <ProgramsStrip />
       <HomeSections />
-      <Testimonials />
     </>
   );
 }
