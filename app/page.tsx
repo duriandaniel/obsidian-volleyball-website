@@ -89,7 +89,24 @@ export default function Home() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(eventSchema) }} />
-      <Hero />
+      <Hero
+        actions={[
+          {
+            label: "BOOK TERM CLASS",
+            href: "/booking/term/junior",
+            location: "hero",
+            tier: "term_program",
+            variant: "solidGlow",
+          },
+          {
+            label: "BOOK HOLIDAY CAMP",
+            href: "/booking/camps",
+            location: "hero",
+            tier: "general",
+            variant: "solid",
+          },
+        ]}
+      />
       <ProgramsStrip />
       <HomeSections />
     </>

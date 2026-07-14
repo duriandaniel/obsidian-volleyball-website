@@ -6,6 +6,17 @@ import Link from "next/link";
 import TrackedBookingLink from "./TrackedBookingLink";
 import type { BookingLocation, BookingTier } from "@/lib/tracking";
 
+// A booking CTA rendered as a full-width, salient button. When `actions` is
+// passed to Hero, these REPLACE the primary/secondary pair (used on the home
+// page for the "Book Weekly / Book Holiday Camp" quick-book buttons).
+export type HeroAction = {
+  label: string;
+  href: string;
+  location: BookingLocation;
+  tier?: BookingTier;
+  variant?: "solid" | "solidGlow"; // both purple; solidGlow adds the glow for primacy
+};
+
 interface HeroProps {
   eyebrow?: string;
   titleLine1?: string;
@@ -17,6 +28,7 @@ interface HeroProps {
   primaryTier?: BookingTier;
   secondaryHref?: string;
   secondaryLabel?: string;
+  actions?: HeroAction[];
 }
 
 const DEFAULTS = {
@@ -44,6 +56,7 @@ export default function Hero({
   primaryTier = DEFAULTS.primaryTier,
   secondaryHref = DEFAULTS.secondaryHref,
   secondaryLabel = DEFAULTS.secondaryLabel,
+  actions,
 }: HeroProps = {}) {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0A0A]">
@@ -132,25 +145,47 @@ export default function Hero({
           </motion.div>
 
           <motion.div
-            className="flex flex-col sm:flex-row gap-4"
+            className={
+              actions
+                ? "flex flex-col gap-4 items-start"
+                : "flex flex-col sm:flex-row gap-4"
+            }
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <TrackedBookingLink
-              location={primaryLocation}
-              tier={primaryTier}
-              href={primaryHref}
-              className="bg-[#5E35A8] text-white font-heading text-2xl px-10 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide text-center glow-purple"
-            >
-              {primaryLabel}
-            </TrackedBookingLink>
-            <Link
-              href={secondaryHref}
-              className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide text-center"
-            >
-              {secondaryLabel}
-            </Link>
+            {actions ? (
+              actions.map((a) => (
+                <TrackedBookingLink
+                  key={a.href}
+                  location={a.location}
+                  tier={a.tier ?? "general"}
+                  href={a.href}
+                  className={`inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-8 sm:px-10 py-5 sm:py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide text-center ${
+                    a.variant === "solidGlow" ? "glow-purple" : ""
+                  }`}
+                >
+                  {a.label}
+                </TrackedBookingLink>
+              ))
+            ) : (
+              <>
+                <TrackedBookingLink
+                  location={primaryLocation}
+                  tier={primaryTier}
+                  href={primaryHref}
+                  className="bg-[#5E35A8] text-white font-heading text-2xl px-10 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide text-center glow-purple"
+                >
+                  {primaryLabel}
+                </TrackedBookingLink>
+                <Link
+                  href={secondaryHref}
+                  className="border border-white/20 text-white font-heading text-2xl px-10 py-4 hover:border-[#7E57C2] hover:text-[#7E57C2] transition-all duration-300 tracking-wide text-center"
+                >
+                  {secondaryLabel}
+                </Link>
+              </>
+            )}
           </motion.div>
         </div>
       </div>
