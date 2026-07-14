@@ -1,17 +1,31 @@
 import Link from "next/link";
 import SectionReveal from "@/components/SectionReveal";
 
-// ⚠️ PLACEHOLDER CONTENT — these are NOT real reviews.
-// Replace `REVIEWS` with real Google reviews (reviewer first name + verbatim
-// text) and set `IS_SAMPLE = false`. Do NOT ship sample text to production.
-const IS_SAMPLE = true;
-
+// Real reviews supplied by OVA. Attribution kept generic (Parent/Player) by
+// request. Only obvious spelling/typos were corrected; wording preserved.
 type Review = { name: string; text: string; stars: number };
 
 const REVIEWS: Review[] = [
-  { name: "Sample parent", stars: 5, text: "Real Google review goes here — a parent's own words about their child's experience." },
-  { name: "Sample parent", stars: 5, text: "Real Google review goes here — short, specific quotes about a coach or a child's progress work best." },
-  { name: "Sample parent", stars: 5, text: "Real Google review goes here — three to five of your strongest reviews is plenty." },
+  {
+    name: "Parent",
+    stars: 5,
+    text: "If you're looking for a program that truly develops your child both on and off the court, Obsidian is something special. Highly recommended for kids who want more than just a sport but a meaningful journey for volleyball training.",
+  },
+  {
+    name: "Parent",
+    stars: 5,
+    text: "Best volleyball camp during the school holidays. My boy enjoyed it so much and his skills improved a lot with 5 days training.",
+  },
+  {
+    name: "Parent",
+    stars: 5,
+    text: "Obsidian Volleyball has benefited my daughter in a variety of ways. They advocate for youth and prioritise players' health and wellbeing, and adjust their training based on the child. My daughter has improved significantly since she started Obsidian. Lauren is a great trainer who shows her dedication for volleyball through teaching the youth. I'm glad that my daughter loves coming to Obsidian and that she is in good hands.",
+  },
+  {
+    name: "Player",
+    stars: 5,
+    text: "Coaches are super approachable, good consistent focus on the details of the sport and it's run really well by all their coaches.",
+  },
 ];
 
 const GOOGLE_REVIEWS_URL =
@@ -27,11 +41,6 @@ export default function Testimonials() {
             <div>
               <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-3">FROM OUR FAMILIES</p>
               <h2 className="font-heading text-5xl lg:text-7xl text-white tracking-wide">REVIEWS</h2>
-              {IS_SAMPLE && (
-                <p className="mt-3 text-gray-600 text-xs tracking-wide">
-                  Sample layout — real Google reviews to be added.
-                </p>
-              )}
             </div>
             <Link
               href={GOOGLE_REVIEWS_URL}
@@ -47,9 +56,9 @@ export default function Testimonials() {
           </div>
         </SectionReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-10 lg:gap-14">
           {REVIEWS.map((r, i) => (
-            <SectionReveal key={i} delay={i * 0.1}>
+            <SectionReveal key={i} delay={(i % 2) * 0.1}>
               <figure className="border-l-2 border-[#7E57C2]/40 pl-6">
                 <div className="text-[#7E57C2] text-sm tracking-[0.3em] mb-4" aria-label={`${r.stars} out of 5`}>
                   {"★".repeat(r.stars)}
