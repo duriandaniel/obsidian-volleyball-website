@@ -44,7 +44,7 @@ type ProgramRow = {
   pricing_rule_id: string | null;
   venues: { name: string; address: string | null } | null;
   pricing_rules: { term_per_session_cents: number | null } | null;
-  sessions: { id: string; starts_at: string; ends_at: string }[];
+  sessions: { id: string; starts_at: string; ends_at: string; status: "scheduled" | "cancelled"; notes: string | null }[];
 };
 
 export default async function TermProgramPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -57,17 +57,20 @@ export default async function TermProgramPage({ params }: { params: Promise<{ sl
   // Embedded session filters keep the parent row even when zero match, and are
   // ordered ascending so [0] is the next upcoming class. Bookable until a class
   // ENDS, so one running right now still shows (and still counts toward pricing).
+  // We pull BOTH scheduled and cancelled sessions so cancelled dates (e.g. a
+  // venue closure) can be shown struck-through — pricing and booking below only
+  // ever use the scheduled ones.
   const { data } = await sb
     .from("programs")
     .select(
       "id, slug, title, season, description, skill_level, age_min, age_max, default_capacity, venue_id, pricing_rule_id, " +
-        "venues(name, address), pricing_rules(term_per_session_cents), sessions(id, starts_at, ends_at)"
+        "venues(name, address), pricing_rules(term_per_session_cents), sessions(id, starts_at, ends_at, status, notes)"
     )
     .eq("slug", slug)
     .eq("type", "term")
     .eq("status", "published")
     .is("deleted_at", null)
-    .eq("sessions.status", "scheduled")
+    .in("sessions.status", ["scheduled", "cancelled"])
     .gte("sessions.ends_at", nowIso)
     .is("sessions.deleted_at", null)
     .order("starts_at", { referencedTable: "sessions" })
@@ -80,21 +83,24 @@ export default async function TermProgramPage({ params }: { params: Promise<{ sl
 
   const venue = program.venues;
   const perWeekCents = program.pricing_rules?.term_per_session_cents ?? 0;
-  const remainingSessions = program.sessions ?? [];
+  const upcomingSessions = program.sessions ?? [];
+  // Bookable + billable = scheduled only. Cancelled dates never get charged for
+  // or booked into; they're passed through purely for the struck-through notice.
+  const scheduledSessions = upcomingSessions.filter((s) => s.status === "scheduled");
   const billableWeeks = billableTermWeeks(
     venue?.name,
-    remainingSessions.map((s) => s.starts_at)
+    scheduledSessions.map((s) => s.starts_at)
   );
 
-  // Capacity check on the next upcoming session. Kept as a second query because
-  // it needs the first session's id — which the embedded query above already
-  // resolved, so this is one extra hop rather than the old two.
+  // Capacity check on the next upcoming SCHEDULED session. Kept as a second
+  // query because it needs the first session's id — which the embedded query
+  // above already resolved, so this is one extra hop rather than the old two.
   let booked = 0;
-  if (remainingSessions[0]) {
+  if (scheduledSessions[0]) {
     const { count } = await sb
       .from("bookings")
       .select("id", { count: "exact", head: true })
-      .eq("session_id", remainingSessions[0].id)
+      .eq("session_id", scheduledSessions[0].id)
       .in("status", ["confirmed", "pending", "attended"])
       .is("deleted_at", null);
     booked = count ?? 0;
@@ -118,7 +124,14 @@ export default async function TermProgramPage({ params }: { params: Promise<{ sl
             billableWeeks={billableWeeks}
             casualPriceCents={CASUAL_PRICE_CENTS}
             trialPriceCents={trialPriceCentsForVenue(venue?.name)}
-            sessions={remainingSessions.map((s) => ({ id: s.id, starts_at: s.starts_at, ends_at: s.ends_at }))}
+            sessions={scheduledSessions.map((s) => ({ id: s.id, starts_at: s.starts_at, ends_at: s.ends_at }))}
+            displaySessions={upcomingSessions.map((s) => ({
+              id: s.id,
+              starts_at: s.starts_at,
+              ends_at: s.ends_at,
+              cancelled: s.status === "cancelled",
+              note: s.notes,
+            }))}
             soldOut={soldOut}
           />
         </Suspense>

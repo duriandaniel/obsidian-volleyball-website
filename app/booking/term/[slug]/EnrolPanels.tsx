@@ -10,6 +10,12 @@ import { TermEnrolForm } from "./TermEnrolForm";
 
 const TZ = "Australia/Sydney";
 type SessionLite = { id: string; starts_at: string; ends_at: string };
+type DisplaySession = SessionLite & { cancelled: boolean; note: string | null };
+
+const fmtDay = (iso: string) =>
+  new Date(iso).toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long", timeZone: TZ });
+const fmtTime = (iso: string) =>
+  new Date(iso).toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit", timeZone: TZ });
 
 export function EnrolPanels({
   programId,
@@ -19,6 +25,7 @@ export function EnrolPanels({
   casualPriceCents,
   trialPriceCents,
   sessions,
+  displaySessions,
   soldOut,
 }: {
   programId: string;
@@ -28,42 +35,52 @@ export function EnrolPanels({
   casualPriceCents: number;
   trialPriceCents: number;
   sessions: SessionLite[];
+  displaySessions: DisplaySession[];
   soldOut: boolean;
 }) {
   // Trial deep-links (/booking/term/<slug>?plan=trial) book the next upcoming
   // session only, so show just that one; the full-term flow shows every class.
   const defaultPlan: "term" | "trial" = useSearchParams().get("plan") === "trial" ? "trial" : "term";
-  const shown = defaultPlan === "trial" ? sessions.slice(0, 1) : sessions;
+  // Trial view shows only the next bookable (scheduled) class; the term view
+  // lists every date, with cancelled ones struck-through so families see why a
+  // week is missing. Count in the heading = actual classes running (scheduled).
+  const rows = defaultPlan === "trial" ? displaySessions.filter((s) => !s.cancelled).slice(0, 1) : displaySessions;
+  const runningCount = sessions.length;
 
   return (
     <div className="grid gap-8 md:grid-cols-[1fr_320px]">
       <div>
         <h2 className="font-heading text-xl mb-3">
-          {defaultPlan === "trial" ? "Your trial class" : `Classes this term (${sessions.length})`}
+          {defaultPlan === "trial" ? "Your trial class" : `Classes this term (${runningCount})`}
         </h2>
-        {sessions.length === 0 ? (
+        {displaySessions.length === 0 ? (
           <div className="border border-white/10 rounded-lg p-6 text-gray-400 text-sm">
             No upcoming classes this term. The term may have ended.
           </div>
         ) : (
           <div className="border border-white/10 rounded-lg overflow-hidden">
-            {shown.map((s) => (
-              <div key={s.id} className="px-4 py-3 border-b border-white/5 last:border-b-0 flex items-center justify-between text-sm">
-                <span>
-                  {new Date(s.starts_at).toLocaleDateString("en-AU", {
-                    weekday: "long",
-                    day: "numeric",
-                    month: "long",
-                    timeZone: TZ,
-                  })}
-                </span>
-                <span className="text-gray-400">
-                  {new Date(s.starts_at).toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit", timeZone: TZ })}
-                  {" – "}
-                  {new Date(s.ends_at).toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit", timeZone: TZ })}
-                </span>
-              </div>
-            ))}
+            {rows.map((s) =>
+              s.cancelled ? (
+                <div
+                  key={s.id}
+                  className="px-4 py-3 border-b border-white/5 last:border-b-0 flex items-center justify-between text-sm bg-white/[0.015]"
+                >
+                  <span className="line-through text-gray-600">{fmtDay(s.starts_at)}</span>
+                  <span className="text-amber-500/80 text-xs font-heading tracking-wide uppercase text-right">
+                    No class{s.note ? ` · ${s.note}` : ""}
+                  </span>
+                </div>
+              ) : (
+                <div key={s.id} className="px-4 py-3 border-b border-white/5 last:border-b-0 flex items-center justify-between text-sm">
+                  <span>{fmtDay(s.starts_at)}</span>
+                  <span className="text-gray-400">
+                    {fmtTime(s.starts_at)}
+                    {" – "}
+                    {fmtTime(s.ends_at)}
+                  </span>
+                </div>
+              )
+            )}
           </div>
         )}
       </div>
