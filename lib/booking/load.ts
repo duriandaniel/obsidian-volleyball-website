@@ -56,11 +56,15 @@ export async function loadAdultSessions(): Promise<AdultSession[]> {
   }
   const now = new Date().toISOString();
 
+  // On preview/staging deploys (PREVIEW_DRAFT_PROGRAMS=1, set in Vercel's Preview
+  // env only) drafts are shown too, so new programs can be reviewed before they
+  // go live on prod. Prod (no flag) sees published only. Mirrors the camps page.
+  const statuses = process.env.PREVIEW_DRAFT_PROGRAMS === "1" ? ["published", "draft"] : ["published"];
   const { data: programs } = await sb
     .from("programs")
     .select("id, age_min, default_capacity, venue_id, pricing_rule_id")
     .eq("type", "term")
-    .eq("status", "published")
+    .in("status", statuses)
     .is("deleted_at", null);
   const adultPrograms = (programs ?? []).filter((p) => isAdultProgram(p));
   if (adultPrograms.length === 0) return [];
@@ -131,11 +135,13 @@ export async function loadTermPrograms(): Promise<TermProgram[]> {
   }
   const now = new Date().toISOString();
 
+  // Draft-preview on staging only (see loadAdultSessions / camps page).
+  const statuses = process.env.PREVIEW_DRAFT_PROGRAMS === "1" ? ["published", "draft"] : ["published"];
   const { data: programs } = await sb
     .from("programs")
     .select("id, slug, title, season, skill_level, age_min, default_capacity, venue_id, pricing_rule_id")
     .eq("type", "term")
-    .eq("status", "published")
+    .in("status", statuses)
     .is("deleted_at", null);
   if (!programs || programs.length === 0) return [];
 
