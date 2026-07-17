@@ -15,7 +15,15 @@ const JOINING = [
   "Position specific coaching",
   "Individual assessment and progress tracking",
   "End of batch showcase",
-  "Led by premier level coaches (NSW top grade)",
+  "Led by a rotating panel of specialist coaches, each a high-level player in their position",
+];
+
+const COACHING = [
+  "Eight weeks, four two-week specialist blocks",
+  "Each block led by a coach who plays at a high level in that exact position",
+  "Hitting, setting, middle blocking and defence, each taught by a specialist",
+  "A constant head coach ties it together and tracks your progress across the batch",
+  "The whole squad trains every session; each block just sharpens a different part of your game",
 ];
 
 const TRIAL = [
@@ -35,6 +43,7 @@ const SQUAD = [
 const VISION = [
   "Build toward a representative team for future competitions",
   "One squad, built to two team position ratios",
+  "Access to specialist coaches you wouldn't normally train under in one program",
   "Consistency earns first pick",
   "Quarterly batches: Winter, Spring, Summer, Autumn",
 ];
@@ -74,6 +83,7 @@ export default function MensSquadInfoPage() {
 
         <div className="space-y-10">
           <Section title="What you're joining" items={JOINING} />
+          <Section title="The coaching" items={COACHING} />
           <Section title="The 2 week trial" items={TRIAL} />
           <Section title="If you make the squad" items={SQUAD} />
           <Section title="The vision" items={VISION} />
