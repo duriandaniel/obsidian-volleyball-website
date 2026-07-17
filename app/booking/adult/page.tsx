@@ -19,10 +19,10 @@ export default function AdultBookingPage() {
             href="/booking/adult/scrim"
             eyebrow="DROP IN"
             label="Social Scrims"
-            blurb="Casual mixed nights — pay per night, come when you can."
+            blurb="Casual mixed nights. Pay per night, come when you can."
           />
           <AdultBox
-            href="/booking/mens-squad"
+            href="/mens-squad"
             eyebrow="TRIAL"
             label="Men's Trials"
             blurb="Positional tryout for the Men's Development Squad. Trial spots are limited."
