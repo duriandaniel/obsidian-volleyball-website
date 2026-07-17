@@ -8,6 +8,8 @@ import { packChunked } from "@/lib/booking/metadata";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
+const POSITIONS = ["setter", "outside", "middle", "opposite", "libero", "flex"] as const;
+
 const Body = z.object({
   session_ids: z.array(z.string().regex(UUID)).min(1).max(12),
   jersey: z.object({ add: z.boolean().default(false) }).optional(),
@@ -15,9 +17,15 @@ const Body = z.object({
     name: z.string().min(1).max(120),
     email: z.string().email(),
     phone: z.string().min(5).max(40),
-    level: z.enum(["beginner", "social_player", "svl_player"]),
+    // Generic scrim "level" is optional — the Men's Squad trial collects richer
+    // intake (position/experience/highest level) instead.
+    level: z.enum(["beginner", "social_player", "svl_player"]).optional(),
     source: z.enum(["", "google", "instagram", "facebook", "word_of_mouth", "flyer", "newsletter"]).optional(),
     marketing_consent: z.literal(true, { message: "Marketing consent is required" }),
+    // Optional positional-tryout intake (Men's Development Squad trial only).
+    nominated_positions: z.array(z.enum(POSITIONS)).max(6).optional(),
+    volleyball_experience: z.string().max(60).optional(),
+    highest_level: z.string().max(60).optional(),
   }),
 });
 
@@ -37,14 +45,18 @@ export async function POST(req: NextRequest) {
   // multiple adult programs (Tue/Wed/Fri) in a single booking.
   const { data: sessions } = await sb
     .from("sessions")
-    .select("id, starts_at, ends_at, status, program_id, capacity_override, programs:program_id(id, type, status, age_min, default_capacity, pricing_rule_id)")
+    .select("id, starts_at, ends_at, status, program_id, capacity_override, programs:program_id(id, type, title, status, age_min, default_capacity, pricing_rule_id)")
     .in("id", body.session_ids)
     .order("starts_at");
   if (!sessions || sessions.length !== body.session_ids.length) {
     return NextResponse.json({ error: "One or more selected nights are no longer available" }, { status: 400 });
   }
 
-  // Validate every session is a published, upcoming, adult drop-in night.
+  // Validate every session is a bookable, upcoming, adult drop-in night. On
+  // preview/staging (PREVIEW_DRAFT_PROGRAMS=1) draft programs check out too, so
+  // the full booking flow can be tested before a program goes live on prod.
+  const allowDraft = process.env.PREVIEW_DRAFT_PROGRAMS === "1";
+  const okStatus = (st: string) => st === "published" || (allowDraft && st === "draft");
   const ruleIds = new Set<string>();
   for (const s of sessions) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,7 +66,7 @@ export async function POST(req: NextRequest) {
     if (s.status !== "scheduled" || (s.ends_at ?? s.starts_at) < now) {
       return NextResponse.json({ error: "One of the selected nights is no longer bookable" }, { status: 400 });
     }
-    if (!prog || prog.type !== "term" || prog.status !== "published" || !isAdultProgram(prog)) {
+    if (!prog || prog.type !== "term" || !okStatus(prog.status) || !isAdultProgram(prog)) {
       return NextResponse.json({ error: "One of the selected nights is not an adult session" }, { status: 400 });
     }
     if (prog.pricing_rule_id) ruleIds.add(prog.pricing_rule_id);
@@ -146,8 +158,28 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  // Best-effort: store positional-tryout intake on the participant when provided
+  // (Men's Squad trial). Wrapped so a missing column (migration 0005 not yet
+  // applied) or any error never blocks the booking/payment.
+  {
+    const intake: Record<string, unknown> = {};
+    if (body.player.nominated_positions?.length) intake.nominated_positions = body.player.nominated_positions;
+    if (body.player.volleyball_experience) intake.volleyball_experience = body.player.volleyball_experience;
+    if (body.player.highest_level) intake.highest_level = body.player.highest_level;
+    if (Object.keys(intake).length) {
+      const { error: iErr } = await sb.from("participants").update(intake).eq("id", participantId);
+      if (iErr) console.error("dropin checkout: intake save skipped", iErr.message);
+    }
+  }
+
   const count = sessions.length;
   const total = perSessionCents * count;
+
+  // Product name from the program title when the nights share one program (e.g.
+  // the Men's Squad trial); falls back to the generic scrim label otherwise.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const titles = new Set(sessions.map((s) => (s.programs as any).title as string));
+  const productBase = titles.size === 1 ? Array.from(titles)[0] : "Adult Social Scrim";
 
   // Optional jersey add-on (opt-in; size chosen on collection).
   const jerseyAdd = body.jersey?.add === true;
@@ -175,7 +207,7 @@ export async function POST(req: NextRequest) {
           price_data: {
             currency: "aud",
             product_data: {
-              name: `Adult Social Scrim · ${count} night${count === 1 ? "" : "s"}`,
+              name: `${productBase} · ${count} night${count === 1 ? "" : "s"}`,
               description: sessions
                 .map((s) =>
                   new Date(s.starts_at).toLocaleDateString("en-AU", {
@@ -213,7 +245,7 @@ export async function POST(req: NextRequest) {
         // Chunked to stay under Stripe's 500-char metadata limit. See lib/booking/metadata.ts.
         ...packChunked("session_ids", sessions.map((s) => s.id).join(",")),
         per_session_cents: String(perSessionCents),
-        level: body.player.level,
+        level: body.player.level ?? "",
         jersey_size: jerseyAdd ? "TBC" : "none",
         jersey_cents: String(jerseyCents),
       },

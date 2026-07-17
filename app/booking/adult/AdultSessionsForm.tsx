@@ -32,6 +32,32 @@ const LEVELS: { value: Level; label: string }[] = [
   { value: "svl_player", label: "SVL Player" },
 ];
 
+// Men's Development Squad positional-tryout intake.
+const POSITIONS: { value: string; label: string }[] = [
+  { value: "setter", label: "Setter" },
+  { value: "outside", label: "Outside Hitter" },
+  { value: "middle", label: "Middle Blocker" },
+  { value: "opposite", label: "Opposite" },
+  { value: "libero", label: "Libero" },
+  { value: "flex", label: "Flexible / Any" },
+];
+const EXPERIENCE: { value: string; label: string }[] = [
+  { value: "", label: "Select…" },
+  { value: "under 1 year", label: "Under 1 year" },
+  { value: "1-3 years", label: "1–3 years" },
+  { value: "3-5 years", label: "3–5 years" },
+  { value: "5+ years", label: "5+ years" },
+];
+const HIGHEST_LEVEL: { value: string; label: string }[] = [
+  { value: "", label: "Select…" },
+  { value: "social", label: "Social / never competitive" },
+  { value: "school", label: "School" },
+  { value: "club", label: "Club / local competition" },
+  { value: "state_league", label: "State League (SVL)" },
+  { value: "premier", label: "National / Premier League" },
+  { value: "other", label: "Other" },
+];
+
 const SOURCES: { value: Source; label: string }[] = [
   { value: "", label: "Select…" },
   { value: "google", label: "Google" },
@@ -45,9 +71,11 @@ const SOURCES: { value: Source; label: string }[] = [
 export function AdultSessionsForm({
   sessions,
   showJersey = true,
+  squadIntake = false,
 }: {
   sessions: AdultSession[];
   showJersey?: boolean;
+  squadIntake?: boolean;
 }) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [mode, setMode] = useState<Mode>("browsing");
@@ -55,6 +83,9 @@ export function AdultSessionsForm({
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [level, setLevel] = useState<Level>("");
+  const [positions, setPositions] = useState<Set<string>>(new Set());
+  const [experience, setExperience] = useState("");
+  const [highest, setHighest] = useState("");
   const [source, setSource] = useState<Source>("");
   const [consent, setConsent] = useState(false);
   const [jersey, setJersey] = useState<JerseyChoice>(EMPTY_JERSEY);
@@ -87,7 +118,13 @@ export function AdultSessionsForm({
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!level) return setError("Please select your level.");
+    if (squadIntake) {
+      if (positions.size === 0) return setError("Select at least one position you play.");
+      if (!experience) return setError("Please select your volleyball experience.");
+      if (!highest) return setError("Please select your highest level played.");
+    } else if (!level) {
+      return setError("Please select your level.");
+    }
     if (!consent) return setError("Please tick the photo/marketing consent box.");
     setSubmitting(true);
     setError(null);
@@ -101,7 +138,20 @@ export function AdultSessionsForm({
         body: JSON.stringify({
           session_ids: Array.from(selected),
           jersey: { add: jersey.add },
-          player: { name, email, phone, level, source, marketing_consent: consent },
+          player: {
+            name,
+            email,
+            phone,
+            source,
+            marketing_consent: consent,
+            ...(squadIntake
+              ? {
+                  nominated_positions: Array.from(positions),
+                  volleyball_experience: experience,
+                  highest_level: highest,
+                }
+              : { level }),
+          },
         }),
       });
       const json = await res.json();
@@ -207,7 +257,44 @@ export function AdultSessionsForm({
                 <Input label="Name" value={name} onChange={setName} required />
                 <Input label="Email" type="email" value={email} onChange={setEmail} required />
                 <Input label="Mobile" type="tel" value={phone} onChange={setPhone} required />
-                <Select label="Your level" value={level} onChange={(v) => setLevel(v as Level)} options={LEVELS} required />
+                {squadIntake ? (
+                  <>
+                    <div>
+                      <span className="block text-xs text-gray-500 mb-2">
+                        Position(s) you play<span className="text-[#7E57C2]">*</span>
+                      </span>
+                      <div className="grid grid-cols-2 gap-2">
+                        {POSITIONS.map((p) => {
+                          const on = positions.has(p.value);
+                          return (
+                            <button
+                              key={p.value}
+                              type="button"
+                              onClick={() =>
+                                setPositions((prev) => {
+                                  const next = new Set(prev);
+                                  next.has(p.value) ? next.delete(p.value) : next.add(p.value);
+                                  return next;
+                                })
+                              }
+                              className={`px-3 py-2 rounded text-xs text-left transition-colors border ${
+                                on
+                                  ? "border-[#7E57C2] bg-[#7E57C2]/10 text-white"
+                                  : "border-white/10 bg-white/5 text-gray-300 hover:border-white/30"
+                              }`}
+                            >
+                              {p.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <Select label="Volleyball experience" value={experience} onChange={setExperience} options={EXPERIENCE} required />
+                    <Select label="Highest level played" value={highest} onChange={setHighest} options={HIGHEST_LEVEL} required />
+                  </>
+                ) : (
+                  <Select label="Your level" value={level} onChange={(v) => setLevel(v as Level)} options={LEVELS} required />
+                )}
                 <Select label="How did you hear about us?" value={source} onChange={(v) => setSource(v as Source)} options={SOURCES} />
                 <label className="flex items-start gap-2 cursor-pointer">
                   <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#7E57C2]" required />

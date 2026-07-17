@@ -101,7 +101,7 @@ export default async function MensSquadPage() {
             for the drop.
           </div>
         ) : (
-          <AdultSessionsForm sessions={sessions} showJersey={false} />
+          <AdultSessionsForm sessions={sessions} showJersey={false} squadIntake />
         )}
       </div>
     </div>
