@@ -101,6 +101,24 @@ export default function RefundPolicyPage() {
               </ul>
             </div>
 
+            {/* Men's Development Squad */}
+            <div>
+              <h2 className="font-heading text-2xl text-white tracking-wide mb-4 pb-3 border-b border-[#7E57C2]/30">
+                MEN&apos;S DEVELOPMENT SQUAD
+              </h2>
+              <p className="mb-3">
+                The Men&apos;s Development Squad — both the two-week trial and the 8-week squad batch — is{" "}
+                <strong className="text-white">non-refundable and non-transferable</strong>. Trial spots and squad
+                places are strictly capped, coaches are booked ahead, and a place you hold is a place someone on the
+                reserve list misses out on.
+              </p>
+              <p className="text-gray-500 text-sm">
+                Selected players receive a private offer with a 48-hour window to accept; once you pay to accept your
+                squad place, that payment secures your spot for the batch and isn&apos;t refundable for change of
+                mind. Illness and injury are still covered — see below.
+              </p>
+            </div>
+
             {/* Medical */}
             <div>
               <h2 className="font-heading text-2xl text-white tracking-wide mb-4 pb-3 border-b border-[#7E57C2]/30">
@@ -162,7 +180,7 @@ export default function RefundPolicyPage() {
             </p>
 
             <div className="border-t border-white/[0.06] pt-6">
-              <p className="text-gray-600 text-xs">Last updated: 9 July 2026</p>
+              <p className="text-gray-600 text-xs">Last updated: 17 July 2026</p>
             </div>
           </div>
         </div>

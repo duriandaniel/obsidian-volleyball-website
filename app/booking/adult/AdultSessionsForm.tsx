@@ -42,7 +42,13 @@ const SOURCES: { value: Source; label: string }[] = [
   { value: "newsletter", label: "Newsletter" },
 ];
 
-export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
+export function AdultSessionsForm({
+  sessions,
+  showJersey = true,
+}: {
+  sessions: AdultSession[];
+  showJersey?: boolean;
+}) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [mode, setMode] = useState<Mode>("browsing");
   const [name, setName] = useState("");
@@ -189,7 +195,9 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
                 >
                   CONTINUE
                 </button>
-                <div className="text-xs text-gray-500">{count} night{count === 1 ? "" : "s"} · $20 each</div>
+                <div className="text-xs text-gray-500">
+                  {count} night{count === 1 ? "" : "s"} · {formatCents(count ? Math.round(total / count) : 0)} each
+                </div>
               </>
             )}
 
@@ -208,7 +216,7 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
                   </span>
                 </label>
 
-                <JerseyAddOn value={jersey} onChange={setJersey} />
+                {showJersey && <JerseyAddOn value={jersey} onChange={setJersey} />}
 
                 {error && <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded p-3">{error}</div>}
 
