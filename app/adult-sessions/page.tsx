@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import SectionReveal from "@/components/SectionReveal";
 import TrackPixelView from "@/components/TrackPixelView";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
@@ -61,6 +62,30 @@ export default function AdultSessionsPage() {
             >
               BOOK A SPOT
             </TrackedBookingLink>
+          </SectionReveal>
+        </div>
+      </section>
+
+      {/* Men's Development Squad */}
+      <section className="py-16 lg:py-20 bg-[#0A0A0A]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <div className="border border-[#7E57C2]/40 rounded-xl p-8 lg:p-10 bg-[#7E57C2]/[0.05]">
+              <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">NEW &middot; WINTER &apos;26 BATCH</p>
+              <h2 className="font-heading text-3xl lg:text-5xl text-white tracking-wide leading-[0.95] mb-4">
+                MEN&apos;S DEVELOPMENT SQUAD
+              </h2>
+              <p className="text-gray-300 text-base lg:text-lg leading-relaxed mb-6 max-w-2xl">
+                A structured men&apos;s program, not social drop in. A two week positional trial, then an 8 week
+                coached squad building toward a representative team.
+              </p>
+              <Link
+                href="/mens-squad"
+                className="inline-flex items-center gap-2 text-[#7E57C2] hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors"
+              >
+                Read more <span aria-hidden>→</span>
+              </Link>
+            </div>
           </SectionReveal>
         </div>
       </section>

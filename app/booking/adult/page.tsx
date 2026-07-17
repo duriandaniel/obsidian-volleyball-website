@@ -22,7 +22,7 @@ export default function AdultBookingPage() {
             blurb="Casual mixed nights. Pay per night, come when you can."
           />
           <AdultBox
-            href="/mens-squad"
+            href="/booking/mens-squad"
             eyebrow="TRIAL"
             label="Men's Trials"
             blurb="Positional tryout for the Men's Development Squad. Trial spots are limited."
