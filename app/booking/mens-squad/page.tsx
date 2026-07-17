@@ -27,7 +27,7 @@ export default async function MensSquadPage() {
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white pt-24 pb-16">
       <div className="max-w-4xl mx-auto px-6">
-        <Link href="/booking" className="text-xs text-gray-500 hover:text-white tracking-wider uppercase">
+        <Link href="/booking/adult" className="text-xs text-gray-500 hover:text-white tracking-wider uppercase">
           ← Back
         </Link>
 
@@ -79,10 +79,9 @@ export default async function MensSquadPage() {
         <div className="border border-[#7E57C2]/40 rounded-lg p-6 bg-[#7E57C2]/[0.06] mb-8">
           <div className="font-heading text-xs tracking-[0.3em] text-[#7E57C2] mb-3">IF YOU MAKE THE SQUAD</div>
           <p className="text-gray-300 leading-relaxed">
-            The 8-week squad is <strong className="text-white">$216 all-in</strong> — that&apos;s about{" "}
-            <strong className="text-white">$27/week</strong>, and it includes a training shirt. Selected players get
-            a private offer with 48 hours to accept. We&apos;re telling you the price up front so only serious
-            players take a trial spot.
+            The 8-week squad is <strong className="text-white">$216 all-in</strong> — about{" "}
+            <strong className="text-white">$27/week</strong>, and it includes your training shirt. Make the squad and
+            you&apos;ll get a private offer with 48 hours to lock in your place.
           </p>
         </div>
 
