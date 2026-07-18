@@ -298,21 +298,21 @@ export function AdultSessionsForm({
                 <Select label="How did you hear about us?" value={source} onChange={(v) => setSource(v as Source)} options={SOURCES} />
                 {squadIntake && (
                   <label className="flex items-start gap-2 cursor-pointer">
-                    <input type="checkbox" checked={eligibility} onChange={(e) => setEligibility(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#7E57C2]" required />
-                    <span className="text-xs text-gray-400">
-                      I confirm I have not played SVL Reserves or Premier League in the last 3 years. <span className="text-[#7E57C2]">*</span>
-                    </span>
-                  </label>
-                )}
-                {squadIntake && (
-                  <label className="flex items-start gap-2 cursor-pointer rounded border border-[#7E57C2]/30 bg-[#7E57C2]/[0.06] p-3">
                     <input type="checkbox" checked={visionRead} onChange={(e) => setVisionRead(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#7E57C2]" required />
-                    <span className="text-xs text-gray-300">
+                    <span className="text-xs text-gray-400">
                       I&apos;ve read the{" "}
                       <a href="/mens-squad" target="_blank" rel="noopener noreferrer" className="text-[#7E57C2] underline hover:text-white">
                         squad vision
                       </a>{" "}
                       and understand this is a selection trial. If I&apos;m offered a spot, I&apos;m ready to commit to the 8 week squad ($216, about $27 a week). <span className="text-[#7E57C2]">*</span>
+                    </span>
+                  </label>
+                )}
+                {squadIntake && (
+                  <label className="flex items-start gap-2 cursor-pointer">
+                    <input type="checkbox" checked={eligibility} onChange={(e) => setEligibility(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#7E57C2]" required />
+                    <span className="text-xs text-gray-400">
+                      I confirm I have not played SVL Reserves or Premier League in the last 3 years. <span className="text-[#7E57C2]">*</span>
                     </span>
                   </label>
                 )}

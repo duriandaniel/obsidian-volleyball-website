@@ -51,39 +51,15 @@ export default function AdultSessionsPage() {
               <span className="text-[#7E57C2]">VOLLEYBALL</span>
             </h1>
             <p className="text-gray-300 text-lg max-w-xl leading-relaxed">
-              Two ways to play at West Ryde. Drop in to an open social scrim any night, or trial for a spot in our new
-              Men&apos;s Development Squad.
+              Two ways to play at West Ryde. Trial for a spot in our new Men&apos;s Development Squad, or drop in to an
+              open social scrim any night.
             </p>
-          </SectionReveal>
-        </div>
-      </section>
-
-      {/* Social scrims */}
-      <section className="py-20 lg:py-28 bg-[#111]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">DROP IN</p>
-            <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide leading-[0.95] mb-6">
-              SOCIAL SCRIMS
-            </h2>
-            <p className="text-gray-300 text-lg max-w-xl leading-relaxed mb-3">
-              Open scrims every Tuesday, Wednesday and Friday, 7 to 9 PM. Turn up any night for{" "}
-              <span className="text-white">$20</span>. All skill levels welcome.
-            </p>
-            <p className="text-gray-500 text-sm max-w-xl mb-10">Two courts, three teams per court, sets to 15.</p>
-            <TrackedBookingLink
-              href={SCRIM_BOOKING_URL}
-              location="adult_open_cta"
-              className="inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-10 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide glow-purple"
-            >
-              BOOK A SCRIM
-            </TrackedBookingLink>
           </SectionReveal>
         </div>
       </section>
 
       {/* Men's Development Squad */}
-      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
+      <section className="py-20 lg:py-28 bg-[#111]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
             <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">NEW &middot; WINTER &apos;26 BATCH</p>
@@ -93,8 +69,8 @@ export default function AdultSessionsPage() {
               <span className="text-[#7E57C2]">SQUAD</span>
             </h2>
             <p className="text-gray-300 text-lg max-w-xl leading-relaxed mb-3">
-              A structured men&apos;s program, not social drop in. Trial for a spot, then train an 8 week coached squad
-              building toward a representative team.
+              Our men&apos;s development program. Trial for a spot, then train an 8 week coached squad building toward a
+              representative team.
             </p>
             <p className="text-gray-500 text-sm max-w-xl mb-10">
               Trial nights are $15, 16+, Friday 7 to 9 PM. The squad is picked from the trial and spots are limited.
@@ -114,6 +90,30 @@ export default function AdultSessionsPage() {
                 Read more <span aria-hidden>→</span>
               </Link>
             </div>
+          </SectionReveal>
+        </div>
+      </section>
+
+      {/* Social scrims */}
+      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">DROP IN</p>
+            <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide leading-[0.95] mb-6">
+              SOCIAL SCRIMS
+            </h2>
+            <p className="text-gray-300 text-lg max-w-xl leading-relaxed mb-3">
+              Open scrims every Tuesday, Wednesday and Friday, 7 to 9 PM. Turn up any night for{" "}
+              <span className="text-white">$20</span>. All skill levels welcome.
+            </p>
+            <p className="text-gray-500 text-sm max-w-xl mb-10">Two courts, three teams per court, sets to 15.</p>
+            <TrackedBookingLink
+              href={SCRIM_BOOKING_URL}
+              location="adult_open_cta"
+              className="inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-10 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide glow-purple"
+            >
+              BOOK A SCRIM
+            </TrackedBookingLink>
           </SectionReveal>
         </div>
       </section>
