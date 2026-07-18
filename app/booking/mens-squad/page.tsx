@@ -18,7 +18,8 @@ export default async function MensSquadBookingPage() {
       <div className="max-w-4xl mx-auto px-6">
         <Link href="/booking/adult" className="text-xs text-gray-500 hover:text-white tracking-wider uppercase">← Back</Link>
         <h1 className="font-heading text-3xl md:text-4xl tracking-wide mt-4 mb-1">Men&apos;s Development Squad Trial</h1>
-        <p className="text-sm text-gray-500 mb-5">$15 per night · Fridays 7 to 9pm · Bennelong, West Ryde · trial for your spot in the squad</p>
+        <p className="text-sm text-gray-500 mb-2">$15 per night · 16+ · Fridays 7 to 9pm · Bennelong, West Ryde · trial for your spot in the squad</p>
+        <p className="text-sm text-gray-400 mb-5">Open to all levels, but not if you&apos;ve played SVL Premier or Reserves in the last 3 years.</p>
 
         <Link
           href="/mens-squad"

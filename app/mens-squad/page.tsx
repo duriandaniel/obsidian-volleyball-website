@@ -9,23 +9,24 @@ export const metadata: Metadata = {
 };
 
 const JOINING = [
-  "8 weeks focused on getting you better, not just game time",
+  "8 weeks focused on getting better, not just game time",
   "Recorded sessions for feedback",
-  "Position specific coaching",
-  "Led by a rotating panel of specialist coaches, each a high-level player in their position",
+  "Position-specific coaching",
+  "Coached by specialists, each a high-level player in their position",
 ];
 
 const COACHING = [
-  "Eight weeks, four two-week specialist blocks",
-  "Each block led by a coach who plays at a high level in that exact position",
-  "Hitting, setting, middle blocking and defence, each taught by a specialist",
-  "Each block sharpens a different part of your game",
+  "Four two-week blocks over the 8 weeks",
+  "Each block focuses on one part of your game",
+  "Hitting, setting, blocking and defence, each taught by a specialist",
 ];
 
 const TRIAL = [
-  "Two Friday nights that double as your selection for the squad",
-  "You nominate the position(s) you play",
-  "We pick the squad from the trial, on skill, attitude and consistency",
+  "The first two Fridays are trials",
+  "We pick the squad from these trials",
+  "Make it, and you're invited to join",
+  "Nominate the position(s) you play",
+  "Open to all levels, but not if you've played SVL Premier or Reserves in the last 3 years",
   "$15 per night, Friday 24 and 31 July",
   "Spots are limited",
 ];
@@ -38,11 +39,10 @@ const SQUAD = [
 ];
 
 const VISION = [
-  "Build toward a representative team for future competitions",
-  "One squad, built to two team position ratios",
-  "Access to specialist coaches you wouldn't normally train under in one program",
-  "Consistency earns first pick",
-  "Quarterly batches: Winter, Spring, Summer, Autumn",
+  "Building toward a representative team for future competition",
+  "A balanced squad, every position covered",
+  "Specialist coaches you wouldn't normally train under",
+  "The program runs four times a year",
 ];
 
 function Section({ title, items }: { title: string; items: string[] }) {
@@ -78,11 +78,7 @@ export default function MensSquadInfoPage() {
         <p className="text-white text-xl md:text-2xl leading-snug mb-4">
           Building the highest-quality men&apos;s volleyball development program in Sydney. Now picking its first squad.
         </p>
-        <p className="text-gray-300 text-lg mb-2">
-          A structured development program, not social drop in. You trial for a spot, then the squad trains an 8 week
-          batch.
-        </p>
-        <p className="text-sm text-gray-500 mb-12">18+ · Bennelong Sports Centre, West Ryde · Fridays 7 to 9pm</p>
+        <p className="text-sm text-gray-500 mb-12">16+ · Bennelong Sports Centre, West Ryde · Fridays 7 to 9pm</p>
 
         <div className="space-y-10">
           <Section title="What you're joining" items={JOINING} />
