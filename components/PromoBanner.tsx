@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { trackBookingClick } from "@/lib/tracking";
 
-// Promote holiday camp bookings; send straight to the camp funnel.
-const BOOKING_URL = "/booking/camps";
+// Promote Term 3 enrolments + Men's Dev trials; land on the booking hub (both listed there).
+const BOOKING_URL = "/booking";
 
 export default function PromoBanner() {
   const pathname = usePathname();
@@ -18,14 +18,14 @@ export default function PromoBanner() {
     >
       <div className="max-w-7xl mx-auto px-4 py-1.5 text-center">
         <p className="text-sm sm:text-base font-heading text-white tracking-[0.2em] uppercase">
-          <span>New Afternoon Holiday Sessions</span>
+          <span>Term 3 Classes Now Open</span>
           <span
             className="text-[#D4A4FF] mx-2 sm:mx-3 inline-block align-middle text-[8px]"
             aria-hidden
           >
             ●
           </span>
-          <span>1:30&ndash;3:30 PM &middot; $36</span>
+          <span>Men&apos;s Dev Squad Trials Too</span>
           <span
             className="hidden md:inline-block ml-3 lg:ml-4 text-[#D4A4FF] tracking-[0.2em]"
             aria-hidden
