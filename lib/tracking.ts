@@ -46,6 +46,7 @@ export type BookingLocation =
   | "about_cta"
   | "term_programs_hero"
   | "adult_sessions_cta"
+  | "mens_squad_cta"
   | "book_page"
   | "areas_index_cta"
   | "promo_banner"

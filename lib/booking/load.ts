@@ -56,13 +56,22 @@ export async function loadAdultSessions(): Promise<AdultSession[]> {
   }
   const now = new Date().toISOString();
 
+  // On preview/staging deploys (PREVIEW_DRAFT_PROGRAMS=1, set in Vercel's Preview
+  // env only) drafts are shown too, so new programs can be reviewed before they
+  // go live on prod. Prod (no flag) sees published only. Mirrors the camps page.
+  const statuses = process.env.PREVIEW_DRAFT_PROGRAMS === "1" ? ["published", "draft"] : ["published"];
   const { data: programs } = await sb
     .from("programs")
-    .select("id, age_min, default_capacity, venue_id, pricing_rule_id")
+    .select("id, slug, age_min, default_capacity, venue_id, pricing_rule_id")
     .eq("type", "term")
-    .eq("status", "published")
+    .in("status", statuses)
     .is("deleted_at", null);
-  const adultPrograms = (programs ?? []).filter((p) => isAdultProgram(p));
+  // Branded programs (e.g. the Men's Development Squad trial) sell via their own
+  // dedicated page, not this generic social-scrim list — keep them out of here so
+  // their nights aren't shown as "$X social scrim" with the wrong framing.
+  const adultPrograms = (programs ?? []).filter(
+    (p) => isAdultProgram(p) && !(p.slug ?? "").startsWith("mens-dev-squad")
+  );
   if (adultPrograms.length === 0) return [];
 
   const programById = new Map(adultPrograms.map((p) => [p.id, p]));
@@ -121,6 +130,74 @@ export async function loadAdultSessions(): Promise<AdultSession[]> {
   });
 }
 
+// Upcoming per-night sessions for ONE program, by slug — for a program that
+// sells via its own dedicated page (e.g. the Men's Development Squad trial)
+// rather than the generic adult list. Same drop-in checkout shape as
+// loadAdultSessions. Respects the draft-preview gate so a not-yet-published
+// program is reviewable on staging.
+export async function loadProgramSessionsBySlug(slug: string): Promise<AdultSession[]> {
+  let sb;
+  try {
+    sb = supabaseAdmin();
+  } catch {
+    return [];
+  }
+  const now = new Date().toISOString();
+  const statuses = process.env.PREVIEW_DRAFT_PROGRAMS === "1" ? ["published", "draft"] : ["published"];
+
+  const { data: program } = await sb
+    .from("programs")
+    .select("id, default_capacity, venue_id, pricing_rule_id")
+    .eq("slug", slug)
+    .in("status", statuses)
+    .is("deleted_at", null)
+    .maybeSingle();
+  if (!program) return [];
+
+  const [{ data: venue }, { data: rule }, { data: sessions }] = await Promise.all([
+    sb.from("venues").select("name").eq("id", program.venue_id).maybeSingle(),
+    program.pricing_rule_id
+      ? sb.from("pricing_rules").select("term_per_session_cents").eq("id", program.pricing_rule_id).maybeSingle()
+      : Promise.resolve({ data: null }),
+    sb
+      .from("sessions")
+      .select("id, starts_at, ends_at, capacity_override")
+      .eq("program_id", program.id)
+      .eq("status", "scheduled")
+      .gte("ends_at", now)
+      .is("deleted_at", null)
+      .order("starts_at"),
+  ]);
+
+  const venueName = venue?.name ?? "Venue TBA";
+  const priceCents = rule?.term_per_session_cents ?? 0;
+
+  const sessionIds = (sessions ?? []).map((s) => s.id);
+  const { data: bookings } = sessionIds.length
+    ? await sb
+        .from("bookings")
+        .select("session_id")
+        .in("session_id", sessionIds)
+        .in("status", ["confirmed", "pending", "attended"])
+        .is("deleted_at", null)
+    : { data: [] as { session_id: string }[] };
+  const bookedBySession = new Map<string, number>();
+  for (const b of bookings ?? []) bookedBySession.set(b.session_id, (bookedBySession.get(b.session_id) ?? 0) + 1);
+
+  return (sessions ?? []).map((s): AdultSession => ({
+    id: s.id,
+    starts_at: s.starts_at,
+    ends_at: s.ends_at,
+    venue_name: venueName,
+    spots_left: Math.max(
+      0,
+      ((s as { capacity_override: number | null }).capacity_override ?? program.default_capacity) -
+        (bookedBySession.get(s.id) ?? 0)
+    ),
+    price_cents: priceCents,
+  }));
+}
+
 // Load all published term programs with derived booking fields.
 export async function loadTermPrograms(): Promise<TermProgram[]> {
   let sb;
@@ -131,11 +208,13 @@ export async function loadTermPrograms(): Promise<TermProgram[]> {
   }
   const now = new Date().toISOString();
 
+  // Draft-preview on staging only (see loadAdultSessions / camps page).
+  const statuses = process.env.PREVIEW_DRAFT_PROGRAMS === "1" ? ["published", "draft"] : ["published"];
   const { data: programs } = await sb
     .from("programs")
     .select("id, slug, title, season, skill_level, age_min, default_capacity, venue_id, pricing_rule_id")
     .eq("type", "term")
-    .eq("status", "published")
+    .in("status", statuses)
     .is("deleted_at", null);
   if (!programs || programs.length === 0) return [];
 

@@ -19,7 +19,7 @@ export default function BookingHomePage() {
           <BookingBox href="/booking/camps" eyebrow="JUNIORS" label="Holiday Camps" />
           <BookingBox href="/booking/term/junior" eyebrow="JUNIORS" label="Weekly Classes" />
           <BookingBox href="/booking/trial" eyebrow="JUNIORS" label="Trial Class" />
-          <BookingBox href="/booking/adult" eyebrow="ADULTS" label="Social Scrim" />
+          <BookingBox href="/booking/adult" eyebrow="ADULTS" label="Adult Sessions" />
         </div>
 
         <Link

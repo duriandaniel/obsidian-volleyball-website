@@ -32,6 +32,22 @@ const LEVELS: { value: Level; label: string }[] = [
   { value: "svl_player", label: "SVL Player" },
 ];
 
+// Men's Development Squad positional-tryout intake.
+const POSITIONS: { value: string; label: string }[] = [
+  { value: "setter", label: "Setter" },
+  { value: "outside", label: "Outside Hitter" },
+  { value: "middle", label: "Middle Blocker" },
+  { value: "opposite", label: "Opposite" },
+  { value: "libero", label: "Libero" },
+  { value: "flex", label: "Flexible / Any" },
+];
+const HIGHEST_LEVEL: { value: string; label: string }[] = [
+  { value: "", label: "Select…" },
+  { value: "social", label: "Social comps" },
+  { value: "svl_div_3_4", label: "SVL Div 3 or 4" },
+  { value: "svl_2_plus", label: "SVL 2 or above" },
+];
+
 const SOURCES: { value: Source; label: string }[] = [
   { value: "", label: "Select…" },
   { value: "google", label: "Google" },
@@ -42,14 +58,27 @@ const SOURCES: { value: Source; label: string }[] = [
   { value: "newsletter", label: "Newsletter" },
 ];
 
-export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
+export function AdultSessionsForm({
+  sessions,
+  showJersey = true,
+  squadIntake = false,
+}: {
+  sessions: AdultSession[];
+  showJersey?: boolean;
+  squadIntake?: boolean;
+}) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [mode, setMode] = useState<Mode>("browsing");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [level, setLevel] = useState<Level>("");
+  const [position, setPosition] = useState("");
+  const [experience, setExperience] = useState("");
+  const [highest, setHighest] = useState("");
   const [source, setSource] = useState<Source>("");
+  const [visionRead, setVisionRead] = useState(false);
+  const [eligibility, setEligibility] = useState(false);
   const [consent, setConsent] = useState(false);
   const [jersey, setJersey] = useState<JerseyChoice>(EMPTY_JERSEY);
   const [submitting, setSubmitting] = useState(false);
@@ -81,7 +110,15 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!level) return setError("Please select your level.");
+    if (squadIntake) {
+      if (!position) return setError("Select the position you want to trial for.");
+      if (!experience.trim()) return setError("Please briefly describe your volleyball experience.");
+      if (!highest) return setError("Please select your highest level played.");
+      if (!eligibility) return setError("Please confirm you haven't played SVL Reserves or Premier in the last 3 years.");
+      if (!visionRead) return setError("Please confirm you've read the squad vision and the commitment.");
+    } else if (!level) {
+      return setError("Please select your level.");
+    }
     if (!consent) return setError("Please tick the photo/marketing consent box.");
     setSubmitting(true);
     setError(null);
@@ -95,7 +132,20 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
         body: JSON.stringify({
           session_ids: Array.from(selected),
           jersey: { add: jersey.add },
-          player: { name, email, phone, level, source, marketing_consent: consent },
+          player: {
+            name,
+            email,
+            phone,
+            source,
+            marketing_consent: consent,
+            ...(squadIntake
+              ? {
+                  nominated_positions: [position],
+                  volleyball_experience: experience,
+                  highest_level: highest,
+                }
+              : { level }),
+          },
         }),
       });
       const json = await res.json();
@@ -189,7 +239,9 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
                 >
                   CONTINUE
                 </button>
-                <div className="text-xs text-gray-500">{count} night{count === 1 ? "" : "s"} · $20 each</div>
+                <div className="text-xs text-gray-500">
+                  {count} night{count === 1 ? "" : "s"} · {formatCents(count ? Math.round(total / count) : 0)} each
+                </div>
               </>
             )}
 
@@ -199,8 +251,71 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
                 <Input label="Name" value={name} onChange={setName} required />
                 <Input label="Email" type="email" value={email} onChange={setEmail} required />
                 <Input label="Mobile" type="tel" value={phone} onChange={setPhone} required />
-                <Select label="Your level" value={level} onChange={(v) => setLevel(v as Level)} options={LEVELS} required />
+                {squadIntake ? (
+                  <>
+                    <div>
+                      <span className="block text-xs text-gray-500 mb-2">
+                        Position you want to trial for<span className="text-[#7E57C2]">*</span>
+                      </span>
+                      <div className="grid grid-cols-2 gap-2">
+                        {POSITIONS.map((p) => {
+                          const on = position === p.value;
+                          return (
+                            <button
+                              key={p.value}
+                              type="button"
+                              onClick={() => setPosition(p.value)}
+                              className={`px-3 py-2 rounded text-xs text-left transition-colors border ${
+                                on
+                                  ? "border-[#7E57C2] bg-[#7E57C2]/10 text-white"
+                                  : "border-white/10 bg-white/5 text-gray-300 hover:border-white/30"
+                              }`}
+                            >
+                              {p.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                    <label className="block">
+                      <span className="block text-xs text-gray-500 mb-1">
+                        Briefly describe your volleyball experience<span className="text-[#7E57C2]">*</span>
+                      </span>
+                      <textarea
+                        value={experience}
+                        onChange={(e) => setExperience(e.target.value)}
+                        required
+                        rows={3}
+                        maxLength={500}
+                        className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2] resize-y"
+                      />
+                    </label>
+                    <Select label="Highest level played" value={highest} onChange={setHighest} options={HIGHEST_LEVEL} required />
+                  </>
+                ) : (
+                  <Select label="Your level" value={level} onChange={(v) => setLevel(v as Level)} options={LEVELS} required />
+                )}
                 <Select label="How did you hear about us?" value={source} onChange={(v) => setSource(v as Source)} options={SOURCES} />
+                {squadIntake && (
+                  <label className="flex items-start gap-2 cursor-pointer">
+                    <input type="checkbox" checked={visionRead} onChange={(e) => setVisionRead(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#7E57C2]" required />
+                    <span className="text-xs text-gray-400">
+                      I&apos;ve read the{" "}
+                      <a href="/mens-squad" target="_blank" rel="noopener noreferrer" className="text-[#7E57C2] underline hover:text-white">
+                        squad vision
+                      </a>{" "}
+                      and understand this is a selection trial. If I&apos;m offered a spot, I&apos;m ready to commit to the 8 week squad ($216, about $27 a week). <span className="text-[#7E57C2]">*</span>
+                    </span>
+                  </label>
+                )}
+                {squadIntake && (
+                  <label className="flex items-start gap-2 cursor-pointer">
+                    <input type="checkbox" checked={eligibility} onChange={(e) => setEligibility(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#7E57C2]" required />
+                    <span className="text-xs text-gray-400">
+                      I confirm I have not played SVL Reserves or Premier League in the last 3 years. <span className="text-[#7E57C2]">*</span>
+                    </span>
+                  </label>
+                )}
                 <label className="flex items-start gap-2 cursor-pointer">
                   <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#7E57C2]" required />
                   <span className="text-xs text-gray-400">
@@ -208,7 +323,7 @@ export function AdultSessionsForm({ sessions }: { sessions: AdultSession[] }) {
                   </span>
                 </label>
 
-                <JerseyAddOn value={jersey} onChange={setJersey} />
+                {showJersey && <JerseyAddOn value={jersey} onChange={setJersey} />}
 
                 {error && <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/30 rounded p-3">{error}</div>}
 
