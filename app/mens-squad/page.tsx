@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const JOINING = [
-  "8 weeks training with other motivated players",
+  "8 weeks focused on getting you better, not just game time",
   "Recorded sessions for feedback",
   "Position specific coaching",
   "Led by a rotating panel of specialist coaches, each a high-level player in their position",
@@ -75,9 +75,13 @@ export default function MensSquadInfoPage() {
           <br />
           <span className="text-[#7E57C2]">SQUAD</span>
         </h1>
+        <p className="text-white text-xl md:text-2xl leading-snug mb-4">
+          Building the highest-quality men&apos;s volleyball development program in Sydney &mdash; and picking its first
+          squad.
+        </p>
         <p className="text-gray-300 text-lg mb-2">
-          A structured men&apos;s development program, not social drop in. You trial for a spot, then the squad trains an
-          8 week batch.
+          A structured development program, not social drop in. You trial for a spot, then the squad trains an 8 week
+          batch.
         </p>
         <p className="text-sm text-gray-500 mb-12">18+ · Bennelong Sports Centre, West Ryde · Fridays 7 to 9pm</p>
 
