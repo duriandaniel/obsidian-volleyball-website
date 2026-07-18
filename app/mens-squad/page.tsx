@@ -10,25 +10,23 @@ export const metadata: Metadata = {
 
 const JOINING = [
   "8 weeks focused on getting better, not just game time",
-  "Recorded sessions for feedback",
   "Position specific coaching",
-  "Coached by specialists, each a high level player in their position",
+  "High level coaches who play your position",
 ];
 
 const COACHING = [
-  "Four two week blocks over the 8 weeks",
-  "Each block focuses on one part of your game",
-  "Hitting, setting, blocking and defence, each taught by a specialist",
+  "Four two week blocks across the 8 weeks",
+  "Each block targets one part of your game",
+  "Hitting, setting, blocking and defence, each with a specialist",
 ];
 
 const TRIAL = [
-  "The first two Fridays are trials",
-  "We pick the squad from these trials",
-  "Make it, and you're invited to join",
-  "Nominate the position(s) you play",
-  "Open to all levels, but not if you've played SVL Premier or Reserves in the last 3 years",
-  "$15 per night, Friday 24 and 31 July",
-  "Spots are limited",
+  "Two trial nights: Fri 24 and 31 July, $15 each",
+  "We pick the squad from the trials",
+  "Make it and you're in",
+  "Nominate one position",
+  "All levels, no SVL Premier or Reserves in the last 3 years",
+  "Limited spots",
 ];
 
 const SQUAD = [
@@ -39,10 +37,10 @@ const SQUAD = [
 ];
 
 const VISION = [
-  "Building toward a representative team for future competition",
+  "Building toward a representative team",
   "A balanced squad, every position covered",
   "Specialist coaches you wouldn't normally train under",
-  "The program runs four times a year",
+  "Runs four times a year",
 ];
 
 function Section({ title, items }: { title: string; items: string[] }) {
