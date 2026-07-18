@@ -41,21 +41,11 @@ const POSITIONS: { value: string; label: string }[] = [
   { value: "libero", label: "Libero" },
   { value: "flex", label: "Flexible / Any" },
 ];
-const EXPERIENCE: { value: string; label: string }[] = [
-  { value: "", label: "Select…" },
-  { value: "under 1 year", label: "Under 1 year" },
-  { value: "1-3 years", label: "1–3 years" },
-  { value: "3-5 years", label: "3–5 years" },
-  { value: "5+ years", label: "5+ years" },
-];
 const HIGHEST_LEVEL: { value: string; label: string }[] = [
   { value: "", label: "Select…" },
-  { value: "social", label: "Social / never competitive" },
-  { value: "school", label: "School" },
-  { value: "club", label: "Club / local competition" },
-  { value: "state_league", label: "State League (SVL)" },
-  { value: "premier", label: "National / Premier League" },
-  { value: "other", label: "Other" },
+  { value: "social", label: "Social comps" },
+  { value: "svl_div_3_4", label: "SVL Div 3 or 4" },
+  { value: "svl_2_plus", label: "SVL 2 or above" },
 ];
 
 const SOURCES: { value: Source; label: string }[] = [
@@ -83,11 +73,12 @@ export function AdultSessionsForm({
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [level, setLevel] = useState<Level>("");
-  const [positions, setPositions] = useState<Set<string>>(new Set());
+  const [position, setPosition] = useState("");
   const [experience, setExperience] = useState("");
   const [highest, setHighest] = useState("");
   const [source, setSource] = useState<Source>("");
   const [visionRead, setVisionRead] = useState(false);
+  const [eligibility, setEligibility] = useState(false);
   const [consent, setConsent] = useState(false);
   const [jersey, setJersey] = useState<JerseyChoice>(EMPTY_JERSEY);
   const [submitting, setSubmitting] = useState(false);
@@ -120,9 +111,10 @@ export function AdultSessionsForm({
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (squadIntake) {
-      if (positions.size === 0) return setError("Select at least one position you play.");
-      if (!experience) return setError("Please select your volleyball experience.");
+      if (!position) return setError("Select the position you want to trial for.");
+      if (!experience.trim()) return setError("Please briefly describe your volleyball experience.");
       if (!highest) return setError("Please select your highest level played.");
+      if (!eligibility) return setError("Please confirm you haven't played SVL Reserves or Premier in the last 3 years.");
       if (!visionRead) return setError("Please confirm you've read the squad vision and the commitment.");
     } else if (!level) {
       return setError("Please select your level.");
@@ -148,7 +140,7 @@ export function AdultSessionsForm({
             marketing_consent: consent,
             ...(squadIntake
               ? {
-                  nominated_positions: Array.from(positions),
+                  nominated_positions: [position],
                   volleyball_experience: experience,
                   highest_level: highest,
                 }
@@ -263,22 +255,16 @@ export function AdultSessionsForm({
                   <>
                     <div>
                       <span className="block text-xs text-gray-500 mb-2">
-                        Position(s) you play<span className="text-[#7E57C2]">*</span>
+                        Position you want to trial for<span className="text-[#7E57C2]">*</span>
                       </span>
                       <div className="grid grid-cols-2 gap-2">
                         {POSITIONS.map((p) => {
-                          const on = positions.has(p.value);
+                          const on = position === p.value;
                           return (
                             <button
                               key={p.value}
                               type="button"
-                              onClick={() =>
-                                setPositions((prev) => {
-                                  const next = new Set(prev);
-                                  next.has(p.value) ? next.delete(p.value) : next.add(p.value);
-                                  return next;
-                                })
-                              }
+                              onClick={() => setPosition(p.value)}
                               className={`px-3 py-2 rounded text-xs text-left transition-colors border ${
                                 on
                                   ? "border-[#7E57C2] bg-[#7E57C2]/10 text-white"
@@ -291,13 +277,33 @@ export function AdultSessionsForm({
                         })}
                       </div>
                     </div>
-                    <Select label="Volleyball experience" value={experience} onChange={setExperience} options={EXPERIENCE} required />
+                    <label className="block">
+                      <span className="block text-xs text-gray-500 mb-1">
+                        Briefly describe your volleyball experience<span className="text-[#7E57C2]">*</span>
+                      </span>
+                      <textarea
+                        value={experience}
+                        onChange={(e) => setExperience(e.target.value)}
+                        required
+                        rows={3}
+                        maxLength={500}
+                        className="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-sm text-white focus:outline-none focus:border-[#7E57C2] resize-y"
+                      />
+                    </label>
                     <Select label="Highest level played" value={highest} onChange={setHighest} options={HIGHEST_LEVEL} required />
                   </>
                 ) : (
                   <Select label="Your level" value={level} onChange={(v) => setLevel(v as Level)} options={LEVELS} required />
                 )}
                 <Select label="How did you hear about us?" value={source} onChange={(v) => setSource(v as Source)} options={SOURCES} />
+                {squadIntake && (
+                  <label className="flex items-start gap-2 cursor-pointer">
+                    <input type="checkbox" checked={eligibility} onChange={(e) => setEligibility(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#7E57C2]" required />
+                    <span className="text-xs text-gray-400">
+                      I confirm I have not played SVL Reserves or Premier League in the last 3 years. <span className="text-[#7E57C2]">*</span>
+                    </span>
+                  </label>
+                )}
                 {squadIntake && (
                   <label className="flex items-start gap-2 cursor-pointer rounded border border-[#7E57C2]/30 bg-[#7E57C2]/[0.06] p-3">
                     <input type="checkbox" checked={visionRead} onChange={(e) => setVisionRead(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#7E57C2]" required />

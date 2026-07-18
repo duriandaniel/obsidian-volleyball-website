@@ -24,7 +24,7 @@ const Body = z.object({
     marketing_consent: z.literal(true, { message: "Marketing consent is required" }),
     // Optional positional-tryout intake (Men's Development Squad trial only).
     nominated_positions: z.array(z.enum(POSITIONS)).max(6).optional(),
-    volleyball_experience: z.string().max(60).optional(),
+    volleyball_experience: z.string().max(500).optional(),
     highest_level: z.string().max(60).optional(),
   }),
 });
