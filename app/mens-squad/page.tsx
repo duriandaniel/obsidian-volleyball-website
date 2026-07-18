@@ -9,15 +9,14 @@ export const metadata: Metadata = {
 };
 
 const JOINING = [
-  "8 weeks focused on getting better, not just game time",
-  "Position specific coaching",
-  "High level coaches who play your position",
+  "8 weeks focused on technical training and specific skills, not just reps",
+  "High level coaches",
 ];
 
 // High level coaching team; names shown as "featuring" until locked.
 const COACHES = [
-  { name: "Chris K", role: "Men's Premier Outside Hitter", year: "2026", note: "Sydney North MVP" },
-  { name: "Nelson L", role: "Men's Reserves Setter", year: "2026", note: "Sydney East captain" },
+  { name: "Chris K", role: "Premier Outside Hitter", year: "2026", note: "Sydney North MVP" },
+  { name: "Nelson L", role: "Reserves Setter", year: "2026", note: "Sydney East captain" },
   { name: "Kaveesh V", role: "Div 1 Opposite", year: "2026", note: "" },
   { name: "Varun P", role: "Premier Libero", year: "2025", note: "" },
 ];
@@ -31,7 +30,6 @@ const TRYOUTS = [
 
 const ELIGIBILITY = [
   "16+ years old",
-  "Open to all levels",
   "No SVL Premier or Reserves in the last 3 years",
 ];
 
@@ -97,7 +95,7 @@ export default function MensSquadInfoPage() {
                 <li key={c.name} className="flex gap-3 text-gray-300">
                   <span className="text-[#7E57C2] flex-shrink-0">+</span>
                   <span>
-                    <span className="text-white">{c.name}</span> · {c.role} · {c.year}
+                    <span className="text-white">{c.name}</span> · {c.year} {c.role}
                     {c.note ? ` · ${c.note}` : ""}
                   </span>
                 </li>
