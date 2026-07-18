@@ -97,7 +97,7 @@ export default function AdultSessionsPage() {
               building toward a representative team.
             </p>
             <p className="text-gray-500 text-sm max-w-xl mb-10">
-              Trial nights are $15, Friday 7 to 9 PM. The squad is picked from the trial and spots are limited.
+              Trial nights are $15, 16+, Friday 7 to 9 PM. The squad is picked from the trial and spots are limited.
             </p>
             <div className="flex flex-wrap items-center gap-4">
               <TrackedBookingLink
