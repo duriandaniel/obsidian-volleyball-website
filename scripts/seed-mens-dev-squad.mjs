@@ -4,7 +4,7 @@
 //   node --env-file=.env.local scripts/seed-mens-dev-squad.mjs
 //
 // Two linked programs, both 18+ at Bennelong (West Ryde), Fri 7-9pm:
-//   1. TRIAL  — 2 nights, $15/session drop-in, cap 30, PUBLIC (positional tryout).
+//   1. TRIAL  — 2 nights, $15/session drop-in, cap 42, PUBLIC (positional tryout).
 //   2. SQUAD  — 8 wks, $216 all-in block ($27/wk incl. shirt), cap 21, UNLISTED
 //               (offer-only, private enrol link).
 //
@@ -41,7 +41,7 @@ const PROGRAMS = [
     slug: "mens-dev-squad-trial",
     title: "Men's Development Squad — Trial",
     season: "Winter '26 Batch",
-    default_capacity: 30,
+    default_capacity: 42,
     pricing_rule_id: TRIAL_RULE_ID,
     dates: ["2026-07-24", "2026-07-31"],
   },
