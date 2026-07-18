@@ -88,7 +88,7 @@ export default function MensSquadInfoPage() {
           <div>
             <h2 className="font-heading text-2xl tracking-wide mb-4 pb-3 border-b border-[#7E57C2]/30">The coaching team</h2>
             <p className="text-gray-400 mb-4">
-              A team of high level players, each coaching their own position. Featuring:
+              A team of high level players. Featuring:
             </p>
             <ul className="space-y-3">
               {COACHES.map((c) => (
