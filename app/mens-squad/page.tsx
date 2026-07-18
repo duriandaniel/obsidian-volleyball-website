@@ -27,10 +27,11 @@ const COACHING = [
 ];
 
 const TRIAL = [
-  "A positional tryout: you nominate the position(s) you play",
-  "Assessed on skill, attitude and consistency",
+  "This is a tryout for a place in the squad, not a guaranteed spot",
+  "You nominate the position(s) you play",
+  "We pick the squad from the trial, on skill, attitude and consistency",
   "$15 per night, Friday 24 and 31 July",
-  "Trial spots are limited",
+  "Spots are limited",
 ];
 
 const SQUAD = [
@@ -78,7 +79,10 @@ export default function MensSquadInfoPage() {
           <br />
           <span className="text-[#7E57C2]">SQUAD</span>
         </h1>
-        <p className="text-gray-300 text-lg mb-2">A structured men&apos;s development program. Not social drop in.</p>
+        <p className="text-gray-300 text-lg mb-2">
+          A structured men&apos;s development program, not social drop in. You trial for a spot, then the squad trains an
+          8 week batch.
+        </p>
         <p className="text-sm text-gray-500 mb-12">18+ · Bennelong Sports Centre, West Ryde · Fridays 7 to 9pm</p>
 
         <div className="space-y-10">
@@ -93,7 +97,7 @@ export default function MensSquadInfoPage() {
           href="/booking/mens-squad"
           className="mt-12 inline-block bg-[#5E35A8] hover:bg-[#7E57C2] text-white font-heading text-lg tracking-[0.2em] px-10 py-5 rounded transition-colors"
         >
-          BOOK YOUR TRIAL
+          TRIAL FOR YOUR SPOT
         </Link>
       </div>
     </div>

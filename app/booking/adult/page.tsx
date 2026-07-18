@@ -25,7 +25,7 @@ export default function AdultBookingPage() {
             href="/booking/mens-squad"
             eyebrow="TRIAL"
             label="Men's Trials"
-            blurb="Positional tryout for the Men's Development Squad. Trial spots are limited."
+            blurb="Trial for a spot in the Men's Development Squad. The squad is picked from the trial, and spots are limited."
           />
         </div>
       </div>

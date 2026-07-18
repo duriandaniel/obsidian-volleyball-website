@@ -51,8 +51,8 @@ export default function AdultSessionsPage() {
               <span className="text-[#7E57C2]">VOLLEYBALL</span>
             </h1>
             <p className="text-gray-300 text-lg max-w-xl leading-relaxed">
-              Two ways to play at West Ryde. Drop in to an open social scrim any night, or trial for our new Men&apos;s
-              Development Squad.
+              Two ways to play at West Ryde. Drop in to an open social scrim any night, or trial for a spot in our new
+              Men&apos;s Development Squad.
             </p>
           </SectionReveal>
         </div>
@@ -93,11 +93,11 @@ export default function AdultSessionsPage() {
               <span className="text-[#7E57C2]">SQUAD</span>
             </h2>
             <p className="text-gray-300 text-lg max-w-xl leading-relaxed mb-3">
-              A structured men&apos;s program, not social drop in. A two week positional trial, then an 8 week coached
-              squad building toward a representative team.
+              A structured men&apos;s program, not social drop in. Trial for a spot, then train an 8 week coached squad
+              building toward a representative team.
             </p>
             <p className="text-gray-500 text-sm max-w-xl mb-10">
-              Trial nights are $15, Friday 7 to 9 PM. Trial spots are limited.
+              Trial nights are $15, Friday 7 to 9 PM. The squad is picked from the trial and spots are limited.
             </p>
             <div className="flex flex-wrap items-center gap-4">
               <TrackedBookingLink
@@ -105,7 +105,7 @@ export default function AdultSessionsPage() {
                 location="mens_squad_cta"
                 className="inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-10 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide glow-purple"
               >
-                BOOK A TRIAL
+                TRIAL FOR YOUR SPOT
               </TrackedBookingLink>
               <Link
                 href={MENS_INFO_URL}

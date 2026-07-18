@@ -18,8 +18,22 @@ export default async function MensSquadBookingPage() {
       <div className="max-w-4xl mx-auto px-6">
         <Link href="/booking/adult" className="text-xs text-gray-500 hover:text-white tracking-wider uppercase">← Back</Link>
         <h1 className="font-heading text-3xl md:text-4xl tracking-wide mt-4 mb-1">Men&apos;s Development Squad Trial</h1>
-        <p className="text-sm text-gray-500 mb-1">$15 per night · Fridays 7 to 9pm · Bennelong, West Ryde · positional tryout</p>
-        <Link href="/mens-squad" className="text-sm text-[#7E57C2] hover:text-white transition-colors">About the squad →</Link>
+        <p className="text-sm text-gray-500 mb-5">$15 per night · Fridays 7 to 9pm · Bennelong, West Ryde · trial for your spot in the squad</p>
+
+        <Link
+          href="/mens-squad"
+          className="flex items-center justify-between gap-4 border border-[#7E57C2]/40 hover:border-[#7E57C2] rounded-lg px-5 py-4 bg-[#7E57C2]/[0.06] transition-colors group"
+        >
+          <span>
+            <span className="block font-heading tracking-wide text-white">New here? Read about the squad first</span>
+            <span className="block text-sm text-gray-400">
+              What you&apos;re trialling for: the coaching, the 8 week squad and how selection works.
+            </span>
+          </span>
+          <span className="text-[#7E57C2] group-hover:text-white font-heading text-sm tracking-[0.15em] uppercase whitespace-nowrap">
+            Read more →
+          </span>
+        </Link>
 
         <div className="mt-8">
           {sessions.length === 0 ? (
