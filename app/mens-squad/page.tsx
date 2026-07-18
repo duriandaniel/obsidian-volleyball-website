@@ -16,9 +16,9 @@ const JOINING = [
 // High level coaching team; names shown as "featuring" until locked.
 const COACHES = [
   { name: "Chris K", role: "Premier Outside Hitter", year: "2026", note: "Sydney North MVP" },
-  { name: "Nelson L", role: "Reserves Setter", year: "2026", note: "Sydney East captain" },
+  { name: "Nelson L", role: "Reserves Setter", year: "2026", note: "Sydney East Captain" },
   { name: "Sandeep R", role: "Premier Opposite Hitter", year: "2026", note: "" },
-  { name: "Kaveesh V", role: "Div 1 Middle Blocker", year: "2026", note: "" },
+  { name: "Kaveesh V", role: "Div 1 Middle Blocker", year: "2026", note: "Sydney West" },
 ];
 
 const TRYOUTS = [
