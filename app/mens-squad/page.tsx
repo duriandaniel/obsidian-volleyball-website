@@ -76,8 +76,7 @@ export default function MensSquadInfoPage() {
           <span className="text-[#7E57C2]">SQUAD</span>
         </h1>
         <p className="text-white text-xl md:text-2xl leading-snug mb-4">
-          Building the highest-quality men&apos;s volleyball development program in Sydney &mdash; and picking its first
-          squad.
+          Building the highest-quality men&apos;s volleyball development program in Sydney. Now picking its first squad.
         </p>
         <p className="text-gray-300 text-lg mb-2">
           A structured development program, not social drop in. You trial for a spot, then the squad trains an 8 week
