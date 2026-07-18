@@ -85,6 +85,7 @@ async function ensureProgram(p) {
     age_min: 18,
     age_max: 99,
     status: "draft", // staging-only until cutover; trial -> published, squad stays unlisted
+    category: "adult_development", // reporting label; distinct from `type` (term/camp)
     pricing_rule_id: p.pricing_rule_id,
     refund_policy: "forfeit", // non-refundable
   };
