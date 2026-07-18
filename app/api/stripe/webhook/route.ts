@@ -738,13 +738,19 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
     .order("starts_at");
   let venueName = "Obsidian Volleyball Academy West Ryde";
   const firstProgramId = sessionRows?.[0]?.program_id;
+  let programSlug: string | null = null;
   if (firstProgramId) {
-    const { data: program } = await sb.from("programs").select("venue_id").eq("id", firstProgramId).maybeSingle();
+    const { data: program } = await sb.from("programs").select("venue_id, slug").eq("id", firstProgramId).maybeSingle();
+    programSlug = program?.slug ?? null;
     if (program?.venue_id) {
       const { data: venue } = await sb.from("venues").select("name, address").eq("id", program.venue_id).maybeSingle();
       if (venue) venueName = venue.address ? `${venue.name}, ${venue.address}` : venue.name;
     }
   }
+  // The Men's Development Squad trial rides the drop-in checkout but is a
+  // selection tryout, not a social scrim — send it its own confirmation.
+  const isTryout = programSlug?.startsWith("mens-dev-squad") ?? false;
+
   const fmtDay = (iso: string) =>
     new Date(iso).toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long", timeZone: "Australia/Sydney" });
   const fmtTime = (iso: string) =>
@@ -752,9 +758,40 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
   const nightList = (sessionRows ?? [])
     .map((s) => `${fmtDay(s.starts_at)} · ${fmtTime(s.starts_at)} – ${fmtTime(s.ends_at)}`)
     .join("<br>");
+  const nightListText = (sessionRows ?? [])
+    .map((s) => `${fmtDay(s.starts_at)} ${fmtTime(s.starts_at)} - ${fmtTime(s.ends_at)}`)
+    .join("\n");
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com";
   const name = session.customer_details?.name ?? "";
+  const firstName = name ? " " + name.split(" ")[0] : "";
+  const nightCount = `${sessionIds.length} night${sessionIds.length === 1 ? "" : "s"}`;
+
+  if (isTryout) {
+    await sendEmail({
+      to: email,
+      subject: `Booking confirmed: Men's Development Squad tryouts`,
+      template: "tryout_booking_confirmation",
+      html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
+        <h2 style="color: #7E57C2; margin-bottom: 8px;">You're in for the tryouts.</h2>
+        <p>Hi${firstName},</p>
+        <p>Thanks for signing up for the Men's Development Squad tryouts. This is where we pick the squad, so bring your best. Here ${sessionIds.length === 1 ? "is your night" : "are your nights"}:</p>
+        <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${nightList}</p>
+        <p><strong>Venue:</strong> ${venueHtml(venueName)}<br>
+           <strong>Total paid:</strong> ${formatCents(total)} (${nightCount})</p>
+        <p>Wear indoor court shoes and warm up ready to play in the position you nominated. We'll be watching across both nights before selecting the squad.</p>
+        ${whatsappHtml(WHATSAPP_ADULTS_URL, "adults")}
+        <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
+          Tryout nights are non-refundable and non-reschedulable. Questions? Just reply to this email. See our <a href="${appUrl}/refund-policy" style="color:#7E57C2;">cancellation and refund policy</a>.
+        </p>
+        <p>Obsidian Volleyball Academy</p>
+      </div>
+    `,
+      text: `You're in for the tryouts.\n\nThanks for signing up for the Men's Development Squad tryouts. This is where we pick the squad, so bring your best.\n\nNights:\n${nightListText}\n\nVenue: ${venueName}\nTotal paid: ${formatCents(total)}\n\nWear indoor court shoes and warm up ready to play in the position you nominated. We'll be watching across both nights before selecting the squad.\n\nTryout nights are non-refundable and non-reschedulable. Questions? Reply to this email. Cancellation and refund policy: ${appUrl}/refund-policy\n\nObsidian Volleyball Academy`,
+    });
+    return;
+  }
 
   await sendEmail({
     to: email,
@@ -763,11 +800,11 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px;">
         <h2 style="color: #7E57C2; margin-bottom: 8px;">You're booked in.</h2>
-        <p>Hi${name ? " " + name.split(" ")[0] : ""},</p>
+        <p>Hi${firstName},</p>
         <p>Thanks for booking the Adult Social Scrim. Here ${sessionIds.length === 1 ? "is your night" : "are your nights"}:</p>
         <p style="background: #f6f3ff; padding: 12px 16px; border-radius: 6px;">${nightList}</p>
         <p><strong>Venue:</strong> ${venueHtml(venueName)}<br>
-           <strong>Total paid:</strong> ${formatCents(total)} (${sessionIds.length} night${sessionIds.length === 1 ? "" : "s"})</p>
+           <strong>Total paid:</strong> ${formatCents(total)} (${nightCount})</p>
         <p>Wear suitable indoor court shoes. See you on court.</p>
         ${whatsappHtml(WHATSAPP_ADULTS_URL, "adults")}
         <p style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #eee; font-size: 13px; color: #666;">
@@ -776,9 +813,7 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
         <p>Obsidian Volleyball Academy</p>
       </div>
     `,
-    text: `You're booked in.\n\nThanks for booking the Adult Social Scrim.\n\nNights:\n${(sessionRows ?? [])
-      .map((s) => `${fmtDay(s.starts_at)} ${fmtTime(s.starts_at)} - ${fmtTime(s.ends_at)}`)
-      .join("\n")}\n\nVenue: ${venueName}\nTotal paid: ${formatCents(total)}\n\nAdult social nights are non-refundable and non-reschedulable. Questions? Reply to this email. Cancellation and refund policy: ${appUrl}/refund-policy\n\nObsidian Volleyball Academy`,
+    text: `You're booked in.\n\nThanks for booking the Adult Social Scrim.\n\nNights:\n${nightListText}\n\nVenue: ${venueName}\nTotal paid: ${formatCents(total)}\n\nAdult social nights are non-refundable and non-reschedulable. Questions? Reply to this email. Cancellation and refund policy: ${appUrl}/refund-policy\n\nObsidian Volleyball Academy`,
   });
 }
 
