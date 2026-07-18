@@ -15,9 +15,16 @@ const JOINING = [
 ];
 
 const COACHING = [
-  "Four two week blocks across the 8 weeks",
-  "Each block targets one part of your game",
-  "Hitting, setting, blocking and defence, each with a specialist",
+  "A new specialist guest coach every two weeks",
+  "Each a high level player, coaching their own position",
+  "Four blocks: hitting, setting, blocking and defence",
+];
+
+// Tentative guest lineup — names shown as "featuring" until locked.
+const COACHES = [
+  { name: "Chris K", role: "Men's Premier outside", note: "Sydney North MVP" },
+  { name: "Nelson L", role: "Men's Reserves setter", note: "Sydney East captain" },
+  { name: "Kaveesh V", role: "Sydney West team", note: "NSW CHS" },
 ];
 
 const TRIAL = [
@@ -81,6 +88,24 @@ export default function MensSquadInfoPage() {
         <div className="space-y-10">
           <Section title="What you're joining" items={JOINING} />
           <Section title="The coaching" items={COACHING} />
+
+          <div>
+            <h2 className="font-heading text-2xl tracking-wide mb-4 pb-3 border-b border-[#7E57C2]/30">Guest coaches</h2>
+            <p className="text-gray-400 mb-4">
+              A new specialist takes each two week block. Lineup being confirmed, featuring players like:
+            </p>
+            <ul className="space-y-3">
+              {COACHES.map((c) => (
+                <li key={c.name} className="flex gap-3 text-gray-300">
+                  <span className="text-[#7E57C2] flex-shrink-0">+</span>
+                  <span>
+                    <span className="text-white">{c.name}</span> · {c.role} · {c.note}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           <Section title="The 2 week trial" items={TRIAL} />
           <Section title="If you make the squad" items={SQUAD} />
           <Section title="The vision" items={VISION} />
