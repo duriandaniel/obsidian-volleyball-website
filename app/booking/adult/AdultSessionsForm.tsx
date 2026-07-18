@@ -87,6 +87,7 @@ export function AdultSessionsForm({
   const [experience, setExperience] = useState("");
   const [highest, setHighest] = useState("");
   const [source, setSource] = useState<Source>("");
+  const [visionRead, setVisionRead] = useState(false);
   const [consent, setConsent] = useState(false);
   const [jersey, setJersey] = useState<JerseyChoice>(EMPTY_JERSEY);
   const [submitting, setSubmitting] = useState(false);
@@ -122,6 +123,7 @@ export function AdultSessionsForm({
       if (positions.size === 0) return setError("Select at least one position you play.");
       if (!experience) return setError("Please select your volleyball experience.");
       if (!highest) return setError("Please select your highest level played.");
+      if (!visionRead) return setError("Please confirm you've read the squad vision and the commitment.");
     } else if (!level) {
       return setError("Please select your level.");
     }
@@ -296,6 +298,18 @@ export function AdultSessionsForm({
                   <Select label="Your level" value={level} onChange={(v) => setLevel(v as Level)} options={LEVELS} required />
                 )}
                 <Select label="How did you hear about us?" value={source} onChange={(v) => setSource(v as Source)} options={SOURCES} />
+                {squadIntake && (
+                  <label className="flex items-start gap-2 cursor-pointer rounded border border-[#7E57C2]/30 bg-[#7E57C2]/[0.06] p-3">
+                    <input type="checkbox" checked={visionRead} onChange={(e) => setVisionRead(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#7E57C2]" required />
+                    <span className="text-xs text-gray-300">
+                      I&apos;ve read the{" "}
+                      <a href="/mens-squad" target="_blank" rel="noopener noreferrer" className="text-[#7E57C2] underline hover:text-white">
+                        squad vision
+                      </a>{" "}
+                      and understand this is a selection trial. If I&apos;m offered a spot, I&apos;m ready to commit to the 8 week squad ($216, about $27 a week). <span className="text-[#7E57C2]">*</span>
+                    </span>
+                  </label>
+                )}
                 <label className="flex items-start gap-2 cursor-pointer">
                   <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 w-4 h-4 accent-[#7E57C2]" required />
                   <span className="text-xs text-gray-400">

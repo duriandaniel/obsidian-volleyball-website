@@ -9,12 +9,9 @@ export const metadata: Metadata = {
 };
 
 const JOINING = [
-  "8 week structured curriculum",
-  "Whiteboard tactics and team systems",
-  "Film review of your own play",
+  "8 weeks training with other motivated players",
+  "Recorded sessions for feedback",
   "Position specific coaching",
-  "Individual assessment and progress tracking",
-  "End of batch showcase",
   "Led by a rotating panel of specialist coaches, each a high-level player in their position",
 ];
 
@@ -22,12 +19,11 @@ const COACHING = [
   "Eight weeks, four two-week specialist blocks",
   "Each block led by a coach who plays at a high level in that exact position",
   "Hitting, setting, middle blocking and defence, each taught by a specialist",
-  "A constant head coach ties it together and tracks your progress across the batch",
-  "The whole squad trains every session; each block just sharpens a different part of your game",
+  "Each block sharpens a different part of your game",
 ];
 
 const TRIAL = [
-  "This is a tryout for a place in the squad, not a guaranteed spot",
+  "Two Friday nights that double as your selection for the squad",
   "You nominate the position(s) you play",
   "We pick the squad from the trial, on skill, attitude and consistency",
   "$15 per night, Friday 24 and 31 July",
