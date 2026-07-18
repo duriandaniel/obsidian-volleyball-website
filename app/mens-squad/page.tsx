@@ -14,26 +14,25 @@ const JOINING = [
   "High level coaches who play your position",
 ];
 
-const COACHING = [
-  "A new specialist guest coach every two weeks",
-  "Each a high level player, coaching their own position",
-  "Four blocks: hitting, setting, blocking and defence",
-];
-
-// Tentative guest lineup — names shown as "featuring" until locked.
+// High level coaching team; names shown as "featuring" until locked.
 const COACHES = [
-  { name: "Chris K", role: "Men's Premier outside", note: "Sydney North MVP" },
-  { name: "Nelson L", role: "Men's Reserves setter", note: "Sydney East captain" },
-  { name: "Kaveesh V", role: "Sydney West team", note: "NSW CHS" },
+  { name: "Chris K", role: "Men's Premier Outside Hitter", year: "2026", note: "Sydney North MVP" },
+  { name: "Nelson L", role: "Men's Reserves Setter", year: "2026", note: "Sydney East captain" },
+  { name: "Kaveesh V", role: "Div 1 Opposite", year: "2026", note: "" },
+  { name: "Varun P", role: "Premier Libero", year: "2025", note: "" },
 ];
 
-const TRIAL = [
-  "Two trial nights: Fri 24 and 31 July, $15 each",
-  "We pick the squad from the trials",
-  "Make it and you're in",
-  "Nominate one position",
-  "All levels, no SVL Premier or Reserves in the last 3 years",
-  "Limited spots",
+const TRYOUTS = [
+  "Two weeks of team selection",
+  "Nominate the position you play",
+  "Fri 24 and 31 July, $15 each night",
+  "We recommend signing up for both nights",
+];
+
+const ELIGIBILITY = [
+  "16+ years old",
+  "Open to all levels",
+  "No SVL Premier or Reserves in the last 3 years",
 ];
 
 const SQUAD = [
@@ -87,26 +86,27 @@ export default function MensSquadInfoPage() {
 
         <div className="space-y-10">
           <Section title="What you're joining" items={JOINING} />
-          <Section title="The coaching" items={COACHING} />
 
           <div>
-            <h2 className="font-heading text-2xl tracking-wide mb-4 pb-3 border-b border-[#7E57C2]/30">Guest coaches</h2>
+            <h2 className="font-heading text-2xl tracking-wide mb-4 pb-3 border-b border-[#7E57C2]/30">The coaching team</h2>
             <p className="text-gray-400 mb-4">
-              A new specialist takes each two week block. Lineup being confirmed, featuring players like:
+              A team of high level players, each coaching their own position. Featuring:
             </p>
             <ul className="space-y-3">
               {COACHES.map((c) => (
                 <li key={c.name} className="flex gap-3 text-gray-300">
                   <span className="text-[#7E57C2] flex-shrink-0">+</span>
                   <span>
-                    <span className="text-white">{c.name}</span> · {c.role} · {c.note}
+                    <span className="text-white">{c.name}</span> · {c.role} · {c.year}
+                    {c.note ? ` · ${c.note}` : ""}
                   </span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <Section title="The 2 week trial" items={TRIAL} />
+          <Section title="The 2 week tryouts" items={TRYOUTS} />
+          <Section title="Eligibility" items={ELIGIBILITY} />
           <Section title="If you make the squad" items={SQUAD} />
           <Section title="The vision" items={VISION} />
         </div>
@@ -115,7 +115,7 @@ export default function MensSquadInfoPage() {
           href="/booking/mens-squad"
           className="mt-12 inline-block bg-[#5E35A8] hover:bg-[#7E57C2] text-white font-heading text-lg tracking-[0.2em] px-10 py-5 rounded transition-colors"
         >
-          TRIAL FOR YOUR SPOT
+          SIGN UP FOR THE TRYOUTS
         </Link>
       </div>
     </div>
