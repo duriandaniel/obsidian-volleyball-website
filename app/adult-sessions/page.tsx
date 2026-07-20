@@ -8,7 +8,7 @@ import TrackedBookingLink from "@/components/TrackedBookingLink";
 export const metadata: Metadata = {
   title: "Adult Volleyball West Ryde | Scrims & Men's Squad",
   description:
-    "Adult volleyball at Obsidian Volleyball Academy West Ryde. Drop in to open social scrims Tuesday, Wednesday and Friday 7 to 9 PM for $20 a night, or trial for the Men's Development Squad.",
+    "Adult volleyball at Obsidian Volleyball Academy West Ryde. Drop in to open social scrims Friday 7 to 9 PM for $20 a night, or trial for the Men's Development Squad.",
   keywords: [
     "adult volleyball Sydney",
     "adult volleyball West Ryde",
@@ -52,7 +52,7 @@ export default function AdultSessionsPage() {
             </h1>
             <p className="text-gray-300 text-lg max-w-xl leading-relaxed">
               Two ways to play at West Ryde. Trial for a spot in our new Men&apos;s Development Squad, or drop in to an
-              open social scrim any night.
+              open social scrim on Friday nights.
             </p>
           </SectionReveal>
         </div>
@@ -103,10 +103,10 @@ export default function AdultSessionsPage() {
               SOCIAL SCRIMS
             </h2>
             <p className="text-gray-300 text-lg max-w-xl leading-relaxed mb-3">
-              Open scrims every Tuesday, Wednesday and Friday, 7 to 9 PM. Turn up any night for{" "}
+              Open scrims every Friday, 7 to 9 PM. Turn up any week for{" "}
               <span className="text-white">$20</span>. All skill levels welcome.
             </p>
-            <p className="text-gray-500 text-sm max-w-xl mb-10">Two courts, three teams per court, sets to 15.</p>
+            <p className="text-gray-500 text-sm max-w-xl mb-10">Three teams, sets to 15.</p>
             <TrackedBookingLink
               href={SCRIM_BOOKING_URL}
               location="adult_open_cta"
