@@ -6,9 +6,9 @@ import TrackPixelView from "@/components/TrackPixelView";
 import TrackedBookingLink from "@/components/TrackedBookingLink";
 
 export const metadata: Metadata = {
-  title: "Adult Volleyball West Ryde | Scrims & Men's Squad",
+  title: "Adult Volleyball West Ryde | Friday Social Scrims",
   description:
-    "Adult volleyball at Obsidian Volleyball Academy West Ryde. Drop in to open social scrims Friday 7 to 9 PM for $20 a night, or trial for the Men's Development Squad.",
+    "Adult volleyball at Obsidian Volleyball Academy West Ryde. Open social scrims every Friday 7 to 9 PM, $20 a night, two courts. Men's Development Squad starting soon.",
   keywords: [
     "adult volleyball Sydney",
     "adult volleyball West Ryde",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Adult Volleyball | West Ryde Sydney",
     description:
-      "Open social scrims and the Men's Development Squad at Obsidian Volleyball Academy West Ryde. All skill levels welcome.",
+      "Open social scrims every Friday at Obsidian Volleyball Academy West Ryde. All skill levels welcome.",
     images: ["/images/og-adult.jpg"],
     url: "/adult-sessions",
   },
@@ -32,7 +32,6 @@ export const metadata: Metadata = {
 // On-site booking funnel, deep-linked straight to each flow.
 const SCRIM_BOOKING_URL = "/booking/adult/scrim";
 const MENS_INFO_URL = "/mens-squad";
-const MENS_BOOKING_URL = "/booking/mens-squad";
 const MAPS_URL = "https://maps.app.goo.gl/eByotpKjs2mcs4AL8";
 
 export default function AdultSessionsPage() {
@@ -51,62 +50,26 @@ export default function AdultSessionsPage() {
               <span className="text-[#7E57C2]">VOLLEYBALL</span>
             </h1>
             <p className="text-gray-300 text-lg max-w-xl leading-relaxed">
-              Two ways to play at West Ryde. Trial for a spot in our new Men&apos;s Development Squad, or drop in to an
-              open social scrim on Friday nights.
+              Friday scrims are open. Drop in any week, 7 to 9 PM at West Ryde. Our Men&apos;s Development Squad is
+              starting soon and taking expressions of interest.
             </p>
-          </SectionReveal>
-        </div>
-      </section>
-
-      {/* Men's Development Squad */}
-      <section className="py-20 lg:py-28 bg-[#111]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <SectionReveal>
-            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">NEW &middot; WINTER &apos;26 BATCH</p>
-            <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide leading-[0.95] mb-6">
-              MEN&apos;S DEVELOPMENT
-              <br />
-              <span className="text-[#7E57C2]">SQUAD</span>
-            </h2>
-            <p className="text-gray-300 text-lg max-w-xl leading-relaxed mb-3">
-              Our men&apos;s development program. Trial for a spot, then train an 8 week coached squad building toward a
-              representative team.
-            </p>
-            <p className="text-gray-500 text-sm max-w-xl mb-10">
-              Trial nights are $15, 16+, Friday 7 to 9 PM. The squad is picked from the trial and spots are limited.
-            </p>
-            <div className="flex flex-wrap items-center gap-4">
-              <TrackedBookingLink
-                href={MENS_BOOKING_URL}
-                location="mens_squad_cta"
-                className="inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-10 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide glow-purple"
-              >
-                TRIAL FOR YOUR SPOT
-              </TrackedBookingLink>
-              <Link
-                href={MENS_INFO_URL}
-                className="inline-flex items-center gap-2 text-[#7E57C2] hover:text-white font-heading text-sm tracking-[0.15em] uppercase transition-colors"
-              >
-                Read more <span aria-hidden>→</span>
-              </Link>
-            </div>
           </SectionReveal>
         </div>
       </section>
 
       {/* Social scrims */}
-      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
+      <section className="py-20 lg:py-28 bg-[#111]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <SectionReveal>
-            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">DROP IN</p>
+            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">NOW OPEN &middot; DROP IN</p>
             <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide leading-[0.95] mb-6">
               SOCIAL SCRIMS
             </h2>
             <p className="text-gray-300 text-lg max-w-xl leading-relaxed mb-3">
-              Open scrims every Friday, 7 to 9 PM. Turn up any week for{" "}
+              Scrims are back. Open every Friday, 7 to 9 PM. Turn up any week for{" "}
               <span className="text-white">$20</span>. All skill levels welcome.
             </p>
-            <p className="text-gray-500 text-sm max-w-xl mb-10">Three teams, sets to 15.</p>
+            <p className="text-gray-500 text-sm max-w-xl mb-10">Two courts, three teams per court, sets to 15.</p>
             <TrackedBookingLink
               href={SCRIM_BOOKING_URL}
               location="adult_open_cta"
@@ -114,6 +77,34 @@ export default function AdultSessionsPage() {
             >
               BOOK A SCRIM
             </TrackedBookingLink>
+          </SectionReveal>
+        </div>
+      </section>
+
+      {/* Men's Development Squad: postponed, taking expressions of interest */}
+      <section className="py-20 lg:py-28 bg-[#0A0A0A]">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <SectionReveal>
+            <p className="text-[#7E57C2] font-heading text-sm tracking-[0.4em] mb-4">STARTING SOON</p>
+            <h2 className="font-heading text-4xl lg:text-6xl text-white tracking-wide leading-[0.95] mb-6">
+              MEN&apos;S DEVELOPMENT
+              <br />
+              <span className="text-[#7E57C2]">SQUAD</span>
+            </h2>
+            <p className="text-gray-300 text-lg max-w-xl leading-relaxed mb-3">
+              A structured men&apos;s development program: a positional trial, then an 8 week coached squad building
+              toward a representative team.
+            </p>
+            <p className="text-gray-500 text-sm max-w-xl mb-10">
+              Postponed for now while we focus on our junior programs. Register your interest and we&apos;ll email you
+              when trials open.
+            </p>
+            <Link
+              href={MENS_INFO_URL}
+              className="inline-block bg-[#5E35A8] text-white font-heading text-xl sm:text-2xl px-10 py-4 hover:bg-[#7E57C2] transition-all duration-300 tracking-wide glow-purple"
+            >
+              REGISTER YOUR INTEREST
+            </Link>
           </SectionReveal>
         </div>
       </section>

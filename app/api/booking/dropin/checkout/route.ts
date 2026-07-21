@@ -12,6 +12,8 @@ const POSITIONS = ["setter", "outside", "middle", "opposite", "libero", "flex"] 
 
 const Body = z.object({
   session_ids: z.array(z.string().regex(UUID)).min(1).max(12),
+  // Spots per session id (group bookings under one name). Missing = 1.
+  quantities: z.record(z.string(), z.number().int().min(1).max(10)).optional(),
   jersey: z.object({ add: z.boolean().default(false) }).optional(),
   player: z.object({
     name: z.string().min(1).max(120),
@@ -40,6 +42,14 @@ export async function POST(req: NextRequest) {
 
   const sb = supabaseAdmin();
   const now = new Date().toISOString();
+
+  // Spots requested per session (group bookings ride the same flow: one
+  // customer/participant, several booking rows on the night).
+  const qtyFor = (id: string) => body.quantities?.[id] ?? 1;
+  const totalSpots = body.session_ids.reduce((sum, id) => sum + qtyFor(id), 0);
+  if (totalSpots > 20) {
+    return NextResponse.json({ error: "That's too many spots for one booking. Please book 20 or fewer." }, { status: 400 });
+  }
 
   // Load the chosen sessions with their parent program. Sessions may span
   // multiple adult programs (Tue/Wed/Fri) in a single booking.
@@ -102,8 +112,11 @@ export async function POST(req: NextRequest) {
     // default_capacity here let people pay into a session the DB then
     // rejected on insert — stranding the payment with no booking.
     const cap = sess.capacity_override ?? sess.programs.default_capacity;
-    if ((counts.get(s.id) ?? 0) >= cap) {
-      return NextResponse.json({ error: "One of the selected nights is full" }, { status: 409 });
+    if ((counts.get(s.id) ?? 0) + qtyFor(s.id) > cap) {
+      return NextResponse.json(
+        { error: "One of the selected nights doesn't have enough spots left for that many players" },
+        { status: 409 }
+      );
     }
   }
 
@@ -172,7 +185,7 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const count = sessions.length;
+  const count = totalSpots; // spots, not nights: a group booking pays per spot
   const total = perSessionCents * count;
 
   // Product name from the program title when the nights share one program (e.g.
@@ -207,16 +220,18 @@ export async function POST(req: NextRequest) {
           price_data: {
             currency: "aud",
             product_data: {
-              name: `${productBase} · ${count} night${count === 1 ? "" : "s"}`,
+              name: `${productBase} · ${count} spot${count === 1 ? "" : "s"}`,
               description: sessions
-                .map((s) =>
-                  new Date(s.starts_at).toLocaleDateString("en-AU", {
+                .map((s) => {
+                  const day = new Date(s.starts_at).toLocaleDateString("en-AU", {
                     weekday: "short",
                     day: "numeric",
                     month: "short",
                     timeZone: "Australia/Sydney",
-                  })
-                )
+                  });
+                  const qty = qtyFor(s.id);
+                  return qty > 1 ? `${day} ×${qty}` : day;
+                })
                 .join(", "),
             },
             unit_amount: perSessionCents,
@@ -242,8 +257,10 @@ export async function POST(req: NextRequest) {
         booking_type: "dropin",
         customer_id: customerId,
         participant_id: participantId,
+        // Each session id appears once PER SPOT booked — the webhook creates one
+        // booking row per id in the list, so group bookings need no webhook change.
         // Chunked to stay under Stripe's 500-char metadata limit. See lib/booking/metadata.ts.
-        ...packChunked("session_ids", sessions.map((s) => s.id).join(",")),
+        ...packChunked("session_ids", sessions.flatMap((s) => Array(qtyFor(s.id)).fill(s.id)).join(",")),
         per_session_cents: String(perSessionCents),
         level: body.player.level ?? "",
         jersey_size: jerseyAdd ? "TBC" : "none",

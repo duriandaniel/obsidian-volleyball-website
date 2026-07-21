@@ -68,6 +68,8 @@ export function AdultSessionsForm({
   squadIntake?: boolean;
 }) {
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  // Spots per selected night (group bookings under one name). Missing = 1.
+  const [qtys, setQtys] = useState<Record<string, number>>({});
   const [mode, setMode] = useState<Mode>("browsing");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -91,13 +93,25 @@ export function AdultSessionsForm({
     if (locked) return;
     setSelected((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+        setQtys((q) => {
+          const { [id]: _drop, ...rest } = q;
+          return rest;
+        });
+      } else {
+        next.add(id);
+      }
       return next;
     });
   };
 
+  const qtyFor = (id: string) => qtys[id] ?? 1;
+  const setQty = (id: string, qty: number) => setQtys((q) => ({ ...q, [id]: qty }));
+
   const count = selected.size;
-  const total = sessions.filter((s) => selected.has(s.id)).reduce((sum, s) => sum + s.price_cents, 0);
+  const totalSpots = Array.from(selected).reduce((sum, id) => sum + qtyFor(id), 0);
+  const total = sessions.filter((s) => selected.has(s.id)).reduce((sum, s) => sum + s.price_cents * qtyFor(s.id), 0);
 
   const continueToDetails = () => {
     if (count === 0) return;
@@ -131,6 +145,7 @@ export function AdultSessionsForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           session_ids: Array.from(selected),
+          quantities: Object.fromEntries(Array.from(selected).map((id) => [id, qtyFor(id)])),
           jersey: { add: jersey.add },
           player: {
             name,
@@ -190,16 +205,35 @@ export function AdultSessionsForm({
                 {soldOut ? (
                   <WaitlistForm sessionId={s.id} kidField={false} align="right" showSoldOutLabel={false} />
                 ) : (
-                  <button
-                    type="button"
-                    disabled={locked}
-                    onClick={() => toggle(s.id)}
-                    className={`px-4 py-2 rounded font-heading text-xs tracking-[0.2em] transition-colors ${
-                      isSelected ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10 text-white"
-                    } ${locked ? "cursor-not-allowed" : ""}`}
-                  >
-                    {isSelected ? "REMOVE" : "ADD"}
-                  </button>
+                  <div className="flex flex-col items-end gap-2">
+                    <button
+                      type="button"
+                      disabled={locked}
+                      onClick={() => toggle(s.id)}
+                      className={`px-4 py-2 rounded font-heading text-xs tracking-[0.2em] transition-colors ${
+                        isSelected ? "bg-[#7E57C2] text-white" : "bg-white/5 hover:bg-white/10 text-white"
+                      } ${locked ? "cursor-not-allowed" : ""}`}
+                    >
+                      {isSelected ? "REMOVE" : "ADD"}
+                    </button>
+                    {isSelected && !squadIntake && (
+                      <label className="flex items-center gap-2 text-xs text-gray-400">
+                        Spots
+                        <select
+                          value={qtyFor(s.id)}
+                          disabled={locked}
+                          onChange={(e) => setQty(s.id, parseInt(e.target.value, 10))}
+                          className="bg-white/5 border border-white/10 rounded px-2 py-1 text-xs text-white focus:outline-none focus:border-[#7E57C2]"
+                        >
+                          {Array.from({ length: Math.max(1, Math.min(8, s.spots_left)) }, (_, i) => i + 1).map((n) => (
+                            <option key={n} value={n} className="bg-[#0A0A0A]">
+                              {n}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    )}
+                  </div>
                 )}
               </div>
             </div>
@@ -219,8 +253,11 @@ export function AdultSessionsForm({
                 .filter((s) => selected.has(s.id))
                 .map((s) => (
                   <div key={s.id} className="flex justify-between gap-2">
-                    <span className="text-gray-400">{fmtDate(s.starts_at)}</span>
-                    <span>{formatCents(s.price_cents)}</span>
+                    <span className="text-gray-400">
+                      {fmtDate(s.starts_at)}
+                      {qtyFor(s.id) > 1 ? ` × ${qtyFor(s.id)}` : ""}
+                    </span>
+                    <span>{formatCents(s.price_cents * qtyFor(s.id))}</span>
                   </div>
                 ))}
             </div>
@@ -240,7 +277,8 @@ export function AdultSessionsForm({
                   CONTINUE
                 </button>
                 <div className="text-xs text-gray-500">
-                  {count} night{count === 1 ? "" : "s"} · {formatCents(count ? Math.round(total / count) : 0)} each
+                  {count} night{count === 1 ? "" : "s"} · {totalSpots} spot{totalSpots === 1 ? "" : "s"} ·{" "}
+                  {formatCents(totalSpots ? Math.round(total / totalSpots) : 0)} each
                 </div>
               </>
             )}

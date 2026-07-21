@@ -7,7 +7,7 @@
 //  - Ensures a $20 "Adult Drop-in" pricing rule.
 //  - Ensures 3 adult programs (Tue/Wed/Fri) at Bennelong Sports Centre, age 18+,
 //    pointed at the $20 rule. Tue/Wed finished in June/July 2026 and keep their
-//    historical dates; Friday reopened 24 Jul 2026 at capacity 21.
+//    historical dates; Friday reopened 24 Jul 2026 at capacity 42 (two courts).
 //  - Reconciles each program's sessions to exactly the 4 target nights (7-9pm
 //    Sydney = 09:00-11:00 UTC in June-Sep, AEST). Removes stray sessions that
 //    have no bookings; inserts missing target nights.
@@ -50,7 +50,7 @@ const ADULT_PROGRAMS = [
     slug: "fri-adult-scrim-7pm", // existing row — reconcile in place
     title: "Friday Adult Social Scrim",
     season: "Adult Social Scrim",
-    capacity: 21, // reopened Jul 2026 at reduced capacity to begin with
+    capacity: 42, // reopened Jul 2026: full two courts (mens trials postponed)
     dates: [
       // historical (June/July run) — keep so reconcile doesn't touch booked nights
       "2026-06-12", "2026-06-19", "2026-06-26", "2026-07-03",

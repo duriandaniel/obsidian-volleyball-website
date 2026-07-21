@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { trackBookingClick } from "@/lib/tracking";
 
-// Promote Term 3 enrolments + Men's Dev trials; land on the booking hub (both listed there).
+// Promote Term 3 enrolments + reopened Friday scrims; land on the booking hub (both listed there).
 const BOOKING_URL = "/booking";
 
 export default function PromoBanner() {
@@ -25,7 +25,7 @@ export default function PromoBanner() {
           >
             ●
           </span>
-          <span>Men&apos;s Dev Squad Trials</span>
+          <span>Friday Adult Scrims Are Back</span>
           <span
             className="hidden md:inline-block ml-3 lg:ml-4 text-[#D4A4FF] tracking-[0.2em]"
             aria-hidden

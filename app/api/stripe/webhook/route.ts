@@ -670,7 +670,8 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
         name: session.customer_details?.name ?? "",
         phone: session.customer_details?.phone ?? null,
         kidName: null, // adults play themselves
-        sessionIds,
+        // Group bookings repeat ids (one per spot) — the waitlist wants each night once.
+        sessionIds: [...new Set(sessionIds)],
         bookingType: "dropin",
         errMessage: bErr.message,
       });
@@ -733,7 +734,7 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
   // Session dates + venue for the email (sessions may span programs; use the first).
   const { data: sessionRows } = await sb
     .from("sessions")
-    .select("starts_at, ends_at, program_id")
+    .select("id, starts_at, ends_at, program_id")
     .in("id", sessionIds)
     .order("starts_at");
   let venueName = "Obsidian Volleyball Academy West Ryde";
@@ -755,17 +756,25 @@ async function handleDropinCheckoutCompleted(session: Stripe.Checkout.Session) {
     new Date(iso).toLocaleDateString("en-AU", { weekday: "long", day: "numeric", month: "long", timeZone: "Australia/Sydney" });
   const fmtTime = (iso: string) =>
     new Date(iso).toLocaleTimeString("en-AU", { hour: "numeric", minute: "2-digit", timeZone: "Australia/Sydney" });
+  // Group bookings repeat a session id once per spot; the sessions query above
+  // dedupes, so annotate each night with its spot count.
+  const spotsBySession = new Map<string, number>();
+  for (const id of sessionIds) spotsBySession.set(id, (spotsBySession.get(id) ?? 0) + 1);
+  const spotsSuffix = (id: string) => {
+    const n = spotsBySession.get(id) ?? 1;
+    return n > 1 ? ` · ${n} spots` : "";
+  };
   const nightList = (sessionRows ?? [])
-    .map((s) => `${fmtDay(s.starts_at)} · ${fmtTime(s.starts_at)} – ${fmtTime(s.ends_at)}`)
+    .map((s) => `${fmtDay(s.starts_at)} · ${fmtTime(s.starts_at)} – ${fmtTime(s.ends_at)}${spotsSuffix(s.id)}`)
     .join("<br>");
   const nightListText = (sessionRows ?? [])
-    .map((s) => `${fmtDay(s.starts_at)} ${fmtTime(s.starts_at)} - ${fmtTime(s.ends_at)}`)
+    .map((s) => `${fmtDay(s.starts_at)} ${fmtTime(s.starts_at)} - ${fmtTime(s.ends_at)}${spotsSuffix(s.id)}`)
     .join("\n");
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://obsidianvolleyball.com";
   const name = session.customer_details?.name ?? "";
   const firstName = name ? " " + name.split(" ")[0] : "";
-  const nightCount = `${sessionIds.length} night${sessionIds.length === 1 ? "" : "s"}`;
+  const nightCount = `${sessionIds.length} spot${sessionIds.length === 1 ? "" : "s"}`;
 
   if (isTryout) {
     await sendEmail({
