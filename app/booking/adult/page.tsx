@@ -17,15 +17,15 @@ export default function AdultBookingPage() {
         <div className="grid gap-5 sm:grid-cols-2">
           <AdultBox
             href="/booking/adult/scrim"
-            eyebrow="DROP IN"
+            eyebrow="NOW OPEN"
             label="Social Scrims"
-            blurb="Casual mixed nights. Pay per night, come when you can."
+            blurb="Friday nights are back. Pay per night, come when you can, bring your mates."
           />
           <AdultBox
-            href="/booking/mens-squad"
-            eyebrow="TRIAL"
-            label="Men's Trials"
-            blurb="Trial for a spot in the Men's Development Squad. The squad is picked from the trial, and spots are limited."
+            href="/mens-squad"
+            eyebrow="STARTING SOON"
+            label="Men's Squad"
+            blurb="Postponed for now while we focus on juniors. Register your interest and we'll email you when trials open."
           />
         </div>
       </div>

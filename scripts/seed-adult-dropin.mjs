@@ -1,4 +1,4 @@
-// Seed / reconcile adult drop-in social scrims ($20/night, Tue/Wed/Fri 7-9pm)
+// Seed / reconcile adult drop-in social scrims ($20/night, 7-9pm)
 // against the live Supabase. Idempotent: safe to re-run.
 //
 //   node --env-file=.env.local scripts/seed-adult-dropin.mjs
@@ -6,9 +6,10 @@
 // What it does:
 //  - Ensures a $20 "Adult Drop-in" pricing rule.
 //  - Ensures 3 adult programs (Tue/Wed/Fri) at Bennelong Sports Centre, age 18+,
-//    pointed at the $20 rule.
+//    pointed at the $20 rule. Tue/Wed finished in June/July 2026 and keep their
+//    historical dates; Friday reopened 24 Jul 2026 at capacity 42 (two courts).
 //  - Reconciles each program's sessions to exactly the 4 target nights (7-9pm
-//    Sydney = 09:00-11:00 UTC in June/July, AEST). Removes stray sessions that
+//    Sydney = 09:00-11:00 UTC in June-Sep, AEST). Removes stray sessions that
 //    have no bookings; inserts missing target nights.
 //  - Archives the stale `term-2-2026-tuesday-juniors` so the junior funnel is a
 //    single clean Friday/West Ryde group.
@@ -24,7 +25,7 @@ const DROPIN_RULE_ID = "44444444-4444-4444-4444-444444444444";
 
 const log = (...a) => console.log(...a);
 
-// 7-9pm Sydney (AEST, UTC+10) -> 09:00-11:00 UTC. Dates are June/July 2026 (no DST).
+// 7-9pm Sydney (AEST, UTC+10) -> 09:00-11:00 UTC. Dates are Jun-Sep 2026 (no DST).
 const night = (isoDate) => ({
   starts_at: `${isoDate}T09:00:00+00:00`,
   ends_at: `${isoDate}T11:00:00+00:00`,
@@ -35,19 +36,27 @@ const ADULT_PROGRAMS = [
     slug: "adult-scrim-tuesday-7pm",
     title: "Tuesday Adult Social Scrim",
     season: "Adult Social Scrim",
+    capacity: 24,
     dates: ["2026-06-09", "2026-06-16", "2026-06-23", "2026-06-30"],
   },
   {
     slug: "adult-scrim-wednesday-7pm",
     title: "Wednesday Adult Social Scrim",
     season: "Adult Social Scrim",
+    capacity: 24,
     dates: ["2026-06-10", "2026-06-17", "2026-06-24", "2026-07-01"],
   },
   {
     slug: "fri-adult-scrim-7pm", // existing row — reconcile in place
     title: "Friday Adult Social Scrim",
     season: "Adult Social Scrim",
-    dates: ["2026-06-12", "2026-06-19", "2026-06-26", "2026-07-03"],
+    capacity: 42, // reopened Jul 2026: full two courts (mens trials postponed)
+    dates: [
+      // historical (June/July run) — keep so reconcile doesn't touch booked nights
+      "2026-06-12", "2026-06-19", "2026-06-26", "2026-07-03",
+      // reopened Friday nights
+      "2026-07-24", "2026-07-31", "2026-08-07", "2026-08-14",
+    ],
   },
 ];
 
@@ -72,7 +81,7 @@ async function ensureProgram(p) {
     season: p.season,
     description: null,
     venue_id: BENNELONG,
-    default_capacity: 24,
+    default_capacity: p.capacity,
     skill_level: "mixed",
     age_min: 18,
     age_max: 99,

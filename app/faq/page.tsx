@@ -96,7 +96,7 @@ const faqCategories = [
       },
       {
         q: "What time do sessions start and end?",
-        a: "Weekly training runs in 1.5-hour blocks: West Ryde on Friday evenings (4:00 PM and 5:30 PM starts) and Kellyville on Tuesday and Wednesday afternoons (4:00 PM start). Holiday camps run 9 AM to 1 PM (full day), with half-day options from 9 to 11 AM. Adult scrims run 7:00 to 9:00 PM at West Ryde.",
+        a: "Weekly training runs in 1.5-hour blocks: West Ryde on Friday evenings (4:00 PM and 5:30 PM starts) and Kellyville on Tuesday and Wednesday afternoons (4:00 PM start). Holiday camps run 9 AM to 1 PM (full day), with half-day options from 9 to 11 AM. Adult scrims run Friday 7:00 to 9:00 PM at West Ryde.",
       },
     ],
   },
