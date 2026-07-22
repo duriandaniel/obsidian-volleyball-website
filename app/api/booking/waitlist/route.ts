@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
     .select("id, starts_at, ends_at, status, capacity_override, program:programs(id, type, default_capacity), bookings(id, status)")
     .eq("id", body.session_id)
     .is("deleted_at", null)
+    .is("bookings.deleted_at", null)
     .maybeSingle();
   if (!session || session.status !== "scheduled") {
     return NextResponse.json({ error: "Session not found" }, { status: 404 });
@@ -47,8 +48,13 @@ export async function POST(req: NextRequest) {
   // catches stale UI where a spot freed up since the page rendered.
   const program = Array.isArray(session.program) ? session.program[0] : session.program;
   const capacity = session.capacity_override ?? program?.default_capacity ?? null;
-  const confirmed = (session.bookings ?? []).filter((b: { status: string }) => b.status === "confirmed").length;
-  if (capacity == null || confirmed < capacity) {
+  // Same statuses every booking surface counts as taking a spot — a stricter
+  // count here 409'd waitlist joins for sessions the UI correctly showed as
+  // sold out (e.g. spots held by pending payments).
+  const taken = (session.bookings ?? []).filter((b: { status: string }) =>
+    ["confirmed", "pending", "attended"].includes(b.status)
+  ).length;
+  if (capacity == null || taken < capacity) {
     return NextResponse.json(
       { error: "Good news — this session has spots available. Book it instead of joining the waitlist." },
       { status: 409 }

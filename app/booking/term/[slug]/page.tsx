@@ -44,7 +44,14 @@ type ProgramRow = {
   pricing_rule_id: string | null;
   venues: { name: string; address: string | null } | null;
   pricing_rules: { term_per_session_cents: number | null } | null;
-  sessions: { id: string; starts_at: string; ends_at: string; status: "scheduled" | "cancelled"; notes: string | null }[];
+  sessions: {
+    id: string;
+    starts_at: string;
+    ends_at: string;
+    status: "scheduled" | "cancelled";
+    notes: string | null;
+    capacity_override: number | null;
+  }[];
 };
 
 export default async function TermProgramPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -64,7 +71,7 @@ export default async function TermProgramPage({ params }: { params: Promise<{ sl
     .from("programs")
     .select(
       "id, slug, title, season, description, skill_level, age_min, age_max, default_capacity, venue_id, pricing_rule_id, " +
-        "venues(name, address), pricing_rules(term_per_session_cents), sessions(id, starts_at, ends_at, status, notes)"
+        "venues(name, address), pricing_rules(term_per_session_cents), sessions(id, starts_at, ends_at, status, notes, capacity_override)"
     )
     .eq("slug", slug)
     .eq("type", "term")
@@ -92,20 +99,30 @@ export default async function TermProgramPage({ params }: { params: Promise<{ sl
     scheduledSessions.map((s) => s.starts_at)
   );
 
-  // Capacity check on the next upcoming SCHEDULED session. Kept as a second
-  // query because it needs the first session's id — which the embedded query
-  // above already resolved, so this is one extra hop rather than the old two.
-  let booked = 0;
-  if (scheduledSessions[0]) {
-    const { count } = await sb
+  // Booked counts for EVERY upcoming scheduled session (one query), so the
+  // casual week picker can grey out full weeks and offer the waitlist instead
+  // of letting families discover "Class is full" at payment.
+  const bookedBySession = new Map<string, number>();
+  if (scheduledSessions.length) {
+    const { data: bookingRows } = await sb
       .from("bookings")
-      .select("id", { count: "exact", head: true })
-      .eq("session_id", scheduledSessions[0].id)
+      .select("session_id")
+      .in(
+        "session_id",
+        scheduledSessions.map((s) => s.id)
+      )
       .in("status", ["confirmed", "pending", "attended"])
       .is("deleted_at", null);
-    booked = count ?? 0;
+    for (const b of bookingRows ?? []) {
+      bookedBySession.set(b.session_id, (bookedBySession.get(b.session_id) ?? 0) + 1);
+    }
   }
-  const soldOut = booked >= program.default_capacity;
+  const capacityOf = (s: { capacity_override: number | null }) => s.capacity_override ?? program.default_capacity;
+  const spotsLeft = (s: { id: string; capacity_override: number | null }) =>
+    Math.max(0, capacityOf(s) - (bookedBySession.get(s.id) ?? 0));
+  // Program-level sold out = the next upcoming class is full (matches the
+  // DB trigger's coalesce(capacity_override, default_capacity) rule).
+  const soldOut = scheduledSessions[0] ? spotsLeft(scheduledSessions[0]) <= 0 : false;
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-white pt-24 pb-16">
@@ -124,7 +141,12 @@ export default async function TermProgramPage({ params }: { params: Promise<{ sl
             billableWeeks={billableWeeks}
             casualPriceCents={CASUAL_PRICE_CENTS}
             trialPriceCents={trialPriceCentsForVenue(venue?.name)}
-            sessions={scheduledSessions.map((s) => ({ id: s.id, starts_at: s.starts_at, ends_at: s.ends_at }))}
+            sessions={scheduledSessions.map((s) => ({
+              id: s.id,
+              starts_at: s.starts_at,
+              ends_at: s.ends_at,
+              spots_left: spotsLeft(s),
+            }))}
             displaySessions={upcomingSessions.map((s) => ({
               id: s.id,
               starts_at: s.starts_at,

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { loadTermPrograms, weekday, timeRange, type TermProgram } from "@/lib/booking/load";
 import { formatSpotsLeft } from "@/lib/booking/pricing";
 import TermTabs from "@/components/TermTabs";
+import WaitlistForm from "@/components/WaitlistForm";
 
 export const metadata: Metadata = {
   title: "Weekly Training | Obsidian Volleyball Academy",
@@ -91,7 +92,12 @@ function PickerTable({ programs }: { programs: TermProgram[] }) {
                   </td>
                   <td className="px-5 py-5 text-right whitespace-nowrap">
                     {soldOut ? (
-                      <span className="text-sm text-gray-500">Sold out</span>
+                      // Never a dead end: sold-out classes offer the waitlist right here.
+                      p.first_session_id ? (
+                        <WaitlistForm sessionId={p.first_session_id} align="right" />
+                      ) : (
+                        <span className="text-sm text-gray-500">Sold out</span>
+                      )
                     ) : (
                       <div className="flex flex-col items-end gap-1">
                         <Link
@@ -134,7 +140,11 @@ function PickerTable({ programs }: { programs: TermProgram[] }) {
                 {shortVenue(p.venue_name)}
               </p>
               {soldOut ? (
-                <span className="text-sm text-gray-500">Sold out</span>
+                p.first_session_id ? (
+                  <WaitlistForm sessionId={p.first_session_id} />
+                ) : (
+                  <span className="text-sm text-gray-500">Sold out</span>
+                )
               ) : (
                 <div className="flex items-center justify-between gap-3">
                   <span className="text-xs text-gray-500">{formatSpotsLeft(p.capacity - p.booked)}</span>
