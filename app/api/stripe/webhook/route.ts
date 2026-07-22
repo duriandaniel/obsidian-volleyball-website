@@ -1044,10 +1044,45 @@ async function handleRefund(charge: Stripe.Charge) {
     .update({ status: "refunded" })
     .eq("stripe_payment_intent_id", paymentIntentId);
 
-  await sb
+  // Allocate the refund to specific bookings instead of stamping the total on
+  // every row of the payment intent. A term enrolment or multi-day camp shares
+  // ONE payment intent across many session rows; the old blanket update wrote
+  // the full refunded amount onto each of them, so a $180 refund on a 10-week
+  // enrolment showed up as $1,800 of refunds and dashboard revenue went
+  // negative (2026-07-22 incident). Cancelled rows absorb the refund first
+  // (that is what the money was for), then confirmed rows if anything remains
+  // (e.g. a goodwill refund with nothing cancelled), each row capped at what
+  // it was actually paid. charge.amount_refunded is cumulative, so re-running
+  // this on later partial refunds recomputes the whole allocation idempotently.
+  const { data: piBookings } = await sb
     .from("bookings")
-    .update({ refund_status: "issued", refund_amount_cents: charge.amount_refunded })
-    .eq("stripe_payment_intent_id", paymentIntentId);
+    .select("id, status, paid_amount_cents, refund_status")
+    .eq("stripe_payment_intent_id", paymentIntentId)
+    .is("deleted_at", null);
+  if (piBookings?.length) {
+    const sorted = [
+      ...piBookings.filter((b) => b.status === "cancelled"),
+      ...piBookings.filter((b) => b.status !== "cancelled"),
+    ];
+    let remaining = charge.amount_refunded;
+    for (const b of sorted) {
+      const alloc = Math.min(remaining, b.paid_amount_cents ?? 0);
+      remaining -= alloc;
+      if (alloc > 0) {
+        await sb
+          .from("bookings")
+          .update({ refund_status: "issued", refund_amount_cents: alloc })
+          .eq("id", b.id);
+      } else if (b.refund_status === "issued") {
+        // Undo a stamp from an earlier (blanket or superseded) allocation;
+        // leave 'requested'/'none' rows untouched.
+        await sb
+          .from("bookings")
+          .update({ refund_status: "none", refund_amount_cents: null })
+          .eq("id", b.id);
+      }
+    }
+  }
 
   // A FULL refund frees the seats: the capacity trigger only counts
   // confirmed/pending bookings, so setting status='cancelled' is what actually
