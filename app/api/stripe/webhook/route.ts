@@ -1039,10 +1039,16 @@ async function handleRefund(charge: Stripe.Charge) {
   const paymentIntentId = typeof charge.payment_intent === "string" ? charge.payment_intent : null;
   if (!paymentIntentId) return;
 
-  await sb
-    .from("camp_orders")
-    .update({ status: "refunded" })
-    .eq("stripe_payment_intent_id", paymentIntentId);
+  // Only a FULL refund flips the camp order to 'refunded'. A partial refund
+  // is often an ad-hoc discount after payment (or a subset of days
+  // cancelled), and the order itself is still live — the per-booking
+  // allocation below carries the detail, and the order stays 'paid'.
+  if (charge.refunded) {
+    await sb
+      .from("camp_orders")
+      .update({ status: "refunded" })
+      .eq("stripe_payment_intent_id", paymentIntentId);
+  }
 
   // Allocate the refund to specific bookings instead of stamping the total on
   // every row of the payment intent. A term enrolment or multi-day camp shares
@@ -1060,18 +1066,48 @@ async function handleRefund(charge: Stripe.Charge) {
     .eq("stripe_payment_intent_id", paymentIntentId)
     .is("deleted_at", null);
   if (piBookings?.length) {
-    const sorted = [
-      ...piBookings.filter((b) => b.status === "cancelled"),
-      ...piBookings.filter((b) => b.status !== "cancelled"),
-    ];
+    const cancelledRows = piBookings.filter((b) => b.status === "cancelled");
+    const activeRows = piBookings.filter((b) => b.status !== "cancelled");
+    const alloc = new Map<string, number>();
     let remaining = charge.amount_refunded;
-    for (const b of sorted) {
-      const alloc = Math.min(remaining, b.paid_amount_cents ?? 0);
-      remaining -= alloc;
-      if (alloc > 0) {
+
+    // 1) Cancelled rows absorb the refund first — money back for a class
+    //    that is not happening, up to what that row was paid.
+    for (const b of cancelledRows) {
+      const a = Math.min(remaining, b.paid_amount_cents ?? 0);
+      alloc.set(b.id, a);
+      remaining -= a;
+    }
+
+    // 2) Anything left over with nothing cancelled to pin it on is an ad-hoc
+    //    partial refund (e.g. a goodwill discount after payment). Spread it
+    //    pro-rata across the still-active rows so it reads as a small
+    //    discount on every session rather than one session looking
+    //    fully refunded when it still ran.
+    if (remaining > 0 && activeRows.length) {
+      const activePaid = activeRows.reduce(
+        (s, b) => s + (b.paid_amount_cents ?? 0),
+        0
+      );
+      let spread = 0;
+      activeRows.forEach((b, i) => {
+        const paid = b.paid_amount_cents ?? 0;
+        const share =
+          i === activeRows.length - 1
+            ? remaining - spread // last row takes the rounding remainder
+            : Math.floor((remaining * paid) / (activePaid || 1));
+        const a = Math.min(share, paid);
+        alloc.set(b.id, a);
+        spread += a;
+      });
+    }
+
+    for (const b of piBookings) {
+      const a = alloc.get(b.id) ?? 0;
+      if (a > 0) {
         await sb
           .from("bookings")
-          .update({ refund_status: "issued", refund_amount_cents: alloc })
+          .update({ refund_status: "issued", refund_amount_cents: a })
           .eq("id", b.id);
       } else if (b.refund_status === "issued") {
         // Undo a stamp from an earlier (blanket or superseded) allocation;
