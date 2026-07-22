@@ -4,6 +4,7 @@ import { useState } from "react";
 import { formatCents, TRIAL_PRICE_CENTS } from "@/lib/booking/pricing";
 import { EmbeddedPayment } from "@/app/booking/EmbeddedPayment";
 import JerseyAddOn, { EMPTY_JERSEY, type JerseyChoice } from "@/components/JerseyAddOn";
+import WaitlistForm from "@/components/WaitlistForm";
 
 type ParentForm = {
   first_name: string;
@@ -45,7 +46,7 @@ const YEAR_OPTIONS = [
 const TZ = "Australia/Sydney";
 const fmtDate = (iso: string) => new Date(iso).toLocaleDateString("en-AU", { weekday: "short", day: "numeric", month: "short", timeZone: TZ });
 
-type SessionLite = { id: string; starts_at: string; ends_at: string };
+type SessionLite = { id: string; starts_at: string; ends_at: string; spots_left?: number };
 
 export function TermEnrolForm({
   programId,
@@ -183,6 +184,19 @@ export function TermEnrolForm({
               <div className="space-y-1.5 max-h-52 overflow-auto">
                 {sessions.length === 0 && <div className="text-xs text-gray-500">No upcoming classes.</div>}
                 {sessions.map((s) => {
+                  // Full weeks aren't selectable — they offer the waitlist instead
+                  // of failing at payment. Unknown spots (older callers) stay bookable.
+                  if ((s.spots_left ?? 1) <= 0) {
+                    return (
+                      <div
+                        key={s.id}
+                        className="w-full flex items-center justify-between gap-2 rounded border border-white/5 px-3 py-2 text-left text-sm"
+                      >
+                        <span className="text-gray-500">{fmtDate(s.starts_at)}</span>
+                        <WaitlistForm sessionId={s.id} align="right" />
+                      </div>
+                    );
+                  }
                   const on = selected.has(s.id);
                   return (
                     <button type="button" key={s.id} onClick={() => toggle(s.id)} className={`w-full flex items-center justify-between gap-2 rounded border px-3 py-2 text-left text-sm transition-colors ${on ? "border-[#7E57C2] bg-[#7E57C2]/10" : "border-white/10 hover:border-white/30"}`}>

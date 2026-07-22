@@ -9,7 +9,7 @@ import WaitlistForm from "@/components/WaitlistForm";
 import { TermEnrolForm } from "./TermEnrolForm";
 
 const TZ = "Australia/Sydney";
-type SessionLite = { id: string; starts_at: string; ends_at: string };
+type SessionLite = { id: string; starts_at: string; ends_at: string; spots_left?: number };
 type DisplaySession = SessionLite & { cancelled: boolean; note: string | null };
 
 const fmtDay = (iso: string) =>
